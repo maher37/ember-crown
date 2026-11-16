@@ -5,7 +5,7 @@ import { useGame } from '../game/store';
 import { currentPlace, isUnlocked, travelHours } from '../game/travel';
 import { PLACE_SCENES } from '../game/dialogue';
 import { canLevelUp } from '../rules';
-import { InventoryDialog } from './ExploreDialogs';
+import { InventoryDialog, SpellsDialog } from './ExploreDialogs';
 import mapArt from './art/worldmap.svg?raw';
 import './World.css';
 
@@ -34,6 +34,7 @@ const DANGER: Record<string, [string, string]> = {
 export function WorldMapScreen() {
   const { game, travelTo, travelLog, goto, openCamp, enterPlace } = useGame();
   const [items, setItems] = useState(false);
+  const [spellsOpen, setSpells] = useState(false);
   const g = game!;
   const here = currentPlace(g);
   const [selId, setSel] = useState(here.id === 'ashford' ? 'old-mine' : here.id);
@@ -85,6 +86,13 @@ export function WorldMapScreen() {
           </button>
           <button type="button" className="menu-secondary small-btn" onClick={() => setItems(true)}>
             Inventory
+          </button>
+          <button
+            type="button"
+            className="menu-secondary small-btn"
+            onClick={() => setSpells(true)}
+          >
+            Spells &amp; healing
           </button>
         </div>
       </header>
@@ -218,6 +226,7 @@ export function WorldMapScreen() {
         </aside>
       </div>
       {items && <InventoryDialog onClose={() => setItems(false)} />}
+      {spellsOpen && <SpellsDialog onClose={() => setSpells(false)} />}
     </div>
   );
 }

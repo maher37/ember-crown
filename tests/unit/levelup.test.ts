@@ -119,7 +119,7 @@ describe('applying a level-up', () => {
 
   it('refuses an unfinished plan with readable reasons', () => {
     const h = make('warlock');
-    expect(planProblems(h, plan(h))).toContain('Choose 2 for Eldritch Invocations.');
+    expect(planProblems(h, plan(h, { picks: {} }))).toContain('Choose 2 for Eldritch Invocations.');
     const ok = plan(h, { picks: { invocations: ['agonizing-blast', 'devils-sight'] } });
     expect(planProblems(h, ok)).toEqual([]);
     expect(applyLevelUp(h, ok).invocations).toEqual(['agonizing-blast', 'devils-sight']);

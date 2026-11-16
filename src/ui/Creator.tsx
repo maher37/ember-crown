@@ -61,10 +61,12 @@ const SHORT: Record<Ability, string> = {
 
 /** Party creation, rebuilt from docs/mockups/CharacterCreator.dc.html. */
 export function Creator() {
-  const { pendingParty, addHero, removeHero, beginAdventure, goto, withRng } = useGame();
+  const { pendingParty, addHero, removeHero, beginAdventure, goto, withRng, startNewGame } =
+    useGame();
   const corinTaken = pendingParty.some((h) => h.origin === 'corin');
   const [draft, setDraft] = useState<HeroDraft>(() => newDraft());
   const [step, setStep] = useState<1 | 2>(1);
+  const [confirmReset, setConfirmReset] = useState(false);
   const [error, setError] = useState('');
   const isCorin = draft.origin === 'corin';
   const cls = getClass(draft.classId);
@@ -164,8 +166,9 @@ export function Creator() {
           <button
             type="button"
             className="icon-btn"
-            aria-label="Back to title screen"
-            onClick={() => goto('title')}
+            aria-label={step === 2 ? 'Back: species, class & abilities' : 'Back to title screen'}
+            title={step === 2 ? 'Back: species, class & abilities' : 'Back to title screen'}
+            onClick={() => (step === 2 ? setStep(1) : goto('title'))}
           >
             <svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true">
               <path
@@ -179,6 +182,22 @@ export function Creator() {
             </svg>
           </button>
           <h1>Create your party</h1>
+          {(pendingParty.length > 0 || step === 2) && (
+            <button
+              type="button"
+              className="menu-secondary small-btn"
+              onClick={() => {
+                if (!confirmReset) return setConfirmReset(true);
+                setConfirmReset(false);
+                startNewGame();
+                setDraft(newDraft());
+                setStep(1);
+              }}
+              onBlur={() => setConfirmReset(false)}
+            >
+              {confirmReset ? 'Really start over? Click again' : 'Start over'}
+            </button>
+          )}
           <div role="radiogroup" aria-label="Character type" className="seg">
             <button
               type="button"
@@ -513,7 +532,6 @@ export function Creator() {
           pickBackground={pickBackground}
           problems={problems}
           error={error}
-          onBack={() => setStep(1)}
           onAdd={addToParty}
           memberNumber={memberNumber}
           party={pendingParty.map((h) => ({
@@ -533,7 +551,6 @@ function StepTwo({
   pickBackground,
   problems,
   error,
-  onBack,
   onAdd,
   memberNumber,
   party,
@@ -544,7 +561,6 @@ function StepTwo({
   pickBackground: (id: string) => void;
   problems: string[];
   error: string;
-  onBack: () => void;
   onAdd: () => void;
   memberNumber: number;
   party: { id: string; label: string }[];
@@ -757,9 +773,6 @@ function StepTwo({
             {memberNumber === PARTY_SIZE
               ? 'Add to party and begin'
               : `Add to party (${memberNumber} of ${PARTY_SIZE})`}
-          </button>
-          <button type="button" className="secondary" onClick={onBack}>
-            Back: Species, class &amp; abilities
           </button>
         </div>
       </section>

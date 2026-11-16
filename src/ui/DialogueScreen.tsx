@@ -18,7 +18,8 @@ export function DialogueScreen() {
     const onKey = (e: KeyboardEvent) => {
       const n = Number(e.key);
       if (n >= 1 && n <= choices.length) choose(choices[n - 1]!.index);
-      if (c.ended && (e.key === 'Enter' || e.key === 'Escape')) leaveDialogue();
+      if (c.ended && e.key === 'Enter') leaveDialogue();
+      if (e.key === 'Escape') leaveDialogue();
     };
     window.addEventListener('keydown', onKey);
     return () => window.removeEventListener('keydown', onKey);
@@ -26,6 +27,16 @@ export function DialogueScreen() {
 
   return (
     <div className="dialogue">
+      {!c.ended && (
+        <button
+          type="button"
+          className="menu-secondary small-btn dialogue-back"
+          onClick={leaveDialogue}
+          title="Leave this conversation (you can come back to it)"
+        >
+          ← Leave
+        </button>
+      )}
       <div className="npc">
         <div className="npc-portrait">
           {npc.portrait ? (

@@ -21,6 +21,7 @@ import {
 } from './combat';
 import { Conversation, PLACE_SCENES } from './dialogue';
 import { equip, getItem, unequip } from './items';
+import { castHealing, layOnHands } from './healing';
 import type { Hero } from './hero';
 import { GAME_START } from './calendar';
 import { formatDate } from './calendar';
@@ -99,6 +100,12 @@ interface GameStore {
   /** Wear or wield an item from the pack. Returns an error, if any. */
   equipItem: (heroId: string, itemId: string) => string | undefined;
   unequipItem: (heroId: string, itemId: string) => void;
+  /** Cast a healing spell, or Lay on Hands, between fights. Returns an error, if any. */
+  healOutside: (
+    casterId: string,
+    how: { spellId: string; slotLevel: number } | 'lay-on-hands',
+    targetId: string,
+  ) => string | undefined;
   /** Drink a potion outside a fight. */
   drinkPotion: (heroId: string, itemId: string) => string | undefined;
   /** DMG: Pearl of Power (the Bog Pearl). Regain one spent slot of 3rd level or lower, once a day. */
@@ -496,6 +503,20 @@ export const useGame = create<GameStore>()((set, get) => ({
     get().toast([
       `Staff of Healing (Cure Wounds): ${r.text} + ${mod} → ${t.name} ${hp}/${t.maxHp} HP · ${charges - 1} charges left`,
     ]);
+    return undefined;
+  },
+
+  healOutside: (casterId, how, targetId) => {
+    const { game, rngState } = get();
+    if (!game) return 'No game';
+    const rng = SeededRng.fromState(rngState);
+    const r =
+      how === 'lay-on-hands'
+        ? layOnHands(game, casterId, targetId)
+        : castHealing(game, casterId, how.spellId, how.slotLevel, targetId, rng);
+    if ('error' in r) return r.error;
+    set({ game: r.game, rngState: rng.state });
+    get().toast(r.log);
     return undefined;
   },
 

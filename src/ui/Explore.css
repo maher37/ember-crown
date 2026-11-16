@@ -683,3 +683,27 @@
   align-items: center;
   gap: 12px;
 }
+.problems-box {
+  border: 2px solid var(--gold);
+  background: #3a3222;
+  border-radius: 8px;
+  padding: 10px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.dialogue {
+  position: relative;
+}
+.dialogue-back {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  z-index: 2;
+}
+.heal-row {
+  gap: 8px;
+  align-items: center;
+  flex-wrap: wrap;
+  margin-top: 4px;
+}

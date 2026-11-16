@@ -178,6 +178,13 @@ export function spellRules(
  * A starting plan: average HP, current spells kept, and any new spell slots filled from the
  * class list in order, so the player only changes what they want.
  */
+/** Suggested level-up picks [inferred: popular, simple choices]. */
+const SUGGESTED: Record<string, string[]> = {
+  metamagic: ['quickened', 'twinned'],
+  'hunters-prey': ['colossus-slayer'],
+  'pact-boon': ['pact-of-the-blade'],
+};
+
 export function defaultPlan(hero: Hero): LevelUpPlan {
   const o = levelUpOptions(hero);
   const fill = (current: string[], pool: Spell[], n: number) => {
@@ -186,10 +193,29 @@ export function defaultPlan(hero: Hero): LevelUpPlan {
     return keep;
   };
   const r = o.spells;
+  // Suggested picks, so a level-up is never stuck waiting on a choice; all can be changed.
+  const picks: Record<string, string[]> = {};
+  for (const g of o.picks) {
+    const ids = g.options.map((x) => x.id);
+    const pref = (SUGGESTED[g.id] ?? []).filter((id) => ids.includes(id));
+    for (const id of ids) if (pref.length < g.count && !pref.includes(id)) pref.push(id);
+    picks[g.id] = pref.slice(0, g.count);
+  }
+  // Ability Score Improvement: suggest +2 to the hero's best score that can take it.
+  const asi: LevelUpPlan['asi'] = {};
+  if (o.asi) {
+    const order = [...ABILITIES].sort((a, b) => hero.abilities[b] - hero.abilities[a]);
+    const two = order.find((a) => hero.abilities[a] <= 18);
+    if (two) asi[two] = 2;
+    else {
+      const ones = order.filter((a) => hero.abilities[a] <= 19).slice(0, 2);
+      for (const a of ones) asi[a] = 1;
+    }
+  }
   return {
     hp: { method: 'average' },
-    asi: {},
-    picks: {},
+    asi,
+    picks,
     cantrips: r
       ? fill(
           hero.cantrips,
