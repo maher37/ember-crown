@@ -1,5 +1,5 @@
 import type { DifficultyId } from '../../data/schemas/difficulty';
-import type { Creature, DamageType, Skill } from '../../rules';
+import type { Ability, Creature, DamageType, Skill } from '../../rules';
 import type { Hero } from '../hero';
 
 export interface Pos {
@@ -15,6 +15,8 @@ export interface CombatMap {
   height: number;
   /** Look of the map: forest-road, road, tavern, cave, mill... */
   style: string;
+  /** Squares inside a Darkness spell (they block sight). */
+  dark?: string[];
   terrain: TerrainKind[][]; // [y][x]
 }
 
@@ -58,6 +60,10 @@ export interface TurnState {
   hordeUsed?: boolean;
   /** Colossus Slayer used this turn. */
   colossusUsed?: boolean;
+  /** PHB: Haste. One extra limited action (one weapon attack, Dash, Disengage, Hide, Use an Object). */
+  hasteAction?: boolean;
+  /** The haste action is the one being used. */
+  inHasteAction?: boolean;
 }
 
 export interface Combatant {
@@ -89,6 +95,8 @@ export interface Combatant {
   monsterSlots?: Record<string, number>;
   /** Recharge abilities (a dragon's breath): true when ready. */
   recharge?: Record<string, boolean>;
+  /** Conjured by a spell (Conjure Animals): gone when the caster's concentration ends. */
+  summon?: { casterId: string; spellId: string };
 }
 
 export interface LogLine {
@@ -118,7 +126,8 @@ export type Prompt =
       attackerId: string;
       targetId: string;
       total: number;
-    };
+    }
+  | { kind: 'counterspell'; reactorId: string; casterId: string; spellId: string };
 
 /** Enemy turn in progress (so it can pause for a reaction prompt and resume). */
 export interface EnemyPlan {
@@ -134,7 +143,16 @@ export type PlanStep =
   | { type: 'bonus'; what: 'disengage' | 'hide' | 'dash' }
   | { type: 'action'; what: 'dash' | 'dodge' }
   | { type: 'move'; path: Pos[] }
-  | { type: 'cast'; spellId: string; slotLevel: number; targetIds?: string[]; point?: Pos }
+  | {
+      type: 'cast';
+      spellId: string;
+      slotLevel: number;
+      targetIds?: string[];
+      point?: Pos;
+      /** A party member was already asked about Counterspell. */
+      asked?: boolean;
+      countered?: boolean;
+    }
   | { type: 'spirit-attack'; targetId: string }
   /** A monster's area action (Fire Breath), aimed at a square. */
   | { type: 'area-action'; actionId: string; point: Pos }
@@ -183,6 +201,32 @@ export interface CombatState {
   xpPerPc: number;
   prompt: Prompt | null;
   plan: EnemyPlan | null;
+  /** Spells left on the battlefield (Spirit Guardians, Moonbeam, Spike Growth...). */
+  zones: Zone[];
+}
+
+/** A lasting spell area (M8). */
+export interface Zone {
+  id: string;
+  spellId: string;
+  name: string;
+  casterId: string;
+  side: Side;
+  kind: 'damage' | 'spikes' | 'silence' | 'darkness';
+  /** Fixed squares, or an aura of this many feet that follows the caster. */
+  cells?: Pos[];
+  aura?: number;
+  /** Only the caster's enemies are affected (Spirit Guardians). */
+  enemiesOnly?: boolean;
+  /** Enemies move at half speed inside. */
+  halfSpeed?: boolean;
+  save?: { ability: Ability; dc: number; half: boolean };
+  damage?: { dice: string; type: DamageType };
+  /** Damage with no save at the start of a turn (Hunger of Hadar's cold). */
+  startDamage?: { dice: string; type: DamageType };
+  concentration?: string;
+  /** Who was hit on which turn ("the first time on a turn"). */
+  hitAt?: Record<string, string>;
 }
 
 export type { DamageType, Skill };

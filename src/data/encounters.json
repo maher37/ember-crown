@@ -894,6 +894,885 @@
       "verifyNote": "Items.md Elites: red dragon wyrmling (275 XP/PC bonus). One wyrmling on every difficulty [inferred]."
     },
     {
+      "id": "f8-toll-bridge",
+      "code": "F8",
+      "name": "The toll bridge",
+      "act": 2,
+      "xpPerPc": 100,
+      "briefing": "Three Grey Company bruisers and a scout with a longbow hold the bridge. The river is too deep and fast to wade.",
+      "surprise": false,
+      "map": {
+        "width": 16,
+        "height": 9,
+        "style": "bridge",
+        "terrain": [
+          "bb....r....r..bb",
+          "....b.......b...",
+          "................",
+          "TTTTTT====TTTTTT",
+          "TTTTTT====TTTTTT",
+          "TTTTTT====TTTTTT",
+          "................",
+          "..b.........r...",
+          "bb....r......bbb"
+        ]
+      },
+      "partyStart": [
+        [6, 7],
+        [7, 7],
+        [8, 7],
+        [9, 6]
+      ],
+      "enemies": [
+        {
+          "id": "thug-a",
+          "monster": "thug",
+          "name": "Bridge-thug A",
+          "pos": [7, 1],
+          "difficulties": ["easy", "medium", "hard"],
+          "tactic": "melee"
+        },
+        {
+          "id": "thug-b",
+          "monster": "thug",
+          "name": "Bridge-thug B",
+          "pos": [8, 2],
+          "difficulties": ["easy", "medium", "hard"],
+          "tactic": "melee"
+        },
+        {
+          "id": "thug-c",
+          "monster": "thug",
+          "name": "Bridge-thug C",
+          "pos": [6, 2],
+          "difficulties": ["medium", "hard"],
+          "tactic": "melee"
+        },
+        {
+          "id": "scout",
+          "monster": "scout",
+          "name": "Scout",
+          "pos": [10, 1],
+          "difficulties": ["easy", "medium", "hard"],
+          "tactic": "ranged"
+        },
+        {
+          "id": "scout-b",
+          "monster": "scout",
+          "name": "Scout B",
+          "pos": [11, 1],
+          "difficulties": ["hard"],
+          "tactic": "ranged"
+        }
+      ],
+      "verify": true,
+      "verifyNote": "Encounters_and_XP F8: 3 thugs + 1 scout on Medium. Easy drops a thug and Hard adds a second scout (bot tests: a 4th thug was a wipe) [inferred]."
+    },
+    {
+      "id": "f9-lizardfolk",
+      "code": "F9",
+      "name": "Lizardfolk hunting grounds",
+      "act": 2,
+      "xpPerPc": 75,
+      "briefing": "Three lizardfolk hunters rise out of the reeds, clubs and shields ready. Deep water blocks the way around.",
+      "surprise": false,
+      "map": {
+        "width": 16,
+        "height": 9,
+        "style": "marsh",
+        "terrain": [
+          "TTbb....bbb..TTT",
+          "Tb...b....r...bT",
+          "b.....bb.......b",
+          "....r.....b.....",
+          "..b......bb...r.",
+          "b.....b.........",
+          "T...bb.....r..bT",
+          "TTb.........bbTT",
+          "TTTbb....bb.TTTT"
+        ]
+      },
+      "partyStart": [
+        [1, 3],
+        [1, 4],
+        [2, 5],
+        [0, 3]
+      ],
+      "enemies": [
+        {
+          "id": "liz-a",
+          "monster": "lizardfolk",
+          "name": "Hunter A",
+          "pos": [11, 3],
+          "difficulties": ["easy", "medium", "hard"],
+          "tactic": "melee"
+        },
+        {
+          "id": "liz-b",
+          "monster": "lizardfolk",
+          "name": "Hunter B",
+          "pos": [12, 5],
+          "difficulties": ["easy", "medium", "hard"],
+          "tactic": "melee"
+        },
+        {
+          "id": "liz-c",
+          "monster": "lizardfolk",
+          "name": "Hunter C",
+          "pos": [13, 3],
+          "difficulties": ["medium", "hard"],
+          "tactic": "melee"
+        },
+        {
+          "id": "liz-d",
+          "monster": "lizardfolk",
+          "name": "Hunter D",
+          "pos": [14, 5],
+          "difficulties": ["hard"],
+          "tactic": "melee"
+        }
+      ],
+      "verify": true,
+      "verifyNote": "Encounters_and_XP F9: 3 lizardfolk. Easy/Hard changes are my pick [inferred]."
+    },
+    {
+      "id": "f10-marrowmere",
+      "code": "F10",
+      "name": "Drowned Marrowmere",
+      "act": 2,
+      "xpPerPc": 100,
+      "briefing": "The village's dead stand up out of the warm bog: four bloated zombies, and something quicker behind them. Radiant damage and critical hits stop zombies for good.",
+      "surprise": false,
+      "map": {
+        "width": 16,
+        "height": 9,
+        "style": "marsh",
+        "terrain": [
+          "TTbb....bbb..TTT",
+          "Tb...b....r...bT",
+          "b.....bb.......b",
+          "....r.....b.....",
+          "..b......bb...r.",
+          "b.....b.........",
+          "T...bb.....r..bT",
+          "TTb.........bbTT",
+          "TTTbb....bb.TTTT"
+        ]
+      },
+      "partyStart": [
+        [1, 3],
+        [1, 4],
+        [2, 5],
+        [0, 3]
+      ],
+      "enemies": [
+        {
+          "id": "ghoul",
+          "monster": "ghoul",
+          "name": "Ghoul",
+          "pos": [13, 4],
+          "difficulties": ["easy", "medium", "hard"],
+          "tactic": "melee"
+        },
+        {
+          "id": "zombie-a",
+          "monster": "zombie",
+          "name": "Zombie A",
+          "pos": [9, 2],
+          "difficulties": ["easy", "medium", "hard"],
+          "tactic": "melee"
+        },
+        {
+          "id": "zombie-b",
+          "monster": "zombie",
+          "name": "Zombie B",
+          "pos": [9, 5],
+          "difficulties": ["easy", "medium", "hard"],
+          "tactic": "melee"
+        },
+        {
+          "id": "zombie-c",
+          "monster": "zombie",
+          "name": "Zombie C",
+          "pos": [11, 3],
+          "difficulties": ["medium", "hard"],
+          "tactic": "melee"
+        },
+        {
+          "id": "zombie-d",
+          "monster": "zombie",
+          "name": "Zombie D",
+          "pos": [11, 5],
+          "difficulties": ["easy", "medium", "hard"],
+          "tactic": "melee"
+        },
+        {
+          "id": "zombie-e",
+          "monster": "zombie",
+          "name": "Zombie E",
+          "pos": [12, 2],
+          "difficulties": ["hard"],
+          "tactic": "melee"
+        }
+      ],
+      "verify": true,
+      "verifyNote": "Encounters_and_XP F10: 1 ghoul + 4 zombies on Medium. Easy/Hard changes are my pick [inferred]."
+    },
+    {
+      "id": "f11-chapel",
+      "code": "F11",
+      "name": "Marrowmere chapel",
+      "act": 2,
+      "xpPerPc": 150,
+      "briefing": "Three ghouls crouch over the chapel's broken pews. Their claws paralyze (Con save); elves are immune.",
+      "surprise": false,
+      "map": {
+        "width": 16,
+        "height": 9,
+        "style": "abbey",
+        "terrain": [
+          "TTTTTTTTTTTTTTTT",
+          "T..r...r...r...T",
+          "T..............T",
+          "==.==========..T",
+          "==.==========..T",
+          "==.==========..T",
+          "T..............T",
+          "T..r...r...r...T",
+          "TTTTTTTTTTTTTTTT"
+        ]
+      },
+      "partyStart": [
+        [0, 3],
+        [0, 4],
+        [1, 5],
+        [1, 3]
+      ],
+      "enemies": [
+        {
+          "id": "ghoul-a",
+          "monster": "ghoul",
+          "name": "Ghoul A",
+          "pos": [10, 2],
+          "difficulties": ["easy", "medium", "hard"],
+          "tactic": "melee"
+        },
+        {
+          "id": "ghoul-b",
+          "monster": "ghoul",
+          "name": "Ghoul B",
+          "pos": [11, 5],
+          "difficulties": ["easy", "medium", "hard"],
+          "tactic": "melee"
+        },
+        {
+          "id": "ghoul-c",
+          "monster": "ghoul",
+          "name": "Ghoul C",
+          "pos": [13, 3],
+          "difficulties": ["medium", "hard"],
+          "tactic": "melee"
+        },
+        {
+          "id": "ghoul-d",
+          "monster": "ghoul",
+          "name": "Ghoul D",
+          "pos": [13, 6],
+          "difficulties": ["hard"],
+          "tactic": "melee"
+        }
+      ],
+      "verify": true,
+      "verifyNote": "Encounters_and_XP F11: 3 ghouls (Hard at L3). Easy/Hard changes are my pick [inferred]."
+    },
+    {
+      "id": "f12-betrayal",
+      "code": "F12",
+      "name": "Betrayal at Ashford Hall",
+      "act": 2,
+      "xpPerPc": 200,
+      "briefing": "The Hall doors bang shut behind you. Captain Voss of the Hall guard draws a longsword; a hired thug blocks the windows.",
+      "surprise": false,
+      "map": {
+        "width": 16,
+        "height": 9,
+        "style": "tavern",
+        "terrain": [
+          "TTTTTTTTTTTTTTTT",
+          "T...r......r...T",
+          "T..............T",
+          "T..==========..T",
+          "...==========..T",
+          "T..==========..T",
+          "T..............T",
+          "T...r......r...T",
+          "TTTTTTT..TTTTTTT"
+        ]
+      },
+      "partyStart": [
+        [0, 4],
+        [1, 3],
+        [1, 5],
+        [2, 4]
+      ],
+      "enemies": [
+        {
+          "id": "voss",
+          "monster": "veteran",
+          "name": "Captain Voss",
+          "pos": [12, 4],
+          "difficulties": ["easy", "medium", "hard"],
+          "tactic": "melee"
+        },
+        {
+          "id": "thug",
+          "monster": "thug",
+          "name": "Hall thug",
+          "pos": [11, 2],
+          "difficulties": ["easy", "medium", "hard"],
+          "tactic": "melee"
+        },
+        {
+          "id": "thug-b",
+          "monster": "thug",
+          "name": "Hall thug B",
+          "pos": [11, 6],
+          "difficulties": ["hard"],
+          "tactic": "melee"
+        }
+      ],
+      "verify": true,
+      "verifyNote": "Encounters_and_XP F12: hall captain (veteran) + thug. Hard adds a thug [inferred]; Easy keeps both."
+    },
+    {
+      "id": "f12-betrayal-small",
+      "code": "F12",
+      "name": "Betrayal at Ashford Hall (exposed)",
+      "act": 2,
+      "xpPerPc": 200,
+      "briefing": "With the ledger read aloud, the thug drops his club and runs. Only Captain Voss still stands by the mayor.",
+      "surprise": false,
+      "map": {
+        "width": 16,
+        "height": 9,
+        "style": "tavern",
+        "terrain": [
+          "TTTTTTTTTTTTTTTT",
+          "T...r......r...T",
+          "T..............T",
+          "T..==========..T",
+          "...==========..T",
+          "T..==========..T",
+          "T..............T",
+          "T...r......r...T",
+          "TTTTTTT..TTTTTTT"
+        ]
+      },
+      "partyStart": [
+        [0, 4],
+        [1, 3],
+        [1, 5],
+        [2, 4]
+      ],
+      "enemies": [
+        {
+          "id": "voss",
+          "monster": "veteran",
+          "name": "Captain Voss",
+          "pos": [12, 4],
+          "difficulties": ["easy", "medium", "hard"],
+          "tactic": "melee"
+        }
+      ],
+      "verify": true,
+      "verifyNote": "Encounters_and_XP F12: smaller if Tarrow was exposed early (veteran only) [inferred]."
+    },
+    {
+      "id": "f13-cloister",
+      "code": "F13",
+      "name": "The abbey cloister",
+      "act": 2,
+      "xpPerPc": 131,
+      "briefing": "A cult fanatic and three cultists hold the cloister garden, knives out among the dead roses.",
+      "surprise": false,
+      "map": {
+        "width": 16,
+        "height": 9,
+        "style": "abbey",
+        "terrain": [
+          "TTTTTTTTTTTTTTTT",
+          "T..r...r...r...T",
+          "T..............T",
+          "==.==========..T",
+          "==.==========..T",
+          "==.==========..T",
+          "T..............T",
+          "T..r...r...r...T",
+          "TTTTTTTTTTTTTTTT"
+        ]
+      },
+      "partyStart": [
+        [0, 3],
+        [0, 4],
+        [1, 5],
+        [1, 3]
+      ],
+      "enemies": [
+        {
+          "id": "fanatic",
+          "monster": "cult-fanatic",
+          "name": "Brother Aldous",
+          "pos": [12, 4],
+          "difficulties": ["easy", "medium", "hard"],
+          "tactic": "melee"
+        },
+        {
+          "id": "cultist-a",
+          "monster": "cultist",
+          "name": "Cultist A",
+          "pos": [9, 2],
+          "difficulties": ["easy", "medium", "hard"],
+          "tactic": "melee"
+        },
+        {
+          "id": "cultist-b",
+          "monster": "cultist",
+          "name": "Cultist B",
+          "pos": [9, 6],
+          "difficulties": ["easy", "medium", "hard"],
+          "tactic": "melee"
+        },
+        {
+          "id": "cultist-c",
+          "monster": "cultist",
+          "name": "Cultist C",
+          "pos": [10, 4],
+          "difficulties": ["medium", "hard"],
+          "tactic": "melee"
+        },
+        {
+          "id": "cultist-d",
+          "monster": "cultist",
+          "name": "Cultist D",
+          "pos": [13, 2],
+          "difficulties": ["hard"],
+          "tactic": "melee"
+        }
+      ],
+      "verify": true,
+      "verifyNote": "Encounters_and_XP F13: cult fanatic + 3 cultists on Medium [inferred Easy/Hard]."
+    },
+    {
+      "id": "f14-undercroft",
+      "code": "F14",
+      "name": "The abbey undercroft",
+      "act": 2,
+      "xpPerPc": 237,
+      "briefing": "Sister Venna waits at the drowned altar with the second shard. An ogre in a hollow-star tabard lumbers out of the dark, and two cultists flank her. She calls on the spirits: stay out of her reach if you can.",
+      "surprise": false,
+      "map": {
+        "width": 16,
+        "height": 9,
+        "style": "abbey",
+        "terrain": [
+          "TTTTTTTTTTTTTTTT",
+          "TTb..b..TT..b.TT",
+          "T....r........TT",
+          "==......bb.....T",
+          "==..r......r...T",
+          "==......bb.....T",
+          "T....r........TT",
+          "TTb..b..TT..b.TT",
+          "TTTTTTTTTTTTTTTT"
+        ]
+      },
+      "partyStart": [
+        [0, 3],
+        [0, 4],
+        [1, 5],
+        [1, 3]
+      ],
+      "enemies": [
+        {
+          "id": "venna",
+          "monster": "priest",
+          "name": "Sister Venna",
+          "pos": [13, 4],
+          "difficulties": ["easy", "medium", "hard"],
+          "tactic": "ranged"
+        },
+        {
+          "id": "ogre",
+          "monster": "ogre",
+          "name": "Ogre",
+          "pos": [10, 4],
+          "difficulties": ["easy", "medium", "hard"],
+          "tactic": "melee"
+        },
+        {
+          "id": "cultist-a",
+          "monster": "cultist",
+          "name": "Cultist A",
+          "pos": [11, 2],
+          "difficulties": ["easy", "medium", "hard"],
+          "tactic": "melee"
+        },
+        {
+          "id": "cultist-b",
+          "monster": "cultist",
+          "name": "Cultist B",
+          "pos": [11, 6],
+          "difficulties": ["medium", "hard"],
+          "tactic": "melee"
+        },
+        {
+          "id": "cultist-c",
+          "monster": "cultist",
+          "name": "Cultist C",
+          "pos": [12, 3],
+          "difficulties": ["hard"],
+          "tactic": "melee"
+        }
+      ],
+      "verify": true,
+      "verifyNote": "Encounters_and_XP F14: Venna (priest) + ogre + 2 cultists (Hard at L4) [inferred Easy/Hard]."
+    },
+    {
+      "id": "s5-sallow",
+      "code": "S5",
+      "name": "Mother Sallow",
+      "act": 2,
+      "xpPerPc": 225,
+      "briefing": "The kindly old woman's face slides off like wet paper. A green hag claws at you, and the bog's insects rise in two humming clouds.",
+      "surprise": false,
+      "map": {
+        "width": 16,
+        "height": 9,
+        "style": "marsh",
+        "terrain": [
+          "TTbb....bbb..TTT",
+          "Tb...b....r...bT",
+          "b.....bb.......b",
+          "....r.....b.....",
+          "..b......bb...r.",
+          "b.....b.........",
+          "T...bb.....r..bT",
+          "TTb.........bbTT",
+          "TTTbb....bb.TTTT"
+        ]
+      },
+      "partyStart": [
+        [1, 3],
+        [1, 4],
+        [2, 5],
+        [0, 3]
+      ],
+      "enemies": [
+        {
+          "id": "sallow",
+          "monster": "green-hag",
+          "name": "Mother Sallow",
+          "pos": [12, 4],
+          "difficulties": ["easy", "medium", "hard"],
+          "tactic": "melee"
+        },
+        {
+          "id": "swarm-a",
+          "monster": "swarm-of-insects",
+          "name": "Insect swarm A",
+          "pos": [10, 2],
+          "difficulties": ["easy", "medium", "hard"],
+          "tactic": "melee"
+        },
+        {
+          "id": "swarm-b",
+          "monster": "swarm-of-insects",
+          "name": "Insect swarm B",
+          "pos": [10, 6],
+          "difficulties": ["medium", "hard"],
+          "tactic": "melee"
+        },
+        {
+          "id": "swarm-c",
+          "monster": "swarm-of-insects",
+          "name": "Insect swarm C",
+          "pos": [13, 6],
+          "difficulties": ["hard"],
+          "tactic": "melee"
+        }
+      ],
+      "verify": true,
+      "verifyNote": "Encounters_and_XP side quests: green hag + 2 swarms of insects (Hard at L4) [inferred Easy/Hard]."
+    },
+    {
+      "id": "s6-deserters",
+      "code": "S6",
+      "name": "Deserters' camp",
+      "act": 2,
+      "xpPerPc": 131,
+      "briefing": "Sergeant Holm and his three deserters won't go back to Kell in chains. They draw steel.",
+      "surprise": false,
+      "map": {
+        "width": 16,
+        "height": 9,
+        "style": "forest-road",
+        "terrain": [
+          "TTTbb..r....bTTT",
+          "TTb.........bbTT",
+          "b......T.......b",
+          "....TT.....b....",
+          "........r.......",
+          "....b......TT...",
+          "b.......r.....b.",
+          "Tb............bT",
+          "TTT.....r...bTTT"
+        ]
+      },
+      "partyStart": [
+        [1, 4],
+        [2, 3],
+        [2, 5],
+        [0, 4]
+      ],
+      "enemies": [
+        {
+          "id": "holm",
+          "monster": "bandit-captain",
+          "name": "Sergeant Holm",
+          "pos": [12, 4],
+          "difficulties": ["easy", "medium", "hard"],
+          "tactic": "melee"
+        },
+        {
+          "id": "deserter-a",
+          "monster": "bandit",
+          "name": "Deserter A",
+          "pos": [10, 2],
+          "difficulties": ["easy", "medium", "hard"],
+          "tactic": "melee"
+        },
+        {
+          "id": "deserter-b",
+          "monster": "bandit",
+          "name": "Deserter B",
+          "pos": [10, 6],
+          "difficulties": ["easy", "medium", "hard"],
+          "tactic": "melee"
+        },
+        {
+          "id": "deserter-c",
+          "monster": "bandit",
+          "name": "Deserter C",
+          "pos": [13, 2],
+          "difficulties": ["medium", "hard"],
+          "tactic": "ranged"
+        },
+        {
+          "id": "deserter-d",
+          "monster": "bandit",
+          "name": "Deserter D",
+          "pos": [13, 6],
+          "difficulties": ["hard"],
+          "tactic": "ranged"
+        }
+      ],
+      "verify": true,
+      "verifyNote": "Encounters_and_XP side quests: bandit captain + 3 bandits on Medium [inferred Easy/Hard]."
+    },
+    {
+      "id": "s7-paladin-crypt",
+      "code": "S7",
+      "name": "The flooded crypt",
+      "act": 2,
+      "xpPerPc": 212,
+      "briefing": "Two specters drift up out of the black water, and a ghast that stinks of the grave guards the founder's tomb. Their touch drains your maximum HP until a long rest.",
+      "surprise": false,
+      "map": {
+        "width": 16,
+        "height": 9,
+        "style": "abbey",
+        "terrain": [
+          "TTTTTTTTTTTTTTTT",
+          "TTb..b..TT..b.TT",
+          "T....r........TT",
+          "==......bb.....T",
+          "==..r......r...T",
+          "==......bb.....T",
+          "T....r........TT",
+          "TTb..b..TT..b.TT",
+          "TTTTTTTTTTTTTTTT"
+        ]
+      },
+      "partyStart": [
+        [0, 3],
+        [0, 4],
+        [1, 5],
+        [1, 3]
+      ],
+      "enemies": [
+        {
+          "id": "specter-a",
+          "monster": "specter",
+          "name": "Specter A",
+          "pos": [10, 2],
+          "difficulties": ["easy", "medium", "hard"],
+          "tactic": "melee"
+        },
+        {
+          "id": "specter-b",
+          "monster": "specter",
+          "name": "Specter B",
+          "pos": [10, 6],
+          "difficulties": ["medium", "hard"],
+          "tactic": "melee"
+        },
+        {
+          "id": "ghast",
+          "monster": "ghast",
+          "name": "Ghast",
+          "pos": [12, 4],
+          "difficulties": ["easy", "medium", "hard"],
+          "tactic": "melee"
+        },
+        {
+          "id": "specter-c",
+          "monster": "specter",
+          "name": "Specter C",
+          "pos": [13, 2],
+          "difficulties": ["hard"],
+          "tactic": "melee"
+        }
+      ],
+      "verify": true,
+      "verifyNote": "Encounters_and_XP side quests: 2 specters + 1 ghast (Hard at L4) [inferred Easy/Hard]."
+    },
+    {
+      "id": "s8-edric-ambush",
+      "code": "S8",
+      "name": "Ambush in Cobbler's Lane",
+      "act": 2,
+      "xpPerPc": 131,
+      "briefing": "Venna's enforcers have Edric pinned against a wall: a fanatic with a hooked knife and three cultists.",
+      "surprise": false,
+      "map": {
+        "width": 16,
+        "height": 9,
+        "style": "town",
+        "terrain": [
+          "TTTT..TTTTT..TTT",
+          "TTTT..TTTTT..TTT",
+          "....b.....r.....",
+          "================",
+          "================",
+          "....b......b....",
+          "TTT...TTTT...TTT",
+          "TTT...TTTT...TTT",
+          "TTT...TTTT...TTT"
+        ]
+      },
+      "partyStart": [
+        [0, 3],
+        [0, 4],
+        [1, 2],
+        [1, 5]
+      ],
+      "enemies": [
+        {
+          "id": "fanatic",
+          "monster": "cult-fanatic",
+          "name": "Enforcer",
+          "pos": [12, 3],
+          "difficulties": ["easy", "medium", "hard"],
+          "tactic": "melee"
+        },
+        {
+          "id": "cultist-a",
+          "monster": "cultist",
+          "name": "Cultist A",
+          "pos": [9, 3],
+          "difficulties": ["easy", "medium", "hard"],
+          "tactic": "melee"
+        },
+        {
+          "id": "cultist-b",
+          "monster": "cultist",
+          "name": "Cultist B",
+          "pos": [9, 4],
+          "difficulties": ["easy", "medium", "hard"],
+          "tactic": "melee"
+        },
+        {
+          "id": "cultist-c",
+          "monster": "cultist",
+          "name": "Cultist C",
+          "pos": [11, 5],
+          "difficulties": ["medium", "hard"],
+          "tactic": "melee"
+        },
+        {
+          "id": "cultist-d",
+          "monster": "cultist",
+          "name": "Cultist D",
+          "pos": [13, 2],
+          "difficulties": ["hard"],
+          "tactic": "melee"
+        }
+      ],
+      "verify": true,
+      "verifyNote": "Encounters_and_XP side quests: cult fanatic + 3 cultists on Medium [inferred Easy/Hard]."
+    },
+    {
+      "id": "e2-drowned-abbot",
+      "code": "E2",
+      "name": "The Drowned Abbot",
+      "act": 2,
+      "xpPerPc": 500,
+      "briefing": "The last abbot rises from his flooded tomb, a wraith in rotted vestments, with the specter of a novice at his side. ☠ Deadly at level 4, Hard at level 5. His touch drains maximum HP.",
+      "surprise": false,
+      "map": {
+        "width": 16,
+        "height": 9,
+        "style": "abbey",
+        "terrain": [
+          "TTTTTTTTTTTTTTTT",
+          "TTb..b..TT..b.TT",
+          "T....r........TT",
+          "==......bb.....T",
+          "==..r......r...T",
+          "==......bb.....T",
+          "T....r........TT",
+          "TTb..b..TT..b.TT",
+          "TTTTTTTTTTTTTTTT"
+        ]
+      },
+      "partyStart": [
+        [0, 3],
+        [0, 4],
+        [1, 5],
+        [1, 3]
+      ],
+      "enemies": [
+        {
+          "id": "abbot",
+          "monster": "wraith",
+          "name": "The Drowned Abbot",
+          "pos": [12, 4],
+          "difficulties": ["easy", "medium", "hard"],
+          "tactic": "melee"
+        },
+        {
+          "id": "novice",
+          "monster": "specter",
+          "name": "Drowned novice",
+          "pos": [10, 3],
+          "difficulties": ["easy", "medium", "hard"],
+          "tactic": "melee"
+        }
+      ],
+      "verify": true,
+      "verifyNote": "Items.md Elites: wraith + 1 specter (500 XP/PC bonus). Same on every difficulty [inferred]."
+    },
+    {
       "id": "road-wolves",
       "code": "R1",
       "name": "Starving wolves",
@@ -1361,6 +2240,474 @@
         "note": "The Hollow Star recruits on the road with promises of wages for out-of-work miners.",
         "failure": "\"Unbelievers!\" The thug draws his mace."
       }
+    },
+    {
+      "id": "marsh-lizardfolk",
+      "code": "M1",
+      "name": "Lizardfolk hunters",
+      "act": 2,
+      "xpPerPc": 50,
+      "briefing": "Two lizardfolk hunters step out of the reeds, spears level.",
+      "surprise": true,
+      "map": {
+        "width": 16,
+        "height": 9,
+        "style": "marsh",
+        "terrain": [
+          "TTbb....bbb..TTT",
+          "Tb...b....r...bT",
+          "b.....bb.......b",
+          "....r.....b.....",
+          "..b......bb...r.",
+          "b.....b.........",
+          "T...bb.....r..bT",
+          "TTb.........bbTT",
+          "TTTbb....bb.TTTT"
+        ]
+      },
+      "partyStart": [
+        [1, 3],
+        [1, 4],
+        [2, 5],
+        [0, 3]
+      ],
+      "enemies": [
+        {
+          "id": "liz-a",
+          "monster": "lizardfolk",
+          "name": "Hunter A",
+          "pos": [11, 3],
+          "difficulties": ["easy", "medium", "hard"],
+          "tactic": "melee"
+        },
+        {
+          "id": "liz-b",
+          "monster": "lizardfolk",
+          "name": "Hunter B",
+          "pos": [12, 5],
+          "difficulties": ["medium", "hard"],
+          "tactic": "melee"
+        },
+        {
+          "id": "liz-c",
+          "monster": "lizardfolk",
+          "name": "Hunter C",
+          "pos": [13, 3],
+          "difficulties": ["hard"],
+          "tactic": "melee"
+        }
+      ],
+      "verify": true,
+      "verifyNote": "Encounters_and_XP §5b marsh table; XP = raw ÷ 4. Easy/Hard changes are my pick [inferred].",
+      "talk": {
+        "skill": "persuasion",
+        "dc": 12,
+        "prompt": "Offer a gift and speak plainly",
+        "success": "The hunters accept your gift and melt back into the reeds.",
+        "failure": "They hiss: the gift is an insult.",
+        "note": "Lizardfolk respect gifts and plain speaking."
+      }
+    },
+    {
+      "id": "marsh-insects",
+      "code": "M2",
+      "name": "Insect swarms",
+      "act": 2,
+      "xpPerPc": 50,
+      "briefing": "The warm water boils with midges and biting flies; two clouds of them rise.",
+      "surprise": true,
+      "map": {
+        "width": 16,
+        "height": 9,
+        "style": "marsh",
+        "terrain": [
+          "TTbb....bbb..TTT",
+          "Tb...b....r...bT",
+          "b.....bb.......b",
+          "....r.....b.....",
+          "..b......bb...r.",
+          "b.....b.........",
+          "T...bb.....r..bT",
+          "TTb.........bbTT",
+          "TTTbb....bb.TTTT"
+        ]
+      },
+      "partyStart": [
+        [1, 3],
+        [1, 4],
+        [2, 5],
+        [0, 3]
+      ],
+      "enemies": [
+        {
+          "id": "swarm-a",
+          "monster": "swarm-of-insects",
+          "name": "Swarm A",
+          "pos": [11, 3],
+          "difficulties": ["easy", "medium", "hard"],
+          "tactic": "melee"
+        },
+        {
+          "id": "swarm-b",
+          "monster": "swarm-of-insects",
+          "name": "Swarm B",
+          "pos": [12, 5],
+          "difficulties": ["medium", "hard"],
+          "tactic": "melee"
+        },
+        {
+          "id": "swarm-c",
+          "monster": "swarm-of-insects",
+          "name": "Swarm C",
+          "pos": [13, 3],
+          "difficulties": ["hard"],
+          "tactic": "melee"
+        }
+      ],
+      "verify": true,
+      "verifyNote": "Encounters_and_XP §5b marsh table; XP = raw ÷ 4. Easy/Hard changes are my pick [inferred]."
+    },
+    {
+      "id": "marsh-spiders",
+      "code": "M3",
+      "name": "Giant spiders",
+      "act": 2,
+      "xpPerPc": 100,
+      "briefing": "Webs hang between drowned trees. Two giant spiders drop down.",
+      "surprise": true,
+      "map": {
+        "width": 16,
+        "height": 9,
+        "style": "marsh",
+        "terrain": [
+          "TTbb....bbb..TTT",
+          "Tb...b....r...bT",
+          "b.....bb.......b",
+          "....r.....b.....",
+          "..b......bb...r.",
+          "b.....b.........",
+          "T...bb.....r..bT",
+          "TTb.........bbTT",
+          "TTTbb....bb.TTTT"
+        ]
+      },
+      "partyStart": [
+        [1, 3],
+        [1, 4],
+        [2, 5],
+        [0, 3]
+      ],
+      "enemies": [
+        {
+          "id": "spider-a",
+          "monster": "giant-spider",
+          "name": "Spider A",
+          "pos": [11, 3],
+          "difficulties": ["easy", "medium", "hard"],
+          "tactic": "melee"
+        },
+        {
+          "id": "spider-b",
+          "monster": "giant-spider",
+          "name": "Spider B",
+          "pos": [12, 5],
+          "difficulties": ["medium", "hard"],
+          "tactic": "melee"
+        },
+        {
+          "id": "spider-c",
+          "monster": "giant-spider",
+          "name": "Spider C",
+          "pos": [13, 3],
+          "difficulties": ["hard"],
+          "tactic": "melee"
+        }
+      ],
+      "verify": true,
+      "verifyNote": "Encounters_and_XP §5b marsh table; XP = raw ÷ 4. Easy/Hard changes are my pick [inferred]."
+    },
+    {
+      "id": "marsh-zombies",
+      "code": "M4",
+      "name": "Bog dead",
+      "act": 2,
+      "xpPerPc": 50,
+      "briefing": "Four bloated dead rise from the bog, raised by the heat.",
+      "surprise": true,
+      "map": {
+        "width": 16,
+        "height": 9,
+        "style": "marsh",
+        "terrain": [
+          "TTbb....bbb..TTT",
+          "Tb...b....r...bT",
+          "b.....bb.......b",
+          "....r.....b.....",
+          "..b......bb...r.",
+          "b.....b.........",
+          "T...bb.....r..bT",
+          "TTb.........bbTT",
+          "TTTbb....bb.TTTT"
+        ]
+      },
+      "partyStart": [
+        [1, 3],
+        [1, 4],
+        [2, 5],
+        [0, 3]
+      ],
+      "enemies": [
+        {
+          "id": "z-a",
+          "monster": "zombie",
+          "name": "Zombie A",
+          "pos": [11, 3],
+          "difficulties": ["easy", "medium", "hard"],
+          "tactic": "melee"
+        },
+        {
+          "id": "z-b",
+          "monster": "zombie",
+          "name": "Zombie B",
+          "pos": [12, 5],
+          "difficulties": ["easy", "medium", "hard"],
+          "tactic": "melee"
+        },
+        {
+          "id": "z-c",
+          "monster": "zombie",
+          "name": "Zombie C",
+          "pos": [11, 5],
+          "difficulties": ["easy", "medium", "hard"],
+          "tactic": "melee"
+        },
+        {
+          "id": "z-d",
+          "monster": "zombie",
+          "name": "Zombie D",
+          "pos": [13, 3],
+          "difficulties": ["medium", "hard"],
+          "tactic": "melee"
+        },
+        {
+          "id": "z-e",
+          "monster": "zombie",
+          "name": "Zombie E",
+          "pos": [13, 5],
+          "difficulties": ["hard"],
+          "tactic": "melee"
+        }
+      ],
+      "verify": true,
+      "verifyNote": "Encounters_and_XP §5b marsh table; XP = raw ÷ 4. Easy/Hard changes are my pick [inferred]."
+    },
+    {
+      "id": "marsh-patrol",
+      "code": "M5",
+      "name": "Grey Company patrol",
+      "act": 2,
+      "xpPerPc": 43,
+      "briefing": "A Grey Company patrol, three bandits and a thug, wants to see your papers.",
+      "surprise": true,
+      "map": {
+        "width": 16,
+        "height": 9,
+        "style": "marsh",
+        "terrain": [
+          "TTbb....bbb..TTT",
+          "Tb...b....r...bT",
+          "b.....bb.......b",
+          "....r.....b.....",
+          "..b......bb...r.",
+          "b.....b.........",
+          "T...bb.....r..bT",
+          "TTb.........bbTT",
+          "TTTbb....bb.TTTT"
+        ]
+      },
+      "partyStart": [
+        [1, 3],
+        [1, 4],
+        [2, 5],
+        [0, 3]
+      ],
+      "enemies": [
+        {
+          "id": "b-a",
+          "monster": "bandit",
+          "name": "Bandit A",
+          "pos": [11, 3],
+          "difficulties": ["easy", "medium", "hard"],
+          "tactic": "melee"
+        },
+        {
+          "id": "b-b",
+          "monster": "bandit",
+          "name": "Bandit B",
+          "pos": [12, 5],
+          "difficulties": ["easy", "medium", "hard"],
+          "tactic": "melee"
+        },
+        {
+          "id": "b-c",
+          "monster": "bandit",
+          "name": "Bandit C",
+          "pos": [12, 3],
+          "difficulties": ["medium", "hard"],
+          "tactic": "ranged"
+        },
+        {
+          "id": "thug",
+          "monster": "thug",
+          "name": "Thug",
+          "pos": [13, 4],
+          "difficulties": ["easy", "medium", "hard"],
+          "tactic": "melee"
+        },
+        {
+          "id": "b-d",
+          "monster": "bandit",
+          "name": "Bandit D",
+          "pos": [13, 6],
+          "difficulties": ["hard"],
+          "tactic": "melee"
+        }
+      ],
+      "verify": true,
+      "verifyNote": "Encounters_and_XP §5b marsh table; XP = raw ÷ 4. Easy/Hard changes are my pick [inferred].",
+      "talk": {
+        "skill": "persuasion",
+        "dc": 13,
+        "prompt": "Talk your way past",
+        "success": "The sergeant waves you on: 'Not worth the paperwork.'",
+        "failure": "'Papers. Now.' Swords come out."
+      }
+    },
+    {
+      "id": "marsh-centipedes",
+      "code": "M6",
+      "name": "Sunken ruin",
+      "act": 2,
+      "xpPerPc": 37,
+      "briefing": "Three giant centipedes nest in a sunken ruin on the path.",
+      "surprise": true,
+      "map": {
+        "width": 16,
+        "height": 9,
+        "style": "marsh",
+        "terrain": [
+          "TTbb....bbb..TTT",
+          "Tb...b....r...bT",
+          "b.....bb.......b",
+          "....r.....b.....",
+          "..b......bb...r.",
+          "b.....b.........",
+          "T...bb.....r..bT",
+          "TTb.........bbTT",
+          "TTTbb....bb.TTTT"
+        ]
+      },
+      "partyStart": [
+        [1, 3],
+        [1, 4],
+        [2, 5],
+        [0, 3]
+      ],
+      "enemies": [
+        {
+          "id": "c-a",
+          "monster": "giant-centipede",
+          "name": "Centipede A",
+          "pos": [11, 3],
+          "difficulties": ["easy", "medium", "hard"],
+          "tactic": "melee"
+        },
+        {
+          "id": "c-b",
+          "monster": "giant-centipede",
+          "name": "Centipede B",
+          "pos": [12, 5],
+          "difficulties": ["easy", "medium", "hard"],
+          "tactic": "melee"
+        },
+        {
+          "id": "c-c",
+          "monster": "giant-centipede",
+          "name": "Centipede C",
+          "pos": [13, 3],
+          "difficulties": ["medium", "hard"],
+          "tactic": "melee"
+        },
+        {
+          "id": "c-d",
+          "monster": "giant-centipede",
+          "name": "Centipede D",
+          "pos": [13, 5],
+          "difficulties": ["hard"],
+          "tactic": "melee"
+        }
+      ],
+      "verify": true,
+      "verifyNote": "Encounters_and_XP §5b marsh table; XP = raw ÷ 4. Easy/Hard changes are my pick [inferred]."
+    },
+    {
+      "id": "marsh-ghouls",
+      "code": "M7",
+      "name": "Ghoul pack",
+      "act": 2,
+      "xpPerPc": 100,
+      "briefing": "Two ghouls lope out of the steam, sniffing.",
+      "surprise": true,
+      "map": {
+        "width": 16,
+        "height": 9,
+        "style": "marsh",
+        "terrain": [
+          "TTbb....bbb..TTT",
+          "Tb...b....r...bT",
+          "b.....bb.......b",
+          "....r.....b.....",
+          "..b......bb...r.",
+          "b.....b.........",
+          "T...bb.....r..bT",
+          "TTb.........bbTT",
+          "TTTbb....bb.TTTT"
+        ]
+      },
+      "partyStart": [
+        [1, 3],
+        [1, 4],
+        [2, 5],
+        [0, 3]
+      ],
+      "enemies": [
+        {
+          "id": "g-a",
+          "monster": "ghoul",
+          "name": "Ghoul A",
+          "pos": [11, 3],
+          "difficulties": ["easy", "medium", "hard"],
+          "tactic": "melee"
+        },
+        {
+          "id": "g-b",
+          "monster": "ghoul",
+          "name": "Ghoul B",
+          "pos": [12, 5],
+          "difficulties": ["medium", "hard"],
+          "tactic": "melee"
+        },
+        {
+          "id": "g-c",
+          "monster": "ghoul",
+          "name": "Ghoul C",
+          "pos": [13, 3],
+          "difficulties": ["hard"],
+          "tactic": "melee"
+        }
+      ],
+      "verify": true,
+      "verifyNote": "Encounters_and_XP §5b marsh table; XP = raw ÷ 4. Easy/Hard changes are my pick [inferred]."
     }
   ],
   "roadTables": {
@@ -1373,6 +2720,16 @@
       "road-griffon",
       "road-recruiters",
       null
+    ],
+    "marsh": [
+      "marsh-lizardfolk",
+      "marsh-insects",
+      "marsh-spiders",
+      "marsh-zombies",
+      "marsh-patrol",
+      "marsh-centipedes",
+      "marsh-ghouls",
+      null
     ]
   },
   "roadEvents": {
@@ -1380,6 +2737,12 @@
       "8": {
         "text": "No fight: a dwarven pilgrim bound for the Ammarindar ruins shares a rumor: the old dwarf-roads under the mountain are warm to the touch.",
         "note": "A dwarven pilgrim says the old dwarf-roads under the mountain are warm to the touch."
+      }
+    },
+    "marsh": {
+      "8": {
+        "text": "No fight: a lost novice from the abbey, Brother Tam, shares what he knows: the abbot's crypt was sealed with the sun of Lathander, and someone has scratched it out.",
+        "note": "A lost novice says the drowned abbot's crypt was sealed with Lathander's sun, now scratched out."
       }
     }
   }

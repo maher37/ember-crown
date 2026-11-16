@@ -33,6 +33,7 @@ function game(patch: Partial<GameState> = {}): GameState {
     lastLongRest: null,
     letters: [],
     inventory: {},
+    gold: 0,
     ...patch,
   };
 }

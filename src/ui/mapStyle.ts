@@ -23,6 +23,38 @@ export const STYLE_FILL: Record<string, Record<string, string>> = {
     trees: '#1b1a19',
     boulder: '#68625a',
   },
+  // Toll bridge: river banks, the bridge planks, reeds, deep fast water, posts.
+  bridge: {
+    open: '#3a4a2e',
+    road: '#7a5e3a',
+    brush: '#4a5e34',
+    trees: '#2a4a66',
+    boulder: '#5f5a52',
+  },
+  // Marsh: mud, a raised track, bog (difficult), deep water, dead stumps.
+  marsh: {
+    open: '#3f4a33',
+    road: '#5e5a40',
+    brush: '#35503a',
+    trees: '#1f3a42',
+    boulder: '#4a3e30',
+  },
+  // Abbey / crypt: flagstones, the aisle, rubble, walls, pillars and tombs.
+  abbey: {
+    open: '#4a4a52',
+    road: '#5e4a5a',
+    brush: '#55524a',
+    trees: '#22232a',
+    boulder: '#6e6a62',
+  },
+  // Town street: cobbles, the high street, carts and crates, houses, a well.
+  town: {
+    open: '#504a44',
+    road: '#655c52',
+    brush: '#6b5236',
+    trees: '#2c2622',
+    boulder: '#5a6470',
+  },
   // Mill: floorboards, flour drifts, broken crates, walls, the millstone.
   mill: {
     open: '#4f4233',
@@ -59,6 +91,28 @@ export function terrainName(style: string | undefined, t: string): string {
       brush: 'broken crates',
       trees: 'wall',
       boulder: 'millstone',
+    },
+    bridge: {
+      open: 'riverbank',
+      road: 'bridge',
+      brush: 'reeds',
+      trees: 'deep water',
+      boulder: 'post',
+    },
+    marsh: {
+      open: 'mud',
+      road: 'raised track',
+      brush: 'bog',
+      trees: 'deep water',
+      boulder: 'dead stump',
+    },
+    abbey: { open: 'flagstones', road: 'aisle', brush: 'rubble', trees: 'wall', boulder: 'pillar' },
+    town: {
+      open: 'cobbles',
+      road: 'high street',
+      brush: 'crates',
+      trees: 'house',
+      boulder: 'well',
     },
   };
   return names[style ?? '']?.[t] ?? t;

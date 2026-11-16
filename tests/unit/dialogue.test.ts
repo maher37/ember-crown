@@ -63,6 +63,7 @@ function game(withCorin = false, soldier = false): GameState {
     lastLongRest: null,
     letters: [],
     inventory: {},
+    gold: 0,
   };
 }
 

@@ -4,7 +4,7 @@
 
 Each line was entered from memory or is marked ⚠ in the design docs. Check it against your PDFs. When a line is right (or fixed), remove its `verify` and `verifyNote` from the JSON and run `npm run verify-list` again.
 
-**265 items to check.**
+**287 items to check.**
 
 ## species.json
 
@@ -289,6 +289,19 @@ Each line was entered from memory or is marked ⚠ in the design docs. Check it 
 - [ ] **encounters › Shadows in the mill**: Encounters_and_XP side quests: 3 shadows (Hard at L2). Easy/Hard changes are my pick [inferred].
 - [ ] **encounters › The luck-stone shrine**: Encounters_and_XP side quests: hobgoblin + 2 goblins on Medium. Easy/Hard changes are my pick [inferred].
 - [ ] **encounters › Scald**: Items.md Elites: red dragon wyrmling (275 XP/PC bonus). One wyrmling on every difficulty [inferred].
+- [ ] **encounters › The toll bridge**: Encounters_and_XP F8: 3 thugs + 1 scout on Medium. Easy drops a thug and Hard adds a second scout (bot tests: a 4th thug was a wipe) [inferred].
+- [ ] **encounters › Lizardfolk hunting grounds**: Encounters_and_XP F9: 3 lizardfolk. Easy/Hard changes are my pick [inferred].
+- [ ] **encounters › Drowned Marrowmere**: Encounters_and_XP F10: 1 ghoul + 4 zombies on Medium. Easy/Hard changes are my pick [inferred].
+- [ ] **encounters › Marrowmere chapel**: Encounters_and_XP F11: 3 ghouls (Hard at L3). Easy/Hard changes are my pick [inferred].
+- [ ] **encounters › Betrayal at Ashford Hall**: Encounters_and_XP F12: hall captain (veteran) + thug. Hard adds a thug [inferred]; Easy keeps both.
+- [ ] **encounters › Betrayal at Ashford Hall (exposed)**: Encounters_and_XP F12: smaller if Tarrow was exposed early (veteran only) [inferred].
+- [ ] **encounters › The abbey cloister**: Encounters_and_XP F13: cult fanatic + 3 cultists on Medium [inferred Easy/Hard].
+- [ ] **encounters › The abbey undercroft**: Encounters_and_XP F14: Venna (priest) + ogre + 2 cultists (Hard at L4) [inferred Easy/Hard].
+- [ ] **encounters › Mother Sallow**: Encounters_and_XP side quests: green hag + 2 swarms of insects (Hard at L4) [inferred Easy/Hard].
+- [ ] **encounters › Deserters' camp**: Encounters_and_XP side quests: bandit captain + 3 bandits on Medium [inferred Easy/Hard].
+- [ ] **encounters › The flooded crypt**: Encounters_and_XP side quests: 2 specters + 1 ghast (Hard at L4) [inferred Easy/Hard].
+- [ ] **encounters › Ambush in Cobbler's Lane**: Encounters_and_XP side quests: cult fanatic + 3 cultists on Medium [inferred Easy/Hard].
+- [ ] **encounters › The Drowned Abbot**: Items.md Elites: wraith + 1 specter (500 XP/PC bonus). Same on every difficulty [inferred].
 - [ ] **encounters › Starving wolves**: Monsters and raw XP from Encounters_and_XP.md §5b; XP per character = raw ÷ 4 (§3). Easy removes one enemy and Hard adds one [inferred, D9 says Easy/Hard add or remove enemies]; map and positions are mine [inferred].
 - [ ] **encounters › Goblin foragers**: Monsters and raw XP from Encounters_and_XP.md §5b; XP per character = raw ÷ 4 (§3). Easy removes one enemy and Hard adds one [inferred, D9 says Easy/Hard add or remove enemies]; map and positions are mine [inferred].
 - [ ] **encounters › River-road bandits**: Monsters and raw XP from Encounters_and_XP.md §5b; XP per character = raw ÷ 4 (§3). Easy removes one enemy and Hard adds one [inferred, D9 says Easy/Hard add or remove enemies]; map and positions are mine [inferred].
@@ -296,6 +309,13 @@ Each line was entered from memory or is marked ⚠ in the design docs. Check it 
 - [ ] **encounters › A brown bear**: Monsters and raw XP from Encounters_and_XP.md §5b; XP per character = raw ÷ 4 (§3). Easy removes one enemy and Hard adds one [inferred, D9 says Easy/Hard add or remove enemies]; map and positions are mine [inferred].
 - [ ] **encounters › A hunting griffon**: Monsters and raw XP from Encounters_and_XP.md §5b; XP per character = raw ÷ 4 (§3). Easy removes one enemy and Hard adds one [inferred, D9 says Easy/Hard add or remove enemies]; map and positions are mine [inferred].
 - [ ] **encounters › Cult recruiters**: Monsters and raw XP from Encounters_and_XP.md §5b; XP per character = raw ÷ 4 (§3). Easy removes one enemy and Hard adds one [inferred, D9 says Easy/Hard add or remove enemies]; map and positions are mine [inferred].
+- [ ] **encounters › Lizardfolk hunters**: Encounters_and_XP §5b marsh table; XP = raw ÷ 4. Easy/Hard changes are my pick [inferred].
+- [ ] **encounters › Insect swarms**: Encounters_and_XP §5b marsh table; XP = raw ÷ 4. Easy/Hard changes are my pick [inferred].
+- [ ] **encounters › Giant spiders**: Encounters_and_XP §5b marsh table; XP = raw ÷ 4. Easy/Hard changes are my pick [inferred].
+- [ ] **encounters › Bog dead**: Encounters_and_XP §5b marsh table; XP = raw ÷ 4. Easy/Hard changes are my pick [inferred].
+- [ ] **encounters › Grey Company patrol**: Encounters_and_XP §5b marsh table; XP = raw ÷ 4. Easy/Hard changes are my pick [inferred].
+- [ ] **encounters › Sunken ruin**: Encounters_and_XP §5b marsh table; XP = raw ÷ 4. Easy/Hard changes are my pick [inferred].
+- [ ] **encounters › Ghoul pack**: Encounters_and_XP §5b marsh table; XP = raw ÷ 4. Easy/Hard changes are my pick [inferred].
 
 ## loadouts.json
 
@@ -309,3 +329,5 @@ Each line was entered from memory or is marked ⚠ in the design docs. Check it 
 
 - [ ] **(whole file)**: Positions, text and the travel-time formula (distance ÷ 32 hours) come from docs/mockups/WorldMap.dc.html; the formula itself is a mockup choice, not a rule.
 - [ ] **places › The Ashwood**: Added in M7 for The Herbalist's Granddaughter ('track her through the Ashwood'); the map position is my pick [inferred].
+- [ ] **places › The toll bridge**: Added in M8 for F8 (Encounters_and_XP §4); placed at the mockup's 'toll bridge' label [inferred].
+- [ ] **places › Deserters' camp**: Added in M8 for Deserters' Bounty; position is my pick [inferred].

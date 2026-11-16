@@ -2,7 +2,7 @@ import type { DifficultyId } from '../../data/schemas/difficulty';
 import type { Encounter } from '../../data/schemas/encounter';
 import { getMonster, monsterToCreature } from '../creatures';
 import type { Hero } from '../hero';
-import { hasItem } from '../items';
+import { hasItem, hasSpecial } from '../items';
 import {
   abilityCheck,
   abilityModifier,
@@ -20,6 +20,7 @@ import {
 import { attackOptions, makeAttack, type AttackOption } from './attacks';
 import {
   active,
+  addEffect,
   classLevel,
   combatSave,
   get,
@@ -32,7 +33,9 @@ import {
   spendSlot,
   type Ctx,
 } from './core';
-import { conscious, distanceFeet, parseMap, stepCost } from './grid';
+import { conscious, distanceFeet, moveCost, parseMap } from './grid';
+import { enterSquare, startOfTurnZones, zoneSlows } from './zones';
+import { giveCondition } from './leaves';
 import type { CombatState, Combatant, Pos, TurnState } from './types';
 
 export const freshTurn = (movement: number): TurnState => ({
@@ -92,6 +95,7 @@ export function startCombat(o: StartOptions): CombatState {
     combatants: {},
     log: [],
     rngState: o.rngState,
+    zones: [],
     outcome: null,
     xpPerPc: e.xpPerPc,
     prompt: null,
@@ -130,7 +134,9 @@ export function startCombat(o: StartOptions): CombatState {
         'enemy',
         { x: en.pos[0], y: en.pos[1] },
         monsterToCreature(m, en.id, en.name),
-        m.speed.walk,
+        // Creatures that only fly or hover (wraiths, specters) use their flying speed [inferred:
+        // the grid has no height, so flying is walking that ignores nothing].
+        m.speed.walk || m.speed.fly || 0,
       );
       c.monsterId = m.id;
       if (m.spellcasting?.slots) c.monsterSlots = { ...m.spellcasting.slots };
@@ -139,6 +145,18 @@ export function startCombat(o: StartOptions): CombatState {
         c.recharge = Object.fromEntries(rechargeable.map((a) => [a.id, true]));
       c.tactic = en.tactic;
       s.combatants[en.id] = c;
+    }
+    // Shield of the Morninglord: resistance to fire while you hold it.
+    for (const c of Object.values(s.combatants)) {
+      const h = heroOf(c);
+      if (h && hasSpecial(h, 'resistance-while-held'))
+        c.effects.push({
+          id: 'resist-fire-shield',
+          name: 'Shield of the Morninglord',
+          sourceId: c.id,
+          tag: 'resistance',
+          data: { type: 'fire' },
+        });
     }
     // Mage Armor before the fight: free for warlocks with Armor of Shadows, a slot for others.
     for (const c of Object.values(s.combatants)) {
@@ -157,7 +175,7 @@ export function startCombat(o: StartOptions): CombatState {
   });
 }
 
-function makeCombatant(
+export function makeCombatant(
   id: string,
   name: string,
   short: string,
@@ -193,7 +211,8 @@ function rollInitiative(ctx: Ctx): void {
     const h = heroOf(c);
     // PHB: Bard, Jack of All Trades (half proficiency on ability checks, initiative included).
     if (h && h.classId === 'bard' && h.level >= 2) mod += Math.floor(h.proficiencyBonus / 2);
-    const r = rollD20('normal', rng);
+    // DMG: Sentinel Shield (Kell's Shield). Advantage on initiative.
+    const r = rollD20(h && hasSpecial(h, 'initiative-advantage') ? 'advantage' : 'normal', rng);
     c.initiative = r.natural + mod;
     parts.push(`${c.name} ${describeTotal(r, mod)}`);
   }
@@ -262,12 +281,18 @@ export function passivePerception(c: Combatant): number {
 
 /** Speed this turn: conditions, exhaustion, Ray of Frost and similar. */
 export function speedNow(c: Combatant): number {
-  const base = c.wildShape ? getMonster(c.wildShape.monsterId).speed.walk : c.speed;
+  let base = c.wildShape ? getMonster(c.wildShape.monsterId).speed.walk : c.speed;
+  // PHB: Fly gives a 60-ft flying speed.
+  if (hasEffect(c, 'flying')) base = Math.max(base, 60);
   const slowed = c.effects.reduce(
     (n, e) => n + (e.tag === 'speed' ? Number(e.data?.feet ?? 0) : 0),
     0,
   );
-  return Math.max(0, effectiveSpeed(c.creature, base) + slowed);
+  let speed = Math.max(0, effectiveSpeed(c.creature, base) + slowed);
+  // PHB: Haste doubles speed; Slow halves it.
+  if (hasEffect(c, 'hasted')) speed *= 2;
+  if (hasEffect(c, 'slowed')) speed = Math.floor(speed / 10) * 5;
+  return speed;
 }
 
 /** End effects that run out at this moment. */
@@ -345,6 +370,37 @@ function beginTurn(ctx: Ctx): boolean {
       c.creature = removeCondition(c.creature, 'grappled', g.source);
   }
   c.turn = freshTurn(speedNow(c));
+  // MM: Ghast, Stench. Starting a turn next to a ghast: DC 10 Con save or poisoned until your next turn.
+  for (const g of Object.values(s.combatants)) {
+    if (g.side === c.side || !conscious(g) || !g.monsterId) continue;
+    if (!getMonster(g.monsterId).traits.some((t) => t.id === 'stench')) continue;
+    if (distanceFeet(g.pos, c.pos) > 5 || c.effects.some((e) => e.tag === 'stench-immune'))
+      continue;
+    const r = combatSave(ctx, c, 'con', 10, { against: 'poisoned', label: 'Con (Stench)' });
+    if (r.success)
+      addEffect(c, {
+        id: 'stench-immune',
+        name: 'Used to the stench',
+        sourceId: g.id,
+        tag: 'stench-immune',
+      });
+    else giveCondition(ctx, g, c, 'poisoned', undefined);
+    if (!r.success)
+      addEffect(c, {
+        id: `cond-poisoned-${g.id}`,
+        name: 'poisoned',
+        sourceId: g.id,
+        tag: 'condition',
+        data: { condition: 'poisoned' },
+        expires: { turnOf: c.id, when: 'start', round: s.round + 1 },
+      });
+  }
+  // PHB: Spirit Guardians, Moonbeam... starting a turn inside.
+  startOfTurnZones(ctx, c);
+  if (!conscious(c)) return false;
+  // PHB: Haste. One extra (limited) action each turn. PHB: Slow. No reactions.
+  if (hasEffect(c, 'hasted')) c.turn.hasteAction = true;
+  if (hasEffect(c, 'slowed')) c.reactionUsed = true;
   return true;
 }
 
@@ -352,14 +408,21 @@ function beginTurn(ctx: Ctx): boolean {
 function finishTurn(ctx: Ctx): void {
   const { s } = ctx;
   const c = active(s);
-  for (const e of c.effects.filter((x) => x.tag === 'condition' && x.data?.repeatSave)) {
+  for (const e of c.effects.filter((x) => x.data?.repeatSave)) {
+    if (!c.effects.includes(e)) continue;
     const r = combatSave(ctx, c, e.data!.repeatSave as never, Number(e.data!.dc ?? 10), {
       against: e.data!.condition as never,
       label: `${String(e.data!.repeatSave).replace(/^./, (x) => x.toUpperCase())} (repeat)`,
     });
     if (r.success) {
       removeEffect(c, e);
-      say(s, 'dmg', `${c.name} shakes off ${e.data!.condition}`);
+      // The rest of the same spell on this creature ends too (Slow's AC penalty, Fear's fright).
+      if (e.concentration)
+        for (const x of c.effects.filter(
+          (y) => y.sourceId === e.sourceId && y.concentration === e.concentration,
+        ))
+          removeEffect(c, x);
+      say(s, 'dmg', `${c.name} shakes off ${e.data!.condition ?? e.name}`);
     }
   }
   expire(ctx, c.id, 'end');
@@ -480,15 +543,19 @@ export function moveAlong(
       }
     }
     const prone = hasCondition(mover.creature, 'prone');
-    const cost = stepCost(s.map, next) * (prone ? 2 : 1);
+    const cost = moveCost(s, mover, next, zoneSlows) * (prone ? 2 : 1);
     if (cost > mover.turn.movement) return { result: 'done', rest: [] };
     mover.turn.movement -= cost;
     mover.pos = next;
+    enterSquare(ctx, mover, next);
+    if (!conscious(mover)) return { result: 'stopped', rest: [] };
   }
   return { result: 'done', rest: [] };
 }
 
 export function usesExtraAttack(c: Combatant): number {
+  // PHB: Slow. A slowed creature makes only one attack.
+  if (hasEffect(c, 'slowed')) return 1;
   // PHB: Extra Attack (barbarian, fighter, monk, paladin, ranger at level 5).
   const h = heroOf(c);
   if (!h) return 1;

@@ -34,10 +34,21 @@ export const hasItem = (hero: Pick<Hero, 'equipment'>, id: string) =>
 
 /** AC with armor, class features and items (Cloak of Protection, Ring of Protection...). */
 export function heroAc(hero: Hero): number {
+  // A magic shield (Kell's Shield, the Shield of the Morninglord) is a normal +2 shield too,
+  // unless the hero already carries one [inferred: it replaces the plain shield].
+  const magicShield = (hero.equipment.magic ?? []).some((id) => getItem(id).kind === 'shield');
   return (
-    computeAc(hero.classId, hero.abilities, hero.equipment, hero.fightingStyle) + itemMods(hero).ac
+    computeAc(hero.classId, hero.abilities, hero.equipment, hero.fightingStyle) +
+    itemMods(hero).ac +
+    (magicShield && !hero.equipment.shield ? 2 : 0)
   );
 }
+
+/** An item's special effect ids (e.g. 'initiative-advantage'). */
+export const hasSpecial = (hero: Pick<Hero, 'equipment'>, special: string) =>
+  (hero.equipment.magic ?? []).some((id) =>
+    getItem(id).effects.some((e) => e.type === 'special' && e.id === special),
+  );
 
 export const attunedCount = (hero: Pick<Hero, 'equipment'>) =>
   (hero.equipment.magic ?? []).filter((id) => getItem(id).attunement).length;
@@ -61,6 +72,11 @@ export function equip(hero: Hero, id: string): EquipResult {
   const it = getItem(id);
   if (!isEquippable(it)) return { hero, error: `${it.name} can't be equipped.` };
   if (hasItem(hero, id)) return { hero, error: `${hero.name} already has ${it.name}.` };
+  if (
+    it.kind === 'shield' &&
+    (hero.equipment.magic ?? []).some((x) => getItem(x).kind === 'shield')
+  )
+    return { hero, error: `${hero.name} can only carry one magic shield.` };
   if (it.attunement && attunedCount(hero) >= MAX_ATTUNED)
     return { hero, error: `${hero.name} is already attuned to three items.` };
   if (

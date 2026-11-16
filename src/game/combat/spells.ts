@@ -1,7 +1,9 @@
 import { spells } from '../../data';
 import type { Effect, LeafEffect } from '../../data/schemas/common';
 import type { Spell } from '../../data/schemas/spell';
-import { getMonster } from '../creatures';
+import { getMonster, monsterToCreature } from '../creatures';
+import { makeCombatant } from './turn';
+import { addZone, around, makeZone, silenced } from './zones';
 import { getClass, resourceLeft, slotsLeft, spellNumbers } from '../hero';
 import { abilityModifier, attackRoll, roll, startConcentration, type DiceRoll } from '../../rules';
 import {
@@ -122,6 +124,9 @@ function baseTargeting(sp: Spell, slotLevel: number): Targeting {
     return { kind: 'creatures', count: 3 + extra, rangeFeet: 120, repeat: true };
   if (sp.id === 'scorching-ray')
     return { kind: 'creatures', count: 3 + extra, rangeFeet: 120, repeat: true };
+  // PHB: Conjure Animals. Pick an empty square for the beasts.
+  if (sp.effects.some((e) => e.type === 'special' && e.id === 'summon'))
+    return { kind: 'point', rangeFeet: rangeFeet(sp) };
   const tele = sp.effects.find((e) => e.type === 'move' && e.kind === 'teleport');
   if (tele && tele.type === 'move') return { kind: 'point', rangeFeet: tele.feet ?? 30 };
   if (sp.range === 'self') return { kind: 'self' };
@@ -232,6 +237,9 @@ export function castProblem(ctx: Ctx, caster: Combatant, req: CastRequest): stri
   if (!choice.levels.includes(req.slotLevel)) return 'no slot of that level';
   const sp = choice.spell;
   const t = targeting(sp, req.slotLevel, req.metamagic);
+  // PHB: Silence. No spells with a verbal component inside it.
+  if (silenced(ctx.s, caster) && /\bV\b/.test(sp.components ?? 'V'))
+    return "you can't speak inside the Silence";
   if (req.metamagic) {
     const h = heroOf(caster);
     if (!h?.choices['metamagic']?.includes(req.metamagic)) return "you don't know that Metamagic";
@@ -251,7 +259,11 @@ export function castProblem(ctx: Ctx, caster: Combatant, req: CastRequest): stri
     if (ids.length > t.count) return `at most ${t.count} target(s)`;
     for (const id of ids) {
       const target = ctx.s.combatants[id];
-      if (!target || target.gone || target.creature.dead) return 'invalid target';
+      const revive = specialsIn(sp.effects as Effect[]).includes('revivify');
+      if (!target || target.gone) return 'invalid target';
+      if (revive && (!target.creature.dead || target.side !== caster.side))
+        return 'Revivify needs a fallen ally';
+      if (!revive && target.creature.dead) return 'invalid target';
       if (distanceFeet(caster.pos, target.pos) > t.rangeFeet)
         return `${target.name} is out of range`;
       if (!hasLineOfSight(ctx.s.map, caster.pos, target.pos)) return `can't see ${target.name}`;
@@ -343,6 +355,32 @@ export function castSpell(ctx: Ctx, caster: Combatant, req: CastRequest): void {
     return hpPool(ctx, caster, sp, req, upcastDice);
 
   const tg = targeting(sp, lvl, mm);
+  // Lasting areas: Spirit Guardians, Moonbeam, Flaming Sphere, Hunger of Hadar, Spike Growth,
+  // Silence, Darkness. They do nothing on the turn they're cast (PHB) [except as written].
+  const lasting = specialsIn(effects).find((x) =>
+    [
+      'persistent-area',
+      'persistent-aura',
+      'silence-zone',
+      'darkness-zone',
+      'damage-per-5ft',
+    ].includes(x),
+  );
+  if (lasting) {
+    const at = req.point ?? (req.targetIds?.[0] ? s.combatants[req.targetIds[0]]!.pos : caster.pos);
+    const cells =
+      tg.kind === 'area'
+        ? areaCells(ctx, caster, sp, at)
+        : around(s, at, sp.id === 'flaming-sphere' ? 5 : 5);
+    const zone = makeZone(caster, sp, cells, { dc: nums.dc, slotLevel: lvl, upcastDice });
+    if (zone) addZone(ctx, zone);
+    return;
+  }
+  // PHB: Conjure Animals. Two wolves appear and fight on your side [inferred: the DM picks two wolves].
+  if (tg.kind === 'point' && specialsIn(effects).includes('summon')) {
+    summonWolves(ctx, caster, req.point!, sp.id);
+    return;
+  }
   // PHB: Misty Step. Teleport to an unoccupied space you can see.
   if (tg.kind === 'point') {
     caster.pos = req.point!;
@@ -429,6 +467,33 @@ export function castSpell(ctx: Ctx, caster: Combatant, req: CastRequest): void {
       } else applyLeaf(ctx, caster, target, e, { ...opts, preRolled });
     }
   }
+}
+
+/** Put two conjured wolves next to `point`, acting right after their summoner. */
+function summonWolves(ctx: Ctx, caster: Combatant, point: Pos, spellId: string): void {
+  const { s } = ctx;
+  const wolf = getMonster('wolf');
+  const spots = [point, ...around(s, point, 10)].filter((p) => isOpen(s, p)).slice(0, 2);
+  spots.forEach((p, i) => {
+    const id = `${caster.id}-wolf-${i + 1}`;
+    const c = makeCombatant(
+      id,
+      `Spirit wolf ${i + 1}`,
+      `W${i + 1}`,
+      caster.side,
+      p,
+      monsterToCreature(wolf, id, `Spirit wolf ${i + 1}`),
+      wolf.speed.walk,
+    );
+    c.monsterId = 'wolf';
+    c.initiative = caster.initiative;
+    c.summon = { casterId: caster.id, spellId };
+    s.combatants[id] = c;
+    const at = s.order.indexOf(caster.id);
+    s.order = [...s.order.slice(0, at + 1 + i), id, ...s.order.slice(at + 1 + i)];
+    if (s.turnIndex > at) s.turnIndex += 1;
+  });
+  say(s, caster.side === 'party' ? 'you' : 'foe', `${spots.length} spirit wolves answer the call`);
 }
 
 /** An empty, walkable square (no creature, no wall). */

@@ -65,6 +65,8 @@ export interface Hero extends Creature {
   resourcesUsed: Record<string, number>;
   /** Level-up picks by feature id (metamagic, pact-boon, hunters-prey, favored-enemy...). */
   choices: Record<string, string[]>;
+  /** Hit point maximum lost to Life Drain (specters, wraiths) until a long rest. */
+  maxHpDrain?: number;
 }
 
 /** What the player has picked so far in the creator. */

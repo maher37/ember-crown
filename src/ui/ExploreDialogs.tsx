@@ -197,9 +197,13 @@ export function SaveDialog({ onClose }: { onClose: () => void }) {
   );
 }
 
+const g0 = (g: ReturnType<typeof useGame.getState>['game']) => g!;
+
 /** The party's pack and what each hero wears (Items.md: attune during a short rest). */
 export function InventoryDialog({ onClose }: { onClose: () => void }) {
-  const { game, equipItem, unequipItem, drinkPotion, shortRest } = useGame();
+  const { game, equipItem, unequipItem, drinkPotion, shortRest, spendPearl, spendStaff } =
+    useGame();
+  const [patient, setPatient] = useState(g0(game).party[0]!.id);
   const g = game!;
   const [msg, setMsg] = useState('');
   const [who, setWho] = useState(g.party[0]!.id);
@@ -230,13 +234,46 @@ export function InventoryDialog({ onClose }: { onClose: () => void }) {
                     <span className="strong">{getItem(id).name}</span>{' '}
                     <span className="small muted">{getItem(id).summary}</span>
                   </span>
-                  <button
-                    type="button"
-                    className="menu-secondary small-btn"
-                    onClick={() => unequipItem(hero.id, id)}
-                  >
-                    Take off
-                  </button>
+                  <span className="row">
+                    {id === 'bog-pearl' && (
+                      <button
+                        type="button"
+                        className="menu-secondary small-btn"
+                        onClick={() => setMsg(spendPearl(hero.id) ?? '')}
+                      >
+                        Recover a slot
+                      </button>
+                    )}
+                    {id === 'staff-of-healing' && (
+                      <>
+                        <select
+                          value={patient}
+                          onChange={(e) => setPatient(e.target.value)}
+                          aria-label="Heal whom"
+                        >
+                          {g.party.map((p) => (
+                            <option key={p.id} value={p.id}>
+                              {p.name}
+                            </option>
+                          ))}
+                        </select>
+                        <button
+                          type="button"
+                          className="menu-secondary small-btn"
+                          onClick={() => setMsg(spendStaff(hero.id, patient) ?? '')}
+                        >
+                          Cure Wounds ({Number(g.flags['staff_charges'] ?? 10)} charges)
+                        </button>
+                      </>
+                    )}
+                    <button
+                      type="button"
+                      className="menu-secondary small-btn"
+                      onClick={() => unequipItem(hero.id, id)}
+                    >
+                      Take off
+                    </button>
+                  </span>
                 </li>
               ))}
             </ul>
@@ -245,7 +282,7 @@ export function InventoryDialog({ onClose }: { onClose: () => void }) {
           )}
         </section>
         <section>
-          <h3 className="eyebrow">The pack</h3>
+          <h3 className="eyebrow">The pack · {g.gold ?? 0} gp</h3>
           {pack.length ? (
             <ul className="item-list">
               {pack.map(([id, n]) => {

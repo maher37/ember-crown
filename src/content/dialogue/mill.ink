@@ -23,8 +23,7 @@ VAR passed = false
 #speaker:mill
 { quest_done("mill"):
     The mill is only a mill now: cold millstones, swallows in the rafters. Somebody has left wildflowers on the kitchen table.
-    + [Leave (to the map).]
-        -> END
+    -> leave_only
 }
 { flag("won:s3-mill-shadows"):
     -> lysa
@@ -44,6 +43,11 @@ Varrow's Mill leans over the Grayflow, its wheel stopped for ten years. Through 
 + [Light a lantern and go in. #fight]
     ~ fight("s3-mill-shadows", "arrive.lysa")
     -> END
++ [Leave (to the map).]
+    -> END
+
+
+= leave_only
 + [Leave (to the map).]
     -> END
 
@@ -68,6 +72,7 @@ The shadows tear apart like smoke. In the quiet afterwards, someone is sitting a
 "Tell Maelis I never wanted them to pay. I wanted her to live." She presses the locket into your hands. "Her father gave me this. It always brought me home safe."
 ~ truth("family")
 ~ give_item("lysas-locket", 1)
+~ set_flag("has_lysas_locket", true)
 ~ note("Lysa Varrow's ghost: she never wanted vengeance for Hadric, only for Maelis to live. She gave you her locket.")
 + [We'll tell her. Rest now.]
     The ghost nods, and when you look again there's only the table, and the evening light.

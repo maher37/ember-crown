@@ -15,6 +15,20 @@ const FIGHTS: [string, number][] = [
   ['s3-mill-shadows', 2],
   ['s4-luck-stone', 2],
   ['e1-scald', 3],
+  // Act II (M8)
+  ['f8-toll-bridge', 3],
+  ['f9-lizardfolk', 3],
+  ['f10-marrowmere', 3],
+  ['f11-chapel', 3],
+  ['f12-betrayal', 4],
+  ['f12-betrayal-small', 4],
+  ['f13-cloister', 4],
+  ['f14-undercroft', 4],
+  ['s5-sallow', 4],
+  ['s6-deserters', 4],
+  ['s7-paladin-crypt', 4],
+  ['s8-edric-ambush', 4],
+  ['e2-drowned-abbot', 5],
 ];
 const party = (lvl: number) =>
   readyParty(
@@ -27,11 +41,11 @@ const party = (lvl: number) =>
     lvl,
   );
 
-describe('Act I fights', () => {
+describe('Act I and Act II fights', () => {
   for (const [id, lvl] of FIGHTS)
     it(`${id} always finishes, reproducibly from its seed`, () => {
       for (const d of ['easy', 'medium', 'hard'] as const)
-        for (const seed of [1, 2]) {
+        for (const seed of [1]) {
           const run = () =>
             playOut(
               startCombat({

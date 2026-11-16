@@ -31,6 +31,8 @@ import type { ActiveEffect, CombatState, Combatant, LogLine } from './types';
 export interface Ctx {
   s: CombatState;
   rng: RandomSource;
+  /** Damage dealt by the last damage effect (Vampiric Touch, Life Drain). */
+  lastDamage?: number;
 }
 
 export function produce(state: CombatState, fn: (ctx: Ctx) => void): CombatState {
@@ -185,6 +187,32 @@ export function dealDamage(
   });
   // Keep the real defenses (Rage resistance is not permanent).
   target.creature = { ...out.creature, defenses: before.defenses };
+  // MM: Zombie, Undead Fortitude. Dropped to 0 by anything but radiant damage or a critical hit:
+  // a Con save (DC 5 + the damage taken) leaves it at 1 HP instead.
+  if (
+    before.hp > 0 &&
+    target.creature.hp === 0 &&
+    target.monsterId &&
+    !opts.critical &&
+    !parts.some((p) => p.type === 'radiant' && p.amount > 0) &&
+    getMonster(target.monsterId).traits.some((t) => t.id === 'undead-fortitude')
+  ) {
+    const r = combatSave(ctx, target, 'con', 5 + out.damageTaken, {
+      label: 'Con (Undead Fortitude)',
+    });
+    if (r.success) {
+      target.creature = {
+        ...target.creature,
+        hp: 1,
+        dead: false,
+        conditions: target.creature.conditions.filter(
+          (c) => c.id !== 'unconscious' && c.id !== 'prone',
+        ),
+      };
+      say(s, 'foe', `${target.name} refuses to stay down (Undead Fortitude)`);
+      return out.damageTaken;
+    }
+  }
   sayAll(s, out.log, opts.attacker);
   if (before.concentration && !target.creature.concentration)
     endConcentrationEffects(s, target.id, before.concentration);
@@ -216,7 +244,37 @@ export function dealDamage(
 export function endConcentrationEffects(s: CombatState, casterId: string, spellId: string): void {
   for (const c of Object.values(s.combatants)) {
     const ending = c.effects.filter((e) => e.sourceId === casterId && e.concentration === spellId);
-    for (const e of ending) removeEffect(c, e);
+    for (const e of ending) {
+      removeEffect(c, e);
+      // PHB: Haste. When it ends, the target can't move or act until after its next turn.
+      if (e.tag === 'hasted' && !c.creature.dead) {
+        c.effects.push({
+          id: 'lethargy',
+          name: 'Haste lethargy',
+          sourceId: casterId,
+          tag: 'skip-turn',
+          expires: { turnOf: c.id, when: 'end', round: s.round + 1 },
+        });
+        say(s, 'dmg', `A wave of lethargy sweeps over ${c.name}`);
+      }
+    }
+    // Conjured creatures vanish.
+    if (c.summon && c.summon.casterId === casterId && c.summon.spellId === spellId && !c.gone) {
+      c.gone = true;
+      say(s, 'info', `${c.name} fades away`);
+    }
+  }
+  // Lasting areas (Spirit Guardians, Moonbeam...) end too.
+  const zones = s.zones.filter((z) => z.casterId === casterId && z.spellId === spellId);
+  if (zones.length) {
+    s.zones = s.zones.filter((z) => !zones.includes(z));
+    const dark = new Set(
+      s.zones
+        .filter((z) => z.kind === 'darkness')
+        .flatMap((z) => (z.cells ?? []).map((p) => `${p.x},${p.y}`)),
+    );
+    s.map = { ...s.map, dark: [...dark] };
+    for (const z of zones) say(s, 'info', `${z.name} fades`);
   }
 }
 

@@ -232,6 +232,144 @@
       "id": "cellar",
       "name": "The cellar",
       "title": "Under the Drowned Lantern"
+    },
+    {
+      "id": "kell",
+      "name": "Captain Ruther Kell",
+      "title": "Grey Company",
+      "portrait": {
+        "skin": "#c08a62",
+        "hair": "#5a5a5a",
+        "eyes": "#4a6fa5",
+        "hairStyle": "short",
+        "beard": true,
+        "scar": true,
+        "cloth": "#5f6670"
+      }
+    },
+    {
+      "id": "tarrow",
+      "name": "Mayor Oswin Tarrow",
+      "title": "Ashford Hall",
+      "portrait": {
+        "skin": "#e0b896",
+        "hair": "#d8d8d8",
+        "eyes": "#6b4a2b",
+        "hairStyle": "bald",
+        "beard": false,
+        "scar": false,
+        "cloth": "#6b2f3a"
+      }
+    },
+    {
+      "id": "venna",
+      "name": "Sister Venna",
+      "title": "The Hollow Star",
+      "portrait": {
+        "skin": "#d9a982",
+        "hair": "#2b1a12",
+        "eyes": "#4a7a5a",
+        "hairStyle": "hood",
+        "beard": false,
+        "scar": true,
+        "cloth": "#3a2a4a"
+      }
+    },
+    {
+      "id": "sallow",
+      "name": "Mother Sallow",
+      "title": "A kindly old woman, they say",
+      "portrait": {
+        "skin": "#9aa86a",
+        "hair": "#c3ccd9",
+        "eyes": "#d9a03a",
+        "hairStyle": "hood",
+        "beard": false,
+        "scar": false,
+        "cloth": "#4a5a3a"
+      }
+    },
+    {
+      "id": "ssarith",
+      "name": "Ssarith",
+      "title": "Lizardfolk hunt-speaker",
+      "portrait": {
+        "skin": "#5a7a4a",
+        "hair": "#3a4a2a",
+        "eyes": "#e0c040",
+        "hairStyle": "bald",
+        "beard": false,
+        "scar": true,
+        "cloth": "#6b5a3a"
+      }
+    },
+    {
+      "id": "holm",
+      "name": "Sergeant Holm",
+      "title": "A deserter",
+      "portrait": {
+        "skin": "#b07a55",
+        "hair": "#6b4a2b",
+        "eyes": "#6b4a2b",
+        "hairStyle": "short",
+        "beard": true,
+        "scar": false,
+        "cloth": "#5f6670"
+      }
+    },
+    {
+      "id": "novice",
+      "name": "Brother Tam",
+      "title": "A lost novice of the abbey",
+      "portrait": {
+        "skin": "#e0b896",
+        "hair": "#8a4a2a",
+        "eyes": "#4a6fa5",
+        "hairStyle": "short",
+        "beard": false,
+        "scar": false,
+        "cloth": "#c8b88a"
+      }
+    },
+    {
+      "id": "bridge",
+      "name": "The toll bridge",
+      "title": "Over the Grayflow"
+    },
+    {
+      "id": "marsh",
+      "name": "The Marsh of Chelimber",
+      "title": "Steaming in midwinter"
+    },
+    {
+      "id": "marrowmere",
+      "name": "Drowned Marrowmere",
+      "title": "A bog village"
+    },
+    {
+      "id": "abbey",
+      "name": "The Abbey of the Morninglord",
+      "title": "On the marsh edge"
+    },
+    {
+      "id": "hall",
+      "name": "Ashford Hall",
+      "title": "The mayor's house"
+    },
+    {
+      "id": "camp",
+      "name": "The camp",
+      "title": "Night on the road"
+    },
+    {
+      "id": "forest",
+      "name": "The Forgotten Forest",
+      "title": "Its northern edge"
+    },
+    {
+      "id": "bog",
+      "name": "The wisp-lit bog",
+      "title": "Lights that aren't lanterns"
     }
   ]
 }

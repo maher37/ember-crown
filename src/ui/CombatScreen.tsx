@@ -5,6 +5,7 @@ import {
   attackOptions,
   castProblem,
   currentAc,
+  getSpell,
   featureList,
   hideProblem,
   offhandWeapons,
@@ -21,6 +22,7 @@ import {
   METAMAGIC_NAMES,
   type PlayerAction,
   type Pos,
+  zoneCells,
 } from '../game/combat';
 import { getClass, getSpecies, slotsLeft, type Hero } from '../game/hero';
 import { readSlot } from '../game/save';
@@ -35,6 +37,12 @@ import { terrainFill, terrainName } from './mapStyle';
 import { getItem } from '../game/items';
 
 const CELL = 48;
+const ZONE_FILL: Record<string, string> = {
+  damage: '#e8c27a',
+  spikes: '#6a8a3a',
+  silence: '#7fb3e6',
+  darkness: '#05070a',
+};
 
 type Mode =
   | { kind: 'idle' }
@@ -59,6 +67,7 @@ export function CombatScreen() {
   const [message, setMessage] = useState('');
   const [smite, setSmite] = useState(0);
   const [mm, setMm] = useState<Metamagic | ''>('');
+  const [stun, setStun] = useState(false);
   const s = combat!;
   const me = s.combatants[s.order[s.turnIndex]!]!;
   const myTurn = me.side === 'party' && !s.outcome && !s.prompt;
@@ -185,6 +194,7 @@ export function CombatScreen() {
               targetId: c.id,
               optionId: mode.optionId,
               smiteLevel: smite || undefined,
+              stun: stun || undefined,
             },
       );
     else if (mode.kind === 'help') doAct({ type: 'help', allyId: c.id });
@@ -262,7 +272,7 @@ export function CombatScreen() {
   const hoverOpt =
     mode.kind === 'attack' ? options.find((o) => o.id === mode.optionId) : options[0];
   const banner = targetBanner(mode, options, spells);
-  const actionLeft = !me.turn.actionUsed || me.turn.extraActions > 0;
+  const actionLeft = !me.turn.actionUsed || me.turn.extraActions > 0 || !!me.turn.hasteAction;
   const moreActions: { label: string; detail: string; onClick: () => void; blocked?: string }[] = [
     ...(s.parley
       ? [
@@ -447,6 +457,21 @@ export function CombatScreen() {
                 <line key={`h${i}`} x1={0} y1={i * CELL} x2={s.map.width * CELL} y2={i * CELL} />
               ))}
             </g>
+            {s.zones.map((z) =>
+              zoneCells(s, z).map((p) => (
+                <rect
+                  key={`${z.id}-${p.x},${p.y}`}
+                  x={p.x * CELL}
+                  y={p.y * CELL}
+                  width={CELL}
+                  height={CELL}
+                  fill={ZONE_FILL[z.kind]}
+                  opacity={z.kind === 'darkness' ? 0.75 : 0.3}
+                >
+                  <title>{z.name}</title>
+                </rect>
+              )),
+            )}
           </svg>
           {s.map.terrain.flatMap((row, y) =>
             row.map((_, x) => {
@@ -686,6 +711,20 @@ export function CombatScreen() {
                 </span>
               </button>
             ))}
+          {hero && hero.creature.classId === 'monk' && hero.creature.level >= 5 && (
+            <label className="act smite">
+              <span className="act-name">Stunning Strike</span>
+              <span className="row small">
+                <input
+                  type="checkbox"
+                  checked={stun}
+                  onChange={(e) => setStun(e.target.checked)}
+                  aria-label="Stunning Strike on the next melee hit (1 ki)"
+                />{' '}
+                1 ki on a hit
+              </span>
+            </label>
+          )}
           {hero && hero.creature.classId === 'paladin' && hero.creature.level >= 2 && (
             <label className="act smite">
               <span className="act-name">Divine Smite</span>
@@ -946,7 +985,9 @@ function PromptDialog({
           ? `${name(p.attackerId)} attacks ${name(p.targetId)}. Should ${name(p.reactorId)} use Protection (disadvantage on the attack)?`
           : p.kind === 'cutting-words'
             ? `${name(p.attackerId)} hits ${name(p.targetId)} with a ${p.total}. Should ${name(p.reactorId)} use Cutting Words (a Bardic Inspiration die off the roll)?`
-            : `${name(p.attackerId)} just hurt ${name(p.reactorId)}. Answer with Hellish Rebuke (uses a spell slot)?`;
+            : p.kind === 'counterspell'
+              ? `${name(p.casterId)} starts casting ${getSpell(p.spellId).name}. Should ${name(p.reactorId)} cast Counterspell (a 3rd-level slot) to stop it?`
+              : `${name(p.attackerId)} just hurt ${name(p.reactorId)}. Answer with Hellish Rebuke (uses a spell slot)?`;
   return (
     <div className="dialog-backdrop">
       <div

@@ -25,7 +25,7 @@ import type { Hero } from './hero';
 import { GAME_START } from './calendar';
 import { formatDate } from './calendar';
 import { bestFor, parseSkill } from './dialogue';
-import { skillBonus } from './hero';
+import { skillBonus, spellNumbers } from './hero';
 import { addNote, completeStep, partyXp } from './journal';
 import { deliverLetters, readLetter } from './letters';
 import { canLongRest, finishShortRest, spendDie, startShortRest, takeLongRest } from './rest';
@@ -100,6 +100,10 @@ interface GameStore {
   unequipItem: (heroId: string, itemId: string) => void;
   /** Drink a potion outside a fight. */
   drinkPotion: (heroId: string, itemId: string) => string | undefined;
+  /** DMG: Pearl of Power (the Bog Pearl). Regain one spent slot of 3rd level or lower, once a day. */
+  spendPearl: (heroId: string) => string | undefined;
+  /** DMG: Staff of Healing. Cure Wounds for 1 charge, out of combat. */
+  spendStaff: (wielderId: string, targetId: string) => string | undefined;
 
   goto: (screen: Screen) => void;
   /** Back to wherever the party is: the tavern, or the map. */
@@ -221,6 +225,7 @@ export const useGame = create<GameStore>()((set, get) => ({
       clock: GAME_START,
       lastLongRest: null,
       inventory: {},
+      gold: 0,
       letters: pendingParty.some((h) => h.origin === 'corin')
         ? [{ id: 'letter-0', read: false }]
         : [],
@@ -392,7 +397,11 @@ export const useGame = create<GameStore>()((set, get) => ({
       set({ resume: { story: conversation.storyId, knot: fight.resume } });
       get().openPrepare(fight.encounterId);
     } else if (travel === 'map') get().openMap();
-    else if (travel) get().openPrepare(travel);
+    else if (travel?.startsWith('scene:')) {
+      // Another story's scene, e.g. "scene:ashford.hall" (the tavern's front door → Ashford Hall).
+      const [story, ...rest] = travel.slice(6).split('.');
+      get().talk(rest.join('.'), story);
+    } else if (travel) get().openPrepare(travel);
     else if (afterDialogue === 'place') get().enterPlace();
   },
 
@@ -439,6 +448,52 @@ export const useGame = create<GameStore>()((set, get) => ({
         inventory: { ...game.inventory, [itemId]: (game.inventory[itemId] ?? 0) + 1 },
       },
     });
+  },
+
+  spendPearl: (heroId) => {
+    const { game } = get();
+    if (!game) return 'No game';
+    if (game.flags['pearl_used']) return 'The pearl is dull until tomorrow (after a long rest).';
+    const h = game.party.find((x) => x.id === heroId)!;
+    const lvl = [3, 2, 1].find((l) => (h.slotsUsed[l - 1] ?? 0) > 0);
+    if (!lvl) return `${h.name} has no spent spell slot of 3rd level or lower.`;
+    const slotsUsed = h.slotsUsed.map((n, i) => (i === lvl - 1 ? n - 1 : n));
+    set({
+      game: {
+        ...game,
+        flags: { ...game.flags, pearl_used: true },
+        party: game.party.map((x) => (x.id === heroId ? { ...x, slotsUsed } : x)),
+      },
+    });
+    get().toast([`The Bog Pearl glows: ${h.name} regains a level-${lvl} spell slot.`]);
+    return undefined;
+  },
+
+  spendStaff: (wielderId, targetId) => {
+    const { game, rngState } = get();
+    if (!game) return 'No game';
+    const charges = Number(game.flags['staff_charges'] ?? 10);
+    if (charges < 1) return 'The staff has no charges left (it recovers some at dawn).';
+    const w = game.party.find((x) => x.id === wielderId)!;
+    const t = game.party.find((x) => x.id === targetId)!;
+    if (t.dead) return `${t.name} is beyond Cure Wounds.`;
+    if (t.hp >= t.maxHp) return `${t.name} is already at full health.`;
+    const mod = spellNumbers(w)?.mod ?? 0;
+    const rng = SeededRng.fromState(rngState);
+    const r = roll('1d8', rng);
+    const hp = Math.min(t.maxHp, t.hp + r.total + mod);
+    set({
+      rngState: rng.state,
+      game: {
+        ...game,
+        flags: { ...game.flags, staff_charges: charges - 1 },
+        party: game.party.map((x) => (x.id === targetId ? { ...x, hp } : x)),
+      },
+    });
+    get().toast([
+      `Staff of Healing (Cure Wounds): ${r.text} + ${mod} → ${t.name} ${hp}/${t.maxHp} HP · ${charges - 1} charges left`,
+    ]);
+    return undefined;
   },
 
   drinkPotion: (heroId, itemId) => {
@@ -602,11 +657,19 @@ export const useGame = create<GameStore>()((set, get) => ({
       set({ campLog: [...get().campLog, ...check.log] });
     }
     const r = takeLongRest(game, rng);
-    const d = deliverLetters(r.game);
+    // Maelis_Letters.md: letter 2 comes on the first long rest on the road to the marsh.
+    let rested = r.game;
+    if (rested.act === 2 && !rested.flags['act2_road'])
+      rested = { ...rested, flags: { ...rested.flags, act2_road: true } };
+    const d = deliverLetters(rested);
     const lines = [...r.log, `${formatDate(d.game.clock)}.`];
     if (d.delivered.length) lines.push('In the night, a lantern moth lands on your lantern…');
     set({ game: d.game, rngState: rng.state, campLog: [...get().campLog, ...lines] });
     get().saveTo('autosave');
+    // Story_Bible Act II: after Marrowmere, Maelis comes to the camp in person (once).
+    const g = get().game!;
+    if (g.act === 2 && g.flags['marrowmere_done'] && !g.flags['maelis_parley'])
+      get().talk('parley', 'camp');
   },
 
   answerLetter: (id, replyId) => {

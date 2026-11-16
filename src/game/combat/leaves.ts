@@ -8,7 +8,15 @@ import {
   type ConditionId,
   type DiceRoll,
 } from '../../rules';
-import { addEffect, combatSave, dealDamage, healCombatant, say, type Ctx } from './core';
+import {
+  addEffect,
+  combatSave,
+  dealDamage,
+  endConcentrationEffects,
+  healCombatant,
+  say,
+  type Ctx,
+} from './core';
 import { blocksMovement, inBounds, occupant, terrainAt } from './grid';
 import type { ActiveEffect, CombatState, Combatant, Pos } from './types';
 
@@ -112,7 +120,10 @@ export function applyLeaf(
         'dmg',
         `${label}: ${r.text} ${e.damageType}${opts.half ? ` (halved: ${amount})` : ''}`,
       );
-      dealDamage(ctx, target, [{ amount, type: e.damageType }], { critical, attacker: source });
+      ctx.lastDamage = dealDamage(ctx, target, [{ amount, type: e.damageType }], {
+        critical,
+        attacker: source,
+      });
       return;
     }
     case 'heal': {
@@ -272,6 +283,47 @@ export const HANDLED_SPECIALS = new Set([
   'next-hit-bonus',
   'mirror-image',
   'ability-drain',
+  'persistent-area',
+  'persistent-aura',
+  'silence-zone',
+  'darkness-zone',
+  'damage-per-5ft',
+  'summon',
+  'revivify',
+  'dispel-magic',
+  'haste',
+  'slowed',
+  'flee',
+  'heal-half-damage',
+  'repeat-action',
+  'repeat-bonus-action',
+  'suggestion',
+  'shillelagh',
+  'fly-speed',
+  'max-hp-reduction',
+]);
+
+/** Effects that come from spells, for Dispel Magic. */
+const SPELL_TAGS = new Set([
+  'mage-armor',
+  'sanctuary',
+  'agathys',
+  'mirror-image',
+  'spiritual-weapon',
+  'next-hit',
+  'aid',
+  'hasted',
+  'slowed',
+  'outlined',
+  'hex-target',
+  'hunters-mark-target',
+  'divine-favor',
+  'flying',
+  'shillelagh',
+  'heated',
+  'call-lightning',
+  'heat-metal',
+  'vampiric-touch',
 ]);
 
 function applySpecial(
@@ -498,6 +550,181 @@ function applySpecial(
       if (str === 0) {
         target.creature = { ...target.creature, hp: 0, dead: true };
         say(s, 'crit', `${target.name} fades into shadow and dies`);
+      }
+      return;
+    }
+    case 'persistent-area':
+    case 'persistent-aura':
+    case 'silence-zone':
+    case 'darkness-zone':
+    case 'damage-per-5ft':
+    case 'summon':
+      return; // Handled by castSpell (zones.ts, conjured wolves).
+    case 'revivify':
+      // PHB: Revivify. A creature that died within the last minute returns with 1 HP.
+      if (!target.creature.dead) return;
+      target.creature = {
+        ...target.creature,
+        dead: false,
+        hp: 1,
+        stable: false,
+        deathSaves: { successes: 0, failures: 0 },
+        conditions: target.creature.conditions.filter((c) => c.id !== 'unconscious'),
+      };
+      say(s, 'you', `${target.name} gasps back to life with 1 HP`);
+      return;
+    case 'dispel-magic': {
+      // PHB: Dispel Magic. Spells of 3rd level or lower on the target end (all of ours are).
+      const ending = target.effects.filter((e) => e.concentration || SPELL_TAGS.has(e.tag ?? ''));
+      for (const e of ending) target.effects = target.effects.filter((x) => x !== e);
+      for (const e of ending)
+        if (e.tag === 'condition' && e.data?.condition)
+          target.creature = removeCondition(
+            target.creature,
+            String(e.data.condition) as ConditionId,
+          );
+      const own = target.creature.concentration;
+      if (own) {
+        target.creature = { ...target.creature, concentration: null };
+        endConcentrationEffects(s, target.id, own);
+      }
+      say(
+        s,
+        'you',
+        ending.length || own
+          ? `The magic on ${target.name} unravels`
+          : `${name} finds nothing to dispel on ${target.name}`,
+      );
+      return;
+    }
+    case 'haste':
+      addEffect(target, {
+        id: 'hasted',
+        name: 'Haste',
+        sourceId: source.id,
+        tag: 'hasted',
+        concentration: opts.concentration,
+        expires: { turnOf: source.id, when: 'start', round: s.round + 10 },
+      });
+      say(s, 'you', `${target.name} blurs with speed (Haste)`);
+      return;
+    case 'slowed':
+      addEffect(target, {
+        id: 'slowed',
+        name: 'Slow',
+        sourceId: source.id,
+        tag: 'slowed',
+        concentration: opts.concentration,
+        data: { repeatSave: 'wis', dc: opts.dc ?? 10 },
+        expires: { turnOf: source.id, when: 'start', round: s.round + 10 },
+      });
+      return;
+    case 'flee':
+      // PHB: Fear. The frightened creature must Dash away from you each turn [repeat Wis save at
+      // the end of each of its turns: inferred, RAW only once out of sight].
+      addEffect(target, {
+        id: 'feared',
+        name: 'Fear',
+        sourceId: source.id,
+        tag: 'turned',
+        concentration: opts.concentration,
+        data: { repeatSave: 'wis', dc: opts.dc ?? 10 },
+      });
+      return;
+    case 'heal-half-damage': {
+      // PHB: Vampiric Touch. You regain half the necrotic damage dealt; repeat as an action.
+      const healed = Math.floor((ctx.lastDamage ?? 0) / 2);
+      if (healed) healCombatant(ctx, source, healed, 'Vampiric Touch', source);
+      if (!source.effects.some((e) => e.tag === 'vampiric-touch'))
+        addEffect(source, {
+          id: 'vampiric-touch',
+          name: 'Vampiric Touch',
+          sourceId: source.id,
+          tag: 'vampiric-touch',
+          concentration: opts.concentration,
+          data: { dice: opts.upcastDice ? `3d6+${opts.upcastDice}` : '3d6' },
+        });
+      return;
+    }
+    case 'repeat-action':
+      // PHB: Call Lightning. Call down another bolt as an action on later turns.
+      if (!source.effects.some((e) => e.tag === 'call-lightning'))
+        addEffect(source, {
+          id: 'call-lightning',
+          name: 'Call Lightning',
+          sourceId: source.id,
+          tag: 'call-lightning',
+          concentration: opts.concentration,
+          data: { dice: opts.upcastDice ? `3d10+${opts.upcastDice}` : '3d10', dc: opts.dc ?? 10 },
+        });
+      return;
+    case 'repeat-bonus-action':
+      // PHB: Heat Metal. Burn the same creature again as a bonus action.
+      addEffect(target, {
+        id: 'heated',
+        name: 'Heat Metal',
+        sourceId: source.id,
+        tag: 'heated',
+        concentration: opts.concentration,
+      });
+      addEffect(source, {
+        id: 'heat-metal',
+        name: 'Heat Metal',
+        sourceId: source.id,
+        tag: 'heat-metal',
+        concentration: opts.concentration,
+        data: { targetId: target.id, dice: opts.upcastDice ? `2d8+${opts.upcastDice}` : '2d8' },
+      });
+      return;
+    case 'suggestion':
+      // PHB: Suggestion, simplified to "stop fighting": it stops acting until it is hurt [inferred].
+      addEffect(target, {
+        id: 'suggestion',
+        name: 'Suggestion',
+        sourceId: source.id,
+        tag: 'skip-turn',
+        concentration: opts.concentration,
+        data: { wakeOnDamage: 1 },
+      });
+      say(s, 'dmg', `${target.name} lowers its weapon and wanders off, convinced`);
+      return;
+    case 'shillelagh':
+      // PHB: Shillelagh. Club or quarterstaff: Wis for attack and damage, d8, magical; 1 minute.
+      addEffect(target, {
+        id: 'shillelagh',
+        name: 'Shillelagh',
+        sourceId: source.id,
+        tag: 'shillelagh',
+        expires: { turnOf: source.id, when: 'start', round: s.round + 10 },
+      });
+      say(s, 'you', `${target.name}'s staff sprouts leaves and hardens (Shillelagh)`);
+      return;
+    case 'fly-speed':
+      addEffect(target, {
+        id: 'flying',
+        name: 'Fly',
+        sourceId: source.id,
+        tag: 'flying',
+        concentration: opts.concentration,
+      });
+      say(s, 'you', `${target.name} rises into the air (Fly: 60 ft)`);
+      return;
+    case 'max-hp-reduction': {
+      // MM: Life Drain. The target's hit point maximum drops by the damage taken until a long rest.
+      const lost = ctx.lastDamage ?? 0;
+      if (!lost || target.creature.dead) return;
+      const maxHp = Math.max(0, target.creature.maxHp - lost);
+      const prev = Number((target.creature as { maxHpDrain?: number }).maxHpDrain ?? 0);
+      target.creature = {
+        ...target.creature,
+        maxHp,
+        hp: Math.min(target.creature.hp, maxHp),
+        maxHpDrain: prev + lost,
+      } as unknown as typeof target.creature;
+      say(s, 'dmg', `${target.name}'s hit point maximum drops by ${lost} (until a long rest)`);
+      if (maxHp === 0) {
+        target.creature = { ...target.creature, dead: true, hp: 0 };
+        say(s, 'crit', `${target.name} is drained to nothing and dies`);
       }
       return;
     }

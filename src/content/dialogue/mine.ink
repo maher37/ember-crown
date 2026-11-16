@@ -23,8 +23,7 @@ VAR passed = false
 #speaker:mine
 { flag("act1_complete"):
     The mine mouth is quiet. Somewhere far below, the stone ticks as it cools, like something sleeping.
-    + [Leave (to the map).]
-        -> END
+    -> leave_only
 }
 { not (flag("won:f5-mine-mouth") || flag("mouth_cleared")):
     -> mouth
@@ -39,6 +38,11 @@ VAR passed = false
     -> shrine
 }
 -> maelis
+
+
+= leave_only
++ [Leave (to the map).]
+    -> END
 
 = mouth
 Fresh spoil heaps, new timbers, and a crane that wasn't there ten years ago. A dozen diggers in grey robes stop work as you come up the track. Their foreman hefts a pick handle.
@@ -140,6 +144,7 @@ Stairs go down into a hall half-full of steaming water. At its far end, a drowne
     #speaker:mine
     Brother Ulric lies still in the warm water. Back in Ashford, someone will have to tell Brannoc.
     ~ set_flag("ulric_dead", true)
+    ~ set_flag("ulric_killed", true)
     ~ note("Brother Ulric is dead. He was Brannoc's old shift partner.")
 }
 #speaker:mine

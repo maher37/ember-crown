@@ -13,6 +13,8 @@ Dialogue is written in [Ink](https://github.com/inkle/ink/blob/master/Documentat
 | `~ note("text")` | A journal note |
 | `roller()` / `leader()` | Who rolled the last check / the party's first hero |
 | `~ travel("map")` | Leave the scene and open the world map |
+| `~ travel("scene:ashford.hall")` | Leave this scene for another story's knot (the tavern's front door → Ashford Hall) |
+| `~ give_gold(300)` / `gold()` | Add (or, with a negative number, spend) gold / how much the party has |
 | `~ fight("f3-warren-gate", "arrive.after_gate")` | Start a fight (ids in `src/data/encounters.json`); after it, the story picks up at that knot. The fight's result is a flag: `won:<id>`, `lost:<id>` (only for fights you can lose and carry on) or `parley:<id>` |
 | `~ give_item("potion-of-healing", 2)` / `has_item("luck-stone")` | Put items in the party's pack / does anyone have it? (ids in `magicItems.json`) |
 | `~ truth("collapse")` | One of the three Truths (`collapse`, `crown`, `family`) |
@@ -27,6 +29,10 @@ Dialogue is written in [Ink](https://github.com/inkle/ink/blob/master/Documentat
 
 ## Stories and places
 
-Each `.ink` file is one story (`src/game/dialogue.ts` → `STORIES`). Arriving at a map place opens its scene (`PLACE_SCENES`): `warren`, `mine` (the Old Mine), `mill`, `ashwood` and `cave` (the Steaming Cave) start at their `arrive` knot; the tavern's hotspots open knots in `tavern.ink`; `road.ink` holds Wix's scene after the road ambush.
+Each `.ink` file is one story (`src/game/dialogue.ts` → `STORIES`). Arriving at a map place opens its scene (`PLACE_SCENES`): Act I's `warren`, `mine` (the Old Mine), `mill`, `ashwood` and `cave` (the Steaming Cave), and Act II's `bridge`, `marsh` (lizardfolk), `marrowmere`, `abbey`, `sallow` and `deserters` start at their `arrive` knot; `ashford.ink` holds Ashford Hall and Edric's Errand, and `camp.ink` Maelis's visit to the camp; the tavern's hotspots open knots in `tavern.ink`; `road.ink` holds Wix's scene after the road ambush.
 
 Lines can switch the portrait with `#speaker:edric` (ids in `src/data/npcs.json`). Keep NPC lines to 3 sentences and choices to 5 (Story_Bible §10–11). `tests/unit/dialogue.test.ts` checks that every quest step and award the script names exists.
+
+## Writing a place scene
+
+A finished place should divert to a stitch that only offers "Leave": choices inside a `{ condition: … }` block don't stop the story, so the knot would carry on underneath. `tests/unit/scenes2.test.ts` checks this for every place.

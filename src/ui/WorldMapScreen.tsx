@@ -136,7 +136,11 @@ export function WorldMapScreen() {
             </span>
             <span className="place-name">{sel.name}</span>
             <span className="small">
-              {locked ? 'The story hasn’t reached here yet.' : sel.desc}
+              {!locked
+                ? sel.desc
+                : sel.act <= g.act && sel.requires
+                  ? sel.requires.hint
+                  : 'The story hasn’t reached here yet.'}
             </span>
             <dl className="place-facts">
               <div>
@@ -172,13 +176,14 @@ export function WorldMapScreen() {
               {isHere
                 ? 'You are here'
                 : locked
-                  ? `Unlocks in Act ${['I', 'II', 'III'][sel.act - 1]}`
+                  ? sel.act <= g.act
+                    ? 'Not yet'
+                    : `Unlocks in Act ${['I', 'II', 'III'][sel.act - 1]}`
                   : `Travel (${hours} h)`}
             </button>
             {!isHere && !locked && sel.id !== 'ashford' && !PLACE_SCENES[sel.id] && (
               <span className="small muted">
-                What waits there arrives with Act II's content (a later milestone); you can camp
-                there and travel back.
+                What waits there arrives with a later milestone; you can camp there and travel back.
               </span>
             )}
           </div>
