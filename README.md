@@ -16,7 +16,8 @@ A personal browser RPG built on D&D 5e (2014) rules, set in the southern Greypea
 | `npm test` | Unit tests (Vitest) |
 | `npm run e2e` | Browser smoke tests (Playwright) |
 | `npm run build` | Production build into `dist/` |
-| `npm run validate-data` | Check every JSON file in `src/data/` against its zod schema |
+| `npm run validate-data` | Check every JSON file in `src/data/` against its zod schema, and the links between files |
+| `npm run verify-list` | Rebuild `docs/Data_Verify_Checklist.md` (data still to check against the books) |
 | `npm run lint` / `npm run format` | ESLint / Prettier |
 
 Every push to `main` runs the tests and deploys to GitHub Pages (`.github/workflows/deploy.yml`).

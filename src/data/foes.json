@@ -1,0 +1,134 @@
+{
+  "verify": true,
+  "verifyNote": "Mayor Tarrow is a named villain (Rules_Scope §1) but has no stat block in the docs yet; add one in M8.",
+  "foes": [
+    {
+      "id": "grey-company-bruiser",
+      "name": "Grey Company bruiser",
+      "base": "bandit",
+      "role": "named",
+      "act": 1,
+      "encounter": "F1 tavern brawl",
+      "summary": "Bandit stats fighting with fists and clubs; the brawl is nonlethal, so heroes knock them out."
+    },
+    {
+      "id": "grisk",
+      "name": "Grisk Two-Teeth",
+      "base": "hobgoblin",
+      "role": "boss",
+      "act": 1,
+      "encounter": "F4 Grisk's hall",
+      "companions": [
+        {
+          "monster": "goblin",
+          "count": 3
+        }
+      ],
+      "summary": "The goblin warren's chief. Uses hobgoblin stats because \"goblin boss\" isn't in the SRD.",
+      "art": "Chipped chainmail, gold-capped tusks, pot-lid shield"
+    },
+    {
+      "id": "brother-ulric",
+      "name": "Brother Ulric",
+      "base": "cult-fanatic",
+      "role": "villain",
+      "act": 1,
+      "knockedOutAtZero": true,
+      "encounter": "F7 Sunken shrine",
+      "companions": [
+        {
+          "monster": "skeleton",
+          "count": 4
+        }
+      ],
+      "reward": ["deepdelver"],
+      "summary": "The cult's foreman-priest. Falls unconscious at 0 HP so the story can continue.",
+      "art": "Broad, grey-bearded foreman; lantern hook in place of a hand"
+    },
+    {
+      "id": "scald",
+      "name": "Scald",
+      "base": "red-dragon-wyrmling",
+      "role": "elite",
+      "act": 1,
+      "reward": ["cloak-of-protection", "potion-of-fire-resistance"],
+      "summary": "A wyrmling from Cindrath's ancient clutch, hatched by the mountain's heat. Deadly at L2, Hard at L3.",
+      "art": "Dog-sized, eggshell still stuck to one horn, hoarding copper pots"
+    },
+    {
+      "id": "sister-venna",
+      "name": "Sister Venna",
+      "base": "priest",
+      "role": "boss",
+      "act": 2,
+      "encounter": "F14",
+      "summary": "The cult's priest in Ashford.",
+      "art": "Widow's veil burned at the edges, ember-red prayer beads"
+    },
+    {
+      "id": "mother-sallow",
+      "name": "Mother Sallow",
+      "base": "green-hag",
+      "role": "named",
+      "act": 2,
+      "reward": ["bog-pearl"],
+      "summary": "The marsh hag; her bargain can be struck instead of fought."
+    },
+    {
+      "id": "drowned-abbot",
+      "name": "The Drowned Abbot",
+      "base": "wraith",
+      "role": "elite",
+      "act": 2,
+      "companions": [
+        {
+          "monster": "specter",
+          "count": 1
+        }
+      ],
+      "reward": ["mace-of-disruption", "staff-of-healing"],
+      "summary": "The abbey's last abbot, who refused to leave his flooded crypt. Deadly at L4, Hard at L5. The party chooses one reward.",
+      "art": "A drowned abbot in a waterlogged sun-vestment"
+    },
+    {
+      "id": "ser-ida-marrow",
+      "name": "Ser Ida Marrow",
+      "base": "wight",
+      "role": "boss",
+      "act": 3,
+      "encounter": "F18",
+      "reward": ["honor-guards-ring"],
+      "summary": "King Varrow's honor guard, still keeping her oath.",
+      "art": "A tall, armored woman with frost in her eye sockets and a broken crown-sigil on her shield"
+    },
+    {
+      "id": "vorrag",
+      "name": "Vorrag the Kiln-Smith",
+      "base": "fire-giant",
+      "role": "elite",
+      "act": 3,
+      "reward": ["dragon-slayer"],
+      "summary": "A fire giant who wants the crown for his forge. Can be talked into a duel or a smithing contest. Deadly at L5, Hard at L6."
+    },
+    {
+      "id": "maelis",
+      "name": "Maelis Varrow",
+      "base": "mage",
+      "role": "villain",
+      "act": 3,
+      "knockedOutAtZero": true,
+      "encounter": "F21 phase 1",
+      "summary": "The archivist who would wake Cindrath. Falls unconscious at 0 HP so the endings can play out.",
+      "art": "Archivist's coat, ink-stained fingers, a hooded lantern whose flame is the wrong color"
+    },
+    {
+      "id": "cindrath",
+      "name": "Cindrath's ember-wraith",
+      "base": "ember-wraith",
+      "role": "boss",
+      "act": 3,
+      "encounter": "F21 phase 2",
+      "summary": "The finale's second phase. Weakens as the crown shards are struck."
+    }
+  ]
+}

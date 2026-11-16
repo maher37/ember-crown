@@ -1,5 +1,6 @@
-// Checks every JSON file in src/data/ against its zod schema. Run: npm run validate-data
-import { dataFiles } from '../src/data';
+// Checks every JSON file in src/data/ against its zod schema, then the links between files.
+// Run: npm run validate-data
+import { dataFiles } from '../src/data/files';
 
 let failed = 0;
 for (const file of dataFiles) {
@@ -14,7 +15,18 @@ for (const file of dataFiles) {
     }
   }
 }
+if (failed) {
+  console.error(`\n${failed} file(s) failed.`);
+  process.exit(1);
+}
+
+// Only load the parsed data once every file is valid.
+const { gameData } = await import('../src/data');
+const { crossCheck } = await import('../src/data/crossCheck');
+const { errors, warnings } = crossCheck(gameData);
+for (const e of errors) console.error(`ERROR ${e}`);
+for (const w of warnings) console.warn(`warn  ${w}`);
 console.log(
-  failed ? `\n${failed} file(s) failed.` : `\nAll ${dataFiles.length} data file(s) valid.`,
+  `\nAll ${dataFiles.length} data files valid. ${errors.length} cross-file error(s), ${warnings.length} warning(s).`,
 );
-process.exit(failed ? 1 : 0);
+process.exit(errors.length ? 1 : 0);
