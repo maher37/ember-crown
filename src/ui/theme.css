@@ -1,0 +1,90 @@
+/* Palette and fonts from the mockups (CLAUDE.md, "Look and feel"). */
+:root {
+  --ground: #2b3442;
+  --header: #262f3c;
+  --panel: #364256;
+  --card: #323d4f;
+  --border: #51607a;
+  --border-strong: #63738e;
+  --button: #3e4b60;
+  --text: #eef2f7;
+  --heading: #f8f3e8;
+  --muted: #c3ccd9;
+  --faint: #aeb9c9;
+  --ember: #e8833a;
+  --ember-text: #e8a060;
+  --ember-deep: #5a3b22;
+  --gold: #e8c27a;
+  --parchment: #f3ead6;
+  --parchment-2: #ece4cf;
+  --ally: #7fb3e6;
+  --enemy: #e06a3b;
+
+  --font-heading: Cinzel, Georgia, serif;
+  --font-ui: Inter, system-ui, sans-serif;
+  --font-prose: Spectral, Georgia, serif;
+
+  color-scheme: dark;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  margin: 0;
+  height: 100%;
+}
+
+body {
+  background: var(--header);
+  color: var(--text);
+  font-family: var(--font-ui);
+  -webkit-font-smoothing: antialiased;
+}
+
+button {
+  font: inherit;
+  color: inherit;
+}
+
+:focus-visible {
+  outline: 3px solid var(--gold);
+  outline-offset: 2px;
+}
+
+.stage-viewport {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.stage {
+  position: relative;
+  overflow: hidden;
+}
+
+.stage-inner {
+  position: absolute;
+  top: 0;
+  left: 0;
+  transform-origin: top left;
+}
+
+/* Respect the OS "reduce motion" setting everywhere (CLAUDE.md, "Accessibility"). */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

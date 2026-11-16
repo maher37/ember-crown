@@ -1,0 +1,35 @@
+{
+  "default": "medium",
+  "levels": [
+    {
+      "id": "easy",
+      "name": "Easy",
+      "tag": "Story first",
+      "summary": [
+        "Fewer enemies in most fights: about 75% of the Medium XP budget.",
+        "Enemies rarely keep attacking a hero who is down.",
+        "Downed heroes get back up with 1 HP after a won fight."
+      ]
+    },
+    {
+      "id": "medium",
+      "name": "Medium",
+      "tag": "As designed",
+      "summary": [
+        "Each main-story fight is Medium for your expected level (2014 DMG budgets).",
+        "Side quests put you about a level ahead, so main fights feel easier.",
+        "Standard 5e rules: short rest 1 hour, long rest 8 hours (once a day)."
+      ]
+    },
+    {
+      "id": "hard",
+      "name": "Hard",
+      "tag": "Tactical",
+      "summary": [
+        "Extra enemies: about 150% of the Medium XP budget.",
+        "Smarter enemies: focus fire, flanking, targeted spells.",
+        "Enemies use reactions and go after your healers."
+      ]
+    }
+  ]
+}
