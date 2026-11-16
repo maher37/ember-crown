@@ -1,0 +1,139 @@
+{
+  "verify": true,
+  "verifyNote": "The PHB Armor table (chapter 5) from memory: check AC, Dex caps, Strength, stealth, cost and weight.",
+  "armor": [
+    {
+      "id": "padded",
+      "name": "Padded",
+      "category": "light",
+      "ac": 11,
+      "dexCap": null,
+      "stealthDisadvantage": true,
+      "costGp": 5,
+      "weightLb": 8
+    },
+    {
+      "id": "leather",
+      "name": "Leather",
+      "category": "light",
+      "ac": 11,
+      "dexCap": null,
+      "stealthDisadvantage": false,
+      "costGp": 10,
+      "weightLb": 10
+    },
+    {
+      "id": "studded-leather",
+      "name": "Studded leather",
+      "category": "light",
+      "ac": 12,
+      "dexCap": null,
+      "stealthDisadvantage": false,
+      "costGp": 45,
+      "weightLb": 13
+    },
+    {
+      "id": "hide",
+      "name": "Hide",
+      "category": "medium",
+      "ac": 12,
+      "dexCap": 2,
+      "stealthDisadvantage": false,
+      "costGp": 10,
+      "weightLb": 12
+    },
+    {
+      "id": "chain-shirt",
+      "name": "Chain shirt",
+      "category": "medium",
+      "ac": 13,
+      "dexCap": 2,
+      "stealthDisadvantage": false,
+      "costGp": 50,
+      "weightLb": 20
+    },
+    {
+      "id": "scale-mail",
+      "name": "Scale mail",
+      "category": "medium",
+      "ac": 14,
+      "dexCap": 2,
+      "stealthDisadvantage": true,
+      "costGp": 50,
+      "weightLb": 45
+    },
+    {
+      "id": "breastplate",
+      "name": "Breastplate",
+      "category": "medium",
+      "ac": 14,
+      "dexCap": 2,
+      "stealthDisadvantage": false,
+      "costGp": 400,
+      "weightLb": 20
+    },
+    {
+      "id": "half-plate",
+      "name": "Half plate",
+      "category": "medium",
+      "ac": 15,
+      "dexCap": 2,
+      "stealthDisadvantage": true,
+      "costGp": 750,
+      "weightLb": 40
+    },
+    {
+      "id": "ring-mail",
+      "name": "Ring mail",
+      "category": "heavy",
+      "ac": 14,
+      "dexCap": 0,
+      "stealthDisadvantage": true,
+      "costGp": 30,
+      "weightLb": 40
+    },
+    {
+      "id": "chain-mail",
+      "name": "Chain mail",
+      "category": "heavy",
+      "ac": 16,
+      "dexCap": 0,
+      "stealthDisadvantage": true,
+      "costGp": 75,
+      "weightLb": 55,
+      "strength": 13
+    },
+    {
+      "id": "splint",
+      "name": "Splint",
+      "category": "heavy",
+      "ac": 17,
+      "dexCap": 0,
+      "stealthDisadvantage": true,
+      "costGp": 200,
+      "weightLb": 60,
+      "strength": 15
+    },
+    {
+      "id": "plate",
+      "name": "Plate",
+      "category": "heavy",
+      "ac": 18,
+      "dexCap": 0,
+      "stealthDisadvantage": true,
+      "costGp": 1500,
+      "weightLb": 65,
+      "strength": 15
+    },
+    {
+      "id": "shield",
+      "name": "Shield",
+      "category": "shield",
+      "ac": 2,
+      "dexCap": null,
+      "stealthDisadvantage": false,
+      "costGp": 10,
+      "weightLb": 6
+    }
+  ]
+}

@@ -1,0 +1,540 @@
+{
+  "species": [
+    {
+      "id": "hill-dwarf",
+      "name": "Hill Dwarf",
+      "size": "Medium",
+      "speed": 25,
+      "abilityBonuses": {
+        "con": 2,
+        "wis": 1
+      },
+      "languages": ["Common", "Dwarvish"],
+      "traits": [
+        {
+          "id": "darkvision",
+          "name": "Darkvision",
+          "summary": "Sees in dim light within 60 feet as if it were bright, and in darkness as if it were dim (no colors).",
+          "mechanics": [
+            {
+              "type": "darkvision",
+              "feet": 60
+            }
+          ]
+        },
+        {
+          "id": "heavy-armor-speed",
+          "name": "Sturdy Stride",
+          "summary": "Heavy armor doesn't lower their speed.",
+          "mechanics": [
+            {
+              "type": "special",
+              "id": "ignore-heavy-armor-speed"
+            }
+          ]
+        },
+        {
+          "id": "dwarven-resilience",
+          "name": "Dwarven Resilience",
+          "summary": "Advantage on saves against poison, and resistance to poison damage.",
+          "mechanics": [
+            {
+              "type": "saveAdvantage",
+              "against": "poison"
+            },
+            {
+              "type": "resistance",
+              "damageType": "poison"
+            }
+          ]
+        },
+        {
+          "id": "dwarven-combat-training",
+          "name": "Dwarven Combat Training",
+          "summary": "Proficient with battleaxes, handaxes, light hammers and warhammers.",
+          "mechanics": [
+            {
+              "type": "weapons",
+              "weapons": ["battleaxe", "handaxe", "light-hammer", "warhammer"]
+            }
+          ]
+        },
+        {
+          "id": "stonecunning",
+          "name": "Stonecunning",
+          "summary": "Double proficiency on History checks about stonework.",
+          "mechanics": [
+            {
+              "type": "special",
+              "id": "stonecunning"
+            }
+          ]
+        },
+        {
+          "id": "dwarven-toughness",
+          "name": "Dwarven Toughness",
+          "summary": "+1 hit point maximum per level.",
+          "mechanics": [
+            {
+              "type": "hpPerLevel",
+              "amount": 1
+            }
+          ]
+        }
+      ],
+      "verify": true,
+      "verifyNote": "Ability bonuses and speed checked against the PHB (Rules_Scope §3 ✅). Traits, size and languages are from memory."
+    },
+    {
+      "id": "high-elf",
+      "name": "High Elf",
+      "size": "Medium",
+      "speed": 30,
+      "abilityBonuses": {
+        "dex": 2,
+        "int": 1
+      },
+      "languages": ["Common", "Elvish"],
+      "extraLanguages": 1,
+      "traits": [
+        {
+          "id": "darkvision",
+          "name": "Darkvision",
+          "summary": "Sees in dim light within 60 feet as if it were bright, and in darkness as if it were dim (no colors).",
+          "mechanics": [
+            {
+              "type": "darkvision",
+              "feet": 60
+            }
+          ]
+        },
+        {
+          "id": "keen-senses",
+          "name": "Keen Senses",
+          "summary": "Proficient in Perception.",
+          "mechanics": [
+            {
+              "type": "skill",
+              "skill": "perception"
+            }
+          ]
+        },
+        {
+          "id": "fey-ancestry",
+          "name": "Fey Ancestry",
+          "summary": "Advantage on saves against being charmed; magic can't put them to sleep.",
+          "mechanics": [
+            {
+              "type": "saveAdvantage",
+              "against": "charmed"
+            },
+            {
+              "type": "special",
+              "id": "immune-magic-sleep"
+            }
+          ]
+        },
+        {
+          "id": "trance",
+          "name": "Trance",
+          "summary": "Meditates for 4 hours instead of sleeping 8.",
+          "mechanics": [
+            {
+              "type": "special",
+              "id": "trance"
+            }
+          ]
+        },
+        {
+          "id": "elf-weapon-training",
+          "name": "Elf Weapon Training",
+          "summary": "Proficient with longswords, shortswords, shortbows and longbows.",
+          "mechanics": [
+            {
+              "type": "weapons",
+              "weapons": ["longsword", "shortsword", "shortbow", "longbow"]
+            }
+          ]
+        },
+        {
+          "id": "cantrip",
+          "name": "Cantrip",
+          "summary": "Knows one wizard cantrip, cast with Intelligence.",
+          "mechanics": [
+            {
+              "type": "special",
+              "id": "wizard-cantrip-choice"
+            }
+          ]
+        }
+      ],
+      "verify": true,
+      "verifyNote": "Ability bonuses and speed checked against the PHB (Rules_Scope §3 ✅). Traits, size and languages are from memory."
+    },
+    {
+      "id": "lightfoot-halfling",
+      "name": "Lightfoot Halfling",
+      "size": "Small",
+      "speed": 25,
+      "abilityBonuses": {
+        "dex": 2,
+        "cha": 1
+      },
+      "languages": ["Common", "Halfling"],
+      "traits": [
+        {
+          "id": "lucky",
+          "name": "Lucky",
+          "summary": "Rerolls a natural 1 on an attack roll, ability check or saving throw, and must use the new roll.",
+          "mechanics": [
+            {
+              "type": "special",
+              "id": "halfling-lucky"
+            }
+          ]
+        },
+        {
+          "id": "brave",
+          "name": "Brave",
+          "summary": "Advantage on saves against being frightened.",
+          "mechanics": [
+            {
+              "type": "saveAdvantage",
+              "against": "frightened"
+            }
+          ]
+        },
+        {
+          "id": "halfling-nimbleness",
+          "name": "Halfling Nimbleness",
+          "summary": "Can move through the space of any creature larger than itself.",
+          "mechanics": [
+            {
+              "type": "special",
+              "id": "move-through-larger"
+            }
+          ]
+        },
+        {
+          "id": "naturally-stealthy",
+          "name": "Naturally Stealthy",
+          "summary": "Can try to hide behind a creature at least one size larger.",
+          "mechanics": [
+            {
+              "type": "special",
+              "id": "hide-behind-larger"
+            }
+          ]
+        }
+      ],
+      "verify": true,
+      "verifyNote": "Ability bonuses and speed checked against the PHB (Rules_Scope §3 ✅). Traits, size and languages are from memory."
+    },
+    {
+      "id": "human",
+      "name": "Human",
+      "size": "Medium",
+      "speed": 30,
+      "abilityBonuses": {
+        "str": 1,
+        "dex": 1,
+        "con": 1,
+        "int": 1,
+        "wis": 1,
+        "cha": 1
+      },
+      "languages": ["Common"],
+      "extraLanguages": 1,
+      "traits": [],
+      "verify": true,
+      "verifyNote": "Ability bonuses and speed checked (✅); languages from memory."
+    },
+    {
+      "id": "dragonborn",
+      "name": "Dragonborn",
+      "size": "Medium",
+      "speed": 30,
+      "abilityBonuses": {
+        "str": 2,
+        "cha": 1
+      },
+      "languages": ["Common", "Draconic"],
+      "traits": [
+        {
+          "id": "draconic-ancestry",
+          "name": "Draconic Ancestry (red)",
+          "summary": "Descended from red dragons: fire breath and fire resistance. Only red ancestry is offered in v1 [inferred simplification].",
+          "mechanics": [
+            {
+              "type": "special",
+              "id": "ancestry-red"
+            }
+          ]
+        },
+        {
+          "id": "breath-weapon",
+          "name": "Breath Weapon",
+          "summary": "Action: a 15-foot cone of fire. Dex save (DC 8 + Con modifier + proficiency), 2d6 fire, half on a success; 3d6 at level 6. Once per short or long rest.",
+          "mechanics": [
+            {
+              "type": "special",
+              "id": "dragonborn-breath"
+            }
+          ]
+        },
+        {
+          "id": "damage-resistance",
+          "name": "Damage Resistance",
+          "summary": "Resistance to fire damage.",
+          "mechanics": [
+            {
+              "type": "resistance",
+              "damageType": "fire"
+            }
+          ]
+        }
+      ],
+      "verify": true,
+      "verifyNote": "Ability bonuses and speed checked against the PHB (Rules_Scope §3 ✅). Traits, size and languages are from memory."
+    },
+    {
+      "id": "rock-gnome",
+      "name": "Rock Gnome",
+      "size": "Small",
+      "speed": 25,
+      "abilityBonuses": {
+        "int": 2,
+        "con": 1
+      },
+      "languages": ["Common", "Gnomish"],
+      "traits": [
+        {
+          "id": "darkvision",
+          "name": "Darkvision",
+          "summary": "Sees in dim light within 60 feet as if it were bright, and in darkness as if it were dim (no colors).",
+          "mechanics": [
+            {
+              "type": "darkvision",
+              "feet": 60
+            }
+          ]
+        },
+        {
+          "id": "gnome-cunning",
+          "name": "Gnome Cunning",
+          "summary": "Advantage on Intelligence, Wisdom and Charisma saves against magic.",
+          "mechanics": [
+            {
+              "type": "saveAdvantage",
+              "against": "magic-int-wis-cha"
+            }
+          ]
+        },
+        {
+          "id": "artificers-lore",
+          "name": "Artificer's Lore",
+          "summary": "Double proficiency on History checks about magic items, alchemy and technology.",
+          "mechanics": [
+            {
+              "type": "special",
+              "id": "artificers-lore"
+            }
+          ]
+        },
+        {
+          "id": "tinker",
+          "name": "Tinker",
+          "summary": "Proficient with tinker's tools; can build small clockwork toys.",
+          "mechanics": [
+            {
+              "type": "special",
+              "id": "tinker"
+            }
+          ]
+        }
+      ],
+      "verify": true,
+      "verifyNote": "Ability bonuses and speed checked against the PHB (Rules_Scope §3 ✅). Traits, size and languages are from memory."
+    },
+    {
+      "id": "half-elf",
+      "name": "Half-Elf",
+      "size": "Medium",
+      "speed": 30,
+      "abilityBonuses": {
+        "cha": 2
+      },
+      "abilityChoice": {
+        "count": 2,
+        "amount": 1,
+        "exclude": ["cha"]
+      },
+      "languages": ["Common", "Elvish"],
+      "extraLanguages": 1,
+      "traits": [
+        {
+          "id": "darkvision",
+          "name": "Darkvision",
+          "summary": "Sees in dim light within 60 feet as if it were bright, and in darkness as if it were dim (no colors).",
+          "mechanics": [
+            {
+              "type": "darkvision",
+              "feet": 60
+            }
+          ]
+        },
+        {
+          "id": "fey-ancestry",
+          "name": "Fey Ancestry",
+          "summary": "Advantage on saves against being charmed; magic can't put them to sleep.",
+          "mechanics": [
+            {
+              "type": "saveAdvantage",
+              "against": "charmed"
+            },
+            {
+              "type": "special",
+              "id": "immune-magic-sleep"
+            }
+          ]
+        },
+        {
+          "id": "skill-versatility",
+          "name": "Skill Versatility",
+          "summary": "Proficient in two skills of their choice.",
+          "mechanics": [
+            {
+              "type": "skillChoice",
+              "count": 2
+            }
+          ]
+        }
+      ],
+      "verify": true,
+      "verifyNote": "Ability bonuses and speed checked against the PHB (Rules_Scope §3 ✅). Traits, size and languages are from memory."
+    },
+    {
+      "id": "half-orc",
+      "name": "Half-Orc",
+      "size": "Medium",
+      "speed": 30,
+      "abilityBonuses": {
+        "str": 2,
+        "con": 1
+      },
+      "languages": ["Common", "Orc"],
+      "traits": [
+        {
+          "id": "darkvision",
+          "name": "Darkvision",
+          "summary": "Sees in dim light within 60 feet as if it were bright, and in darkness as if it were dim (no colors).",
+          "mechanics": [
+            {
+              "type": "darkvision",
+              "feet": 60
+            }
+          ]
+        },
+        {
+          "id": "menacing",
+          "name": "Menacing",
+          "summary": "Proficient in Intimidation.",
+          "mechanics": [
+            {
+              "type": "skill",
+              "skill": "intimidation"
+            }
+          ]
+        },
+        {
+          "id": "relentless-endurance",
+          "name": "Relentless Endurance",
+          "summary": "Once per long rest, when dropped to 0 HP but not killed outright, drops to 1 HP instead.",
+          "mechanics": [
+            {
+              "type": "special",
+              "id": "relentless-endurance"
+            }
+          ]
+        },
+        {
+          "id": "savage-attacks",
+          "name": "Savage Attacks",
+          "summary": "On a melee weapon critical hit, rolls one of the weapon's damage dice one more time.",
+          "mechanics": [
+            {
+              "type": "special",
+              "id": "savage-attacks"
+            }
+          ]
+        }
+      ],
+      "verify": true,
+      "verifyNote": "Ability bonuses and speed checked against the PHB (Rules_Scope §3 ✅). Traits, size and languages are from memory."
+    },
+    {
+      "id": "tiefling",
+      "name": "Tiefling",
+      "size": "Medium",
+      "speed": 30,
+      "abilityBonuses": {
+        "cha": 2,
+        "int": 1
+      },
+      "languages": ["Common", "Infernal"],
+      "traits": [
+        {
+          "id": "darkvision",
+          "name": "Darkvision",
+          "summary": "Sees in dim light within 60 feet as if it were bright, and in darkness as if it were dim (no colors).",
+          "mechanics": [
+            {
+              "type": "darkvision",
+              "feet": 60
+            }
+          ]
+        },
+        {
+          "id": "hellish-resistance",
+          "name": "Hellish Resistance",
+          "summary": "Resistance to fire damage.",
+          "mechanics": [
+            {
+              "type": "resistance",
+              "damageType": "fire"
+            }
+          ]
+        },
+        {
+          "id": "infernal-legacy",
+          "name": "Infernal Legacy",
+          "summary": "Knows Thaumaturgy. From level 3, casts Hellish Rebuke as a 2nd-level spell once per long rest; from level 5, Darkness once per long rest. Charisma is the casting ability.",
+          "mechanics": [
+            {
+              "type": "spell",
+              "spell": "thaumaturgy",
+              "atLevel": 1,
+              "ability": "cha"
+            },
+            {
+              "type": "spell",
+              "spell": "hellish-rebuke",
+              "atLevel": 3,
+              "castAtLevel": 2,
+              "ability": "cha"
+            },
+            {
+              "type": "spell",
+              "spell": "darkness",
+              "atLevel": 5,
+              "castAtLevel": 2,
+              "ability": "cha"
+            }
+          ]
+        }
+      ],
+      "verify": true,
+      "verifyNote": "Ability bonuses and speed checked against the PHB (Rules_Scope §3 ✅). Traits, size and languages are from memory."
+    }
+  ]
+}

@@ -1,0 +1,116 @@
+{
+  "backgrounds": [
+    {
+      "id": "acolyte",
+      "name": "Acolyte",
+      "skills": ["insight", "religion"],
+      "tools": [],
+      "extraLanguages": 2,
+      "feature": {
+        "name": "Shelter of the Faithful",
+        "summary": "Temples of your faith offer you and your companions free healing and a place to stay."
+      },
+      "dialogueTag": "Temples, Lathander's abbey",
+      "verify": true,
+      "verifyNote": "Skills and dialogue tag from Rules_Scope §3; tools, languages and feature from memory of the PHB."
+    },
+    {
+      "id": "criminal",
+      "name": "Criminal",
+      "skills": ["deception", "stealth"],
+      "tools": ["one gaming set", "thieves' tools"],
+      "extraLanguages": 0,
+      "feature": {
+        "name": "Criminal Contact",
+        "summary": "You have a reliable go-between in the criminal underworld."
+      },
+      "dialogueTag": "Grey Company, smugglers",
+      "verify": true,
+      "verifyNote": "Skills and dialogue tag from Rules_Scope §3; tools, languages and feature from memory of the PHB."
+    },
+    {
+      "id": "folk-hero",
+      "name": "Folk Hero",
+      "skills": ["animalHandling", "survival"],
+      "tools": ["one type of artisan's tools", "vehicles (land)"],
+      "extraLanguages": 0,
+      "feature": {
+        "name": "Rustic Hospitality",
+        "summary": "Common folk will hide and shelter you, though not at the risk of their lives."
+      },
+      "dialogueTag": "Ashford's commoners trust you",
+      "verify": true,
+      "verifyNote": "Skills and dialogue tag from Rules_Scope §3; tools, languages and feature from memory of the PHB."
+    },
+    {
+      "id": "sage",
+      "name": "Sage",
+      "skills": ["arcana", "history"],
+      "tools": [],
+      "extraLanguages": 2,
+      "feature": {
+        "name": "Researcher",
+        "summary": "When you don't know a piece of lore, you usually know where to find it."
+      },
+      "dialogueTag": "Abbey archives, Ammarindar lore",
+      "verify": true,
+      "verifyNote": "Skills and dialogue tag from Rules_Scope §3; tools, languages and feature from memory of the PHB."
+    },
+    {
+      "id": "soldier",
+      "name": "Soldier",
+      "skills": ["athletics", "intimidation"],
+      "tools": ["one gaming set", "vehicles (land)"],
+      "extraLanguages": 0,
+      "feature": {
+        "name": "Military Rank",
+        "summary": "Soldiers loyal to your old outfit still recognize your rank."
+      },
+      "dialogueTag": "Captain Kell respects rank",
+      "verify": true,
+      "verifyNote": "Skills and dialogue tag from Rules_Scope §3; tools, languages and feature from memory of the PHB."
+    },
+    {
+      "id": "outlander",
+      "name": "Outlander",
+      "skills": ["athletics", "survival"],
+      "tools": ["one musical instrument"],
+      "extraLanguages": 1,
+      "feature": {
+        "name": "Wanderer",
+        "summary": "You never forget a map, and can find food and water for a small group in the wild."
+      },
+      "dialogueTag": "Mountain travel, goblins",
+      "verify": true,
+      "verifyNote": "Skills and dialogue tag from Rules_Scope §3; tools, languages and feature from memory of the PHB."
+    },
+    {
+      "id": "urchin",
+      "name": "Urchin",
+      "skills": ["sleightOfHand", "stealth"],
+      "tools": ["disguise kit", "thieves' tools"],
+      "extraLanguages": 0,
+      "feature": {
+        "name": "City Secrets",
+        "summary": "You know the back alleys and can move through a town twice as fast."
+      },
+      "dialogueTag": "Edric, street rumors",
+      "verify": true,
+      "verifyNote": "Skills and dialogue tag from Rules_Scope §3; tools, languages and feature from memory of the PHB."
+    },
+    {
+      "id": "noble",
+      "name": "Noble",
+      "skills": ["history", "persuasion"],
+      "tools": ["one gaming set"],
+      "extraLanguages": 1,
+      "feature": {
+        "name": "Position of Privilege",
+        "summary": "People of standing receive you, and common folk try to accommodate you."
+      },
+      "dialogueTag": "Mayor Tarrow, the Coinwright Guild",
+      "verify": true,
+      "verifyNote": "Skills and dialogue tag from Rules_Scope §3; tools, languages and feature from memory of the PHB."
+    }
+  ]
+}

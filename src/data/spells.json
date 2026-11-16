@@ -1,0 +1,2933 @@
+{
+  "spells": [
+    {
+      "id": "fire-bolt",
+      "name": "Fire Bolt",
+      "level": 0,
+      "school": "evocation",
+      "castingTime": "action",
+      "range": {
+        "feet": 120
+      },
+      "concentration": false,
+      "duration": "instant",
+      "components": "V, S",
+      "classes": ["sorcerer", "wizard"],
+      "summary": "Hurl a mote of fire: ranged spell attack, 1d10 fire.",
+      "effects": [
+        {
+          "type": "attack",
+          "kind": "ranged",
+          "onHit": [
+            {
+              "type": "damage",
+              "dice": "1d10",
+              "damageType": "fire"
+            }
+          ]
+        }
+      ],
+      "cantripAt5": "2d10",
+      "verify": true,
+      "verifyNote": "From memory of the PHB (Rules_Scope §5 summary): check damage dice, save, range, duration and school."
+    },
+    {
+      "id": "ray-of-frost",
+      "name": "Ray of Frost",
+      "level": 0,
+      "school": "evocation",
+      "castingTime": "action",
+      "range": {
+        "feet": 60
+      },
+      "concentration": false,
+      "duration": "instant",
+      "components": "V, S",
+      "classes": ["sorcerer", "wizard"],
+      "summary": "A freezing beam: ranged spell attack, 1d8 cold, and the target's speed drops by 10 ft until your next turn.",
+      "effects": [
+        {
+          "type": "attack",
+          "kind": "ranged",
+          "onHit": [
+            {
+              "type": "damage",
+              "dice": "1d8",
+              "damageType": "cold"
+            },
+            {
+              "type": "modifier",
+              "target": "speed",
+              "value": -10,
+              "duration": "until-start-of-next-turn"
+            }
+          ]
+        }
+      ],
+      "cantripAt5": "2d8",
+      "verify": true,
+      "verifyNote": "From memory of the PHB (Rules_Scope §5 summary): check damage dice, save, range, duration and school."
+    },
+    {
+      "id": "shocking-grasp",
+      "name": "Shocking Grasp",
+      "level": 0,
+      "school": "evocation",
+      "castingTime": "action",
+      "range": "touch",
+      "concentration": false,
+      "duration": "instant",
+      "components": "V, S",
+      "classes": ["sorcerer", "wizard"],
+      "summary": "Melee spell attack, 1d8 lightning, with advantage against metal armor; the target can't take reactions until its next turn.",
+      "effects": [
+        {
+          "type": "attack",
+          "kind": "melee",
+          "onHit": [
+            {
+              "type": "damage",
+              "dice": "1d8",
+              "damageType": "lightning"
+            },
+            {
+              "type": "special",
+              "id": "no-reactions"
+            }
+          ]
+        },
+        {
+          "type": "special",
+          "id": "advantage-vs-metal-armor"
+        }
+      ],
+      "cantripAt5": "2d8",
+      "verify": true,
+      "verifyNote": "From memory of the PHB (Rules_Scope §5 summary): check damage dice, save, range, duration and school."
+    },
+    {
+      "id": "acid-splash",
+      "name": "Acid Splash",
+      "level": 0,
+      "school": "conjuration",
+      "castingTime": "action",
+      "range": {
+        "feet": 60
+      },
+      "concentration": false,
+      "duration": "instant",
+      "components": "V, S",
+      "classes": ["sorcerer", "wizard"],
+      "summary": "One target, or two within 5 ft of each other: Dex save or 1d6 acid.",
+      "effects": [
+        {
+          "type": "save",
+          "ability": "dex",
+          "onFail": [
+            {
+              "type": "damage",
+              "dice": "1d6",
+              "damageType": "acid"
+            }
+          ],
+          "onSuccess": "none"
+        }
+      ],
+      "targets": 2,
+      "cantripAt5": "2d6",
+      "verify": true,
+      "verifyNote": "From memory of the PHB (Rules_Scope §5 summary): check damage dice, save, range, duration and school."
+    },
+    {
+      "id": "chill-touch",
+      "name": "Chill Touch",
+      "level": 0,
+      "school": "necromancy",
+      "castingTime": "action",
+      "range": {
+        "feet": 120
+      },
+      "concentration": false,
+      "duration": {
+        "rounds": 1
+      },
+      "components": "V, S",
+      "classes": ["sorcerer", "warlock", "wizard"],
+      "summary": "Ranged spell attack, 1d8 necrotic; the target can't regain HP until your next turn (undead also get disadvantage attacking you).",
+      "effects": [
+        {
+          "type": "attack",
+          "kind": "ranged",
+          "onHit": [
+            {
+              "type": "damage",
+              "dice": "1d8",
+              "damageType": "necrotic"
+            },
+            {
+              "type": "special",
+              "id": "no-healing"
+            }
+          ]
+        }
+      ],
+      "cantripAt5": "2d8",
+      "verify": true,
+      "verifyNote": "From memory of the PHB (Rules_Scope §5 summary): check damage dice, save, range, duration and school."
+    },
+    {
+      "id": "eldritch-blast",
+      "name": "Eldritch Blast",
+      "level": 0,
+      "school": "evocation",
+      "castingTime": "action",
+      "range": {
+        "feet": 120
+      },
+      "concentration": false,
+      "duration": "instant",
+      "components": "V, S",
+      "classes": ["warlock"],
+      "summary": "A beam of crackling force: ranged spell attack, 1d10 force. Two beams at level 5.",
+      "effects": [
+        {
+          "type": "attack",
+          "kind": "ranged",
+          "onHit": [
+            {
+              "type": "damage",
+              "dice": "1d10",
+              "damageType": "force"
+            }
+          ]
+        }
+      ],
+      "upcast": {
+        "note": "Cantrip: 2 beams at character level 5 (not extra dice)."
+      },
+      "verify": true,
+      "verifyNote": "From memory of the PHB (Rules_Scope §5 summary): check damage dice, save, range, duration and school."
+    },
+    {
+      "id": "poison-spray",
+      "name": "Poison Spray",
+      "level": 0,
+      "school": "conjuration",
+      "castingTime": "action",
+      "range": {
+        "feet": 10
+      },
+      "concentration": false,
+      "duration": "instant",
+      "components": "V, S",
+      "classes": ["druid", "sorcerer", "warlock", "wizard"],
+      "summary": "Con save or 1d12 poison.",
+      "effects": [
+        {
+          "type": "save",
+          "ability": "con",
+          "onFail": [
+            {
+              "type": "damage",
+              "dice": "1d12",
+              "damageType": "poison"
+            }
+          ],
+          "onSuccess": "none"
+        }
+      ],
+      "cantripAt5": "2d12",
+      "verify": true,
+      "verifyNote": "From memory of the PHB (Rules_Scope §5 summary): check damage dice, save, range, duration and school."
+    },
+    {
+      "id": "sacred-flame",
+      "name": "Sacred Flame",
+      "level": 0,
+      "school": "evocation",
+      "castingTime": "action",
+      "range": {
+        "feet": 60
+      },
+      "concentration": false,
+      "duration": "instant",
+      "components": "V, S",
+      "classes": ["cleric"],
+      "summary": "Radiant flame: Dex save (no cover bonus) or 1d8 radiant.",
+      "effects": [
+        {
+          "type": "save",
+          "ability": "dex",
+          "onFail": [
+            {
+              "type": "damage",
+              "dice": "1d8",
+              "damageType": "radiant"
+            }
+          ],
+          "onSuccess": "none"
+        },
+        {
+          "type": "special",
+          "id": "ignores-cover"
+        }
+      ],
+      "cantripAt5": "2d8",
+      "verify": true,
+      "verifyNote": "From memory of the PHB (Rules_Scope §5 summary): check damage dice, save, range, duration and school."
+    },
+    {
+      "id": "vicious-mockery",
+      "name": "Vicious Mockery",
+      "level": 0,
+      "school": "enchantment",
+      "castingTime": "action",
+      "range": {
+        "feet": 60
+      },
+      "concentration": false,
+      "duration": "instant",
+      "components": "V",
+      "classes": ["bard"],
+      "summary": "A magical insult: Wis save or 1d4 psychic and disadvantage on its next attack roll.",
+      "effects": [
+        {
+          "type": "save",
+          "ability": "wis",
+          "onFail": [
+            {
+              "type": "damage",
+              "dice": "1d4",
+              "damageType": "psychic"
+            },
+            {
+              "type": "special",
+              "id": "disadvantage-next-attack"
+            }
+          ],
+          "onSuccess": "none"
+        }
+      ],
+      "cantripAt5": "2d4",
+      "verify": true,
+      "verifyNote": "From memory of the PHB (Rules_Scope §5 summary): check damage dice, save, range, duration and school."
+    },
+    {
+      "id": "produce-flame",
+      "name": "Produce Flame",
+      "level": 0,
+      "school": "conjuration",
+      "castingTime": "action",
+      "range": "self",
+      "concentration": false,
+      "duration": {
+        "minutes": 10
+      },
+      "components": "V, S",
+      "classes": ["druid"],
+      "summary": "A flame in your hand gives light; throw it (30 ft) as a ranged spell attack for 1d8 fire.",
+      "effects": [
+        {
+          "type": "attack",
+          "kind": "ranged",
+          "onHit": [
+            {
+              "type": "damage",
+              "dice": "1d8",
+              "damageType": "fire"
+            }
+          ]
+        }
+      ],
+      "cantripAt5": "2d8",
+      "verify": true,
+      "verifyNote": "From memory of the PHB (Rules_Scope §5 summary): check damage dice, save, range, duration and school."
+    },
+    {
+      "id": "shillelagh",
+      "name": "Shillelagh",
+      "level": 0,
+      "school": "transmutation",
+      "castingTime": "bonus",
+      "range": "touch",
+      "concentration": false,
+      "duration": {
+        "minutes": 1
+      },
+      "components": "V, S, M",
+      "classes": ["druid"],
+      "summary": "Your club or quarterstaff uses Wisdom for attack and damage, deals a d8, and counts as magical.",
+      "effects": [
+        {
+          "type": "special",
+          "id": "shillelagh"
+        }
+      ],
+      "verify": true,
+      "verifyNote": "From memory of the PHB (Rules_Scope §5 summary): check damage dice, save, range, duration and school."
+    },
+    {
+      "id": "thorn-whip",
+      "name": "Thorn Whip",
+      "level": 0,
+      "school": "transmutation",
+      "castingTime": "action",
+      "range": {
+        "feet": 30
+      },
+      "concentration": false,
+      "duration": "instant",
+      "components": "V, S, M",
+      "classes": ["druid"],
+      "summary": "Melee spell attack, 1d6 piercing, and pull a Large or smaller target 10 ft closer.",
+      "effects": [
+        {
+          "type": "attack",
+          "kind": "melee",
+          "onHit": [
+            {
+              "type": "damage",
+              "dice": "1d6",
+              "damageType": "piercing"
+            },
+            {
+              "type": "move",
+              "kind": "pull",
+              "feet": 10
+            }
+          ]
+        }
+      ],
+      "cantripAt5": "2d6",
+      "verify": true,
+      "verifyNote": "From memory of the PHB (Rules_Scope §5 summary): check damage dice, save, range, duration and school."
+    },
+    {
+      "id": "guidance",
+      "name": "Guidance",
+      "level": 0,
+      "school": "divination",
+      "castingTime": "action",
+      "range": "touch",
+      "concentration": true,
+      "duration": {
+        "minutes": 1
+      },
+      "components": "V, S",
+      "classes": ["cleric", "druid"],
+      "summary": "The target adds 1d4 to one ability check of its choice.",
+      "effects": [
+        {
+          "type": "modifier",
+          "target": "check",
+          "value": "1d4",
+          "duration": {
+            "minutes": 1
+          }
+        }
+      ],
+      "verify": true,
+      "verifyNote": "From memory of the PHB (Rules_Scope §5 summary): check damage dice, save, range, duration and school."
+    },
+    {
+      "id": "spare-the-dying",
+      "name": "Spare the Dying",
+      "level": 0,
+      "school": "necromancy",
+      "castingTime": "action",
+      "range": "touch",
+      "concentration": false,
+      "duration": "instant",
+      "components": "V, S",
+      "classes": ["cleric"],
+      "summary": "A dying creature becomes stable.",
+      "effects": [
+        {
+          "type": "special",
+          "id": "stabilize"
+        }
+      ],
+      "verify": true,
+      "verifyNote": "From memory of the PHB (Rules_Scope §5 summary): check damage dice, save, range, duration and school."
+    },
+    {
+      "id": "light",
+      "name": "Light",
+      "level": 0,
+      "school": "evocation",
+      "castingTime": "action",
+      "range": {
+        "feet": 30
+      },
+      "concentration": false,
+      "duration": "instant",
+      "components": "V, M",
+      "classes": ["bard", "cleric", "sorcerer", "wizard"],
+      "summary": "An object glows like a torch for an hour.",
+      "effects": [],
+      "utility": true,
+      "verify": true,
+      "verifyNote": "From memory of the PHB (Rules_Scope §5 summary): check damage dice, save, range, duration and school."
+    },
+    {
+      "id": "mage-hand",
+      "name": "Mage Hand",
+      "level": 0,
+      "school": "conjuration",
+      "castingTime": "action",
+      "range": {
+        "feet": 30
+      },
+      "concentration": false,
+      "duration": "instant",
+      "components": "V, S",
+      "classes": ["bard", "sorcerer", "warlock", "wizard"],
+      "summary": "A spectral hand moves or manipulates light objects up to 30 ft away.",
+      "effects": [],
+      "utility": true,
+      "verify": true,
+      "verifyNote": "From memory of the PHB (Rules_Scope §5 summary): check damage dice, save, range, duration and school."
+    },
+    {
+      "id": "minor-illusion",
+      "name": "Minor Illusion",
+      "level": 0,
+      "school": "illusion",
+      "castingTime": "action",
+      "range": {
+        "feet": 30
+      },
+      "concentration": false,
+      "duration": "instant",
+      "components": "S, M",
+      "classes": ["bard", "sorcerer", "warlock", "wizard"],
+      "summary": "Create a small sound or image; Investigation reveals it.",
+      "effects": [],
+      "utility": true,
+      "verify": true,
+      "verifyNote": "From memory of the PHB (Rules_Scope §5 summary): check damage dice, save, range, duration and school."
+    },
+    {
+      "id": "prestidigitation",
+      "name": "Prestidigitation",
+      "level": 0,
+      "school": "transmutation",
+      "castingTime": "action",
+      "range": {
+        "feet": 30
+      },
+      "concentration": false,
+      "duration": "instant",
+      "components": "V, S",
+      "classes": ["bard", "sorcerer", "warlock", "wizard"],
+      "summary": "Small magical tricks: clean, warm, flavor, light a candle.",
+      "effects": [],
+      "utility": true,
+      "verify": true,
+      "verifyNote": "From memory of the PHB (Rules_Scope §5 summary): check damage dice, save, range, duration and school."
+    },
+    {
+      "id": "thaumaturgy",
+      "name": "Thaumaturgy",
+      "level": 0,
+      "school": "transmutation",
+      "castingTime": "action",
+      "range": {
+        "feet": 30
+      },
+      "concentration": false,
+      "duration": "instant",
+      "components": "V",
+      "classes": ["cleric"],
+      "summary": "Minor wonders: a booming voice, flickering flames, tremors.",
+      "effects": [],
+      "utility": true,
+      "verify": true,
+      "verifyNote": "From memory of the PHB (Rules_Scope §5 summary): check damage dice, save, range, duration and school."
+    },
+    {
+      "id": "dancing-lights",
+      "name": "Dancing Lights",
+      "level": 0,
+      "school": "evocation",
+      "castingTime": "action",
+      "range": {
+        "feet": 30
+      },
+      "concentration": true,
+      "duration": {
+        "minutes": 1
+      },
+      "components": "V, S, M",
+      "classes": ["bard", "sorcerer", "wizard"],
+      "summary": "Up to four floating lights you can move around.",
+      "effects": [],
+      "utility": true,
+      "verify": true,
+      "verifyNote": "From memory of the PHB (Rules_Scope §5 summary): check damage dice, save, range, duration and school."
+    },
+    {
+      "id": "bless",
+      "name": "Bless",
+      "level": 1,
+      "school": "enchantment",
+      "castingTime": "action",
+      "range": {
+        "feet": 30
+      },
+      "concentration": true,
+      "duration": {
+        "minutes": 1
+      },
+      "components": "V, S, M",
+      "classes": ["cleric", "paladin"],
+      "summary": "Up to three creatures add 1d4 to attack rolls and saving throws.",
+      "effects": [
+        {
+          "type": "modifier",
+          "target": "attack",
+          "value": "1d4",
+          "duration": {
+            "minutes": 1
+          }
+        },
+        {
+          "type": "modifier",
+          "target": "save",
+          "value": "1d4",
+          "duration": {
+            "minutes": 1
+          }
+        }
+      ],
+      "targets": 3,
+      "upcast": {
+        "targetsPerLevel": 1
+      },
+      "verify": true,
+      "verifyNote": "From memory of the PHB (Rules_Scope §5 summary): check damage dice, save, range, duration and school."
+    },
+    {
+      "id": "bane",
+      "name": "Bane",
+      "level": 1,
+      "school": "enchantment",
+      "castingTime": "action",
+      "range": {
+        "feet": 30
+      },
+      "concentration": true,
+      "duration": {
+        "minutes": 1
+      },
+      "components": "V, S, M",
+      "classes": ["bard", "cleric"],
+      "summary": "Up to three creatures make a Cha save or subtract 1d4 from attack rolls and saves.",
+      "effects": [
+        {
+          "type": "save",
+          "ability": "cha",
+          "onFail": [
+            {
+              "type": "modifier",
+              "target": "attack",
+              "value": "-1d4",
+              "duration": {
+                "minutes": 1
+              }
+            },
+            {
+              "type": "modifier",
+              "target": "save",
+              "value": "-1d4",
+              "duration": {
+                "minutes": 1
+              }
+            }
+          ],
+          "onSuccess": "none"
+        }
+      ],
+      "targets": 3,
+      "upcast": {
+        "targetsPerLevel": 1
+      },
+      "verify": true,
+      "verifyNote": "From memory of the PHB (Rules_Scope §5 summary): check damage dice, save, range, duration and school."
+    },
+    {
+      "id": "burning-hands",
+      "name": "Burning Hands",
+      "level": 1,
+      "school": "evocation",
+      "castingTime": "action",
+      "range": "self",
+      "concentration": false,
+      "duration": "instant",
+      "components": "V, S",
+      "classes": ["sorcerer", "wizard"],
+      "summary": "A 15-ft cone of flame: Dex save, 3d6 fire, half on a success.",
+      "effects": [
+        {
+          "type": "save",
+          "ability": "dex",
+          "onFail": [
+            {
+              "type": "damage",
+              "dice": "3d6",
+              "damageType": "fire"
+            }
+          ],
+          "onSuccess": "half"
+        }
+      ],
+      "area": {
+        "shape": "cone",
+        "size": 15
+      },
+      "upcast": {
+        "dicePerLevel": "1d6"
+      },
+      "verify": true,
+      "verifyNote": "From memory of the PHB (Rules_Scope §5 summary): check damage dice, save, range, duration and school."
+    },
+    {
+      "id": "color-spray",
+      "name": "Color Spray",
+      "level": 1,
+      "school": "illusion",
+      "castingTime": "action",
+      "range": "self",
+      "concentration": false,
+      "duration": {
+        "rounds": 1
+      },
+      "components": "V, S, M",
+      "classes": ["bard", "sorcerer", "wizard"],
+      "summary": "Roll 6d10: creatures in a 15-ft cone are blinded until the end of your next turn, lowest current HP first, while the total lasts. Unconscious and blind creatures are skipped.",
+      "effects": [
+        {
+          "type": "special",
+          "id": "hp-pool-condition",
+          "note": "6d10 pool, condition blinded"
+        }
+      ],
+      "area": {
+        "shape": "cone",
+        "size": 15
+      },
+      "upcast": {
+        "dicePerLevel": "2d10",
+        "note": "Higher-level bonus believed +2d10 per level (Rules_Scope CONFIRM LOCALLY)."
+      },
+      "verify": true,
+      "verifyNote": "Effect checked against the PHB (Rules_Scope §5 ✅); school, range and components from memory."
+    },
+    {
+      "id": "command",
+      "name": "Command",
+      "level": 1,
+      "school": "enchantment",
+      "castingTime": "action",
+      "range": {
+        "feet": 60
+      },
+      "concentration": false,
+      "duration": {
+        "rounds": 1
+      },
+      "components": "V",
+      "classes": ["cleric", "paladin"],
+      "summary": "A one-word command (Flee, Drop, Grovel, Halt): Wis save or obey on its next turn.",
+      "effects": [
+        {
+          "type": "save",
+          "ability": "wis",
+          "onFail": [
+            {
+              "type": "special",
+              "id": "command"
+            }
+          ],
+          "onSuccess": "none"
+        }
+      ],
+      "upcast": {
+        "targetsPerLevel": 1
+      },
+      "verify": true,
+      "verifyNote": "From memory of the PHB (Rules_Scope §5 summary): check damage dice, save, range, duration and school."
+    },
+    {
+      "id": "cure-wounds",
+      "name": "Cure Wounds",
+      "level": 1,
+      "school": "evocation",
+      "castingTime": "action",
+      "range": "touch",
+      "concentration": false,
+      "duration": "instant",
+      "components": "V, S",
+      "classes": ["bard", "cleric", "druid", "paladin", "ranger"],
+      "summary": "Touch: heal 1d8 + your spellcasting modifier. No effect on undead or constructs.",
+      "effects": [
+        {
+          "type": "heal",
+          "dice": "1d8",
+          "addModifier": true
+        }
+      ],
+      "upcast": {
+        "dicePerLevel": "1d8"
+      },
+      "verify": true,
+      "verifyNote": "From memory of the PHB (Rules_Scope §5 summary): check damage dice, save, range, duration and school."
+    },
+    {
+      "id": "healing-word",
+      "name": "Healing Word",
+      "level": 1,
+      "school": "evocation",
+      "castingTime": "bonus",
+      "range": {
+        "feet": 60
+      },
+      "concentration": false,
+      "duration": "instant",
+      "components": "V",
+      "classes": ["bard", "cleric", "druid"],
+      "summary": "Bonus action at range: heal 1d4 + your spellcasting modifier.",
+      "effects": [
+        {
+          "type": "heal",
+          "dice": "1d4",
+          "addModifier": true
+        }
+      ],
+      "upcast": {
+        "dicePerLevel": "1d4"
+      },
+      "verify": true,
+      "verifyNote": "From memory of the PHB (Rules_Scope §5 summary): check damage dice, save, range, duration and school."
+    },
+    {
+      "id": "guiding-bolt",
+      "name": "Guiding Bolt",
+      "level": 1,
+      "school": "evocation",
+      "castingTime": "action",
+      "range": {
+        "feet": 120
+      },
+      "concentration": false,
+      "duration": {
+        "rounds": 1
+      },
+      "components": "V, S",
+      "classes": ["cleric"],
+      "summary": "Ranged spell attack, 4d6 radiant; the next attack against the target before your next turn ends has advantage.",
+      "effects": [
+        {
+          "type": "attack",
+          "kind": "ranged",
+          "onHit": [
+            {
+              "type": "damage",
+              "dice": "4d6",
+              "damageType": "radiant"
+            },
+            {
+              "type": "special",
+              "id": "next-attack-advantage"
+            }
+          ]
+        }
+      ],
+      "upcast": {
+        "dicePerLevel": "1d6"
+      },
+      "verify": true,
+      "verifyNote": "From memory of the PHB (Rules_Scope §5 summary): check damage dice, save, range, duration and school."
+    },
+    {
+      "id": "inflict-wounds",
+      "name": "Inflict Wounds",
+      "level": 1,
+      "school": "necromancy",
+      "castingTime": "action",
+      "range": "touch",
+      "concentration": false,
+      "duration": "instant",
+      "components": "V, S",
+      "classes": ["cleric"],
+      "summary": "Melee spell attack, 3d10 necrotic.",
+      "effects": [
+        {
+          "type": "attack",
+          "kind": "melee",
+          "onHit": [
+            {
+              "type": "damage",
+              "dice": "3d10",
+              "damageType": "necrotic"
+            }
+          ]
+        }
+      ],
+      "upcast": {
+        "dicePerLevel": "1d10"
+      },
+      "verify": true,
+      "verifyNote": "From memory of the PHB (Rules_Scope §5 summary): check damage dice, save, range, duration and school."
+    },
+    {
+      "id": "magic-missile",
+      "name": "Magic Missile",
+      "level": 1,
+      "school": "evocation",
+      "castingTime": "action",
+      "range": {
+        "feet": 120
+      },
+      "concentration": false,
+      "duration": "instant",
+      "components": "V, S",
+      "classes": ["sorcerer", "wizard"],
+      "summary": "Three darts that always hit, 1d4 + 1 force each; split them between targets as you like. They strike together.",
+      "effects": [
+        {
+          "type": "special",
+          "id": "magic-missile",
+          "note": "3 darts of 1d4+1 force, automatic hit"
+        },
+        {
+          "type": "damage",
+          "dice": "1d4+1",
+          "damageType": "force"
+        }
+      ],
+      "upcast": {
+        "note": "One more dart per slot level above 1st."
+      },
+      "verify": true,
+      "verifyNote": "Effect checked against the PHB (Rules_Scope §5 ✅); school, range and components from memory."
+    },
+    {
+      "id": "shield",
+      "name": "Shield",
+      "level": 1,
+      "school": "abjuration",
+      "castingTime": "reaction",
+      "range": "self",
+      "concentration": false,
+      "duration": {
+        "rounds": 1
+      },
+      "components": "V, S",
+      "classes": ["sorcerer", "wizard"],
+      "summary": "Reaction when hit or targeted by Magic Missile: +5 AC until your next turn, including against the triggering attack; Magic Missile does nothing.",
+      "effects": [
+        {
+          "type": "modifier",
+          "target": "ac",
+          "value": 5,
+          "duration": "until-start-of-next-turn"
+        },
+        {
+          "type": "special",
+          "id": "blocks-magic-missile"
+        }
+      ],
+      "verify": true,
+      "verifyNote": "From memory of the PHB (Rules_Scope §5 summary): check damage dice, save, range, duration and school."
+    },
+    {
+      "id": "mage-armor",
+      "name": "Mage Armor",
+      "level": 1,
+      "school": "abjuration",
+      "castingTime": "action",
+      "range": "touch",
+      "concentration": false,
+      "duration": {
+        "hours": 8
+      },
+      "components": "V, S, M",
+      "classes": ["sorcerer", "wizard"],
+      "summary": "An unarmored creature's base AC becomes 13 + Dex modifier for 8 hours.",
+      "effects": [
+        {
+          "type": "special",
+          "id": "mage-armor"
+        }
+      ],
+      "verify": true,
+      "verifyNote": "From memory of the PHB (Rules_Scope §5 summary): check damage dice, save, range, duration and school."
+    },
+    {
+      "id": "sleep",
+      "name": "Sleep",
+      "level": 1,
+      "school": "enchantment",
+      "castingTime": "action",
+      "range": {
+        "feet": 90
+      },
+      "concentration": false,
+      "duration": {
+        "minutes": 1
+      },
+      "components": "V, S, M",
+      "classes": ["bard", "sorcerer", "wizard"],
+      "summary": "Roll 5d8: creatures within 20 ft of a point fall unconscious, lowest current HP first, while the total lasts. Undead and charm-immune creatures are unaffected.",
+      "effects": [
+        {
+          "type": "special",
+          "id": "hp-pool-condition",
+          "note": "5d8 pool, condition unconscious (magical sleep)"
+        }
+      ],
+      "area": {
+        "shape": "sphere",
+        "size": 20
+      },
+      "upcast": {
+        "dicePerLevel": "2d8"
+      },
+      "verify": true,
+      "verifyNote": "From memory of the PHB (Rules_Scope §5 summary): check damage dice, save, range, duration and school."
+    },
+    {
+      "id": "thunderwave",
+      "name": "Thunderwave",
+      "level": 1,
+      "school": "evocation",
+      "castingTime": "action",
+      "range": "self",
+      "concentration": false,
+      "duration": "instant",
+      "components": "V, S",
+      "classes": ["bard", "druid", "sorcerer", "wizard"],
+      "summary": "A 15-ft cube of thunder: Con save, 2d8 thunder and pushed 10 ft; half damage and no push on a success.",
+      "effects": [
+        {
+          "type": "save",
+          "ability": "con",
+          "onFail": [
+            {
+              "type": "damage",
+              "dice": "2d8",
+              "damageType": "thunder"
+            },
+            {
+              "type": "move",
+              "kind": "push",
+              "feet": 10
+            }
+          ],
+          "onSuccess": "half"
+        }
+      ],
+      "area": {
+        "shape": "cube",
+        "size": 15
+      },
+      "upcast": {
+        "dicePerLevel": "1d8"
+      },
+      "verify": true,
+      "verifyNote": "From memory of the PHB (Rules_Scope §5 summary): check damage dice, save, range, duration and school."
+    },
+    {
+      "id": "faerie-fire",
+      "name": "Faerie Fire",
+      "level": 1,
+      "school": "evocation",
+      "castingTime": "action",
+      "range": {
+        "feet": 60
+      },
+      "concentration": true,
+      "duration": {
+        "minutes": 1
+      },
+      "components": "V",
+      "classes": ["bard", "druid"],
+      "summary": "A 20-ft cube: Dex save or outlined in light. Attacks against outlined creatures have advantage, and they can't be invisible.",
+      "effects": [
+        {
+          "type": "save",
+          "ability": "dex",
+          "onFail": [
+            {
+              "type": "special",
+              "id": "outlined"
+            }
+          ],
+          "onSuccess": "none"
+        }
+      ],
+      "area": {
+        "shape": "cube",
+        "size": 20
+      },
+      "verify": true,
+      "verifyNote": "From memory of the PHB (Rules_Scope §5 summary): check damage dice, save, range, duration and school."
+    },
+    {
+      "id": "entangle",
+      "name": "Entangle",
+      "level": 1,
+      "school": "conjuration",
+      "castingTime": "action",
+      "range": {
+        "feet": 90
+      },
+      "concentration": true,
+      "duration": {
+        "minutes": 1
+      },
+      "components": "V, S",
+      "classes": ["druid"],
+      "summary": "Grasping weeds fill a 20-ft square (difficult terrain): Str save or restrained.",
+      "effects": [
+        {
+          "type": "save",
+          "ability": "str",
+          "onFail": [
+            {
+              "type": "condition",
+              "condition": "restrained",
+              "duration": {
+                "minutes": 1
+              }
+            }
+          ],
+          "onSuccess": "none"
+        }
+      ],
+      "area": {
+        "shape": "square",
+        "size": 20
+      },
+      "verify": true,
+      "verifyNote": "From memory of the PHB (Rules_Scope §5 summary): check damage dice, save, range, duration and school."
+    },
+    {
+      "id": "hex",
+      "name": "Hex",
+      "level": 1,
+      "school": "enchantment",
+      "castingTime": "bonus",
+      "range": {
+        "feet": 90
+      },
+      "concentration": true,
+      "duration": {
+        "hours": 1
+      },
+      "components": "V, S, M",
+      "classes": ["warlock"],
+      "summary": "Curse a creature: +1d6 necrotic whenever you hit it, and disadvantage on checks with one ability you choose. Move the curse if it drops to 0 HP.",
+      "effects": [
+        {
+          "type": "special",
+          "id": "bonus-damage-on-hit",
+          "note": "1d6 necrotic per hit vs the target"
+        }
+      ],
+      "verify": true,
+      "verifyNote": "From memory of the PHB (Rules_Scope §5 summary): check damage dice, save, range, duration and school."
+    },
+    {
+      "id": "hunters-mark",
+      "name": "Hunter's Mark",
+      "level": 1,
+      "school": "divination",
+      "castingTime": "bonus",
+      "range": {
+        "feet": 90
+      },
+      "concentration": true,
+      "duration": {
+        "hours": 1
+      },
+      "components": "V",
+      "classes": ["ranger"],
+      "summary": "Mark a creature: +1d6 damage whenever you hit it with a weapon, and advantage on tracking it.",
+      "effects": [
+        {
+          "type": "special",
+          "id": "bonus-damage-on-hit",
+          "note": "1d6 per weapon hit vs the target"
+        }
+      ],
+      "verify": true,
+      "verifyNote": "From memory of the PHB (Rules_Scope §5 summary): check damage dice, save, range, duration and school."
+    },
+    {
+      "id": "hellish-rebuke",
+      "name": "Hellish Rebuke",
+      "level": 1,
+      "school": "evocation",
+      "castingTime": "reaction",
+      "range": {
+        "feet": 60
+      },
+      "concentration": false,
+      "duration": "instant",
+      "components": "V, S",
+      "classes": ["warlock"],
+      "summary": "Reaction when damaged: the attacker makes a Dex save, 2d10 fire, half on a success.",
+      "effects": [
+        {
+          "type": "save",
+          "ability": "dex",
+          "onFail": [
+            {
+              "type": "damage",
+              "dice": "2d10",
+              "damageType": "fire"
+            }
+          ],
+          "onSuccess": "half"
+        }
+      ],
+      "upcast": {
+        "dicePerLevel": "1d10"
+      },
+      "verify": true,
+      "verifyNote": "From memory of the PHB (Rules_Scope §5 summary): check damage dice, save, range, duration and school."
+    },
+    {
+      "id": "armor-of-agathys",
+      "name": "Armor of Agathys",
+      "level": 1,
+      "school": "abjuration",
+      "castingTime": "action",
+      "range": "self",
+      "concentration": false,
+      "duration": {
+        "hours": 1
+      },
+      "components": "V, S, M",
+      "classes": ["warlock"],
+      "summary": "5 temporary HP; while they last, creatures that hit you in melee take 5 cold damage.",
+      "effects": [
+        {
+          "type": "tempHp",
+          "dice": "5"
+        },
+        {
+          "type": "special",
+          "id": "retaliate-cold",
+          "note": "5 cold to melee attackers"
+        }
+      ],
+      "upcast": {
+        "note": "+5 temporary HP and +5 cold per slot level."
+      },
+      "verify": true,
+      "verifyNote": "From memory of the PHB (Rules_Scope §5 summary): check damage dice, save, range, duration and school."
+    },
+    {
+      "id": "shield-of-faith",
+      "name": "Shield of Faith",
+      "level": 1,
+      "school": "abjuration",
+      "castingTime": "bonus",
+      "range": {
+        "feet": 60
+      },
+      "concentration": true,
+      "duration": {
+        "minutes": 10
+      },
+      "components": "V, S, M",
+      "classes": ["cleric", "paladin"],
+      "summary": "+2 AC to one creature.",
+      "effects": [
+        {
+          "type": "modifier",
+          "target": "ac",
+          "value": 2,
+          "duration": {
+            "minutes": 10
+          }
+        }
+      ],
+      "verify": true,
+      "verifyNote": "From memory of the PHB (Rules_Scope §5 summary): check damage dice, save, range, duration and school."
+    },
+    {
+      "id": "divine-favor",
+      "name": "Divine Favor",
+      "level": 1,
+      "school": "evocation",
+      "castingTime": "bonus",
+      "range": "self",
+      "concentration": true,
+      "duration": {
+        "minutes": 1
+      },
+      "components": "V, S",
+      "classes": ["paladin"],
+      "summary": "Your weapon hits deal an extra 1d4 radiant.",
+      "effects": [
+        {
+          "type": "special",
+          "id": "bonus-damage-on-hit",
+          "note": "1d4 radiant per weapon hit"
+        }
+      ],
+      "verify": true,
+      "verifyNote": "From memory of the PHB (Rules_Scope §5 summary): check damage dice, save, range, duration and school."
+    },
+    {
+      "id": "sanctuary",
+      "name": "Sanctuary",
+      "level": 1,
+      "school": "abjuration",
+      "castingTime": "bonus",
+      "range": {
+        "feet": 30
+      },
+      "concentration": false,
+      "duration": {
+        "minutes": 1
+      },
+      "components": "V, S, M",
+      "classes": ["cleric"],
+      "summary": "Enemies who target the warded creature must pass a Wis save or pick another target. Ends if the ward attacks or casts at an enemy.",
+      "effects": [
+        {
+          "type": "special",
+          "id": "sanctuary"
+        }
+      ],
+      "verify": true,
+      "verifyNote": "From memory of the PHB (Rules_Scope §5 summary): check damage dice, save, range, duration and school."
+    },
+    {
+      "id": "charm-person",
+      "name": "Charm Person",
+      "level": 1,
+      "school": "enchantment",
+      "castingTime": "action",
+      "range": {
+        "feet": 30
+      },
+      "concentration": false,
+      "duration": {
+        "hours": 1
+      },
+      "components": "V, S",
+      "classes": ["bard", "druid", "sorcerer", "warlock", "wizard"],
+      "summary": "A humanoid makes a Wis save (advantage if you're fighting it) or is charmed by you for an hour.",
+      "effects": [
+        {
+          "type": "save",
+          "ability": "wis",
+          "onFail": [
+            {
+              "type": "condition",
+              "condition": "charmed",
+              "duration": {
+                "hours": 1
+              }
+            }
+          ],
+          "onSuccess": "none"
+        }
+      ],
+      "upcast": {
+        "targetsPerLevel": 1
+      },
+      "verify": true,
+      "verifyNote": "From memory of the PHB (Rules_Scope §5 summary): check damage dice, save, range, duration and school."
+    },
+    {
+      "id": "dissonant-whispers",
+      "name": "Dissonant Whispers",
+      "level": 1,
+      "school": "enchantment",
+      "castingTime": "action",
+      "range": {
+        "feet": 60
+      },
+      "concentration": false,
+      "duration": "instant",
+      "components": "V",
+      "classes": ["bard"],
+      "summary": "Wis save: 3d6 psychic and it must use its reaction to move away from you; half damage only on a success.",
+      "effects": [
+        {
+          "type": "save",
+          "ability": "wis",
+          "onFail": [
+            {
+              "type": "damage",
+              "dice": "3d6",
+              "damageType": "psychic"
+            },
+            {
+              "type": "special",
+              "id": "flee-with-reaction"
+            }
+          ],
+          "onSuccess": "half"
+        }
+      ],
+      "upcast": {
+        "dicePerLevel": "1d6"
+      },
+      "verify": true,
+      "verifyNote": "From memory of the PHB (Rules_Scope §5 summary): check damage dice, save, range, duration and school."
+    },
+    {
+      "id": "detect-magic",
+      "name": "Detect Magic",
+      "level": 1,
+      "school": "divination",
+      "castingTime": "action",
+      "range": "self",
+      "concentration": true,
+      "duration": {
+        "minutes": 10
+      },
+      "components": "V, S",
+      "classes": ["bard", "cleric", "druid", "paladin", "ranger", "sorcerer", "wizard"],
+      "summary": "Sense magic within 30 ft and see its aura.",
+      "effects": [],
+      "utility": true,
+      "ritual": true,
+      "verify": true,
+      "verifyNote": "From memory of the PHB (Rules_Scope §5 summary): check damage dice, save, range, duration and school."
+    },
+    {
+      "id": "feather-fall",
+      "name": "Feather Fall",
+      "level": 1,
+      "school": "transmutation",
+      "castingTime": "reaction",
+      "range": {
+        "feet": 30
+      },
+      "concentration": false,
+      "duration": {
+        "minutes": 1
+      },
+      "components": "V, S",
+      "classes": ["bard", "sorcerer", "wizard"],
+      "summary": "Reaction: up to five falling creatures drift down safely.",
+      "effects": [],
+      "utility": true,
+      "verify": true,
+      "verifyNote": "From memory of the PHB (Rules_Scope §5 summary): check damage dice, save, range, duration and school."
+    },
+    {
+      "id": "fog-cloud",
+      "name": "Fog Cloud",
+      "level": 1,
+      "school": "conjuration",
+      "castingTime": "action",
+      "range": {
+        "feet": 30
+      },
+      "concentration": true,
+      "duration": {
+        "hours": 1
+      },
+      "components": "V, S",
+      "classes": ["druid", "ranger", "sorcerer", "wizard"],
+      "summary": "A 20-ft sphere of heavy fog blocks vision.",
+      "effects": [],
+      "utility": true,
+      "verify": true,
+      "verifyNote": "From memory of the PHB (Rules_Scope §5 summary): check damage dice, save, range, duration and school."
+    },
+    {
+      "id": "disguise-self",
+      "name": "Disguise Self",
+      "level": 1,
+      "school": "illusion",
+      "castingTime": "action",
+      "range": "self",
+      "concentration": false,
+      "duration": {
+        "hours": 1
+      },
+      "components": "V, S",
+      "classes": ["bard", "sorcerer", "wizard"],
+      "summary": "Change how you look for an hour.",
+      "effects": [],
+      "utility": true,
+      "verify": true,
+      "verifyNote": "From memory of the PHB (Rules_Scope §5 summary): check damage dice, save, range, duration and school."
+    },
+    {
+      "id": "protection-from-evil-and-good",
+      "name": "Protection from Evil and Good",
+      "level": 1,
+      "school": "abjuration",
+      "castingTime": "action",
+      "range": {
+        "feet": 30
+      },
+      "concentration": true,
+      "duration": {
+        "minutes": 10
+      },
+      "components": "V, S",
+      "classes": ["cleric", "paladin", "warlock", "wizard"],
+      "summary": "Aberrations, celestials, elementals, fey, fiends and undead have disadvantage attacking the target, and can't charm, frighten or possess it.",
+      "effects": [],
+      "utility": true,
+      "verify": true,
+      "verifyNote": "From memory of the PHB (Rules_Scope §5 summary): check damage dice, save, range, duration and school."
+    },
+    {
+      "id": "goodberry",
+      "name": "Goodberry",
+      "level": 1,
+      "school": "transmutation",
+      "castingTime": "action",
+      "range": {
+        "feet": 30
+      },
+      "concentration": false,
+      "duration": {
+        "hours": 24
+      },
+      "components": "V, S",
+      "classes": ["druid", "ranger"],
+      "summary": "Ten berries; each heals 1 HP and feeds a creature for a day.",
+      "effects": [],
+      "utility": true,
+      "verify": true,
+      "verifyNote": "From memory of the PHB (Rules_Scope §5 summary): check damage dice, save, range, duration and school."
+    },
+    {
+      "id": "aid",
+      "name": "Aid",
+      "level": 2,
+      "school": "abjuration",
+      "castingTime": "action",
+      "range": {
+        "feet": 30
+      },
+      "concentration": false,
+      "duration": {
+        "hours": 8
+      },
+      "components": "V, S, M",
+      "classes": ["cleric", "paladin"],
+      "summary": "Up to three creatures gain +5 current and maximum HP for 8 hours.",
+      "effects": [
+        {
+          "type": "special",
+          "id": "aid",
+          "note": "+5 max HP and HP"
+        }
+      ],
+      "targets": 3,
+      "upcast": {
+        "note": "+5 more per slot level above 2nd."
+      },
+      "verify": true,
+      "verifyNote": "From memory of the PHB (Rules_Scope §5 summary): check damage dice, save, range, duration and school."
+    },
+    {
+      "id": "hold-person",
+      "name": "Hold Person",
+      "level": 2,
+      "school": "enchantment",
+      "castingTime": "action",
+      "range": {
+        "feet": 60
+      },
+      "concentration": true,
+      "duration": {
+        "minutes": 1
+      },
+      "components": "V, S, M",
+      "classes": ["bard", "cleric", "druid", "sorcerer", "warlock", "wizard"],
+      "summary": "A humanoid makes a Wis save or is paralyzed; it repeats the save at the end of each of its turns.",
+      "effects": [
+        {
+          "type": "save",
+          "ability": "wis",
+          "onFail": [
+            {
+              "type": "condition",
+              "condition": "paralyzed",
+              "duration": {
+                "minutes": 1
+              },
+              "repeatSave": "wis"
+            }
+          ],
+          "onSuccess": "none"
+        }
+      ],
+      "upcast": {
+        "targetsPerLevel": 1
+      },
+      "verify": true,
+      "verifyNote": "From memory of the PHB (Rules_Scope §5 summary): check damage dice, save, range, duration and school."
+    },
+    {
+      "id": "misty-step",
+      "name": "Misty Step",
+      "level": 2,
+      "school": "conjuration",
+      "castingTime": "bonus",
+      "range": "self",
+      "concentration": false,
+      "duration": "instant",
+      "components": "V",
+      "classes": ["sorcerer", "warlock", "wizard"],
+      "summary": "Teleport up to 30 ft to a space you can see.",
+      "effects": [
+        {
+          "type": "move",
+          "kind": "teleport",
+          "feet": 30
+        }
+      ],
+      "verify": true,
+      "verifyNote": "From memory of the PHB (Rules_Scope §5 summary): check damage dice, save, range, duration and school."
+    },
+    {
+      "id": "scorching-ray",
+      "name": "Scorching Ray",
+      "level": 2,
+      "school": "evocation",
+      "castingTime": "action",
+      "range": {
+        "feet": 120
+      },
+      "concentration": false,
+      "duration": "instant",
+      "components": "V, S",
+      "classes": ["sorcerer", "wizard"],
+      "summary": "Three rays, each a ranged spell attack for 2d6 fire; aim them at one or several targets.",
+      "effects": [
+        {
+          "type": "attack",
+          "kind": "ranged",
+          "onHit": [
+            {
+              "type": "damage",
+              "dice": "2d6",
+              "damageType": "fire"
+            }
+          ]
+        },
+        {
+          "type": "special",
+          "id": "multiple-rays",
+          "note": "3 rays"
+        }
+      ],
+      "upcast": {
+        "note": "One more ray per slot level above 2nd."
+      },
+      "verify": true,
+      "verifyNote": "From memory of the PHB (Rules_Scope §5 summary): check damage dice, save, range, duration and school."
+    },
+    {
+      "id": "shatter",
+      "name": "Shatter",
+      "level": 2,
+      "school": "evocation",
+      "castingTime": "action",
+      "range": {
+        "feet": 60
+      },
+      "concentration": false,
+      "duration": "instant",
+      "components": "V, S, M",
+      "classes": ["bard", "sorcerer", "warlock", "wizard"],
+      "summary": "A 10-ft-radius burst of sound: Con save, 3d8 thunder, half on a success.",
+      "effects": [
+        {
+          "type": "save",
+          "ability": "con",
+          "onFail": [
+            {
+              "type": "damage",
+              "dice": "3d8",
+              "damageType": "thunder"
+            }
+          ],
+          "onSuccess": "half"
+        }
+      ],
+      "area": {
+        "shape": "sphere",
+        "size": 10
+      },
+      "upcast": {
+        "dicePerLevel": "1d8"
+      },
+      "verify": true,
+      "verifyNote": "From memory of the PHB (Rules_Scope §5 summary): check damage dice, save, range, duration and school."
+    },
+    {
+      "id": "spiritual-weapon",
+      "name": "Spiritual Weapon",
+      "level": 2,
+      "school": "evocation",
+      "castingTime": "bonus",
+      "range": {
+        "feet": 60
+      },
+      "concentration": false,
+      "duration": {
+        "minutes": 1
+      },
+      "components": "V, S",
+      "classes": ["cleric"],
+      "summary": "A floating weapon appears; as a bonus action each turn it moves 20 ft and makes a melee spell attack for 1d8 + your spellcasting modifier force.",
+      "effects": [
+        {
+          "type": "attack",
+          "kind": "melee",
+          "onHit": [
+            {
+              "type": "damage",
+              "dice": "1d8",
+              "damageType": "force",
+              "addModifier": true
+            }
+          ]
+        },
+        {
+          "type": "special",
+          "id": "summoned-weapon"
+        }
+      ],
+      "upcast": {
+        "note": "+1d8 per two slot levels above 2nd."
+      },
+      "verify": true,
+      "verifyNote": "From memory of the PHB (Rules_Scope §5 summary): check damage dice, save, range, duration and school."
+    },
+    {
+      "id": "moonbeam",
+      "name": "Moonbeam",
+      "level": 2,
+      "school": "evocation",
+      "castingTime": "action",
+      "range": {
+        "feet": 120
+      },
+      "concentration": true,
+      "duration": {
+        "minutes": 1
+      },
+      "components": "V, S, M",
+      "classes": ["druid"],
+      "summary": "A 5-ft-radius, 40-ft-high cylinder of moonlight: creatures entering or starting there make a Con save, 2d10 radiant, half on a success. Move it 60 ft as an action.",
+      "effects": [
+        {
+          "type": "save",
+          "ability": "con",
+          "onFail": [
+            {
+              "type": "damage",
+              "dice": "2d10",
+              "damageType": "radiant"
+            }
+          ],
+          "onSuccess": "half"
+        },
+        {
+          "type": "special",
+          "id": "persistent-area"
+        }
+      ],
+      "area": {
+        "shape": "cylinder",
+        "size": 5,
+        "width": 40
+      },
+      "upcast": {
+        "dicePerLevel": "1d10"
+      },
+      "verify": true,
+      "verifyNote": "From memory of the PHB (Rules_Scope §5 summary): check damage dice, save, range, duration and school."
+    },
+    {
+      "id": "flaming-sphere",
+      "name": "Flaming Sphere",
+      "level": 2,
+      "school": "conjuration",
+      "castingTime": "action",
+      "range": {
+        "feet": 60
+      },
+      "concentration": true,
+      "duration": {
+        "minutes": 1
+      },
+      "components": "V, S, M",
+      "classes": ["druid", "wizard"],
+      "summary": "A 5-ft ball of fire: creatures ending their turn next to it make a Dex save, 2d6 fire, half on a success. Roll it 30 ft as a bonus action.",
+      "effects": [
+        {
+          "type": "save",
+          "ability": "dex",
+          "onFail": [
+            {
+              "type": "damage",
+              "dice": "2d6",
+              "damageType": "fire"
+            }
+          ],
+          "onSuccess": "half"
+        },
+        {
+          "type": "special",
+          "id": "persistent-area"
+        }
+      ],
+      "upcast": {
+        "dicePerLevel": "1d6"
+      },
+      "verify": true,
+      "verifyNote": "From memory of the PHB (Rules_Scope §5 summary): check damage dice, save, range, duration and school."
+    },
+    {
+      "id": "spike-growth",
+      "name": "Spike Growth",
+      "level": 2,
+      "school": "transmutation",
+      "castingTime": "action",
+      "range": {
+        "feet": 150
+      },
+      "concentration": true,
+      "duration": {
+        "minutes": 10
+      },
+      "components": "V, S, M",
+      "classes": ["druid", "ranger"],
+      "summary": "A 20-ft-radius area of hidden thorns: difficult terrain, and 2d4 piercing per 5 ft moved through it.",
+      "effects": [
+        {
+          "type": "special",
+          "id": "damage-per-5ft",
+          "note": "2d4 piercing per 5 ft moved"
+        },
+        {
+          "type": "damage",
+          "dice": "2d4",
+          "damageType": "piercing"
+        }
+      ],
+      "area": {
+        "shape": "sphere",
+        "size": 20
+      },
+      "verify": true,
+      "verifyNote": "From memory of the PHB (Rules_Scope §5 summary): check damage dice, save, range, duration and school."
+    },
+    {
+      "id": "web",
+      "name": "Web",
+      "level": 2,
+      "school": "conjuration",
+      "castingTime": "action",
+      "range": {
+        "feet": 60
+      },
+      "concentration": true,
+      "duration": {
+        "hours": 1
+      },
+      "components": "V, S, M",
+      "classes": ["wizard"],
+      "summary": "A 20-ft cube of sticky webs: Dex save or restrained (Str check to break free). Difficult terrain.",
+      "effects": [
+        {
+          "type": "save",
+          "ability": "dex",
+          "onFail": [
+            {
+              "type": "condition",
+              "condition": "restrained",
+              "duration": {
+                "hours": 1
+              }
+            }
+          ],
+          "onSuccess": "none"
+        }
+      ],
+      "area": {
+        "shape": "cube",
+        "size": 20
+      },
+      "verify": true,
+      "verifyNote": "From memory of the PHB (Rules_Scope §5 summary): check damage dice, save, range, duration and school."
+    },
+    {
+      "id": "lesser-restoration",
+      "name": "Lesser Restoration",
+      "level": 2,
+      "school": "abjuration",
+      "castingTime": "action",
+      "range": "touch",
+      "concentration": false,
+      "duration": "instant",
+      "components": "V, S",
+      "classes": ["bard", "cleric", "druid", "paladin", "ranger"],
+      "summary": "End one disease, or one of these conditions: blinded, deafened, paralyzed or poisoned.",
+      "effects": [
+        {
+          "type": "special",
+          "id": "end-condition",
+          "note": "blinded, deafened, paralyzed or poisoned"
+        }
+      ],
+      "verify": true,
+      "verifyNote": "From memory of the PHB (Rules_Scope §5 summary): check damage dice, save, range, duration and school."
+    },
+    {
+      "id": "prayer-of-healing",
+      "name": "Prayer of Healing",
+      "level": 2,
+      "school": "evocation",
+      "castingTime": "10-minutes",
+      "range": {
+        "feet": 30
+      },
+      "concentration": false,
+      "duration": "instant",
+      "components": "V",
+      "classes": ["cleric"],
+      "summary": "Out of combat: up to six creatures heal 2d8 + your spellcasting modifier.",
+      "effects": [
+        {
+          "type": "heal",
+          "dice": "2d8",
+          "addModifier": true
+        }
+      ],
+      "targets": 6,
+      "upcast": {
+        "dicePerLevel": "1d8"
+      },
+      "verify": true,
+      "verifyNote": "From memory of the PHB (Rules_Scope §5 summary): check damage dice, save, range, duration and school."
+    },
+    {
+      "id": "invisibility",
+      "name": "Invisibility",
+      "level": 2,
+      "school": "illusion",
+      "castingTime": "action",
+      "range": "touch",
+      "concentration": true,
+      "duration": {
+        "hours": 1
+      },
+      "components": "V, S, M",
+      "classes": ["bard", "sorcerer", "warlock", "wizard"],
+      "summary": "A creature turns invisible until it attacks or casts a spell.",
+      "effects": [
+        {
+          "type": "condition",
+          "condition": "invisible",
+          "duration": {
+            "hours": 1
+          }
+        }
+      ],
+      "upcast": {
+        "targetsPerLevel": 1
+      },
+      "verify": true,
+      "verifyNote": "From memory of the PHB (Rules_Scope §5 summary): check damage dice, save, range, duration and school."
+    },
+    {
+      "id": "mirror-image",
+      "name": "Mirror Image",
+      "level": 2,
+      "school": "illusion",
+      "castingTime": "action",
+      "range": "self",
+      "concentration": false,
+      "duration": {
+        "minutes": 1
+      },
+      "components": "V, S",
+      "classes": ["sorcerer", "warlock", "wizard"],
+      "summary": "Three illusory duplicates; attacks may hit a duplicate instead (AC 10 + Dex; destroyed when hit).",
+      "effects": [
+        {
+          "type": "special",
+          "id": "mirror-image",
+          "note": "3 duplicates"
+        }
+      ],
+      "verify": true,
+      "verifyNote": "From memory of the PHB (Rules_Scope §5 summary): check damage dice, save, range, duration and school."
+    },
+    {
+      "id": "silence",
+      "name": "Silence",
+      "level": 2,
+      "school": "illusion",
+      "castingTime": "action",
+      "range": {
+        "feet": 120
+      },
+      "concentration": true,
+      "duration": {
+        "minutes": 10
+      },
+      "components": "V, S",
+      "classes": ["bard", "cleric", "ranger"],
+      "summary": "A 20-ft-radius sphere of silence: no sound, no verbal spells, creatures inside are deafened and immune to thunder damage.",
+      "effects": [
+        {
+          "type": "special",
+          "id": "silence-zone"
+        }
+      ],
+      "area": {
+        "shape": "sphere",
+        "size": 20
+      },
+      "ritual": true,
+      "verify": true,
+      "verifyNote": "From memory of the PHB (Rules_Scope §5 summary): check damage dice, save, range, duration and school."
+    },
+    {
+      "id": "heat-metal",
+      "name": "Heat Metal",
+      "level": 2,
+      "school": "transmutation",
+      "castingTime": "action",
+      "range": {
+        "feet": 60
+      },
+      "concentration": true,
+      "duration": {
+        "minutes": 1
+      },
+      "components": "V, S, M",
+      "classes": ["bard", "druid"],
+      "summary": "A metal object glows red-hot: 2d8 fire to whoever holds or wears it, again as a bonus action each turn.",
+      "effects": [
+        {
+          "type": "damage",
+          "dice": "2d8",
+          "damageType": "fire"
+        },
+        {
+          "type": "special",
+          "id": "repeat-bonus-action"
+        }
+      ],
+      "upcast": {
+        "dicePerLevel": "1d8"
+      },
+      "verify": true,
+      "verifyNote": "From memory of the PHB (Rules_Scope §5 summary): check damage dice, save, range, duration and school."
+    },
+    {
+      "id": "pass-without-trace",
+      "name": "Pass without Trace",
+      "level": 2,
+      "school": "abjuration",
+      "castingTime": "action",
+      "range": "self",
+      "concentration": true,
+      "duration": {
+        "hours": 1
+      },
+      "components": "V, S, M",
+      "classes": ["druid", "ranger"],
+      "summary": "You and allies within 30 ft get +10 to Stealth checks.",
+      "effects": [
+        {
+          "type": "modifier",
+          "target": "check",
+          "value": 10,
+          "duration": {
+            "hours": 1
+          }
+        }
+      ],
+      "utility": true,
+      "verify": true,
+      "verifyNote": "From memory of the PHB (Rules_Scope §5 summary): check damage dice, save, range, duration and school."
+    },
+    {
+      "id": "branding-smite",
+      "name": "Branding Smite",
+      "level": 2,
+      "school": "evocation",
+      "castingTime": "bonus",
+      "range": "self",
+      "concentration": true,
+      "duration": {
+        "minutes": 1
+      },
+      "components": "V",
+      "classes": ["paladin"],
+      "summary": "Your next weapon hit deals +2d6 radiant and makes the target visible.",
+      "effects": [
+        {
+          "type": "special",
+          "id": "next-hit-bonus",
+          "note": "2d6 radiant"
+        }
+      ],
+      "upcast": {
+        "dicePerLevel": "1d6"
+      },
+      "verify": true,
+      "verifyNote": "From memory of the PHB (Rules_Scope §5 summary): check damage dice, save, range, duration and school."
+    },
+    {
+      "id": "suggestion",
+      "name": "Suggestion",
+      "level": 2,
+      "school": "enchantment",
+      "castingTime": "action",
+      "range": {
+        "feet": 30
+      },
+      "concentration": true,
+      "duration": {
+        "hours": 8
+      },
+      "components": "V, M",
+      "classes": ["bard", "sorcerer", "warlock", "wizard"],
+      "summary": "Suggest a reasonable course of action: Wis save or the target follows it. Also used in dialogue.",
+      "effects": [
+        {
+          "type": "save",
+          "ability": "wis",
+          "onFail": [
+            {
+              "type": "special",
+              "id": "suggestion"
+            }
+          ],
+          "onSuccess": "none"
+        }
+      ],
+      "verify": true,
+      "verifyNote": "From memory of the PHB (Rules_Scope §5 summary): check damage dice, save, range, duration and school."
+    },
+    {
+      "id": "darkness",
+      "name": "Darkness",
+      "level": 2,
+      "school": "evocation",
+      "castingTime": "action",
+      "range": {
+        "feet": 60
+      },
+      "concentration": true,
+      "duration": {
+        "minutes": 10
+      },
+      "components": "V, M",
+      "classes": ["sorcerer", "warlock", "wizard"],
+      "summary": "A 15-ft-radius sphere of magical darkness that ordinary darkvision can't see through.",
+      "effects": [
+        {
+          "type": "special",
+          "id": "darkness-zone"
+        }
+      ],
+      "area": {
+        "shape": "sphere",
+        "size": 15
+      },
+      "utility": true,
+      "verify": true,
+      "verifyNote": "From memory of the PHB (Rules_Scope §5 summary): check damage dice, save, range, duration and school."
+    },
+    {
+      "id": "fireball",
+      "name": "Fireball",
+      "level": 3,
+      "school": "evocation",
+      "castingTime": "action",
+      "range": {
+        "feet": 150
+      },
+      "concentration": false,
+      "duration": "instant",
+      "components": "V, S, M",
+      "classes": ["sorcerer", "wizard"],
+      "summary": "A 20-ft-radius explosion of fire: Dex save, 8d6 fire, half on a success.",
+      "effects": [
+        {
+          "type": "save",
+          "ability": "dex",
+          "onFail": [
+            {
+              "type": "damage",
+              "dice": "8d6",
+              "damageType": "fire"
+            }
+          ],
+          "onSuccess": "half"
+        }
+      ],
+      "area": {
+        "shape": "sphere",
+        "size": 20
+      },
+      "upcast": {
+        "dicePerLevel": "1d6"
+      },
+      "verify": true,
+      "verifyNote": "Effect checked against the PHB (Rules_Scope §5 ✅); school, range and components from memory."
+    },
+    {
+      "id": "lightning-bolt",
+      "name": "Lightning Bolt",
+      "level": 3,
+      "school": "evocation",
+      "castingTime": "action",
+      "range": "self",
+      "concentration": false,
+      "duration": "instant",
+      "components": "V, S, M",
+      "classes": ["sorcerer", "wizard"],
+      "summary": "A 100-ft line, 5 ft wide: Dex save, 8d6 lightning, half on a success.",
+      "effects": [
+        {
+          "type": "save",
+          "ability": "dex",
+          "onFail": [
+            {
+              "type": "damage",
+              "dice": "8d6",
+              "damageType": "lightning"
+            }
+          ],
+          "onSuccess": "half"
+        }
+      ],
+      "area": {
+        "shape": "line",
+        "size": 100,
+        "width": 5
+      },
+      "upcast": {
+        "dicePerLevel": "1d6"
+      },
+      "verify": true,
+      "verifyNote": "From memory of the PHB (Rules_Scope §5 summary): check damage dice, save, range, duration and school."
+    },
+    {
+      "id": "counterspell",
+      "name": "Counterspell",
+      "level": 3,
+      "school": "abjuration",
+      "castingTime": "reaction",
+      "range": {
+        "feet": 60
+      },
+      "concentration": false,
+      "duration": "instant",
+      "components": "S",
+      "classes": ["sorcerer", "warlock", "wizard"],
+      "summary": "Reaction: stop a spell of 3rd level or lower. A higher-level spell needs an ability check, DC 10 + its level.",
+      "effects": [
+        {
+          "type": "special",
+          "id": "counterspell"
+        }
+      ],
+      "verify": true,
+      "verifyNote": "From memory of the PHB (Rules_Scope §5 summary): check damage dice, save, range, duration and school."
+    },
+    {
+      "id": "dispel-magic",
+      "name": "Dispel Magic",
+      "level": 3,
+      "school": "abjuration",
+      "castingTime": "action",
+      "range": {
+        "feet": 120
+      },
+      "concentration": false,
+      "duration": "instant",
+      "components": "V, S",
+      "classes": ["bard", "cleric", "druid", "paladin", "sorcerer", "warlock", "wizard"],
+      "summary": "End spells of 3rd level or lower on a target; higher ones need an ability check, DC 10 + their level.",
+      "effects": [
+        {
+          "type": "special",
+          "id": "dispel-magic"
+        }
+      ],
+      "verify": true,
+      "verifyNote": "From memory of the PHB (Rules_Scope §5 summary): check damage dice, save, range, duration and school."
+    },
+    {
+      "id": "spirit-guardians",
+      "name": "Spirit Guardians",
+      "level": 3,
+      "school": "conjuration",
+      "castingTime": "action",
+      "range": "self",
+      "concentration": true,
+      "duration": {
+        "minutes": 10
+      },
+      "components": "V, S, M",
+      "classes": ["cleric"],
+      "summary": "Spirits circle you to 15 ft: enemies there move at half speed, and entering or starting a turn there means a Wis save, 3d8 radiant, half on a success.",
+      "effects": [
+        {
+          "type": "save",
+          "ability": "wis",
+          "onFail": [
+            {
+              "type": "damage",
+              "dice": "3d8",
+              "damageType": "radiant"
+            }
+          ],
+          "onSuccess": "half"
+        },
+        {
+          "type": "special",
+          "id": "persistent-aura",
+          "note": "enemies at half speed"
+        }
+      ],
+      "area": {
+        "shape": "aura",
+        "size": 15
+      },
+      "upcast": {
+        "dicePerLevel": "1d8"
+      },
+      "verify": true,
+      "verifyNote": "From memory of the PHB (Rules_Scope §5 summary): check damage dice, save, range, duration and school."
+    },
+    {
+      "id": "revivify",
+      "name": "Revivify",
+      "level": 3,
+      "school": "necromancy",
+      "castingTime": "action",
+      "range": "touch",
+      "concentration": false,
+      "duration": "instant",
+      "components": "V, S, M",
+      "classes": ["cleric", "paladin"],
+      "summary": "Bring back a creature that died within the last minute, with 1 HP. Uses up a 300 gp diamond.",
+      "effects": [
+        {
+          "type": "special",
+          "id": "revivify"
+        }
+      ],
+      "materialCostGp": 300,
+      "verify": true,
+      "verifyNote": "From memory of the PHB (Rules_Scope §5 summary): check damage dice, save, range, duration and school."
+    },
+    {
+      "id": "mass-healing-word",
+      "name": "Mass Healing Word",
+      "level": 3,
+      "school": "evocation",
+      "castingTime": "bonus",
+      "range": {
+        "feet": 60
+      },
+      "concentration": false,
+      "duration": "instant",
+      "components": "V",
+      "classes": ["cleric"],
+      "summary": "Bonus action: up to six creatures heal 1d4 + your spellcasting modifier.",
+      "effects": [
+        {
+          "type": "heal",
+          "dice": "1d4",
+          "addModifier": true
+        }
+      ],
+      "targets": 6,
+      "upcast": {
+        "dicePerLevel": "1d4"
+      },
+      "verify": true,
+      "verifyNote": "From memory of the PHB (Rules_Scope §5 summary): check damage dice, save, range, duration and school."
+    },
+    {
+      "id": "hypnotic-pattern",
+      "name": "Hypnotic Pattern",
+      "level": 3,
+      "school": "illusion",
+      "castingTime": "action",
+      "range": {
+        "feet": 120
+      },
+      "concentration": true,
+      "duration": {
+        "minutes": 1
+      },
+      "components": "S, M",
+      "classes": ["bard", "sorcerer", "warlock", "wizard"],
+      "summary": "A 30-ft cube of shifting colors: Wis save or charmed and incapacitated (speed 0) until it takes damage or is shaken awake.",
+      "effects": [
+        {
+          "type": "save",
+          "ability": "wis",
+          "onFail": [
+            {
+              "type": "condition",
+              "condition": "charmed",
+              "duration": {
+                "minutes": 1
+              }
+            },
+            {
+              "type": "condition",
+              "condition": "incapacitated",
+              "duration": {
+                "minutes": 1
+              }
+            }
+          ],
+          "onSuccess": "none"
+        }
+      ],
+      "area": {
+        "shape": "cube",
+        "size": 30
+      },
+      "verify": true,
+      "verifyNote": "From memory of the PHB (Rules_Scope §5 summary): check damage dice, save, range, duration and school."
+    },
+    {
+      "id": "haste",
+      "name": "Haste",
+      "level": 3,
+      "school": "transmutation",
+      "castingTime": "action",
+      "range": {
+        "feet": 30
+      },
+      "concentration": true,
+      "duration": {
+        "minutes": 1
+      },
+      "components": "V, S, M",
+      "classes": ["sorcerer", "wizard"],
+      "summary": "A willing creature gets double speed, +2 AC, advantage on Dex saves and one extra limited action each turn. When it ends, the target loses its next turn.",
+      "effects": [
+        {
+          "type": "modifier",
+          "target": "ac",
+          "value": 2,
+          "duration": {
+            "minutes": 1
+          }
+        },
+        {
+          "type": "special",
+          "id": "haste"
+        }
+      ],
+      "verify": true,
+      "verifyNote": "From memory of the PHB (Rules_Scope §5 summary): check damage dice, save, range, duration and school."
+    },
+    {
+      "id": "fly",
+      "name": "Fly",
+      "level": 3,
+      "school": "transmutation",
+      "castingTime": "action",
+      "range": "touch",
+      "concentration": true,
+      "duration": {
+        "minutes": 10
+      },
+      "components": "V, S, M",
+      "classes": ["sorcerer", "warlock", "wizard"],
+      "summary": "A creature gains a flying speed of 60 ft.",
+      "effects": [
+        {
+          "type": "special",
+          "id": "fly-speed",
+          "note": "60 ft"
+        }
+      ],
+      "upcast": {
+        "targetsPerLevel": 1
+      },
+      "verify": true,
+      "verifyNote": "From memory of the PHB (Rules_Scope §5 summary): check damage dice, save, range, duration and school."
+    },
+    {
+      "id": "call-lightning",
+      "name": "Call Lightning",
+      "level": 3,
+      "school": "conjuration",
+      "castingTime": "action",
+      "range": {
+        "feet": 120
+      },
+      "concentration": true,
+      "duration": {
+        "minutes": 10
+      },
+      "components": "V, S",
+      "classes": ["druid"],
+      "summary": "A storm cloud overhead: each turn, call a bolt onto a 5-ft-radius spot, Dex save, 3d10 lightning, half on a success.",
+      "effects": [
+        {
+          "type": "save",
+          "ability": "dex",
+          "onFail": [
+            {
+              "type": "damage",
+              "dice": "3d10",
+              "damageType": "lightning"
+            }
+          ],
+          "onSuccess": "half"
+        },
+        {
+          "type": "special",
+          "id": "repeat-action"
+        }
+      ],
+      "area": {
+        "shape": "cylinder",
+        "size": 5
+      },
+      "upcast": {
+        "dicePerLevel": "1d10"
+      },
+      "verify": true,
+      "verifyNote": "From memory of the PHB (Rules_Scope §5 summary): check damage dice, save, range, duration and school."
+    },
+    {
+      "id": "conjure-animals",
+      "name": "Conjure Animals",
+      "level": 3,
+      "school": "conjuration",
+      "castingTime": "action",
+      "range": {
+        "feet": 60
+      },
+      "concentration": true,
+      "duration": {
+        "hours": 1
+      },
+      "components": "V, S",
+      "classes": ["druid", "ranger"],
+      "summary": "Summon friendly beasts. v1: two wolves only, to keep it simple [inferred simplification from Rules_Scope §5].",
+      "effects": [
+        {
+          "type": "special",
+          "id": "summon",
+          "note": "wolves"
+        }
+      ],
+      "verify": true,
+      "verifyNote": "From memory of the PHB (Rules_Scope §5 summary): check damage dice, save, range, duration and school."
+    },
+    {
+      "id": "hunger-of-hadar",
+      "name": "Hunger of Hadar",
+      "level": 3,
+      "school": "conjuration",
+      "castingTime": "action",
+      "range": {
+        "feet": 150
+      },
+      "concentration": true,
+      "duration": {
+        "minutes": 1
+      },
+      "components": "V, S, M",
+      "classes": ["warlock"],
+      "summary": "A 20-ft-radius sphere of freezing darkness: creatures starting a turn inside take 2d6 cold; ending a turn inside, a Dex save or 2d6 acid.",
+      "effects": [
+        {
+          "type": "damage",
+          "dice": "2d6",
+          "damageType": "cold"
+        },
+        {
+          "type": "save",
+          "ability": "dex",
+          "onFail": [
+            {
+              "type": "damage",
+              "dice": "2d6",
+              "damageType": "acid"
+            }
+          ],
+          "onSuccess": "none"
+        },
+        {
+          "type": "special",
+          "id": "persistent-area"
+        }
+      ],
+      "area": {
+        "shape": "sphere",
+        "size": 20
+      },
+      "verify": true,
+      "verifyNote": "From memory of the PHB (Rules_Scope §5 summary): check damage dice, save, range, duration and school."
+    },
+    {
+      "id": "vampiric-touch",
+      "name": "Vampiric Touch",
+      "level": 3,
+      "school": "necromancy",
+      "castingTime": "action",
+      "range": "self",
+      "concentration": true,
+      "duration": {
+        "minutes": 1
+      },
+      "components": "V, S",
+      "classes": ["warlock", "wizard"],
+      "summary": "Melee spell attack, 3d6 necrotic, and you heal half the damage. Repeat as an action each turn.",
+      "effects": [
+        {
+          "type": "attack",
+          "kind": "melee",
+          "onHit": [
+            {
+              "type": "damage",
+              "dice": "3d6",
+              "damageType": "necrotic"
+            },
+            {
+              "type": "special",
+              "id": "heal-half-damage"
+            }
+          ]
+        }
+      ],
+      "upcast": {
+        "dicePerLevel": "1d6"
+      },
+      "verify": true,
+      "verifyNote": "From memory of the PHB (Rules_Scope §5 summary): check damage dice, save, range, duration and school."
+    },
+    {
+      "id": "fear",
+      "name": "Fear",
+      "level": 3,
+      "school": "illusion",
+      "castingTime": "action",
+      "range": "self",
+      "concentration": true,
+      "duration": {
+        "minutes": 1
+      },
+      "components": "V, S, M",
+      "classes": ["bard", "warlock", "wizard"],
+      "summary": "A 30-ft cone of terror: Wis save or drop what it holds, become frightened and run away; repeat the save when out of sight of you.",
+      "effects": [
+        {
+          "type": "save",
+          "ability": "wis",
+          "onFail": [
+            {
+              "type": "condition",
+              "condition": "frightened",
+              "duration": {
+                "minutes": 1
+              }
+            },
+            {
+              "type": "special",
+              "id": "flee"
+            }
+          ],
+          "onSuccess": "none"
+        }
+      ],
+      "area": {
+        "shape": "cone",
+        "size": 30
+      },
+      "verify": true,
+      "verifyNote": "From memory of the PHB (Rules_Scope §5 summary): check damage dice, save, range, duration and school."
+    },
+    {
+      "id": "slow",
+      "name": "Slow",
+      "level": 3,
+      "school": "transmutation",
+      "castingTime": "action",
+      "range": {
+        "feet": 120
+      },
+      "concentration": true,
+      "duration": {
+        "minutes": 1
+      },
+      "components": "V, S, M",
+      "classes": ["sorcerer", "wizard"],
+      "summary": "Up to six creatures in a 40-ft cube: Wis save or half speed, −2 AC and Dex saves, no reactions, and only an action or a bonus action. Repeat the save each turn.",
+      "effects": [
+        {
+          "type": "save",
+          "ability": "wis",
+          "onFail": [
+            {
+              "type": "modifier",
+              "target": "ac",
+              "value": -2,
+              "duration": {
+                "minutes": 1
+              }
+            },
+            {
+              "type": "special",
+              "id": "slowed"
+            }
+          ],
+          "onSuccess": "none"
+        }
+      ],
+      "targets": 6,
+      "verify": true,
+      "verifyNote": "From memory of the PHB (Rules_Scope §5 summary): check damage dice, save, range, duration and school."
+    },
+    {
+      "id": "remove-curse",
+      "name": "Remove Curse",
+      "level": 3,
+      "school": "abjuration",
+      "castingTime": "action",
+      "range": "touch",
+      "concentration": false,
+      "duration": "instant",
+      "components": "V, S",
+      "classes": ["cleric", "paladin", "warlock", "wizard"],
+      "summary": "End all curses on a creature or object.",
+      "effects": [],
+      "utility": true,
+      "verify": true,
+      "verifyNote": "From memory of the PHB (Rules_Scope §5 summary): check damage dice, save, range, duration and school."
+    },
+    {
+      "id": "beacon-of-hope",
+      "name": "Beacon of Hope",
+      "level": 3,
+      "school": "abjuration",
+      "castingTime": "action",
+      "range": {
+        "feet": 90
+      },
+      "concentration": true,
+      "duration": {
+        "minutes": 1
+      },
+      "components": "V, S",
+      "classes": ["cleric"],
+      "summary": "Allies get advantage on Wis saves and death saves, and regain the maximum from healing.",
+      "effects": [],
+      "utility": true,
+      "verify": true,
+      "verifyNote": "From memory of the PHB (Rules_Scope §5 summary): check damage dice, save, range, duration and school."
+    },
+    {
+      "id": "stinking-cloud",
+      "name": "Stinking Cloud",
+      "level": 3,
+      "school": "conjuration",
+      "castingTime": "action",
+      "range": {
+        "feet": 90
+      },
+      "concentration": true,
+      "duration": {
+        "minutes": 1
+      },
+      "components": "V, S",
+      "classes": ["bard", "sorcerer", "wizard"],
+      "summary": "A 20-ft-radius nauseating cloud: Con save or waste its action retching.",
+      "effects": [],
+      "utility": true,
+      "verify": true,
+      "verifyNote": "From memory of the PHB (Rules_Scope §5 summary): check damage dice, save, range, duration and school."
+    },
+    {
+      "id": "sleet-storm",
+      "name": "Sleet Storm",
+      "level": 3,
+      "school": "conjuration",
+      "castingTime": "action",
+      "range": {
+        "feet": 90
+      },
+      "concentration": true,
+      "duration": {
+        "minutes": 1
+      },
+      "components": "V, S",
+      "classes": ["druid", "sorcerer", "wizard"],
+      "summary": "A 40-ft-radius storm of sleet: difficult terrain, Dex save or fall prone, concentration checks.",
+      "effects": [],
+      "utility": true,
+      "verify": true,
+      "verifyNote": "From memory of the PHB (Rules_Scope §5 summary): check damage dice, save, range, duration and school."
+    },
+    {
+      "id": "meld-into-stone",
+      "name": "Meld into Stone",
+      "level": 3,
+      "school": "transmutation",
+      "castingTime": "action",
+      "range": "self",
+      "concentration": false,
+      "duration": {
+        "hours": 8
+      },
+      "components": "V, S",
+      "classes": ["cleric", "druid"],
+      "summary": "Step into a stone wall or floor and hide there.",
+      "effects": [],
+      "utility": true,
+      "verify": true,
+      "verifyNote": "From memory of the PHB (Rules_Scope §5 summary): check damage dice, save, range, duration and school."
+    },
+    {
+      "id": "spider-climb",
+      "name": "Spider Climb",
+      "level": 2,
+      "school": "transmutation",
+      "castingTime": "action",
+      "range": "touch",
+      "concentration": true,
+      "duration": {
+        "hours": 1
+      },
+      "components": "V, S",
+      "classes": ["sorcerer", "warlock", "wizard"],
+      "summary": "A creature can climb walls and ceilings, hands free.",
+      "effects": [],
+      "utility": true,
+      "verify": true,
+      "verifyNote": "From memory of the PHB (Rules_Scope §5 summary): check damage dice, save, range, duration and school."
+    },
+    {
+      "id": "greater-invisibility",
+      "name": "Greater Invisibility",
+      "level": 4,
+      "school": "illusion",
+      "castingTime": "action",
+      "range": "touch",
+      "concentration": true,
+      "duration": {
+        "minutes": 1
+      },
+      "components": "V, S",
+      "classes": [],
+      "summary": "A creature is invisible for 1 minute, even while attacking or casting.",
+      "effects": [
+        {
+          "type": "condition",
+          "condition": "invisible",
+          "duration": {
+            "minutes": 1
+          }
+        }
+      ],
+      "verify": true,
+      "verifyNote": "From memory of the PHB (Rules_Scope §5 summary): check damage dice, save, range, duration and school."
+    },
+    {
+      "id": "ice-storm",
+      "name": "Ice Storm",
+      "level": 4,
+      "school": "evocation",
+      "castingTime": "action",
+      "range": {
+        "feet": 300
+      },
+      "concentration": false,
+      "duration": "instant",
+      "components": "V, S, M",
+      "classes": [],
+      "summary": "A 20-ft-radius, 40-ft-high cylinder of hail: Dex save, 2d8 bludgeoning + 4d6 cold, half on a success. Difficult terrain until your next turn.",
+      "effects": [
+        {
+          "type": "save",
+          "ability": "dex",
+          "onFail": [
+            {
+              "type": "damage",
+              "dice": "2d8",
+              "damageType": "bludgeoning"
+            },
+            {
+              "type": "damage",
+              "dice": "4d6",
+              "damageType": "cold"
+            }
+          ],
+          "onSuccess": "half"
+        }
+      ],
+      "area": {
+        "shape": "cylinder",
+        "size": 20,
+        "width": 40
+      },
+      "verify": true,
+      "verifyNote": "From memory of the PHB (Rules_Scope §5 summary): check damage dice, save, range, duration and school."
+    },
+    {
+      "id": "cone-of-cold",
+      "name": "Cone of Cold",
+      "level": 5,
+      "school": "evocation",
+      "castingTime": "action",
+      "range": "self",
+      "concentration": false,
+      "duration": "instant",
+      "components": "V, S, M",
+      "classes": [],
+      "summary": "A 60-ft cone of cold: Con save, 8d8 cold, half on a success.",
+      "effects": [
+        {
+          "type": "save",
+          "ability": "con",
+          "onFail": [
+            {
+              "type": "damage",
+              "dice": "8d8",
+              "damageType": "cold"
+            }
+          ],
+          "onSuccess": "half"
+        }
+      ],
+      "area": {
+        "shape": "cone",
+        "size": 60
+      },
+      "verify": true,
+      "verifyNote": "From memory of the PHB (Rules_Scope §5 summary): check damage dice, save, range, duration and school."
+    }
+  ]
+}

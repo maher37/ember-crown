@@ -1,0 +1,1840 @@
+{
+  "spellSlots": {
+    "full": [[2], [3], [4, 2], [4, 3], [4, 3, 2], [4, 3, 3]],
+    "half": [[], [2], [3], [3], [4, 2], [4, 2]],
+    "pact": [
+      {
+        "slots": 1,
+        "slotLevel": 1
+      },
+      {
+        "slots": 2,
+        "slotLevel": 1
+      },
+      {
+        "slots": 2,
+        "slotLevel": 2
+      },
+      {
+        "slots": 2,
+        "slotLevel": 2
+      },
+      {
+        "slots": 2,
+        "slotLevel": 3
+      },
+      {
+        "slots": 2,
+        "slotLevel": 3
+      }
+    ]
+  },
+  "classes": [
+    {
+      "id": "barbarian",
+      "name": "Barbarian",
+      "hitDie": 12,
+      "primaryAbilities": ["str"],
+      "saves": ["str", "con"],
+      "armor": ["light", "medium", "shields"],
+      "weapons": ["simple", "martial"],
+      "skills": {
+        "choose": 2,
+        "from": ["animalHandling", "athletics", "intimidation", "nature", "perception", "survival"]
+      },
+      "subclass": {
+        "id": "berserker",
+        "name": "Path of the Berserker",
+        "level": 3
+      },
+      "resources": [
+        {
+          "id": "rage",
+          "name": "Rage",
+          "recharge": "long-rest",
+          "perLevel": [2, 2, 3, 3, 3, 4],
+          "verify": true,
+          "verifyNote": "Rages 2/2/3/3/3/4 (Rules_Scope §4 gives L1, L3 and L6; L2, L4, L5 from memory)."
+        }
+      ],
+      "levels": [
+        {
+          "level": 1,
+          "features": [
+            {
+              "id": "rage",
+              "name": "Rage",
+              "summary": "Bonus action: +2 melee damage with Strength weapons, resistance to bludgeoning, piercing and slashing, advantage on Strength checks and saves. Lasts 1 minute.",
+              "uses": "rage"
+            },
+            {
+              "id": "unarmored-defense",
+              "name": "Unarmored Defense",
+              "summary": "Without armor, AC = 10 + Dex modifier + Con modifier (a shield still counts)."
+            }
+          ]
+        },
+        {
+          "level": 2,
+          "features": [
+            {
+              "id": "reckless-attack",
+              "name": "Reckless Attack",
+              "summary": "On your first attack of the turn, take advantage on Strength melee attacks; attacks against you have advantage until your next turn."
+            },
+            {
+              "id": "danger-sense",
+              "name": "Danger Sense",
+              "summary": "Advantage on Dex saves against effects you can see."
+            }
+          ]
+        },
+        {
+          "level": 3,
+          "features": [
+            {
+              "id": "frenzy",
+              "name": "Frenzy",
+              "summary": "While raging, you can make one melee attack as a bonus action each turn. When the rage ends you gain a level of exhaustion.",
+              "subclass": true
+            }
+          ]
+        },
+        {
+          "level": 4,
+          "features": [
+            {
+              "id": "ability-score-increase",
+              "name": "Ability Score Increase",
+              "summary": "Raise one ability score by 2, or two scores by 1 (max 20). No feats in v1."
+            }
+          ]
+        },
+        {
+          "level": 5,
+          "features": [
+            {
+              "id": "extra-attack",
+              "name": "Extra Attack",
+              "summary": "Attack twice when you take the Attack action."
+            },
+            {
+              "id": "fast-movement",
+              "name": "Fast Movement",
+              "summary": "+10 ft speed without heavy armor."
+            }
+          ]
+        },
+        {
+          "level": 6,
+          "features": [
+            {
+              "id": "mindless-rage",
+              "name": "Mindless Rage",
+              "summary": "Can't be charmed or frightened while raging.",
+              "subclass": true
+            }
+          ]
+        }
+      ],
+      "verify": true,
+      "verifyNote": "Proficiencies and skill list from memory of the PHB. Hit die, saves and subclass level checked (✅)."
+    },
+    {
+      "id": "bard",
+      "name": "Bard",
+      "hitDie": 8,
+      "primaryAbilities": ["cha"],
+      "saves": ["dex", "cha"],
+      "armor": ["light"],
+      "weapons": ["simple", "hand crossbows", "longswords", "rapiers", "shortswords"],
+      "tools": ["three musical instruments"],
+      "skills": {
+        "choose": 3,
+        "from": "any"
+      },
+      "subclass": {
+        "id": "lore",
+        "name": "College of Lore",
+        "level": 3
+      },
+      "spellcasting": {
+        "ability": "cha",
+        "progression": "full",
+        "style": "known",
+        "cantripsKnown": [2, 2, 2, 3, 3, 3],
+        "ritualCasting": true,
+        "spellsKnown": [4, 5, 6, 7, 8, 9],
+        "verify": true,
+        "verifyNote": "Cantrips/spells known counts from memory of the PHB class table."
+      },
+      "resources": [
+        {
+          "id": "bardic-inspiration",
+          "name": "Bardic Inspiration",
+          "recharge": "long-rest",
+          "formula": "cha-mod-min-1",
+          "verify": true,
+          "verifyNote": "Uses = Cha modifier (min 1). Recharges on a short rest from level 5 (Font of Inspiration)."
+        }
+      ],
+      "levels": [
+        {
+          "level": 1,
+          "features": [
+            {
+              "id": "spellcasting",
+              "name": "Spellcasting",
+              "summary": "Casts bard spells using Charisma."
+            },
+            {
+              "id": "bardic-inspiration",
+              "name": "Bardic Inspiration",
+              "summary": "Bonus action: give an ally within 60 ft a d6 to add to one attack, check or save in the next 10 minutes.",
+              "uses": "bardic-inspiration"
+            }
+          ]
+        },
+        {
+          "level": 2,
+          "features": [
+            {
+              "id": "jack-of-all-trades",
+              "name": "Jack of All Trades",
+              "summary": "Add half your proficiency bonus (rounded down) to ability checks you aren't proficient in."
+            },
+            {
+              "id": "song-of-rest",
+              "name": "Song of Rest",
+              "summary": "Allies who spend Hit Dice during your short rest regain an extra 1d6 HP."
+            }
+          ]
+        },
+        {
+          "level": 3,
+          "features": [
+            {
+              "id": "expertise",
+              "name": "Expertise",
+              "summary": "Double your proficiency bonus for two of your skills.",
+              "choose": 2
+            },
+            {
+              "id": "bonus-proficiencies",
+              "name": "Bonus Proficiencies",
+              "summary": "Gain proficiency in three skills of your choice.",
+              "subclass": true,
+              "mechanics": [
+                {
+                  "type": "skillChoice",
+                  "count": 3
+                }
+              ]
+            },
+            {
+              "id": "cutting-words",
+              "name": "Cutting Words",
+              "summary": "Reaction: spend a Bardic Inspiration die and subtract it from a visible enemy's attack, check or damage roll.",
+              "subclass": true,
+              "uses": "bardic-inspiration"
+            }
+          ]
+        },
+        {
+          "level": 4,
+          "features": [
+            {
+              "id": "ability-score-increase",
+              "name": "Ability Score Increase",
+              "summary": "Raise one ability score by 2, or two scores by 1 (max 20). No feats in v1."
+            }
+          ]
+        },
+        {
+          "level": 5,
+          "features": [
+            {
+              "id": "bardic-inspiration-d8",
+              "name": "Bardic Inspiration (d8)",
+              "summary": "Your inspiration die becomes a d8."
+            },
+            {
+              "id": "font-of-inspiration",
+              "name": "Font of Inspiration",
+              "summary": "Bardic Inspiration now recharges on a short or long rest."
+            }
+          ]
+        },
+        {
+          "level": 6,
+          "features": [
+            {
+              "id": "countercharm",
+              "name": "Countercharm",
+              "summary": "Action: until your next turn, allies within 30 ft have advantage on saves against being charmed or frightened."
+            },
+            {
+              "id": "additional-magical-secrets",
+              "name": "Additional Magical Secrets",
+              "summary": "Learn two spells from any class's list; they count as bard spells.",
+              "subclass": true,
+              "choose": 2
+            }
+          ]
+        }
+      ],
+      "verify": true,
+      "verifyNote": "Proficiencies and skill list from memory of the PHB. Hit die, saves and subclass level checked (✅)."
+    },
+    {
+      "id": "cleric",
+      "name": "Cleric",
+      "hitDie": 8,
+      "primaryAbilities": ["wis"],
+      "saves": ["wis", "cha"],
+      "armor": ["light", "medium", "heavy", "shields"],
+      "weapons": ["simple"],
+      "skills": {
+        "choose": 2,
+        "from": ["history", "insight", "medicine", "persuasion", "religion"]
+      },
+      "subclass": {
+        "id": "life",
+        "name": "Life Domain",
+        "level": 1
+      },
+      "spellcasting": {
+        "ability": "wis",
+        "progression": "full",
+        "style": "prepared",
+        "cantripsKnown": [3, 3, 3, 4, 4, 4],
+        "ritualCasting": true,
+        "preparedFormula": "wis-mod+level",
+        "verify": true,
+        "verifyNote": "Cantrips/spells known counts from memory of the PHB class table."
+      },
+      "resources": [
+        {
+          "id": "channel-divinity",
+          "name": "Channel Divinity",
+          "recharge": "short-rest",
+          "perLevel": [0, 1, 1, 1, 1, 2],
+          "verify": true,
+          "verifyNote": "1 use at L2-5, 2 at L6 (Rules_Scope §4 ✅ names; counts from memory)."
+        }
+      ],
+      "levels": [
+        {
+          "level": 1,
+          "features": [
+            {
+              "id": "spellcasting",
+              "name": "Spellcasting",
+              "summary": "Prepares cleric spells each day using Wisdom."
+            },
+            {
+              "id": "life-bonus-proficiency",
+              "name": "Bonus Proficiency",
+              "summary": "Proficient with heavy armor.",
+              "subclass": true
+            },
+            {
+              "id": "disciple-of-life",
+              "name": "Disciple of Life",
+              "summary": "Healing spells of 1st level or higher heal an extra 2 + the spell's level.",
+              "subclass": true
+            },
+            {
+              "id": "life-domain-spells",
+              "name": "Domain Spells",
+              "summary": "Always prepared: Bless, Cure Wounds (L1); Lesser Restoration, Spiritual Weapon (L3); Beacon of Hope, Revivify (L5).",
+              "subclass": true,
+              "verify": true,
+              "verifyNote": "Life Domain spell list from memory."
+            }
+          ]
+        },
+        {
+          "level": 2,
+          "features": [
+            {
+              "id": "turn-undead",
+              "name": "Channel Divinity: Turn Undead",
+              "summary": "Action: undead within 30 ft make a Wis save or flee from you for 1 minute.",
+              "uses": "channel-divinity"
+            },
+            {
+              "id": "preserve-life",
+              "name": "Channel Divinity: Preserve Life",
+              "summary": "Action: share out 5 × your cleric level in healing among creatures within 30 ft, up to half each one's HP maximum.",
+              "uses": "channel-divinity",
+              "subclass": true
+            }
+          ]
+        },
+        {
+          "level": 3,
+          "features": [
+            {
+              "id": "second-level-spells",
+              "name": "2nd-Level Spells",
+              "summary": "Gain 2nd-level spell slots."
+            }
+          ]
+        },
+        {
+          "level": 4,
+          "features": [
+            {
+              "id": "ability-score-increase",
+              "name": "Ability Score Increase",
+              "summary": "Raise one ability score by 2, or two scores by 1 (max 20). No feats in v1."
+            }
+          ]
+        },
+        {
+          "level": 5,
+          "features": [
+            {
+              "id": "destroy-undead",
+              "name": "Destroy Undead (CR 1/2)",
+              "summary": "Undead of CR 1/2 or lower that fail the Turn Undead save are destroyed."
+            }
+          ]
+        },
+        {
+          "level": 6,
+          "features": [
+            {
+              "id": "channel-divinity-2",
+              "name": "Channel Divinity (2 uses)",
+              "summary": "Channel Divinity twice between rests."
+            },
+            {
+              "id": "blessed-healer",
+              "name": "Blessed Healer",
+              "summary": "When your spell heals someone else, you regain 2 + the spell's level.",
+              "subclass": true
+            }
+          ]
+        }
+      ],
+      "verify": true,
+      "verifyNote": "Proficiencies and skill list from memory of the PHB. Hit die, saves and subclass level checked (✅)."
+    },
+    {
+      "id": "druid",
+      "name": "Druid",
+      "hitDie": 8,
+      "primaryAbilities": ["wis"],
+      "saves": ["int", "wis"],
+      "armor": ["light", "medium", "shields"],
+      "weapons": [
+        "clubs",
+        "daggers",
+        "darts",
+        "javelins",
+        "maces",
+        "quarterstaffs",
+        "scimitars",
+        "sickles",
+        "slings",
+        "spears"
+      ],
+      "tools": ["herbalism kit"],
+      "skills": {
+        "choose": 2,
+        "from": [
+          "arcana",
+          "animalHandling",
+          "insight",
+          "medicine",
+          "nature",
+          "perception",
+          "religion",
+          "survival"
+        ]
+      },
+      "subclass": {
+        "id": "land-mountain",
+        "name": "Circle of the Land (Mountain)",
+        "level": 2
+      },
+      "spellcasting": {
+        "ability": "wis",
+        "progression": "full",
+        "style": "prepared",
+        "cantripsKnown": [2, 2, 2, 3, 3, 3],
+        "ritualCasting": true,
+        "preparedFormula": "wis-mod+level",
+        "verify": true,
+        "verifyNote": "Cantrips/spells known counts from memory of the PHB class table."
+      },
+      "resources": [
+        {
+          "id": "wild-shape",
+          "name": "Wild Shape",
+          "recharge": "short-rest",
+          "perLevel": [0, 2, 2, 2, 2, 2],
+          "verify": true,
+          "verifyNote": "Use counts from memory of the PHB class table (Rules_Scope CONFIRM LOCALLY)."
+        },
+        {
+          "id": "natural-recovery",
+          "name": "Natural Recovery",
+          "recharge": "long-rest",
+          "perLevel": [0, 1, 1, 1, 1, 1],
+          "verify": true,
+          "verifyNote": "Use counts from memory of the PHB class table (Rules_Scope CONFIRM LOCALLY)."
+        }
+      ],
+      "levels": [
+        {
+          "level": 1,
+          "features": [
+            {
+              "id": "druidic",
+              "name": "Druidic",
+              "summary": "Knows the secret druid language."
+            },
+            {
+              "id": "spellcasting",
+              "name": "Spellcasting",
+              "summary": "Prepares druid spells each day using Wisdom. Druids won't wear metal armor."
+            }
+          ]
+        },
+        {
+          "level": 2,
+          "features": [
+            {
+              "id": "wild-shape",
+              "name": "Wild Shape",
+              "summary": "Action: become a beast you have seen, CR 1/4 or lower, no flying or swimming speed. Lasts hours equal to half your level.",
+              "uses": "wild-shape",
+              "verify": true,
+              "verifyNote": "Wild Shape limits (Rules_Scope CONFIRM LOCALLY)."
+            },
+            {
+              "id": "bonus-cantrip",
+              "name": "Bonus Cantrip",
+              "summary": "Learn one extra druid cantrip.",
+              "subclass": true
+            },
+            {
+              "id": "natural-recovery",
+              "name": "Natural Recovery",
+              "summary": "Once per day during a short rest, recover spell slots totaling up to half your druid level (rounded up), none above 5th.",
+              "subclass": true,
+              "uses": "natural-recovery"
+            }
+          ]
+        },
+        {
+          "level": 3,
+          "features": [
+            {
+              "id": "circle-spells-mountain-1",
+              "name": "Circle Spells",
+              "summary": "Always prepared: Spider Climb and Spike Growth.",
+              "subclass": true,
+              "verify": true,
+              "verifyNote": "Mountain circle list (Rules_Scope CONFIRM LOCALLY)."
+            }
+          ]
+        },
+        {
+          "level": 4,
+          "features": [
+            {
+              "id": "ability-score-increase",
+              "name": "Ability Score Increase",
+              "summary": "Raise one ability score by 2, or two scores by 1 (max 20). No feats in v1."
+            },
+            {
+              "id": "wild-shape-improvement",
+              "name": "Wild Shape Improvement",
+              "summary": "Beasts up to CR 1/2, still no flying."
+            }
+          ]
+        },
+        {
+          "level": 5,
+          "features": [
+            {
+              "id": "circle-spells-mountain-3",
+              "name": "Circle Spells",
+              "summary": "Always prepared: Lightning Bolt and Meld into Stone.",
+              "subclass": true,
+              "verify": true,
+              "verifyNote": "Mountain circle list."
+            }
+          ]
+        },
+        {
+          "level": 6,
+          "features": [
+            {
+              "id": "lands-stride",
+              "name": "Land's Stride",
+              "summary": "Nonmagical difficult terrain costs no extra movement; advantage on saves against magical plants.",
+              "subclass": true
+            }
+          ]
+        }
+      ],
+      "verify": true,
+      "verifyNote": "Proficiencies and skill list from memory of the PHB. Hit die, saves and subclass level checked (✅)."
+    },
+    {
+      "id": "fighter",
+      "name": "Fighter",
+      "hitDie": 10,
+      "primaryAbilities": ["str", "dex"],
+      "saves": ["str", "con"],
+      "armor": ["light", "medium", "heavy", "shields"],
+      "weapons": ["simple", "martial"],
+      "skills": {
+        "choose": 2,
+        "from": [
+          "acrobatics",
+          "animalHandling",
+          "athletics",
+          "history",
+          "insight",
+          "intimidation",
+          "perception",
+          "survival"
+        ]
+      },
+      "subclass": {
+        "id": "champion",
+        "name": "Champion",
+        "level": 3
+      },
+      "resources": [
+        {
+          "id": "second-wind",
+          "name": "Second Wind",
+          "recharge": "short-rest",
+          "perLevel": [1, 1, 1, 1, 1, 1],
+          "verify": true,
+          "verifyNote": "Rules_Scope §4."
+        },
+        {
+          "id": "action-surge",
+          "name": "Action Surge",
+          "recharge": "short-rest",
+          "perLevel": [0, 1, 1, 1, 1, 1],
+          "verify": true,
+          "verifyNote": "Rules_Scope §4."
+        }
+      ],
+      "levels": [
+        {
+          "level": 1,
+          "features": [
+            {
+              "id": "fighting-style",
+              "name": "Fighting Style",
+              "summary": "Pick one fighting style.",
+              "choose": 1,
+              "options": [
+                {
+                  "id": "archery",
+                  "name": "Archery",
+                  "summary": "+2 to attack rolls with ranged weapons."
+                },
+                {
+                  "id": "defense",
+                  "name": "Defense",
+                  "summary": "+1 AC while wearing armor."
+                },
+                {
+                  "id": "dueling",
+                  "name": "Dueling",
+                  "summary": "+2 damage with a one-handed melee weapon and no other weapon."
+                },
+                {
+                  "id": "great-weapon-fighting",
+                  "name": "Great Weapon Fighting",
+                  "summary": "Reroll 1s and 2s on damage dice for two-handed melee weapons."
+                },
+                {
+                  "id": "protection",
+                  "name": "Protection",
+                  "summary": "Reaction with a shield: impose disadvantage on an attack against an adjacent ally."
+                },
+                {
+                  "id": "two-weapon-fighting",
+                  "name": "Two-Weapon Fighting",
+                  "summary": "Add your ability modifier to the off-hand attack's damage."
+                }
+              ]
+            },
+            {
+              "id": "second-wind",
+              "name": "Second Wind",
+              "summary": "Bonus action: regain 1d10 + fighter level HP.",
+              "uses": "second-wind"
+            }
+          ]
+        },
+        {
+          "level": 2,
+          "features": [
+            {
+              "id": "action-surge",
+              "name": "Action Surge",
+              "summary": "Take one extra action on your turn.",
+              "uses": "action-surge"
+            }
+          ]
+        },
+        {
+          "level": 3,
+          "features": [
+            {
+              "id": "improved-critical",
+              "name": "Improved Critical",
+              "summary": "Weapon attacks crit on a 19 or 20.",
+              "subclass": true
+            }
+          ]
+        },
+        {
+          "level": 4,
+          "features": [
+            {
+              "id": "ability-score-increase",
+              "name": "Ability Score Increase",
+              "summary": "Raise one ability score by 2, or two scores by 1 (max 20). No feats in v1."
+            }
+          ]
+        },
+        {
+          "level": 5,
+          "features": [
+            {
+              "id": "extra-attack",
+              "name": "Extra Attack",
+              "summary": "Attack twice when you take the Attack action."
+            }
+          ]
+        },
+        {
+          "level": 6,
+          "features": [
+            {
+              "id": "ability-score-increase",
+              "name": "Ability Score Increase",
+              "summary": "Raise one ability score by 2, or two scores by 1 (max 20). No feats in v1."
+            }
+          ]
+        }
+      ],
+      "verify": true,
+      "verifyNote": "Proficiencies and skill list from memory of the PHB. Hit die, saves and subclass level checked (✅)."
+    },
+    {
+      "id": "monk",
+      "name": "Monk",
+      "hitDie": 8,
+      "primaryAbilities": ["dex", "wis"],
+      "saves": ["str", "dex"],
+      "armor": [],
+      "weapons": ["simple", "shortswords"],
+      "tools": ["one artisan's tool or instrument"],
+      "skills": {
+        "choose": 2,
+        "from": ["acrobatics", "athletics", "history", "insight", "religion", "stealth"]
+      },
+      "subclass": {
+        "id": "open-hand",
+        "name": "Way of the Open Hand",
+        "level": 3
+      },
+      "resources": [
+        {
+          "id": "ki",
+          "name": "Ki",
+          "recharge": "short-rest",
+          "perLevel": [0, 2, 3, 4, 5, 6],
+          "verify": true,
+          "verifyNote": "Ki = monk level from L2 (Rules_Scope §4)."
+        }
+      ],
+      "levels": [
+        {
+          "level": 1,
+          "features": [
+            {
+              "id": "unarmored-defense",
+              "name": "Unarmored Defense",
+              "summary": "Without armor or shield, AC = 10 + Dex modifier + Wis modifier."
+            },
+            {
+              "id": "martial-arts",
+              "name": "Martial Arts",
+              "summary": "Unarmed strikes and monk weapons can use Dex and deal a d4; after attacking, make one unarmed strike as a bonus action."
+            }
+          ]
+        },
+        {
+          "level": 2,
+          "features": [
+            {
+              "id": "flurry-of-blows",
+              "name": "Flurry of Blows",
+              "summary": "1 ki after the Attack action: two unarmed strikes as a bonus action.",
+              "uses": "ki"
+            },
+            {
+              "id": "patient-defense",
+              "name": "Patient Defense",
+              "summary": "1 ki: Dodge as a bonus action.",
+              "uses": "ki"
+            },
+            {
+              "id": "step-of-the-wind",
+              "name": "Step of the Wind",
+              "summary": "1 ki: Dash or Disengage as a bonus action, and your jump distance doubles.",
+              "uses": "ki"
+            },
+            {
+              "id": "unarmored-movement",
+              "name": "Unarmored Movement",
+              "summary": "+10 ft speed without armor or shield."
+            }
+          ]
+        },
+        {
+          "level": 3,
+          "features": [
+            {
+              "id": "open-hand-technique",
+              "name": "Open Hand Technique",
+              "summary": "Flurry of Blows hits can knock the target prone (Dex save), push it 15 ft (Str save), or stop its reactions.",
+              "subclass": true
+            },
+            {
+              "id": "deflect-missiles",
+              "name": "Deflect Missiles",
+              "summary": "Reaction: reduce ranged weapon damage by 1d10 + Dex + level; at 0, catch it and throw it back for 1 ki."
+            }
+          ]
+        },
+        {
+          "level": 4,
+          "features": [
+            {
+              "id": "ability-score-increase",
+              "name": "Ability Score Increase",
+              "summary": "Raise one ability score by 2, or two scores by 1 (max 20). No feats in v1."
+            },
+            {
+              "id": "slow-fall",
+              "name": "Slow Fall",
+              "summary": "Reaction: reduce falling damage by 5 × monk level."
+            }
+          ]
+        },
+        {
+          "level": 5,
+          "features": [
+            {
+              "id": "extra-attack",
+              "name": "Extra Attack",
+              "summary": "Attack twice when you take the Attack action."
+            },
+            {
+              "id": "stunning-strike",
+              "name": "Stunning Strike",
+              "summary": "1 ki on a melee hit: the target makes a Con save or is stunned until the end of your next turn.",
+              "uses": "ki"
+            },
+            {
+              "id": "martial-arts-d6",
+              "name": "Martial Arts (d6)",
+              "summary": "Martial arts die becomes a d6."
+            }
+          ]
+        },
+        {
+          "level": 6,
+          "features": [
+            {
+              "id": "ki-empowered-strikes",
+              "name": "Ki-Empowered Strikes",
+              "summary": "Unarmed strikes count as magical."
+            },
+            {
+              "id": "wholeness-of-body",
+              "name": "Wholeness of Body",
+              "summary": "Once per long rest, action: regain 3 × monk level HP.",
+              "subclass": true
+            },
+            {
+              "id": "unarmored-movement-15",
+              "name": "Unarmored Movement (+15 ft)",
+              "summary": "Bonus speed rises to +15 ft."
+            }
+          ]
+        }
+      ],
+      "verify": true,
+      "verifyNote": "Proficiencies and skill list from memory of the PHB. Hit die, saves and subclass level checked (✅)."
+    },
+    {
+      "id": "paladin",
+      "name": "Paladin",
+      "hitDie": 10,
+      "primaryAbilities": ["str", "cha"],
+      "saves": ["wis", "cha"],
+      "armor": ["light", "medium", "heavy", "shields"],
+      "weapons": ["simple", "martial"],
+      "skills": {
+        "choose": 2,
+        "from": ["athletics", "insight", "intimidation", "medicine", "persuasion", "religion"]
+      },
+      "subclass": {
+        "id": "devotion",
+        "name": "Oath of Devotion",
+        "level": 3
+      },
+      "spellcasting": {
+        "ability": "cha",
+        "progression": "half",
+        "style": "prepared",
+        "cantripsKnown": [0, 0, 0, 0, 0, 0],
+        "ritualCasting": false,
+        "preparedFormula": "cha-mod+half-level",
+        "verify": true,
+        "verifyNote": "Cantrips/spells known counts from memory of the PHB class table."
+      },
+      "resources": [
+        {
+          "id": "divine-sense",
+          "name": "Divine Sense",
+          "recharge": "long-rest",
+          "formula": "1+cha-mod",
+          "verify": true,
+          "verifyNote": "Use counts from memory of the PHB class table (Rules_Scope CONFIRM LOCALLY)."
+        },
+        {
+          "id": "lay-on-hands",
+          "name": "Lay on Hands pool",
+          "recharge": "long-rest",
+          "formula": "5-x-level",
+          "verify": true,
+          "verifyNote": "Pool of 5 × level HP (Rules_Scope §4)."
+        },
+        {
+          "id": "channel-divinity",
+          "name": "Channel Divinity",
+          "recharge": "short-rest",
+          "perLevel": [0, 0, 1, 1, 1, 1],
+          "verify": true,
+          "verifyNote": "Use counts from memory of the PHB class table (Rules_Scope CONFIRM LOCALLY)."
+        }
+      ],
+      "levels": [
+        {
+          "level": 1,
+          "features": [
+            {
+              "id": "divine-sense",
+              "name": "Divine Sense",
+              "summary": "Action: sense celestials, fiends and undead within 60 ft until your next turn.",
+              "uses": "divine-sense"
+            },
+            {
+              "id": "lay-on-hands",
+              "name": "Lay on Hands",
+              "summary": "Action: touch to restore HP from your pool, or spend 5 to cure a disease or poison.",
+              "uses": "lay-on-hands"
+            }
+          ]
+        },
+        {
+          "level": 2,
+          "features": [
+            {
+              "id": "fighting-style",
+              "name": "Fighting Style",
+              "summary": "Pick one fighting style.",
+              "choose": 1,
+              "options": [
+                {
+                  "id": "defense",
+                  "name": "Defense",
+                  "summary": "+1 AC while wearing armor."
+                },
+                {
+                  "id": "dueling",
+                  "name": "Dueling",
+                  "summary": "+2 damage with a one-handed melee weapon and no other weapon."
+                },
+                {
+                  "id": "great-weapon-fighting",
+                  "name": "Great Weapon Fighting",
+                  "summary": "Reroll 1s and 2s on damage dice for two-handed melee weapons."
+                },
+                {
+                  "id": "protection",
+                  "name": "Protection",
+                  "summary": "Reaction with a shield: impose disadvantage on an attack against an adjacent ally."
+                }
+              ]
+            },
+            {
+              "id": "spellcasting",
+              "name": "Spellcasting",
+              "summary": "Prepares paladin spells each day using Charisma."
+            },
+            {
+              "id": "divine-smite",
+              "name": "Divine Smite",
+              "summary": "On a melee weapon hit, spend a slot: +2d8 radiant, +1d8 per slot level above 1st, +1d8 more against undead and fiends."
+            }
+          ]
+        },
+        {
+          "level": 3,
+          "features": [
+            {
+              "id": "divine-health",
+              "name": "Divine Health",
+              "summary": "Immune to disease."
+            },
+            {
+              "id": "sacred-weapon",
+              "name": "Channel Divinity: Sacred Weapon",
+              "summary": "Action: for 1 minute add your Cha modifier to attack rolls with one weapon, which also sheds light.",
+              "uses": "channel-divinity",
+              "subclass": true
+            },
+            {
+              "id": "turn-the-unholy",
+              "name": "Channel Divinity: Turn the Unholy",
+              "summary": "Action: fiends and undead within 30 ft make a Wis save or are turned for 1 minute.",
+              "uses": "channel-divinity",
+              "subclass": true
+            },
+            {
+              "id": "devotion-oath-spells",
+              "name": "Oath Spells",
+              "summary": "Always prepared: Protection from Evil and Good, Sanctuary (L3); Lesser Restoration, Zone of Truth (L5).",
+              "subclass": true,
+              "verify": true,
+              "verifyNote": "Devotion oath spell list from memory."
+            }
+          ]
+        },
+        {
+          "level": 4,
+          "features": [
+            {
+              "id": "ability-score-increase",
+              "name": "Ability Score Increase",
+              "summary": "Raise one ability score by 2, or two scores by 1 (max 20). No feats in v1."
+            }
+          ]
+        },
+        {
+          "level": 5,
+          "features": [
+            {
+              "id": "extra-attack",
+              "name": "Extra Attack",
+              "summary": "Attack twice when you take the Attack action."
+            },
+            {
+              "id": "second-level-spells",
+              "name": "2nd-Level Spells",
+              "summary": "Gain 2nd-level spell slots."
+            }
+          ]
+        },
+        {
+          "level": 6,
+          "features": [
+            {
+              "id": "aura-of-protection",
+              "name": "Aura of Protection",
+              "summary": "You and allies within 10 ft add your Cha modifier (min +1) to saving throws while you're conscious."
+            }
+          ]
+        }
+      ],
+      "verify": true,
+      "verifyNote": "Proficiencies and skill list from memory of the PHB. Hit die, saves and subclass level checked (✅)."
+    },
+    {
+      "id": "ranger",
+      "name": "Ranger",
+      "hitDie": 10,
+      "primaryAbilities": ["dex", "wis"],
+      "saves": ["str", "dex"],
+      "armor": ["light", "medium", "shields"],
+      "weapons": ["simple", "martial"],
+      "skills": {
+        "choose": 3,
+        "from": [
+          "animalHandling",
+          "athletics",
+          "insight",
+          "investigation",
+          "nature",
+          "perception",
+          "stealth",
+          "survival"
+        ]
+      },
+      "subclass": {
+        "id": "hunter",
+        "name": "Hunter",
+        "level": 3
+      },
+      "spellcasting": {
+        "ability": "wis",
+        "progression": "half",
+        "style": "known",
+        "cantripsKnown": [0, 0, 0, 0, 0, 0],
+        "ritualCasting": false,
+        "spellsKnown": [0, 2, 3, 3, 4, 4],
+        "verify": true,
+        "verifyNote": "Cantrips/spells known counts from memory of the PHB class table."
+      },
+      "levels": [
+        {
+          "level": 1,
+          "features": [
+            {
+              "id": "favored-enemy",
+              "name": "Favored Enemy",
+              "summary": "Choose a creature type: advantage on Survival to track it and on Intelligence checks to recall lore about it.",
+              "choose": 1
+            },
+            {
+              "id": "natural-explorer",
+              "name": "Natural Explorer",
+              "summary": "Choose a favored terrain (Mountain fits the Greypeaks): faster travel, can't get lost there, and other travel perks.",
+              "choose": 1
+            }
+          ]
+        },
+        {
+          "level": 2,
+          "features": [
+            {
+              "id": "fighting-style",
+              "name": "Fighting Style",
+              "summary": "Pick one fighting style.",
+              "choose": 1,
+              "options": [
+                {
+                  "id": "archery",
+                  "name": "Archery",
+                  "summary": "+2 to attack rolls with ranged weapons."
+                },
+                {
+                  "id": "defense",
+                  "name": "Defense",
+                  "summary": "+1 AC while wearing armor."
+                },
+                {
+                  "id": "dueling",
+                  "name": "Dueling",
+                  "summary": "+2 damage with a one-handed melee weapon and no other weapon."
+                },
+                {
+                  "id": "two-weapon-fighting",
+                  "name": "Two-Weapon Fighting",
+                  "summary": "Add your ability modifier to the off-hand attack's damage."
+                }
+              ]
+            },
+            {
+              "id": "spellcasting",
+              "name": "Spellcasting",
+              "summary": "Knows ranger spells, cast with Wisdom."
+            }
+          ]
+        },
+        {
+          "level": 3,
+          "features": [
+            {
+              "id": "hunters-prey",
+              "name": "Hunter's Prey",
+              "summary": "Pick one technique.",
+              "subclass": true,
+              "choose": 1,
+              "options": [
+                {
+                  "id": "colossus-slayer",
+                  "name": "Colossus Slayer",
+                  "summary": "Once per turn, +1d8 weapon damage to a creature that is below its HP maximum."
+                },
+                {
+                  "id": "giant-killer",
+                  "name": "Giant Killer",
+                  "summary": "Reaction: attack a Large or larger creature within 5 ft that attacks you."
+                },
+                {
+                  "id": "horde-breaker",
+                  "name": "Horde Breaker",
+                  "summary": "Once per turn, make another attack against a different creature within 5 ft of the first target."
+                }
+              ]
+            },
+            {
+              "id": "primeval-awareness",
+              "name": "Primeval Awareness",
+              "summary": "Spend a spell slot to sense certain creature types nearby."
+            }
+          ]
+        },
+        {
+          "level": 4,
+          "features": [
+            {
+              "id": "ability-score-increase",
+              "name": "Ability Score Increase",
+              "summary": "Raise one ability score by 2, or two scores by 1 (max 20). No feats in v1."
+            }
+          ]
+        },
+        {
+          "level": 5,
+          "features": [
+            {
+              "id": "extra-attack",
+              "name": "Extra Attack",
+              "summary": "Attack twice when you take the Attack action."
+            },
+            {
+              "id": "second-level-spells",
+              "name": "2nd-Level Spells",
+              "summary": "Gain 2nd-level spell slots."
+            }
+          ]
+        },
+        {
+          "level": 6,
+          "features": [
+            {
+              "id": "favored-enemy-improvement",
+              "name": "Favored Enemy and Natural Explorer Improvements",
+              "summary": "Choose another favored enemy and another favored terrain.",
+              "choose": 2
+            }
+          ]
+        }
+      ],
+      "verify": true,
+      "verifyNote": "Proficiencies and skill list from memory of the PHB. Hit die, saves and subclass level checked (✅)."
+    },
+    {
+      "id": "rogue",
+      "name": "Rogue",
+      "hitDie": 8,
+      "primaryAbilities": ["dex"],
+      "saves": ["dex", "int"],
+      "armor": ["light"],
+      "weapons": ["simple", "hand crossbows", "longswords", "rapiers", "shortswords"],
+      "tools": ["thieves' tools"],
+      "skills": {
+        "choose": 4,
+        "from": [
+          "acrobatics",
+          "athletics",
+          "deception",
+          "insight",
+          "intimidation",
+          "investigation",
+          "perception",
+          "performance",
+          "persuasion",
+          "sleightOfHand",
+          "stealth"
+        ]
+      },
+      "subclass": {
+        "id": "thief",
+        "name": "Thief",
+        "level": 3
+      },
+      "levels": [
+        {
+          "level": 1,
+          "features": [
+            {
+              "id": "expertise",
+              "name": "Expertise",
+              "summary": "Double your proficiency bonus for two skills (or one skill and thieves' tools).",
+              "choose": 2
+            },
+            {
+              "id": "sneak-attack",
+              "name": "Sneak Attack (1d6)",
+              "summary": "Once per turn, +1d6 damage with a finesse or ranged weapon if you have advantage or an ally is next to the target (and you don't have disadvantage)."
+            },
+            {
+              "id": "thieves-cant",
+              "name": "Thieves' Cant",
+              "summary": "The secret language of thieves."
+            }
+          ]
+        },
+        {
+          "level": 2,
+          "features": [
+            {
+              "id": "cunning-action",
+              "name": "Cunning Action",
+              "summary": "Dash, Disengage or Hide as a bonus action."
+            }
+          ]
+        },
+        {
+          "level": 3,
+          "features": [
+            {
+              "id": "sneak-attack-2",
+              "name": "Sneak Attack (2d6)",
+              "summary": "Sneak Attack rises to 2d6."
+            },
+            {
+              "id": "fast-hands",
+              "name": "Fast Hands",
+              "summary": "Cunning Action can also use an object, pick a lock or disarm a trap.",
+              "subclass": true
+            },
+            {
+              "id": "second-story-work",
+              "name": "Second-Story Work",
+              "summary": "Climbing costs no extra movement; longer running jumps.",
+              "subclass": true
+            }
+          ]
+        },
+        {
+          "level": 4,
+          "features": [
+            {
+              "id": "ability-score-increase",
+              "name": "Ability Score Increase",
+              "summary": "Raise one ability score by 2, or two scores by 1 (max 20). No feats in v1."
+            }
+          ]
+        },
+        {
+          "level": 5,
+          "features": [
+            {
+              "id": "uncanny-dodge",
+              "name": "Uncanny Dodge",
+              "summary": "Reaction: halve the damage of an attack that hits you from an attacker you can see."
+            },
+            {
+              "id": "sneak-attack-3",
+              "name": "Sneak Attack (3d6)",
+              "summary": "Sneak Attack rises to 3d6."
+            }
+          ]
+        },
+        {
+          "level": 6,
+          "features": [
+            {
+              "id": "expertise-2",
+              "name": "Expertise",
+              "summary": "Two more skills get double proficiency.",
+              "choose": 2
+            }
+          ]
+        }
+      ],
+      "verify": true,
+      "verifyNote": "Proficiencies and skill list from memory of the PHB. Hit die, saves and subclass level checked (✅)."
+    },
+    {
+      "id": "sorcerer",
+      "name": "Sorcerer",
+      "hitDie": 6,
+      "primaryAbilities": ["cha"],
+      "saves": ["con", "cha"],
+      "armor": [],
+      "weapons": ["daggers", "darts", "slings", "quarterstaffs", "light crossbows"],
+      "skills": {
+        "choose": 2,
+        "from": ["arcana", "deception", "insight", "intimidation", "persuasion", "religion"]
+      },
+      "subclass": {
+        "id": "draconic-red",
+        "name": "Draconic Bloodline (red)",
+        "level": 1
+      },
+      "spellcasting": {
+        "ability": "cha",
+        "progression": "full",
+        "style": "known",
+        "cantripsKnown": [4, 4, 4, 5, 5, 5],
+        "ritualCasting": false,
+        "spellsKnown": [2, 3, 4, 5, 6, 7],
+        "verify": true,
+        "verifyNote": "Cantrips/spells known counts from memory of the PHB class table."
+      },
+      "resources": [
+        {
+          "id": "sorcery-points",
+          "name": "Sorcery Points",
+          "recharge": "long-rest",
+          "perLevel": [0, 2, 3, 4, 5, 6],
+          "verify": true,
+          "verifyNote": "Sorcery points = level from L2 (Rules_Scope §4)."
+        }
+      ],
+      "levels": [
+        {
+          "level": 1,
+          "features": [
+            {
+              "id": "spellcasting",
+              "name": "Spellcasting",
+              "summary": "Knows sorcerer spells, cast with Charisma."
+            },
+            {
+              "id": "dragon-ancestor",
+              "name": "Dragon Ancestor (red)",
+              "summary": "Your ancestor is a red dragon (fire). You speak Draconic.",
+              "subclass": true
+            },
+            {
+              "id": "draconic-resilience",
+              "name": "Draconic Resilience",
+              "summary": "+1 HP per sorcerer level; unarmored AC = 13 + Dex modifier.",
+              "subclass": true,
+              "mechanics": [
+                {
+                  "type": "hpPerLevel",
+                  "amount": 1
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "level": 2,
+          "features": [
+            {
+              "id": "font-of-magic",
+              "name": "Font of Magic",
+              "summary": "Turn sorcery points into spell slots and spell slots into sorcery points (bonus action).",
+              "uses": "sorcery-points"
+            }
+          ]
+        },
+        {
+          "level": 3,
+          "features": [
+            {
+              "id": "metamagic",
+              "name": "Metamagic",
+              "summary": "Choose two ways to twist your spells with sorcery points.",
+              "choose": 2,
+              "uses": "sorcery-points",
+              "options": [
+                {
+                  "id": "careful",
+                  "name": "Careful Spell",
+                  "summary": "1 point: chosen allies automatically succeed on the spell's save."
+                },
+                {
+                  "id": "distant",
+                  "name": "Distant Spell",
+                  "summary": "1 point: double the range (touch becomes 30 ft)."
+                },
+                {
+                  "id": "empowered",
+                  "name": "Empowered Spell",
+                  "summary": "1 point: reroll up to Cha-modifier damage dice."
+                },
+                {
+                  "id": "extended",
+                  "name": "Extended Spell",
+                  "summary": "1 point: double a duration of 1 minute or more."
+                },
+                {
+                  "id": "heightened",
+                  "name": "Heightened Spell",
+                  "summary": "3 points: one target has disadvantage on its first save against the spell."
+                },
+                {
+                  "id": "quickened",
+                  "name": "Quickened Spell",
+                  "summary": "2 points: cast an action spell as a bonus action."
+                },
+                {
+                  "id": "subtle",
+                  "name": "Subtle Spell",
+                  "summary": "1 point: cast without verbal or somatic components."
+                },
+                {
+                  "id": "twinned",
+                  "name": "Twinned Spell",
+                  "summary": "Points = spell level (1 for cantrips): a single-target spell hits a second target."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "level": 4,
+          "features": [
+            {
+              "id": "ability-score-increase",
+              "name": "Ability Score Increase",
+              "summary": "Raise one ability score by 2, or two scores by 1 (max 20). No feats in v1."
+            }
+          ]
+        },
+        {
+          "level": 5,
+          "features": [
+            {
+              "id": "third-level-spells",
+              "name": "3rd-Level Spells",
+              "summary": "Gain 3rd-level spell slots."
+            }
+          ]
+        },
+        {
+          "level": 6,
+          "features": [
+            {
+              "id": "elemental-affinity",
+              "name": "Elemental Affinity",
+              "summary": "Add your Cha modifier to one damage roll of a fire spell; spend 1 sorcery point for fire resistance for an hour.",
+              "subclass": true
+            }
+          ]
+        }
+      ],
+      "verify": true,
+      "verifyNote": "Proficiencies and skill list from memory of the PHB. Hit die, saves and subclass level checked (✅)."
+    },
+    {
+      "id": "warlock",
+      "name": "Warlock",
+      "hitDie": 8,
+      "primaryAbilities": ["cha"],
+      "saves": ["wis", "cha"],
+      "armor": ["light"],
+      "weapons": ["simple"],
+      "skills": {
+        "choose": 2,
+        "from": [
+          "arcana",
+          "deception",
+          "history",
+          "intimidation",
+          "investigation",
+          "nature",
+          "religion"
+        ]
+      },
+      "subclass": {
+        "id": "fiend",
+        "name": "The Fiend",
+        "level": 1
+      },
+      "spellcasting": {
+        "ability": "cha",
+        "progression": "pact",
+        "style": "known",
+        "cantripsKnown": [2, 2, 2, 3, 3, 3],
+        "ritualCasting": false,
+        "spellsKnown": [2, 3, 4, 5, 6, 7],
+        "verify": true,
+        "verifyNote": "Cantrips/spells known counts from memory of the PHB class table."
+      },
+      "resources": [
+        {
+          "id": "dark-ones-own-luck",
+          "name": "Dark One's Own Luck",
+          "recharge": "short-rest",
+          "perLevel": [0, 0, 0, 0, 0, 1],
+          "verify": true,
+          "verifyNote": "Use counts from memory of the PHB class table (Rules_Scope CONFIRM LOCALLY)."
+        }
+      ],
+      "levels": [
+        {
+          "level": 1,
+          "features": [
+            {
+              "id": "pact-magic",
+              "name": "Pact Magic",
+              "summary": "Casts warlock spells with Charisma; all slots are the same level and come back on a short rest."
+            },
+            {
+              "id": "dark-ones-blessing",
+              "name": "Dark One's Blessing",
+              "summary": "When you drop a hostile creature to 0 HP, gain temporary HP equal to Cha modifier + warlock level.",
+              "subclass": true
+            },
+            {
+              "id": "fiend-expanded-spells",
+              "name": "Expanded Spell List",
+              "summary": "Adds Burning Hands, Command (1st); Blindness/Deafness, Scorching Ray (2nd); Fireball, Stinking Cloud (3rd) to your choices.",
+              "subclass": true,
+              "verify": true,
+              "verifyNote": "Fiend expanded list from memory."
+            }
+          ]
+        },
+        {
+          "level": 2,
+          "features": [
+            {
+              "id": "eldritch-invocations",
+              "name": "Eldritch Invocations",
+              "summary": "Choose two invocations (three at level 5).",
+              "choose": 2,
+              "options": [
+                {
+                  "id": "agonizing-blast",
+                  "name": "Agonizing Blast",
+                  "summary": "Add your Cha modifier to Eldritch Blast damage."
+                },
+                {
+                  "id": "armor-of-shadows",
+                  "name": "Armor of Shadows",
+                  "summary": "Cast Mage Armor on yourself at will."
+                },
+                {
+                  "id": "devils-sight",
+                  "name": "Devil's Sight",
+                  "summary": "See normally in darkness, even magical darkness, to 120 ft."
+                },
+                {
+                  "id": "repelling-blast",
+                  "name": "Repelling Blast",
+                  "summary": "Eldritch Blast pushes the target 10 ft."
+                },
+                {
+                  "id": "mask-of-many-faces",
+                  "name": "Mask of Many Faces",
+                  "summary": "Cast Disguise Self at will."
+                },
+                {
+                  "id": "beguiling-influence",
+                  "name": "Beguiling Influence",
+                  "summary": "Proficiency in Deception and Persuasion."
+                },
+                {
+                  "id": "thirsting-blade",
+                  "name": "Thirsting Blade",
+                  "summary": "Level 5, Pact of the Blade: attack twice with your pact weapon."
+                },
+                {
+                  "id": "book-of-ancient-secrets",
+                  "name": "Book of Ancient Secrets",
+                  "summary": "Pact of the Tome: learn ritual spells."
+                }
+              ],
+              "verify": true,
+              "verifyNote": "Curated invocation list; prerequisites from memory."
+            }
+          ]
+        },
+        {
+          "level": 3,
+          "features": [
+            {
+              "id": "pact-boon",
+              "name": "Pact Boon",
+              "summary": "Choose Pact of the Blade (summon a magic weapon), the Chain (a special familiar) or the Tome (three extra cantrips).",
+              "choose": 1,
+              "options": [
+                {
+                  "id": "pact-of-the-blade",
+                  "name": "Pact of the Blade",
+                  "summary": "Summon a magic melee weapon you are proficient with."
+                },
+                {
+                  "id": "pact-of-the-chain",
+                  "name": "Pact of the Chain",
+                  "summary": "Find Familiar with special forms (imp, pseudodragon, quasit, sprite)."
+                },
+                {
+                  "id": "pact-of-the-tome",
+                  "name": "Pact of the Tome",
+                  "summary": "A Book of Shadows with three cantrips from any class."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "level": 4,
+          "features": [
+            {
+              "id": "ability-score-increase",
+              "name": "Ability Score Increase",
+              "summary": "Raise one ability score by 2, or two scores by 1 (max 20). No feats in v1."
+            }
+          ]
+        },
+        {
+          "level": 5,
+          "features": [
+            {
+              "id": "eldritch-invocations-3",
+              "name": "Eldritch Invocations (3)",
+              "summary": "Learn a third invocation."
+            },
+            {
+              "id": "third-level-pact-slots",
+              "name": "3rd-Level Pact Slots",
+              "summary": "Pact slots become 3rd level."
+            }
+          ]
+        },
+        {
+          "level": 6,
+          "features": [
+            {
+              "id": "dark-ones-own-luck",
+              "name": "Dark One's Own Luck",
+              "summary": "Add a d10 to an ability check or save after seeing the roll. Once per short or long rest.",
+              "subclass": true,
+              "uses": "dark-ones-own-luck"
+            }
+          ]
+        }
+      ],
+      "verify": true,
+      "verifyNote": "Proficiencies and skill list from memory of the PHB. Hit die, saves and subclass level checked (✅)."
+    },
+    {
+      "id": "wizard",
+      "name": "Wizard",
+      "hitDie": 6,
+      "primaryAbilities": ["int"],
+      "saves": ["int", "wis"],
+      "armor": [],
+      "weapons": ["daggers", "darts", "slings", "quarterstaffs", "light crossbows"],
+      "skills": {
+        "choose": 2,
+        "from": ["arcana", "history", "insight", "investigation", "medicine", "religion"]
+      },
+      "subclass": {
+        "id": "evocation",
+        "name": "School of Evocation",
+        "level": 2
+      },
+      "spellcasting": {
+        "ability": "int",
+        "progression": "full",
+        "style": "spellbook",
+        "cantripsKnown": [3, 3, 3, 4, 4, 4],
+        "ritualCasting": true,
+        "preparedFormula": "int-mod+level",
+        "verify": true,
+        "verifyNote": "Cantrips/spells known counts from memory of the PHB class table."
+      },
+      "resources": [
+        {
+          "id": "arcane-recovery",
+          "name": "Arcane Recovery",
+          "recharge": "long-rest",
+          "perLevel": [1, 1, 1, 1, 1, 1],
+          "verify": true,
+          "verifyNote": "Use counts from memory of the PHB class table (Rules_Scope CONFIRM LOCALLY)."
+        }
+      ],
+      "levels": [
+        {
+          "level": 1,
+          "features": [
+            {
+              "id": "spellcasting",
+              "name": "Spellcasting",
+              "summary": "Learns spells into a spellbook (six at level 1, two more each level) and prepares them with Intelligence."
+            },
+            {
+              "id": "arcane-recovery",
+              "name": "Arcane Recovery",
+              "summary": "Once per day after a short rest, recover spell slots totaling up to half your wizard level (rounded up), none above 5th.",
+              "uses": "arcane-recovery"
+            }
+          ]
+        },
+        {
+          "level": 2,
+          "features": [
+            {
+              "id": "evocation-savant",
+              "name": "Evocation Savant",
+              "summary": "Copying evocation spells costs half the time and gold.",
+              "subclass": true
+            },
+            {
+              "id": "sculpt-spells",
+              "name": "Sculpt Spells",
+              "summary": "Choose up to 1 + spell level creatures in your evocation area: they automatically save and take no damage.",
+              "subclass": true
+            }
+          ]
+        },
+        {
+          "level": 3,
+          "features": [
+            {
+              "id": "second-level-spells",
+              "name": "2nd-Level Spells",
+              "summary": "Gain 2nd-level spell slots."
+            }
+          ]
+        },
+        {
+          "level": 4,
+          "features": [
+            {
+              "id": "ability-score-increase",
+              "name": "Ability Score Increase",
+              "summary": "Raise one ability score by 2, or two scores by 1 (max 20). No feats in v1."
+            }
+          ]
+        },
+        {
+          "level": 5,
+          "features": [
+            {
+              "id": "third-level-spells",
+              "name": "3rd-Level Spells",
+              "summary": "Gain 3rd-level spell slots."
+            }
+          ]
+        },
+        {
+          "level": 6,
+          "features": [
+            {
+              "id": "potent-cantrip",
+              "name": "Potent Cantrip",
+              "summary": "Creatures that succeed on a save against your cantrip still take half damage.",
+              "subclass": true
+            }
+          ]
+        }
+      ],
+      "verify": true,
+      "verifyNote": "Proficiencies and skill list from memory of the PHB. Hit die, saves and subclass level checked (✅)."
+    }
+  ]
+}

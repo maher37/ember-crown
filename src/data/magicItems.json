@@ -1,0 +1,409 @@
+{
+  "items": [
+    {
+      "id": "potion-of-healing",
+      "name": "Potion of Healing",
+      "base": "Potion of Healing",
+      "kind": "potion",
+      "rarity": "common",
+      "attunement": false,
+      "summary": "Drink to heal 2d4 + 2. Drinking is an action (a bonus-action house rule is proposed in Rules_Scope §7).",
+      "effects": [
+        {
+          "type": "heal",
+          "dice": "2d4+2"
+        }
+      ],
+      "consumable": true,
+      "costGp": 50,
+      "verify": true,
+      "verifyNote": "Healing amount from Items.md; 50 gp price from memory."
+    },
+    {
+      "id": "potion-of-greater-healing",
+      "name": "Potion of Greater Healing",
+      "base": "Potion of Greater Healing",
+      "kind": "potion",
+      "rarity": "uncommon",
+      "attunement": false,
+      "summary": "Drink to heal 4d4 + 4. Appears from Act II.",
+      "effects": [
+        {
+          "type": "heal",
+          "dice": "4d4+4"
+        }
+      ],
+      "consumable": true,
+      "act": 2
+    },
+    {
+      "id": "deepdelver",
+      "name": "Deepdelver",
+      "base": "+1 Weapon",
+      "kind": "weapon",
+      "rarity": "uncommon",
+      "attunement": false,
+      "summary": "+1 to attack and damage rolls.",
+      "effects": [
+        {
+          "type": "modifier",
+          "target": "attack",
+          "value": 1
+        },
+        {
+          "type": "modifier",
+          "target": "damage",
+          "value": 1
+        }
+      ],
+      "baseWeapon": "warhammer",
+      "act": 1,
+      "source": "Ulric's sunken shrine, in an Ammarindar dwarf's tomb niche"
+    },
+    {
+      "id": "lysas-locket",
+      "name": "Lysa's Locket",
+      "base": "Periapt of Wound Closure",
+      "kind": "wondrous",
+      "rarity": "uncommon",
+      "attunement": true,
+      "summary": "While dying you stabilize at the start of your turn; healing from Hit Dice is doubled.",
+      "effects": [
+        {
+          "type": "special",
+          "id": "auto-stabilize"
+        },
+        {
+          "type": "special",
+          "id": "double-hit-dice-healing"
+        }
+      ],
+      "act": 1,
+      "source": "The Mill at Night: Lysa Varrow's ghost",
+      "verify": true,
+      "verifyNote": "Name found in the DMG tables (✅); effect summarized from memory (Items.md CONFIRM LOCALLY)."
+    },
+    {
+      "id": "luck-stone",
+      "name": "The Luck-Stone",
+      "base": "Stone of Good Luck (Luckstone)",
+      "kind": "wondrous",
+      "rarity": "uncommon",
+      "attunement": true,
+      "summary": "+1 to ability checks and saving throws.",
+      "effects": [
+        {
+          "type": "modifier",
+          "target": "check",
+          "value": 1
+        },
+        {
+          "type": "modifier",
+          "target": "save",
+          "value": 1
+        }
+      ],
+      "act": 1,
+      "source": "The Goblin Who Stayed: Wix's clan",
+      "verify": true,
+      "verifyNote": "Name found in the DMG tables (✅); effect summarized from memory (Items.md CONFIRM LOCALLY)."
+    },
+    {
+      "id": "cloak-of-protection",
+      "name": "Cloak of Protection",
+      "base": "Cloak of Protection",
+      "kind": "cloak",
+      "rarity": "uncommon",
+      "attunement": true,
+      "summary": "+1 AC and +1 to all saving throws.",
+      "effects": [
+        {
+          "type": "modifier",
+          "target": "ac",
+          "value": 1
+        },
+        {
+          "type": "modifier",
+          "target": "save",
+          "value": 1
+        }
+      ],
+      "act": 1,
+      "source": "Scald's hoard (elite)",
+      "verify": true,
+      "verifyNote": "Name found in the DMG tables (✅); effect summarized from memory (Items.md CONFIRM LOCALLY)."
+    },
+    {
+      "id": "potion-of-fire-resistance",
+      "name": "Potion of Resistance (fire)",
+      "base": "Potion of Resistance",
+      "kind": "potion",
+      "rarity": "uncommon",
+      "attunement": false,
+      "summary": "Resistance to fire damage for 1 hour. Scald's hoard holds two.",
+      "effects": [
+        {
+          "type": "special",
+          "id": "resistance-for-1-hour",
+          "note": "fire"
+        }
+      ],
+      "consumable": true,
+      "act": 1,
+      "source": "Scald's hoard (elite)",
+      "verify": true,
+      "verifyNote": "Name found in the DMG tables (✅); effect summarized from memory (Items.md CONFIRM LOCALLY)."
+    },
+    {
+      "id": "bog-pearl",
+      "name": "The Bog Pearl",
+      "base": "Pearl of Power",
+      "kind": "wondrous",
+      "rarity": "uncommon",
+      "attunement": "spellcaster",
+      "summary": "Once per day, regain one spent spell slot of 3rd level or lower.",
+      "effects": [
+        {
+          "type": "special",
+          "id": "regain-slot",
+          "note": "up to 3rd level, once per day"
+        }
+      ],
+      "act": 2,
+      "source": "Mother Sallow's Bargain",
+      "verify": true,
+      "verifyNote": "Name found in the DMG tables (✅); effect summarized from memory (Items.md CONFIRM LOCALLY)."
+    },
+    {
+      "id": "mayors-boots",
+      "name": "The Mayor's Boots",
+      "base": "Boots of Elvenkind",
+      "kind": "wondrous",
+      "rarity": "uncommon",
+      "attunement": false,
+      "summary": "Silent steps; advantage on Stealth checks that rely on moving quietly.",
+      "effects": [
+        {
+          "type": "special",
+          "id": "stealth-advantage-quiet"
+        }
+      ],
+      "act": 2,
+      "source": "Edric's Errand",
+      "verify": true,
+      "verifyNote": "Name found in the DMG tables (✅); effect summarized from memory (Items.md CONFIRM LOCALLY)."
+    },
+    {
+      "id": "kells-shield",
+      "name": "Kell's Shield",
+      "base": "Sentinel Shield",
+      "kind": "shield",
+      "rarity": "uncommon",
+      "attunement": false,
+      "summary": "Advantage on initiative and on Wisdom (Perception) checks. Also a normal +2 shield.",
+      "effects": [
+        {
+          "type": "special",
+          "id": "initiative-advantage"
+        },
+        {
+          "type": "special",
+          "id": "perception-advantage"
+        }
+      ],
+      "act": 2,
+      "source": "Deserters' Bounty",
+      "verify": true,
+      "verifyNote": "Name found in the DMG tables (✅); effect summarized from memory (Items.md CONFIRM LOCALLY)."
+    },
+    {
+      "id": "shield-of-the-morninglord",
+      "name": "Shield of the Morninglord",
+      "base": "homebrew",
+      "kind": "shield",
+      "rarity": "uncommon",
+      "attunement": false,
+      "summary": "+1 AC on top of a normal shield; you resist fire damage while you hold it.",
+      "effects": [
+        {
+          "type": "modifier",
+          "target": "ac",
+          "value": 1
+        },
+        {
+          "type": "special",
+          "id": "resistance-while-held",
+          "note": "fire"
+        }
+      ],
+      "homebrew": true,
+      "act": 2,
+      "source": "The Fallen Paladin's Shield",
+      "verify": true,
+      "verifyNote": "Homebrew (Items.md): \"uncommon-plus\"; stored as uncommon."
+    },
+    {
+      "id": "mace-of-disruption",
+      "name": "Mace of Disruption",
+      "base": "Mace of Disruption",
+      "kind": "weapon",
+      "rarity": "rare",
+      "attunement": true,
+      "summary": "Extra radiant damage against undead and fiends; weak undead may be destroyed outright. Elite reward choice A.",
+      "effects": [
+        {
+          "type": "special",
+          "id": "bonus-damage-vs-type",
+          "note": "radiant vs undead and fiends"
+        },
+        {
+          "type": "special",
+          "id": "destroy-weak-undead"
+        }
+      ],
+      "baseWeapon": "mace",
+      "act": 2,
+      "source": "The Drowned Abbot (elite)",
+      "verify": true,
+      "verifyNote": "Name found in the DMG tables (✅); effect summarized from memory (Items.md CONFIRM LOCALLY)."
+    },
+    {
+      "id": "staff-of-healing",
+      "name": "Staff of Healing",
+      "base": "Staff of Healing",
+      "kind": "staff",
+      "rarity": "rare",
+      "attunement": "spellcaster",
+      "summary": "Charges to cast Cure Wounds, Lesser Restoration and Mass Cure Wounds (bard, cleric, druid). Elite reward choice B.",
+      "effects": [
+        {
+          "type": "special",
+          "id": "spell-charges",
+          "note": "cure-wounds, lesser-restoration, mass-cure-wounds"
+        }
+      ],
+      "act": 2,
+      "source": "The Drowned Abbot (elite)",
+      "verify": true,
+      "verifyNote": "Name found in the DMG tables (✅); effect summarized from memory (Items.md CONFIRM LOCALLY)."
+    },
+    {
+      "id": "kiln-quenched-weapon",
+      "name": "Kiln-Quenched Weapon",
+      "base": "+1 Weapon",
+      "kind": "weapon",
+      "rarity": "uncommon",
+      "attunement": false,
+      "summary": "+1 to attack and damage rolls; any weapon you quench in the relit forge.",
+      "effects": [
+        {
+          "type": "modifier",
+          "target": "attack",
+          "value": 1
+        },
+        {
+          "type": "modifier",
+          "target": "damage",
+          "value": 1
+        }
+      ],
+      "baseWeapon": "any",
+      "act": 3,
+      "source": "The Cold Forge"
+    },
+    {
+      "id": "honor-guards-ring",
+      "name": "The Honor Guard's Ring",
+      "base": "Ring of Protection",
+      "kind": "ring",
+      "rarity": "rare",
+      "attunement": true,
+      "summary": "+1 AC and +1 to saving throws. King Varrow's own ring.",
+      "effects": [
+        {
+          "type": "modifier",
+          "target": "ac",
+          "value": 1
+        },
+        {
+          "type": "modifier",
+          "target": "save",
+          "value": 1
+        }
+      ],
+      "act": 3,
+      "source": "Ser Ida's Unfinished Oath",
+      "verify": true,
+      "verifyNote": "Name found in the DMG tables (✅); effect summarized from memory (Items.md CONFIRM LOCALLY)."
+    },
+    {
+      "id": "drowned-lantern",
+      "name": "The Drowned Lantern",
+      "base": "Lantern of Revealing",
+      "kind": "wondrous",
+      "rarity": "uncommon",
+      "attunement": false,
+      "summary": "Its light reveals invisible creatures and objects. Carrying it into the finale unlocks a special line.",
+      "effects": [
+        {
+          "type": "special",
+          "id": "reveal-invisible"
+        }
+      ],
+      "act": 3,
+      "source": "Last Boats from Ashford",
+      "verify": true,
+      "verifyNote": "Name found in the DMG tables (✅); effect summarized from memory (Items.md CONFIRM LOCALLY)."
+    },
+    {
+      "id": "wixs-clan-gift",
+      "name": "Wix's Clan Gift",
+      "base": "Bag of Tricks (gray)",
+      "kind": "wondrous",
+      "rarity": "uncommon",
+      "attunement": false,
+      "summary": "Pull out a random small animal that fights for you for a while. \"Mostly badgers.\"",
+      "effects": [
+        {
+          "type": "special",
+          "id": "summon-random-beast"
+        }
+      ],
+      "act": 3,
+      "source": "Wix's Homecoming",
+      "verify": true,
+      "verifyNote": "Name found in the DMG tables (✅); effect summarized from memory (Items.md CONFIRM LOCALLY)."
+    },
+    {
+      "id": "dragon-slayer",
+      "name": "Dragon Slayer",
+      "base": "Dragon Slayer",
+      "kind": "weapon",
+      "rarity": "rare",
+      "attunement": false,
+      "summary": "+1 to attack and damage; an extra 3d6 damage against dragons (including the ember-wraith).",
+      "effects": [
+        {
+          "type": "modifier",
+          "target": "attack",
+          "value": 1
+        },
+        {
+          "type": "modifier",
+          "target": "damage",
+          "value": 1
+        },
+        {
+          "type": "special",
+          "id": "bonus-damage-vs-type",
+          "note": "3d6 vs dragons"
+        }
+      ],
+      "baseWeapon": ["longsword", "greatsword"],
+      "act": 3,
+      "source": "Vorrag the Kiln-Smith (elite)",
+      "verify": true,
+      "verifyNote": "Name found in the DMG tables (✅); effect summarized from memory (Items.md CONFIRM LOCALLY)."
+    }
+  ]
+}

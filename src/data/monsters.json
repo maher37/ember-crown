@@ -1,0 +1,4200 @@
+{
+  "monsters": [
+    {
+      "id": "bandit",
+      "name": "Bandit",
+      "size": "Medium",
+      "type": "humanoid",
+      "cr": "1/8",
+      "xp": 25,
+      "ac": 12,
+      "hp": 11,
+      "hitDice": "2d8+2",
+      "speed": {
+        "walk": 30
+      },
+      "abilities": {
+        "str": 11,
+        "dex": 12,
+        "con": 12,
+        "int": 10,
+        "wis": 10,
+        "cha": 10
+      },
+      "actions": [
+        {
+          "id": "scimitar",
+          "name": "Scimitar",
+          "effects": [
+            {
+              "type": "attack",
+              "kind": "melee",
+              "toHit": 3,
+              "reach": 5,
+              "onHit": [
+                {
+                  "type": "damage",
+                  "dice": "1d6+1",
+                  "damageType": "slashing"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "light-crossbow",
+          "name": "Light crossbow",
+          "effects": [
+            {
+              "type": "attack",
+              "kind": "ranged",
+              "toHit": 3,
+              "range": [80, 320],
+              "onHit": [
+                {
+                  "type": "damage",
+                  "dice": "1d8+1",
+                  "damageType": "piercing"
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "acNote": "leather armor",
+      "usedIn": ["F1 brawl (as unarmed bruisers)", "travel"],
+      "art": "Grey Company bruiser: grey sash, split knuckles, a chair leg for a club",
+      "verify": true,
+      "verifyNote": "AC, HP, speed and CR from the MM PDF (✅). Ability scores, hit dice and attack lines from memory: check them."
+    },
+    {
+      "id": "bandit-captain",
+      "name": "Bandit captain",
+      "size": "Medium",
+      "type": "humanoid",
+      "cr": "2",
+      "xp": 450,
+      "ac": 15,
+      "hp": 65,
+      "hitDice": "10d8+20",
+      "speed": {
+        "walk": 30
+      },
+      "abilities": {
+        "str": 15,
+        "dex": 16,
+        "con": 14,
+        "int": 14,
+        "wis": 11,
+        "cha": 14
+      },
+      "actions": [
+        {
+          "id": "scimitar",
+          "name": "Scimitar",
+          "effects": [
+            {
+              "type": "attack",
+              "kind": "melee",
+              "toHit": 5,
+              "reach": 5,
+              "onHit": [
+                {
+                  "type": "damage",
+                  "dice": "1d6+3",
+                  "damageType": "slashing"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "dagger",
+          "name": "Dagger",
+          "effects": [
+            {
+              "type": "attack",
+              "kind": "melee",
+              "toHit": 5,
+              "reach": 5,
+              "onHit": [
+                {
+                  "type": "damage",
+                  "dice": "1d4+3",
+                  "damageType": "piercing"
+                }
+              ]
+            },
+            {
+              "type": "attack",
+              "kind": "ranged",
+              "toHit": 5,
+              "range": [20, 60],
+              "onHit": [
+                {
+                  "type": "damage",
+                  "dice": "1d4+3",
+                  "damageType": "piercing"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "parry",
+          "name": "Parry",
+          "cost": "reaction",
+          "summary": "+2 AC against one melee hit it can see, with a weapon in hand.",
+          "effects": [
+            {
+              "type": "modifier",
+              "target": "ac",
+              "value": 2
+            }
+          ]
+        }
+      ],
+      "acNote": "studded leather",
+      "saves": {
+        "str": 4,
+        "dex": 5,
+        "wis": 2
+      },
+      "multiattack": ["scimitar", "scimitar", "dagger"],
+      "usedIn": ["Deserters' Bounty"],
+      "art": "Deserter sergeant with a torn company badge",
+      "verify": true,
+      "verifyNote": "AC, HP, speed and CR from the MM PDF (✅). Ability scores, hit dice and attack lines from memory: check them."
+    },
+    {
+      "id": "thug",
+      "name": "Thug",
+      "size": "Medium",
+      "type": "humanoid",
+      "cr": "1/2",
+      "xp": 100,
+      "ac": 11,
+      "hp": 32,
+      "hitDice": "5d8+10",
+      "speed": {
+        "walk": 30
+      },
+      "abilities": {
+        "str": 15,
+        "dex": 11,
+        "con": 14,
+        "int": 10,
+        "wis": 10,
+        "cha": 11
+      },
+      "actions": [
+        {
+          "id": "mace",
+          "name": "Mace",
+          "effects": [
+            {
+              "type": "attack",
+              "kind": "melee",
+              "toHit": 4,
+              "reach": 5,
+              "onHit": [
+                {
+                  "type": "damage",
+                  "dice": "1d6+2",
+                  "damageType": "bludgeoning"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "heavy-crossbow",
+          "name": "Heavy crossbow",
+          "effects": [
+            {
+              "type": "attack",
+              "kind": "ranged",
+              "toHit": 2,
+              "range": [100, 400],
+              "onHit": [
+                {
+                  "type": "damage",
+                  "dice": "1d10",
+                  "damageType": "piercing"
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "acNote": "leather armor",
+      "traits": [
+        {
+          "id": "pack-tactics",
+          "name": "Pack Tactics",
+          "summary": "Advantage on attacks against a creature that has one of its allies next to it."
+        }
+      ],
+      "multiattack": ["mace", "mace"],
+      "usedIn": ["F5", "F8", "F12", "travel"],
+      "art": "Heavy-set enforcer in a leather apron; ledger chained to his belt",
+      "verify": true,
+      "verifyNote": "AC, HP, speed and CR from the MM PDF (✅). Ability scores, hit dice and attack lines from memory: check them."
+    },
+    {
+      "id": "scout",
+      "name": "Scout",
+      "size": "Medium",
+      "type": "humanoid",
+      "cr": "1/2",
+      "xp": 100,
+      "ac": 13,
+      "hp": 16,
+      "hitDice": "3d8+3",
+      "speed": {
+        "walk": 30
+      },
+      "abilities": {
+        "str": 11,
+        "dex": 14,
+        "con": 12,
+        "int": 11,
+        "wis": 13,
+        "cha": 11
+      },
+      "actions": [
+        {
+          "id": "shortsword",
+          "name": "Shortsword",
+          "effects": [
+            {
+              "type": "attack",
+              "kind": "melee",
+              "toHit": 4,
+              "reach": 5,
+              "onHit": [
+                {
+                  "type": "damage",
+                  "dice": "1d6+2",
+                  "damageType": "piercing"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "longbow",
+          "name": "Longbow",
+          "effects": [
+            {
+              "type": "attack",
+              "kind": "ranged",
+              "toHit": 4,
+              "range": [150, 600],
+              "onHit": [
+                {
+                  "type": "damage",
+                  "dice": "1d8+2",
+                  "damageType": "piercing"
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "acNote": "leather armor",
+      "skills": {
+        "nature": 4,
+        "perception": 5,
+        "stealth": 6,
+        "survival": 5
+      },
+      "traits": [
+        {
+          "id": "keen-senses",
+          "name": "Keen Senses",
+          "summary": "Advantage on Perception checks that use hearing or smell (or sight)."
+        }
+      ],
+      "multiattack": ["longbow", "longbow"],
+      "usedIn": ["F8 toll bridge"],
+      "art": "Lean archer on a bridge pylon, grey cloak, spyglass",
+      "verify": true,
+      "verifyNote": "AC, HP, speed and CR from the MM PDF (✅). Ability scores, hit dice and attack lines from memory: check them."
+    },
+    {
+      "id": "guard",
+      "name": "Guard",
+      "size": "Medium",
+      "type": "humanoid",
+      "cr": "1/8",
+      "xp": 25,
+      "ac": 16,
+      "hp": 11,
+      "hitDice": "2d8+2",
+      "speed": {
+        "walk": 30
+      },
+      "abilities": {
+        "str": 13,
+        "dex": 12,
+        "con": 12,
+        "int": 10,
+        "wis": 11,
+        "cha": 10
+      },
+      "actions": [
+        {
+          "id": "spear",
+          "name": "Spear",
+          "effects": [
+            {
+              "type": "attack",
+              "kind": "melee",
+              "toHit": 3,
+              "reach": 5,
+              "onHit": [
+                {
+                  "type": "damage",
+                  "dice": "1d6+1",
+                  "damageType": "piercing"
+                }
+              ]
+            },
+            {
+              "type": "attack",
+              "kind": "ranged",
+              "toHit": 3,
+              "range": [20, 60],
+              "onHit": [
+                {
+                  "type": "damage",
+                  "dice": "1d6+1",
+                  "damageType": "piercing"
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "acNote": "chain shirt, shield",
+      "skills": {
+        "perception": 2
+      },
+      "usedIn": ["Ashford Hall"],
+      "art": "Town watch in mismatched mail, lantern-sigil tabard",
+      "verify": true,
+      "verifyNote": "AC, HP, speed and CR from the MM PDF (✅). Ability scores, hit dice and attack lines from memory: check them."
+    },
+    {
+      "id": "veteran",
+      "name": "Veteran",
+      "size": "Medium",
+      "type": "humanoid",
+      "cr": "3",
+      "xp": 700,
+      "ac": 17,
+      "hp": 58,
+      "hitDice": "9d8+18",
+      "speed": {
+        "walk": 30
+      },
+      "abilities": {
+        "str": 16,
+        "dex": 13,
+        "con": 14,
+        "int": 10,
+        "wis": 11,
+        "cha": 10
+      },
+      "actions": [
+        {
+          "id": "longsword",
+          "name": "Longsword",
+          "effects": [
+            {
+              "type": "attack",
+              "kind": "melee",
+              "toHit": 5,
+              "reach": 5,
+              "onHit": [
+                {
+                  "type": "damage",
+                  "dice": "1d8+3",
+                  "damageType": "slashing"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "shortsword",
+          "name": "Shortsword",
+          "effects": [
+            {
+              "type": "attack",
+              "kind": "melee",
+              "toHit": 5,
+              "reach": 5,
+              "onHit": [
+                {
+                  "type": "damage",
+                  "dice": "1d6+3",
+                  "damageType": "piercing"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "heavy-crossbow",
+          "name": "Heavy crossbow",
+          "effects": [
+            {
+              "type": "attack",
+              "kind": "ranged",
+              "toHit": 3,
+              "range": [100, 400],
+              "onHit": [
+                {
+                  "type": "damage",
+                  "dice": "1d10+1",
+                  "damageType": "piercing"
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "acNote": "splint",
+      "skills": {
+        "athletics": 5,
+        "perception": 2
+      },
+      "multiattack": ["longsword", "longsword", "shortsword"],
+      "usedIn": ["F12 Hall captain"],
+      "art": "Mayor's captain: polished splint mail, tired eyes",
+      "verify": true,
+      "verifyNote": "AC, HP, speed and CR from the MM PDF (✅). Ability scores, hit dice and attack lines from memory: check them."
+    },
+    {
+      "id": "cultist",
+      "name": "Cultist",
+      "size": "Medium",
+      "type": "humanoid",
+      "cr": "1/8",
+      "xp": 25,
+      "ac": 12,
+      "hp": 9,
+      "hitDice": "2d8",
+      "speed": {
+        "walk": 30
+      },
+      "abilities": {
+        "str": 11,
+        "dex": 12,
+        "con": 10,
+        "int": 10,
+        "wis": 11,
+        "cha": 10
+      },
+      "actions": [
+        {
+          "id": "scimitar",
+          "name": "Scimitar",
+          "effects": [
+            {
+              "type": "attack",
+              "kind": "melee",
+              "toHit": 3,
+              "reach": 5,
+              "onHit": [
+                {
+                  "type": "damage",
+                  "dice": "1d6+1",
+                  "damageType": "slashing"
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "acNote": "leather armor",
+      "traits": [
+        {
+          "id": "dark-devotion",
+          "name": "Dark Devotion",
+          "summary": "Advantage on saves against being charmed or frightened."
+        }
+      ],
+      "usedIn": ["F5", "F13", "F14", "F20"],
+      "art": "Out-of-work miner, pickaxe and a soot-drawn hollow star on his brow",
+      "verify": true,
+      "verifyNote": "AC, HP, speed and CR from the MM PDF (✅). Ability scores, hit dice and attack lines from memory: check them."
+    },
+    {
+      "id": "cult-fanatic",
+      "name": "Cult fanatic",
+      "size": "Medium",
+      "type": "humanoid",
+      "cr": "2",
+      "xp": 450,
+      "ac": 13,
+      "hp": 33,
+      "hitDice": "6d8+6",
+      "speed": {
+        "walk": 30
+      },
+      "abilities": {
+        "str": 11,
+        "dex": 14,
+        "con": 12,
+        "int": 10,
+        "wis": 13,
+        "cha": 14
+      },
+      "actions": [
+        {
+          "id": "dagger",
+          "name": "Dagger",
+          "effects": [
+            {
+              "type": "attack",
+              "kind": "melee",
+              "toHit": 4,
+              "reach": 5,
+              "onHit": [
+                {
+                  "type": "damage",
+                  "dice": "1d4+2",
+                  "damageType": "piercing"
+                }
+              ]
+            },
+            {
+              "type": "attack",
+              "kind": "ranged",
+              "toHit": 4,
+              "range": [20, 60],
+              "onHit": [
+                {
+                  "type": "damage",
+                  "dice": "1d4+2",
+                  "damageType": "piercing"
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "acNote": "leather armor",
+      "traits": [
+        {
+          "id": "dark-devotion",
+          "name": "Dark Devotion",
+          "summary": "Advantage on saves against being charmed or frightened."
+        }
+      ],
+      "multiattack": ["dagger", "dagger"],
+      "spellcasting": {
+        "ability": "wis",
+        "dc": 11,
+        "attackBonus": 3,
+        "spells": {
+          "0": ["light", "sacred-flame", "thaumaturgy"],
+          "1": ["command", "inflict-wounds", "shield-of-faith"],
+          "2": ["hold-person", "spiritual-weapon"]
+        },
+        "slots": {
+          "1": 4,
+          "2": 3
+        },
+        "verify": true,
+        "verifyNote": "Spell list and slots from memory (Monster_Roster CONFIRM LOCALLY)."
+      },
+      "usedIn": ["Brother Ulric (F7)", "F13", "F20"],
+      "art": "Ulric: broad, grey-bearded foreman; lantern hook in place of a hand",
+      "verify": true,
+      "verifyNote": "AC, HP, speed and CR from the MM PDF (✅). Ability scores, hit dice and attack lines from memory: check them."
+    },
+    {
+      "id": "priest",
+      "name": "Priest",
+      "size": "Medium",
+      "type": "humanoid",
+      "cr": "2",
+      "xp": 450,
+      "ac": 13,
+      "hp": 27,
+      "hitDice": "5d8+5",
+      "speed": {
+        "walk": 25
+      },
+      "abilities": {
+        "str": 10,
+        "dex": 10,
+        "con": 12,
+        "int": 13,
+        "wis": 16,
+        "cha": 13
+      },
+      "actions": [
+        {
+          "id": "mace",
+          "name": "Mace",
+          "effects": [
+            {
+              "type": "attack",
+              "kind": "melee",
+              "toHit": 2,
+              "reach": 5,
+              "onHit": [
+                {
+                  "type": "damage",
+                  "dice": "1d6",
+                  "damageType": "bludgeoning"
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "acNote": "chain shirt",
+      "skills": {
+        "medicine": 7,
+        "persuasion": 3,
+        "religion": 4
+      },
+      "traits": [
+        {
+          "id": "divine-eminence",
+          "name": "Divine Eminence",
+          "summary": "Bonus action when it hits with a melee attack: spend a spell slot for extra radiant damage (3d6 with a 1st-level slot, +1d6 per level above)."
+        }
+      ],
+      "spellcasting": {
+        "ability": "wis",
+        "dc": 13,
+        "attackBonus": 5,
+        "spells": {
+          "0": ["light", "sacred-flame", "thaumaturgy"],
+          "1": ["cure-wounds", "guiding-bolt", "sanctuary"],
+          "2": ["lesser-restoration", "spiritual-weapon"],
+          "3": ["dispel-magic", "spirit-guardians"]
+        },
+        "slots": {
+          "1": 4,
+          "2": 3,
+          "3": 2
+        },
+        "verify": true,
+        "verifyNote": "Spell list and slots from memory."
+      },
+      "usedIn": ["Sister Venna (F14)"],
+      "art": "Venna: widow's veil burned at the edges, ember-red prayer beads",
+      "verify": true,
+      "verifyNote": "AC, HP, speed and CR from the MM PDF (✅). Ability scores, hit dice and attack lines from memory: check them."
+    },
+    {
+      "id": "mage",
+      "name": "Mage",
+      "size": "Medium",
+      "type": "humanoid",
+      "cr": "6",
+      "xp": 2300,
+      "ac": 12,
+      "hp": 40,
+      "hitDice": "9d8",
+      "speed": {
+        "walk": 30
+      },
+      "abilities": {
+        "str": 9,
+        "dex": 14,
+        "con": 11,
+        "int": 17,
+        "wis": 12,
+        "cha": 11
+      },
+      "actions": [
+        {
+          "id": "dagger",
+          "name": "Dagger",
+          "effects": [
+            {
+              "type": "attack",
+              "kind": "melee",
+              "toHit": 5,
+              "reach": 5,
+              "onHit": [
+                {
+                  "type": "damage",
+                  "dice": "1d4+2",
+                  "damageType": "piercing"
+                }
+              ]
+            },
+            {
+              "type": "attack",
+              "kind": "ranged",
+              "toHit": 5,
+              "range": [20, 60],
+              "onHit": [
+                {
+                  "type": "damage",
+                  "dice": "1d4+2",
+                  "damageType": "piercing"
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "acNote": "15 with mage armor",
+      "saves": {
+        "int": 6,
+        "wis": 4
+      },
+      "skills": {
+        "arcana": 6,
+        "history": 6
+      },
+      "spellcasting": {
+        "ability": "int",
+        "dc": 14,
+        "attackBonus": 6,
+        "spells": {
+          "0": ["fire-bolt", "light", "mage-hand", "prestidigitation"],
+          "1": ["detect-magic", "mage-armor", "magic-missile", "shield"],
+          "2": ["misty-step", "suggestion"],
+          "3": ["counterspell", "fireball", "fly"],
+          "4": ["greater-invisibility", "ice-storm"],
+          "5": ["cone-of-cold"]
+        },
+        "slots": {
+          "1": 4,
+          "2": 3,
+          "3": 3,
+          "4": 3,
+          "5": 1
+        },
+        "verify": true,
+        "verifyNote": "Spell list and slots from memory."
+      },
+      "usedIn": ["Maelis (finale phase 1)"],
+      "art": "Maelis: archivist's coat, ink-stained fingers, a hooded lantern whose flame is the wrong color",
+      "verify": true,
+      "verifyNote": "AC, HP, speed and CR from the MM PDF (✅). Ability scores, hit dice and attack lines from memory: check them."
+    },
+    {
+      "id": "lizardfolk",
+      "name": "Lizardfolk",
+      "size": "Medium",
+      "type": "humanoid",
+      "cr": "1/2",
+      "xp": 100,
+      "ac": 15,
+      "hp": 22,
+      "hitDice": "4d8+4",
+      "speed": {
+        "walk": 30,
+        "swim": 30
+      },
+      "abilities": {
+        "str": 15,
+        "dex": 10,
+        "con": 13,
+        "int": 7,
+        "wis": 12,
+        "cha": 7
+      },
+      "actions": [
+        {
+          "id": "bite",
+          "name": "Bite",
+          "effects": [
+            {
+              "type": "attack",
+              "kind": "melee",
+              "toHit": 4,
+              "reach": 5,
+              "onHit": [
+                {
+                  "type": "damage",
+                  "dice": "1d6+2",
+                  "damageType": "piercing"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "heavy-club",
+          "name": "Heavy club",
+          "effects": [
+            {
+              "type": "attack",
+              "kind": "melee",
+              "toHit": 4,
+              "reach": 5,
+              "onHit": [
+                {
+                  "type": "damage",
+                  "dice": "1d6+2",
+                  "damageType": "bludgeoning"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "javelin",
+          "name": "Javelin",
+          "effects": [
+            {
+              "type": "attack",
+              "kind": "melee",
+              "toHit": 4,
+              "reach": 5,
+              "onHit": [
+                {
+                  "type": "damage",
+                  "dice": "1d6+2",
+                  "damageType": "piercing"
+                }
+              ]
+            },
+            {
+              "type": "attack",
+              "kind": "ranged",
+              "toHit": 4,
+              "range": [30, 120],
+              "onHit": [
+                {
+                  "type": "damage",
+                  "dice": "1d6+2",
+                  "damageType": "piercing"
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "acNote": "natural armor, shield",
+      "skills": {
+        "perception": 3,
+        "stealth": 4,
+        "survival": 5
+      },
+      "traits": [
+        {
+          "id": "hold-breath",
+          "name": "Hold Breath",
+          "summary": "Can hold its breath for 15 minutes."
+        }
+      ],
+      "multiattack": ["bite", "heavy-club"],
+      "usedIn": ["F9", "travel"],
+      "art": "Chelimber hunters with bone-and-reed armor, wary not cruel",
+      "verify": true,
+      "verifyNote": "AC, HP, speed and CR from the MM PDF (✅). Ability scores, hit dice and attack lines from memory: check them."
+    },
+    {
+      "id": "goblin",
+      "name": "Goblin",
+      "size": "Small",
+      "type": "humanoid",
+      "cr": "1/4",
+      "xp": 50,
+      "ac": 15,
+      "hp": 7,
+      "hitDice": "2d6",
+      "speed": {
+        "walk": 30
+      },
+      "abilities": {
+        "str": 8,
+        "dex": 14,
+        "con": 10,
+        "int": 10,
+        "wis": 8,
+        "cha": 8
+      },
+      "actions": [
+        {
+          "id": "scimitar",
+          "name": "Scimitar",
+          "effects": [
+            {
+              "type": "attack",
+              "kind": "melee",
+              "toHit": 4,
+              "reach": 5,
+              "onHit": [
+                {
+                  "type": "damage",
+                  "dice": "1d6+2",
+                  "damageType": "slashing"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "shortbow",
+          "name": "Shortbow",
+          "effects": [
+            {
+              "type": "attack",
+              "kind": "ranged",
+              "toHit": 4,
+              "range": [80, 320],
+              "onHit": [
+                {
+                  "type": "damage",
+                  "dice": "1d6+2",
+                  "damageType": "piercing"
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "acNote": "leather armor, shield",
+      "darkvision": 60,
+      "skills": {
+        "stealth": 6
+      },
+      "traits": [
+        {
+          "id": "nimble-escape",
+          "name": "Nimble Escape",
+          "summary": "Disengage or Hide as a bonus action each turn."
+        }
+      ],
+      "usedIn": ["F2", "F3", "F4", "travel"],
+      "art": "Soot-smudged refugees carrying cooking pots, singed ears",
+      "verify": true,
+      "verifyNote": "AC, HP, speed and CR from the MM PDF (✅). Ability scores, hit dice and attack lines from memory: check them."
+    },
+    {
+      "id": "hobgoblin",
+      "name": "Hobgoblin",
+      "size": "Medium",
+      "type": "humanoid",
+      "cr": "1/2",
+      "xp": 100,
+      "ac": 18,
+      "hp": 11,
+      "hitDice": "2d8+2",
+      "speed": {
+        "walk": 30
+      },
+      "abilities": {
+        "str": 13,
+        "dex": 12,
+        "con": 12,
+        "int": 10,
+        "wis": 10,
+        "cha": 9
+      },
+      "actions": [
+        {
+          "id": "longsword",
+          "name": "Longsword",
+          "effects": [
+            {
+              "type": "attack",
+              "kind": "melee",
+              "toHit": 3,
+              "reach": 5,
+              "onHit": [
+                {
+                  "type": "damage",
+                  "dice": "1d8+1",
+                  "damageType": "slashing"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "longbow",
+          "name": "Longbow",
+          "effects": [
+            {
+              "type": "attack",
+              "kind": "ranged",
+              "toHit": 3,
+              "range": [150, 600],
+              "onHit": [
+                {
+                  "type": "damage",
+                  "dice": "1d8+1",
+                  "damageType": "piercing"
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "acNote": "chain mail, shield",
+      "darkvision": 60,
+      "traits": [
+        {
+          "id": "martial-advantage",
+          "name": "Martial Advantage",
+          "summary": "Once per turn, +2d6 damage to a creature it hits if an ally of the hobgoblin is within 5 ft of that creature."
+        }
+      ],
+      "usedIn": ["Grisk (F4)", "Wix quest"],
+      "art": "Grisk Two-Teeth: chipped chainmail, gold-capped tusks, pot-lid shield",
+      "verify": true,
+      "verifyNote": "AC, HP, speed and CR from the MM PDF (✅). Ability scores, hit dice and attack lines from memory: check them."
+    },
+    {
+      "id": "orc",
+      "name": "Orc",
+      "size": "Medium",
+      "type": "humanoid",
+      "cr": "1/2",
+      "xp": 100,
+      "ac": 13,
+      "hp": 15,
+      "hitDice": "2d8+6",
+      "speed": {
+        "walk": 30
+      },
+      "abilities": {
+        "str": 16,
+        "dex": 12,
+        "con": 16,
+        "int": 7,
+        "wis": 11,
+        "cha": 10
+      },
+      "actions": [
+        {
+          "id": "greataxe",
+          "name": "Greataxe",
+          "effects": [
+            {
+              "type": "attack",
+              "kind": "melee",
+              "toHit": 5,
+              "reach": 5,
+              "onHit": [
+                {
+                  "type": "damage",
+                  "dice": "1d12+3",
+                  "damageType": "slashing"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "javelin",
+          "name": "Javelin",
+          "effects": [
+            {
+              "type": "attack",
+              "kind": "melee",
+              "toHit": 5,
+              "reach": 5,
+              "onHit": [
+                {
+                  "type": "damage",
+                  "dice": "1d6+3",
+                  "damageType": "piercing"
+                }
+              ]
+            },
+            {
+              "type": "attack",
+              "kind": "ranged",
+              "toHit": 5,
+              "range": [30, 120],
+              "onHit": [
+                {
+                  "type": "damage",
+                  "dice": "1d6+3",
+                  "damageType": "piercing"
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "acNote": "hide armor",
+      "darkvision": 60,
+      "skills": {
+        "intimidation": 2
+      },
+      "traits": [
+        {
+          "id": "aggressive",
+          "name": "Aggressive",
+          "summary": "Bonus action: move up to its speed toward an enemy it can see."
+        }
+      ],
+      "usedIn": ["travel (Greypeaks)"],
+      "art": "Mountain war band, frost-scarred, fleeing the heat with their herds",
+      "verify": true,
+      "verifyNote": "⚠ row in Monster_Roster.md: AC, HP and CR were not readable in the PDF either. Check everything."
+    },
+    {
+      "id": "bugbear",
+      "name": "Bugbear",
+      "size": "Medium",
+      "type": "humanoid",
+      "cr": "1",
+      "xp": 200,
+      "ac": 16,
+      "hp": 27,
+      "hitDice": "5d8+5",
+      "speed": {
+        "walk": 30
+      },
+      "abilities": {
+        "str": 15,
+        "dex": 14,
+        "con": 13,
+        "int": 8,
+        "wis": 11,
+        "cha": 9
+      },
+      "actions": [
+        {
+          "id": "morningstar",
+          "name": "Morningstar",
+          "effects": [
+            {
+              "type": "attack",
+              "kind": "melee",
+              "toHit": 4,
+              "reach": 5,
+              "onHit": [
+                {
+                  "type": "damage",
+                  "dice": "2d8+2",
+                  "damageType": "piercing"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "javelin",
+          "name": "Javelin",
+          "effects": [
+            {
+              "type": "attack",
+              "kind": "melee",
+              "toHit": 4,
+              "reach": 5,
+              "onHit": [
+                {
+                  "type": "damage",
+                  "dice": "2d6+2",
+                  "damageType": "piercing"
+                }
+              ]
+            },
+            {
+              "type": "attack",
+              "kind": "ranged",
+              "toHit": 4,
+              "range": [30, 120],
+              "onHit": [
+                {
+                  "type": "damage",
+                  "dice": "1d6+2",
+                  "damageType": "piercing"
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "acNote": "hide armor, shield",
+      "darkvision": 60,
+      "skills": {
+        "stealth": 6,
+        "survival": 2
+      },
+      "traits": [
+        {
+          "id": "brute",
+          "name": "Brute",
+          "summary": "Melee weapons deal one extra die of damage (already included)."
+        },
+        {
+          "id": "surprise-attack",
+          "name": "Surprise Attack",
+          "summary": "+2d6 damage if it hits a surprised creature in the first round."
+        }
+      ],
+      "usedIn": ["spare"],
+      "verify": true,
+      "verifyNote": "AC, HP, speed and CR from the MM PDF (✅). Ability scores, hit dice and attack lines from memory: check them."
+    },
+    {
+      "id": "wolf",
+      "name": "Wolf",
+      "size": "Medium",
+      "type": "beast",
+      "cr": "1/4",
+      "xp": 50,
+      "ac": 13,
+      "hp": 11,
+      "hitDice": "2d8+2",
+      "speed": {
+        "walk": 40
+      },
+      "abilities": {
+        "str": 12,
+        "dex": 15,
+        "con": 12,
+        "int": 3,
+        "wis": 12,
+        "cha": 6
+      },
+      "actions": [
+        {
+          "id": "bite",
+          "name": "Bite",
+          "effects": [
+            {
+              "type": "attack",
+              "kind": "melee",
+              "toHit": 4,
+              "reach": 5,
+              "onHit": [
+                {
+                  "type": "damage",
+                  "dice": "2d4+2",
+                  "damageType": "piercing"
+                },
+                {
+                  "type": "special",
+                  "id": "save-or-prone",
+                  "note": "Str save DC 11 or knocked prone"
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "acNote": "natural armor",
+      "skills": {
+        "perception": 3,
+        "stealth": 4
+      },
+      "traits": [
+        {
+          "id": "keen-senses",
+          "name": "Keen Senses",
+          "summary": "Advantage on Perception checks that use hearing or smell (or sight)."
+        },
+        {
+          "id": "pack-tactics",
+          "name": "Pack Tactics",
+          "summary": "Advantage on attacks against a creature that has one of its allies next to it."
+        }
+      ],
+      "usedIn": ["F3", "travel"],
+      "art": "Ribs showing, singed fur from the warm slopes",
+      "verify": true,
+      "verifyNote": "AC, HP, speed and CR from the MM PDF (✅). Ability scores, hit dice and attack lines from memory: check them."
+    },
+    {
+      "id": "worg",
+      "name": "Worg",
+      "size": "Large",
+      "type": "monstrosity",
+      "cr": "1/2",
+      "xp": 100,
+      "ac": 13,
+      "hp": 26,
+      "hitDice": "4d10+4",
+      "speed": {
+        "walk": 50
+      },
+      "abilities": {
+        "str": 16,
+        "dex": 13,
+        "con": 13,
+        "int": 7,
+        "wis": 11,
+        "cha": 8
+      },
+      "actions": [
+        {
+          "id": "bite",
+          "name": "Bite",
+          "effects": [
+            {
+              "type": "attack",
+              "kind": "melee",
+              "toHit": 5,
+              "reach": 5,
+              "onHit": [
+                {
+                  "type": "damage",
+                  "dice": "2d6+3",
+                  "damageType": "piercing"
+                },
+                {
+                  "type": "special",
+                  "id": "save-or-prone",
+                  "note": "Str save DC 13 or knocked prone"
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "acNote": "natural armor",
+      "darkvision": 60,
+      "skills": {
+        "perception": 4
+      },
+      "traits": [
+        {
+          "id": "keen-senses",
+          "name": "Keen Senses",
+          "summary": "Advantage on Perception checks that use hearing or smell (or sight)."
+        }
+      ],
+      "usedIn": ["spare"],
+      "verify": true,
+      "verifyNote": "AC, HP, speed and CR from the MM PDF (✅). Ability scores, hit dice and attack lines from memory: check them."
+    },
+    {
+      "id": "dire-wolf",
+      "name": "Dire wolf",
+      "size": "Large",
+      "type": "beast",
+      "cr": "1",
+      "xp": 200,
+      "ac": 14,
+      "hp": 37,
+      "hitDice": "5d10+10",
+      "speed": {
+        "walk": 50
+      },
+      "abilities": {
+        "str": 17,
+        "dex": 15,
+        "con": 15,
+        "int": 3,
+        "wis": 12,
+        "cha": 7
+      },
+      "actions": [
+        {
+          "id": "bite",
+          "name": "Bite",
+          "effects": [
+            {
+              "type": "attack",
+              "kind": "melee",
+              "toHit": 5,
+              "reach": 5,
+              "onHit": [
+                {
+                  "type": "damage",
+                  "dice": "2d6+3",
+                  "damageType": "piercing"
+                },
+                {
+                  "type": "special",
+                  "id": "save-or-prone",
+                  "note": "Str save DC 13 or knocked prone"
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "acNote": "natural armor",
+      "skills": {
+        "perception": 3,
+        "stealth": 4
+      },
+      "traits": [
+        {
+          "id": "keen-senses",
+          "name": "Keen Senses",
+          "summary": "Advantage on Perception checks that use hearing or smell (or sight)."
+        },
+        {
+          "id": "pack-tactics",
+          "name": "Pack Tactics",
+          "summary": "Advantage on attacks against a creature that has one of its allies next to it."
+        }
+      ],
+      "usedIn": ["travel (Greypeaks)"],
+      "art": "Pale-grey mountain wolves with frost on their muzzles",
+      "verify": true,
+      "verifyNote": "AC, HP, speed and CR from the MM PDF (✅). Ability scores, hit dice and attack lines from memory: check them."
+    },
+    {
+      "id": "giant-rat",
+      "name": "Giant rat",
+      "size": "Small",
+      "type": "beast",
+      "cr": "1/8",
+      "xp": 25,
+      "ac": 12,
+      "hp": 7,
+      "hitDice": "2d6",
+      "speed": {
+        "walk": 30
+      },
+      "abilities": {
+        "str": 7,
+        "dex": 15,
+        "con": 11,
+        "int": 2,
+        "wis": 10,
+        "cha": 4
+      },
+      "actions": [
+        {
+          "id": "bite",
+          "name": "Bite",
+          "effects": [
+            {
+              "type": "attack",
+              "kind": "melee",
+              "toHit": 4,
+              "reach": 5,
+              "onHit": [
+                {
+                  "type": "damage",
+                  "dice": "1d4+2",
+                  "damageType": "piercing"
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "darkvision": 60,
+      "traits": [
+        {
+          "id": "keen-senses",
+          "name": "Keen Senses",
+          "summary": "Advantage on Perception checks that use hearing or smell (or sight)."
+        },
+        {
+          "id": "pack-tactics",
+          "name": "Pack Tactics",
+          "summary": "Advantage on attacks against a creature that has one of its allies next to it."
+        }
+      ],
+      "usedIn": ["cellar side quest"],
+      "art": "Brannoc's cellar rats, fat on stolen cheese",
+      "verify": true,
+      "verifyNote": "AC, HP, speed and CR from the MM PDF (✅). Ability scores, hit dice and attack lines from memory: check them."
+    },
+    {
+      "id": "swarm-of-rats",
+      "name": "Swarm of rats",
+      "size": "Medium",
+      "type": "beast",
+      "cr": "1/4",
+      "xp": 50,
+      "ac": 10,
+      "hp": 24,
+      "hitDice": "7d8-7",
+      "speed": {
+        "walk": 30
+      },
+      "abilities": {
+        "str": 9,
+        "dex": 11,
+        "con": 9,
+        "int": 2,
+        "wis": 10,
+        "cha": 3
+      },
+      "actions": [
+        {
+          "id": "bites",
+          "name": "Bites",
+          "effects": [
+            {
+              "type": "attack",
+              "kind": "melee",
+              "toHit": 2,
+              "reach": 5,
+              "onHit": [
+                {
+                  "type": "damage",
+                  "dice": "2d6",
+                  "damageType": "piercing"
+                },
+                {
+                  "type": "special",
+                  "id": "swarm-half-damage",
+                  "note": "1d6 instead when the swarm is at half HP or less"
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "resistances": ["bludgeoning", "piercing", "slashing"],
+      "conditionImmunities": [
+        "charmed",
+        "frightened",
+        "grappled",
+        "paralyzed",
+        "petrified",
+        "prone",
+        "restrained",
+        "stunned"
+      ],
+      "darkvision": 30,
+      "traits": [
+        {
+          "id": "keen-senses",
+          "name": "Keen Senses",
+          "summary": "Advantage on Perception checks that use hearing or smell (or sight)."
+        },
+        {
+          "id": "swarm",
+          "name": "Swarm",
+          "summary": "Can share spaces and squeeze through rat-sized gaps; can't regain HP or gain temporary HP."
+        }
+      ],
+      "usedIn": ["cellar side quest"],
+      "art": "A tide of rats from the old tunnel",
+      "verify": true,
+      "verifyNote": "AC, HP, speed and CR from the MM PDF (✅). Ability scores, hit dice and attack lines from memory: check them."
+    },
+    {
+      "id": "giant-centipede",
+      "name": "Giant centipede",
+      "size": "Small",
+      "type": "beast",
+      "cr": "1/4",
+      "xp": 50,
+      "ac": 13,
+      "hp": 4,
+      "hitDice": "1d6+1",
+      "speed": {
+        "walk": 30,
+        "climb": 30
+      },
+      "abilities": {
+        "str": 5,
+        "dex": 14,
+        "con": 12,
+        "int": 1,
+        "wis": 7,
+        "cha": 3
+      },
+      "actions": [
+        {
+          "id": "bite",
+          "name": "Bite",
+          "effects": [
+            {
+              "type": "attack",
+              "kind": "melee",
+              "toHit": 4,
+              "reach": 5,
+              "onHit": [
+                {
+                  "type": "damage",
+                  "dice": "1d4+2",
+                  "damageType": "piercing"
+                },
+                {
+                  "type": "save",
+                  "ability": "con",
+                  "dc": 11,
+                  "onFail": [
+                    {
+                      "type": "damage",
+                      "dice": "3d6",
+                      "damageType": "poison"
+                    }
+                  ],
+                  "onSuccess": "none"
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "acNote": "natural armor",
+      "traits": [
+        {
+          "id": "paralytic-poison",
+          "name": "Paralytic Poison",
+          "summary": "If the poison drops a creature to 0 HP, it is stable but poisoned and paralyzed for an hour instead."
+        }
+      ],
+      "usedIn": ["F6", "travel"],
+      "art": "Pale cave centipedes nesting in warm Ammarindar stone",
+      "verify": true,
+      "verifyNote": "AC, HP, speed and CR from the MM PDF (✅). Ability scores, hit dice and attack lines from memory: check them."
+    },
+    {
+      "id": "stirge",
+      "name": "Stirge",
+      "size": "Tiny",
+      "type": "beast",
+      "cr": "1/8",
+      "xp": 25,
+      "ac": 14,
+      "hp": 2,
+      "hitDice": "1d4",
+      "speed": {
+        "walk": 10,
+        "fly": 40
+      },
+      "abilities": {
+        "str": 4,
+        "dex": 16,
+        "con": 11,
+        "int": 2,
+        "wis": 8,
+        "cha": 6
+      },
+      "actions": [
+        {
+          "id": "blood-drain",
+          "name": "Blood Drain",
+          "effects": [
+            {
+              "type": "attack",
+              "kind": "melee",
+              "toHit": 5,
+              "reach": 5,
+              "onHit": [
+                {
+                  "type": "damage",
+                  "dice": "1d4+3",
+                  "damageType": "piercing"
+                },
+                {
+                  "type": "special",
+                  "id": "attach-drain",
+                  "note": "attaches; drains 1d4+3 HP at the start of each of its turns until removed or it has drained 10"
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "acNote": "natural armor",
+      "darkvision": 60,
+      "usedIn": ["travel"],
+      "art": "Dusk swarms over the Grayflow",
+      "verify": true,
+      "verifyNote": "AC, HP, speed and CR from the MM PDF (✅). Ability scores, hit dice and attack lines from memory: check them."
+    },
+    {
+      "id": "brown-bear",
+      "name": "Brown bear",
+      "size": "Large",
+      "type": "beast",
+      "cr": "1",
+      "xp": 200,
+      "ac": 11,
+      "hp": 34,
+      "hitDice": "4d10+12",
+      "speed": {
+        "walk": 40,
+        "climb": 30
+      },
+      "abilities": {
+        "str": 19,
+        "dex": 10,
+        "con": 16,
+        "int": 2,
+        "wis": 13,
+        "cha": 7
+      },
+      "actions": [
+        {
+          "id": "bite",
+          "name": "Bite",
+          "effects": [
+            {
+              "type": "attack",
+              "kind": "melee",
+              "toHit": 6,
+              "reach": 5,
+              "onHit": [
+                {
+                  "type": "damage",
+                  "dice": "1d8+4",
+                  "damageType": "piercing"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "claws",
+          "name": "Claws",
+          "effects": [
+            {
+              "type": "attack",
+              "kind": "melee",
+              "toHit": 6,
+              "reach": 5,
+              "onHit": [
+                {
+                  "type": "damage",
+                  "dice": "2d6+4",
+                  "damageType": "slashing"
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "acNote": "natural armor",
+      "skills": {
+        "perception": 3
+      },
+      "traits": [
+        {
+          "id": "keen-senses",
+          "name": "Keen Senses",
+          "summary": "Advantage on Perception checks that use hearing or smell (or sight)."
+        }
+      ],
+      "multiattack": ["bite", "claws"],
+      "usedIn": ["travel"],
+      "art": "Driven downhill, confused and hungry",
+      "verify": true,
+      "verifyNote": "AC, HP, speed and CR from the MM PDF (✅). Ability scores, hit dice and attack lines from memory: check them."
+    },
+    {
+      "id": "giant-spider",
+      "name": "Giant spider",
+      "size": "Large",
+      "type": "beast",
+      "cr": "1",
+      "xp": 200,
+      "ac": 14,
+      "hp": 26,
+      "hitDice": "4d10+4",
+      "speed": {
+        "walk": 30,
+        "climb": 30
+      },
+      "abilities": {
+        "str": 14,
+        "dex": 16,
+        "con": 12,
+        "int": 2,
+        "wis": 11,
+        "cha": 4
+      },
+      "actions": [
+        {
+          "id": "bite",
+          "name": "Bite",
+          "effects": [
+            {
+              "type": "attack",
+              "kind": "melee",
+              "toHit": 5,
+              "reach": 5,
+              "onHit": [
+                {
+                  "type": "damage",
+                  "dice": "1d8+3",
+                  "damageType": "piercing"
+                },
+                {
+                  "type": "save",
+                  "ability": "con",
+                  "dc": 11,
+                  "onFail": [
+                    {
+                      "type": "damage",
+                      "dice": "2d8",
+                      "damageType": "poison"
+                    }
+                  ],
+                  "onSuccess": "half"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "web",
+          "name": "Web",
+          "recharge": {
+            "roll": 5
+          },
+          "summary": "Ranged attack: the target is restrained by webbing (DC 12 Str to escape; the web has AC 10, 5 HP).",
+          "effects": [
+            {
+              "type": "attack",
+              "kind": "ranged",
+              "toHit": 5,
+              "range": [30, 60],
+              "onHit": [
+                {
+                  "type": "condition",
+                  "condition": "restrained"
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "acNote": "natural armor",
+      "skills": {
+        "stealth": 7
+      },
+      "traits": [
+        {
+          "id": "spider-climb",
+          "name": "Spider Climb",
+          "summary": "Climbs walls and ceilings."
+        },
+        {
+          "id": "web-sense",
+          "name": "Web Sense",
+          "summary": "Knows where anything touching its web is."
+        },
+        {
+          "id": "web-walker",
+          "name": "Web Walker",
+          "summary": "Ignores webs."
+        }
+      ],
+      "usedIn": ["travel (marsh)"],
+      "art": "Marsh spiders webbing between drowned trees",
+      "verify": true,
+      "verifyNote": "AC, HP, speed and CR from the MM PDF (✅). Ability scores, hit dice and attack lines from memory: check them."
+    },
+    {
+      "id": "swarm-of-insects",
+      "name": "Swarm of insects",
+      "size": "Medium",
+      "type": "beast",
+      "cr": "1/2",
+      "xp": 100,
+      "ac": 12,
+      "hp": 22,
+      "hitDice": "5d8",
+      "speed": {
+        "walk": 20,
+        "climb": 20
+      },
+      "abilities": {
+        "str": 3,
+        "dex": 13,
+        "con": 10,
+        "int": 1,
+        "wis": 7,
+        "cha": 1
+      },
+      "actions": [
+        {
+          "id": "bites",
+          "name": "Bites",
+          "effects": [
+            {
+              "type": "attack",
+              "kind": "melee",
+              "toHit": 3,
+              "reach": 5,
+              "onHit": [
+                {
+                  "type": "damage",
+                  "dice": "4d4",
+                  "damageType": "piercing"
+                },
+                {
+                  "type": "special",
+                  "id": "swarm-half-damage",
+                  "note": "2d4 instead when the swarm is at half HP or less"
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "acNote": "natural armor",
+      "resistances": ["bludgeoning", "piercing", "slashing"],
+      "conditionImmunities": [
+        "charmed",
+        "frightened",
+        "grappled",
+        "paralyzed",
+        "petrified",
+        "prone",
+        "restrained",
+        "stunned"
+      ],
+      "traits": [
+        {
+          "id": "swarm",
+          "name": "Swarm",
+          "summary": "Can share spaces and squeeze through rat-sized gaps; can't regain HP or gain temporary HP."
+        }
+      ],
+      "usedIn": ["Mother Sallow", "travel"],
+      "art": "Steam-hatched midges from the warm marsh",
+      "verify": true,
+      "verifyNote": "AC, HP, speed and CR from the MM PDF (✅). Ability scores, hit dice and attack lines from memory: check them."
+    },
+    {
+      "id": "griffon",
+      "name": "Griffon",
+      "size": "Large",
+      "type": "monstrosity",
+      "cr": "2",
+      "xp": 450,
+      "ac": 12,
+      "hp": 59,
+      "hitDice": "7d10+21",
+      "speed": {
+        "walk": 30,
+        "fly": 80
+      },
+      "abilities": {
+        "str": 18,
+        "dex": 15,
+        "con": 16,
+        "int": 2,
+        "wis": 13,
+        "cha": 8
+      },
+      "actions": [
+        {
+          "id": "beak",
+          "name": "Beak",
+          "effects": [
+            {
+              "type": "attack",
+              "kind": "melee",
+              "toHit": 6,
+              "reach": 5,
+              "onHit": [
+                {
+                  "type": "damage",
+                  "dice": "1d8+4",
+                  "damageType": "piercing"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "claws",
+          "name": "Claws",
+          "effects": [
+            {
+              "type": "attack",
+              "kind": "melee",
+              "toHit": 6,
+              "reach": 5,
+              "onHit": [
+                {
+                  "type": "damage",
+                  "dice": "2d6+4",
+                  "damageType": "slashing"
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "darkvision": 60,
+      "skills": {
+        "perception": 5
+      },
+      "traits": [
+        {
+          "id": "keen-senses",
+          "name": "Keen Senses",
+          "summary": "Advantage on Perception checks that use hearing or smell (or sight)."
+        }
+      ],
+      "multiattack": ["beak", "claws"],
+      "usedIn": ["travel (Greypeaks)"],
+      "art": "Greypeak griffons, gold-brown, nesting on old dwarf statues",
+      "verify": true,
+      "verifyNote": "AC, HP, speed and CR from the MM PDF (✅). Ability scores, hit dice and attack lines from memory: check them."
+    },
+    {
+      "id": "owlbear",
+      "name": "Owlbear",
+      "size": "Large",
+      "type": "monstrosity",
+      "cr": "3",
+      "xp": 700,
+      "ac": 13,
+      "hp": 59,
+      "hitDice": "7d10+21",
+      "speed": {
+        "walk": 40
+      },
+      "abilities": {
+        "str": 20,
+        "dex": 12,
+        "con": 17,
+        "int": 3,
+        "wis": 12,
+        "cha": 7
+      },
+      "actions": [
+        {
+          "id": "beak",
+          "name": "Beak",
+          "effects": [
+            {
+              "type": "attack",
+              "kind": "melee",
+              "toHit": 7,
+              "reach": 5,
+              "onHit": [
+                {
+                  "type": "damage",
+                  "dice": "1d10+5",
+                  "damageType": "piercing"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "claws",
+          "name": "Claws",
+          "effects": [
+            {
+              "type": "attack",
+              "kind": "melee",
+              "toHit": 7,
+              "reach": 5,
+              "onHit": [
+                {
+                  "type": "damage",
+                  "dice": "2d8+5",
+                  "damageType": "slashing"
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "acNote": "natural armor",
+      "darkvision": 60,
+      "skills": {
+        "perception": 3
+      },
+      "traits": [
+        {
+          "id": "keen-senses",
+          "name": "Keen Senses",
+          "summary": "Advantage on Perception checks that use hearing or smell (or sight)."
+        }
+      ],
+      "multiattack": ["beak", "claws"],
+      "usedIn": ["travel (Greypeaks)"],
+      "art": "Snow-mottled mountain owlbear",
+      "verify": true,
+      "verifyNote": "AC, HP, speed and CR from the MM PDF (✅). Ability scores, hit dice and attack lines from memory: check them."
+    },
+    {
+      "id": "skeleton",
+      "name": "Skeleton",
+      "size": "Medium",
+      "type": "undead",
+      "cr": "1/4",
+      "xp": 50,
+      "ac": 13,
+      "hp": 13,
+      "hitDice": "2d8+4",
+      "speed": {
+        "walk": 30
+      },
+      "abilities": {
+        "str": 10,
+        "dex": 14,
+        "con": 15,
+        "int": 6,
+        "wis": 8,
+        "cha": 5
+      },
+      "actions": [
+        {
+          "id": "shortsword",
+          "name": "Shortsword",
+          "effects": [
+            {
+              "type": "attack",
+              "kind": "melee",
+              "toHit": 4,
+              "reach": 5,
+              "onHit": [
+                {
+                  "type": "damage",
+                  "dice": "1d6+2",
+                  "damageType": "piercing"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "shortbow",
+          "name": "Shortbow",
+          "effects": [
+            {
+              "type": "attack",
+              "kind": "ranged",
+              "toHit": 4,
+              "range": [80, 320],
+              "onHit": [
+                {
+                  "type": "damage",
+                  "dice": "1d6+2",
+                  "damageType": "piercing"
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "acNote": "armor scraps",
+      "darkvision": 60,
+      "vulnerabilities": ["bludgeoning"],
+      "immunities": ["poison"],
+      "conditionImmunities": ["exhaustion", "poisoned"],
+      "usedIn": ["F7", "F18"],
+      "art": "Varrow's long-dead miners, still wearing helmet-lamps",
+      "verify": true,
+      "verifyNote": "AC, HP, speed and CR from the MM PDF (✅). Ability scores, hit dice and attack lines from memory: check them."
+    },
+    {
+      "id": "zombie",
+      "name": "Zombie",
+      "size": "Medium",
+      "type": "undead",
+      "cr": "1/4",
+      "xp": 50,
+      "ac": 8,
+      "hp": 22,
+      "hitDice": "3d8+9",
+      "speed": {
+        "walk": 20
+      },
+      "abilities": {
+        "str": 13,
+        "dex": 6,
+        "con": 16,
+        "int": 3,
+        "wis": 6,
+        "cha": 5
+      },
+      "actions": [
+        {
+          "id": "slam",
+          "name": "Slam",
+          "effects": [
+            {
+              "type": "attack",
+              "kind": "melee",
+              "toHit": 3,
+              "reach": 5,
+              "onHit": [
+                {
+                  "type": "damage",
+                  "dice": "1d6+1",
+                  "damageType": "bludgeoning"
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "saves": {
+        "wis": 0
+      },
+      "darkvision": 60,
+      "immunities": ["poison"],
+      "conditionImmunities": ["poisoned"],
+      "traits": [
+        {
+          "id": "undead-fortitude",
+          "name": "Undead Fortitude",
+          "summary": "When dropped to 0 HP, a Con save (DC 5 + the damage taken) leaves it at 1 HP instead, unless the damage was radiant or from a critical hit."
+        }
+      ],
+      "usedIn": ["F10", "travel"],
+      "art": "Bog dead, peat-stained and steaming",
+      "verify": true,
+      "verifyNote": "⚠ row in Monster_Roster.md: AC, HP and CR were not readable in the PDF either. Check everything."
+    },
+    {
+      "id": "ghoul",
+      "name": "Ghoul",
+      "size": "Medium",
+      "type": "undead",
+      "cr": "1",
+      "xp": 200,
+      "ac": 12,
+      "hp": 22,
+      "hitDice": "5d8",
+      "speed": {
+        "walk": 30
+      },
+      "abilities": {
+        "str": 13,
+        "dex": 15,
+        "con": 10,
+        "int": 7,
+        "wis": 10,
+        "cha": 6
+      },
+      "actions": [
+        {
+          "id": "bite",
+          "name": "Bite",
+          "effects": [
+            {
+              "type": "attack",
+              "kind": "melee",
+              "toHit": 2,
+              "reach": 5,
+              "onHit": [
+                {
+                  "type": "damage",
+                  "dice": "2d6+2",
+                  "damageType": "piercing"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "claws",
+          "name": "Claws",
+          "effects": [
+            {
+              "type": "attack",
+              "kind": "melee",
+              "toHit": 4,
+              "reach": 5,
+              "onHit": [
+                {
+                  "type": "damage",
+                  "dice": "2d4+2",
+                  "damageType": "slashing"
+                },
+                {
+                  "type": "save",
+                  "ability": "con",
+                  "dc": 10,
+                  "onFail": [
+                    {
+                      "type": "condition",
+                      "condition": "paralyzed",
+                      "duration": {
+                        "minutes": 1
+                      },
+                      "repeatSave": "con"
+                    }
+                  ],
+                  "onSuccess": "none"
+                }
+              ]
+            }
+          ],
+          "summary": "Elves and undead are immune to the paralysis."
+        }
+      ],
+      "darkvision": 60,
+      "immunities": ["poison"],
+      "conditionImmunities": ["charmed", "exhaustion", "poisoned"],
+      "usedIn": ["F10", "F11", "Ser Ida quest"],
+      "art": "Marrowmere's hungry dead in rotting fishermen's oilskins",
+      "verify": true,
+      "verifyNote": "AC, HP, speed and CR from the MM PDF (✅). Ability scores, hit dice and attack lines from memory: check them."
+    },
+    {
+      "id": "ghast",
+      "name": "Ghast",
+      "size": "Medium",
+      "type": "undead",
+      "cr": "2",
+      "xp": 450,
+      "ac": 13,
+      "hp": 36,
+      "hitDice": "8d8",
+      "speed": {
+        "walk": 30
+      },
+      "abilities": {
+        "str": 16,
+        "dex": 17,
+        "con": 10,
+        "int": 11,
+        "wis": 10,
+        "cha": 8
+      },
+      "actions": [
+        {
+          "id": "bite",
+          "name": "Bite",
+          "effects": [
+            {
+              "type": "attack",
+              "kind": "melee",
+              "toHit": 3,
+              "reach": 5,
+              "onHit": [
+                {
+                  "type": "damage",
+                  "dice": "2d8+3",
+                  "damageType": "piercing"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "claws",
+          "name": "Claws",
+          "effects": [
+            {
+              "type": "attack",
+              "kind": "melee",
+              "toHit": 5,
+              "reach": 5,
+              "onHit": [
+                {
+                  "type": "damage",
+                  "dice": "2d6+3",
+                  "damageType": "slashing"
+                },
+                {
+                  "type": "save",
+                  "ability": "con",
+                  "dc": 10,
+                  "onFail": [
+                    {
+                      "type": "condition",
+                      "condition": "paralyzed",
+                      "duration": {
+                        "minutes": 1
+                      },
+                      "repeatSave": "con"
+                    }
+                  ],
+                  "onSuccess": "none"
+                }
+              ]
+            }
+          ],
+          "summary": "Undead are immune to the paralysis."
+        }
+      ],
+      "darkvision": 60,
+      "resistances": ["necrotic"],
+      "immunities": ["poison"],
+      "conditionImmunities": ["charmed", "exhaustion", "poisoned"],
+      "traits": [
+        {
+          "id": "stench",
+          "name": "Stench",
+          "summary": "A creature starting its turn within 5 ft makes a DC 10 Con save or is poisoned until the start of its next turn."
+        },
+        {
+          "id": "turning-defiance",
+          "name": "Turning Defiance",
+          "summary": "It and nearby ghouls have advantage on saves against Turn Undead."
+        }
+      ],
+      "usedIn": ["Paladin's Shield", "Ser Ida quests"],
+      "art": "A drowned abbey brother, grave-bloated",
+      "verify": true,
+      "verifyNote": "AC, HP, speed and CR from the MM PDF (✅). Ability scores, hit dice and attack lines from memory: check them."
+    },
+    {
+      "id": "shadow",
+      "name": "Shadow",
+      "size": "Medium",
+      "type": "undead",
+      "cr": "1/2",
+      "xp": 100,
+      "ac": 12,
+      "hp": 16,
+      "hitDice": "3d8+3",
+      "speed": {
+        "walk": 40
+      },
+      "abilities": {
+        "str": 6,
+        "dex": 14,
+        "con": 13,
+        "int": 6,
+        "wis": 10,
+        "cha": 8
+      },
+      "actions": [
+        {
+          "id": "strength-drain",
+          "name": "Strength Drain",
+          "effects": [
+            {
+              "type": "attack",
+              "kind": "melee",
+              "toHit": 4,
+              "reach": 5,
+              "onHit": [
+                {
+                  "type": "damage",
+                  "dice": "2d6+2",
+                  "damageType": "necrotic"
+                },
+                {
+                  "type": "special",
+                  "id": "ability-drain",
+                  "note": "Strength drops by 1d4 until a rest; at 0 Strength the target dies"
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "darkvision": 60,
+      "skills": {
+        "stealth": 4
+      },
+      "vulnerabilities": ["radiant"],
+      "resistances": [
+        "acid",
+        "cold",
+        "fire",
+        "lightning",
+        "thunder",
+        "bludgeoning",
+        "piercing",
+        "slashing"
+      ],
+      "resistancesNonmagicalOnly": true,
+      "immunities": ["necrotic", "poison"],
+      "conditionImmunities": [
+        "exhaustion",
+        "frightened",
+        "grappled",
+        "paralyzed",
+        "petrified",
+        "poisoned",
+        "prone",
+        "restrained"
+      ],
+      "traits": [
+        {
+          "id": "amorphous",
+          "name": "Amorphous",
+          "summary": "Squeezes through gaps an inch wide."
+        },
+        {
+          "id": "shadow-stealth",
+          "name": "Shadow Stealth",
+          "summary": "In dim light or darkness, Hide as a bonus action."
+        },
+        {
+          "id": "sunlight-weakness",
+          "name": "Sunlight Weakness",
+          "summary": "In sunlight, disadvantage on attacks, checks and saves."
+        }
+      ],
+      "usedIn": ["The Mill at Night"],
+      "art": "Shadows that move like a family at a dinner table",
+      "verify": true,
+      "verifyNote": "AC, HP, speed and CR from the MM PDF (✅). Ability scores, hit dice and attack lines from memory: check them."
+    },
+    {
+      "id": "specter",
+      "name": "Specter",
+      "size": "Medium",
+      "type": "undead",
+      "cr": "1",
+      "xp": 200,
+      "ac": 12,
+      "hp": 22,
+      "hitDice": "5d8",
+      "speed": {
+        "walk": 0,
+        "fly": 50,
+        "hover": true
+      },
+      "abilities": {
+        "str": 1,
+        "dex": 14,
+        "con": 11,
+        "int": 10,
+        "wis": 10,
+        "cha": 11
+      },
+      "actions": [
+        {
+          "id": "life-drain",
+          "name": "Life Drain",
+          "effects": [
+            {
+              "type": "attack",
+              "kind": "melee",
+              "toHit": 4,
+              "reach": 5,
+              "onHit": [
+                {
+                  "type": "damage",
+                  "dice": "3d6",
+                  "damageType": "necrotic"
+                },
+                {
+                  "type": "save",
+                  "ability": "con",
+                  "dc": 10,
+                  "onFail": [
+                    {
+                      "type": "special",
+                      "id": "max-hp-reduction",
+                      "note": "max HP drops by the damage taken until a long rest"
+                    }
+                  ],
+                  "onSuccess": "none"
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "darkvision": 60,
+      "resistances": [
+        "acid",
+        "cold",
+        "fire",
+        "lightning",
+        "thunder",
+        "bludgeoning",
+        "piercing",
+        "slashing"
+      ],
+      "resistancesNonmagicalOnly": true,
+      "immunities": ["necrotic", "poison"],
+      "conditionImmunities": [
+        "charmed",
+        "exhaustion",
+        "grappled",
+        "paralyzed",
+        "petrified",
+        "poisoned",
+        "prone",
+        "restrained",
+        "unconscious"
+      ],
+      "traits": [
+        {
+          "id": "incorporeal-movement",
+          "name": "Incorporeal Movement",
+          "summary": "Moves through creatures and objects as difficult terrain; 1d10 force if it ends its turn inside an object."
+        },
+        {
+          "id": "sunlight-sensitivity",
+          "name": "Sunlight Sensitivity",
+          "summary": "Disadvantage on attacks and sight-based Perception in sunlight."
+        }
+      ],
+      "usedIn": ["Paladin's Shield"],
+      "art": "A faceless abbey novice",
+      "verify": true,
+      "verifyNote": "AC, HP, speed and CR from the MM PDF (✅). Ability scores, hit dice and attack lines from memory: check them."
+    },
+    {
+      "id": "wraith",
+      "name": "Wraith",
+      "size": "Medium",
+      "type": "undead",
+      "cr": "5",
+      "xp": 1800,
+      "ac": 13,
+      "hp": 67,
+      "hitDice": "9d8+27",
+      "speed": {
+        "walk": 0,
+        "fly": 60,
+        "hover": true
+      },
+      "abilities": {
+        "str": 6,
+        "dex": 16,
+        "con": 16,
+        "int": 12,
+        "wis": 14,
+        "cha": 15
+      },
+      "actions": [
+        {
+          "id": "life-drain",
+          "name": "Life Drain",
+          "effects": [
+            {
+              "type": "attack",
+              "kind": "melee",
+              "toHit": 6,
+              "reach": 5,
+              "onHit": [
+                {
+                  "type": "damage",
+                  "dice": "4d8+3",
+                  "damageType": "necrotic"
+                },
+                {
+                  "type": "save",
+                  "ability": "con",
+                  "dc": 14,
+                  "onFail": [
+                    {
+                      "type": "special",
+                      "id": "max-hp-reduction",
+                      "note": "max HP drops by the damage taken until a long rest"
+                    }
+                  ],
+                  "onSuccess": "none"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "create-specter",
+          "name": "Create Specter",
+          "summary": "Raises a humanoid that died violently within the last minute nearby as a specter under its control (up to seven).",
+          "effects": [
+            {
+              "type": "special",
+              "id": "create-specter"
+            }
+          ]
+        }
+      ],
+      "darkvision": 60,
+      "resistances": [
+        "acid",
+        "cold",
+        "fire",
+        "lightning",
+        "thunder",
+        "bludgeoning",
+        "piercing",
+        "slashing"
+      ],
+      "resistancesNonmagicalOnly": true,
+      "immunities": ["necrotic", "poison"],
+      "conditionImmunities": [
+        "charmed",
+        "exhaustion",
+        "grappled",
+        "paralyzed",
+        "petrified",
+        "poisoned",
+        "prone",
+        "restrained"
+      ],
+      "traits": [
+        {
+          "id": "incorporeal-movement",
+          "name": "Incorporeal Movement",
+          "summary": "Moves through creatures and objects as difficult terrain; 1d10 force if it ends its turn inside an object."
+        },
+        {
+          "id": "sunlight-sensitivity",
+          "name": "Sunlight Sensitivity",
+          "summary": "Disadvantage on attacks and sight-based Perception in sunlight."
+        }
+      ],
+      "usedIn": ["The Drowned Abbot (Act II elite)"],
+      "art": "A drowned abbot in a waterlogged sun-vestment; his face is a hollow full of black water",
+      "verify": true,
+      "verifyNote": "AC, HP, speed and CR from the MM PDF (✅). Ability scores, hit dice and attack lines from memory: check them. Life Drain DC (Items.md CONFIRM LOCALLY)."
+    },
+    {
+      "id": "wight",
+      "name": "Wight",
+      "size": "Medium",
+      "type": "undead",
+      "cr": "3",
+      "xp": 700,
+      "ac": 14,
+      "hp": 45,
+      "hitDice": "6d8+18",
+      "speed": {
+        "walk": 30
+      },
+      "abilities": {
+        "str": 15,
+        "dex": 14,
+        "con": 16,
+        "int": 10,
+        "wis": 13,
+        "cha": 15
+      },
+      "actions": [
+        {
+          "id": "longsword",
+          "name": "Longsword",
+          "effects": [
+            {
+              "type": "attack",
+              "kind": "melee",
+              "toHit": 4,
+              "reach": 5,
+              "onHit": [
+                {
+                  "type": "damage",
+                  "dice": "1d8+2",
+                  "damageType": "slashing"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "longbow",
+          "name": "Longbow",
+          "effects": [
+            {
+              "type": "attack",
+              "kind": "ranged",
+              "toHit": 4,
+              "range": [150, 600],
+              "onHit": [
+                {
+                  "type": "damage",
+                  "dice": "1d8+2",
+                  "damageType": "piercing"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "life-drain",
+          "name": "Life Drain",
+          "effects": [
+            {
+              "type": "attack",
+              "kind": "melee",
+              "toHit": 4,
+              "reach": 5,
+              "onHit": [
+                {
+                  "type": "damage",
+                  "dice": "1d6+2",
+                  "damageType": "necrotic"
+                },
+                {
+                  "type": "save",
+                  "ability": "con",
+                  "dc": 13,
+                  "onFail": [
+                    {
+                      "type": "special",
+                      "id": "max-hp-reduction"
+                    }
+                  ],
+                  "onSuccess": "none"
+                }
+              ]
+            }
+          ],
+          "summary": "Can replace one longsword attack."
+        }
+      ],
+      "acNote": "studded leather",
+      "darkvision": 60,
+      "skills": {
+        "perception": 3,
+        "stealth": 4
+      },
+      "resistances": ["necrotic", "bludgeoning", "piercing", "slashing"],
+      "resistancesNonmagicalOnly": true,
+      "immunities": ["poison"],
+      "conditionImmunities": ["exhaustion", "poisoned"],
+      "traits": [
+        {
+          "id": "sunlight-sensitivity",
+          "name": "Sunlight Sensitivity",
+          "summary": "Disadvantage on attacks and sight-based Perception in sunlight."
+        }
+      ],
+      "multiattack": ["longsword", "longsword"],
+      "usedIn": ["Ser Ida Marrow (F18)"],
+      "art": "Ida: a tall, armored woman with frost in her eye sockets and a broken crown-sigil on her shield",
+      "verify": true,
+      "verifyNote": "AC, HP, speed and CR from the MM PDF (✅). Ability scores, hit dice and attack lines from memory: check them."
+    },
+    {
+      "id": "animated-armor",
+      "name": "Animated armor",
+      "size": "Medium",
+      "type": "construct",
+      "cr": "1",
+      "xp": 200,
+      "ac": 18,
+      "hp": 33,
+      "hitDice": "6d8+6",
+      "speed": {
+        "walk": 25
+      },
+      "abilities": {
+        "str": 14,
+        "dex": 11,
+        "con": 13,
+        "int": 1,
+        "wis": 3,
+        "cha": 1
+      },
+      "actions": [
+        {
+          "id": "slam",
+          "name": "Slam",
+          "effects": [
+            {
+              "type": "attack",
+              "kind": "melee",
+              "toHit": 4,
+              "reach": 5,
+              "onHit": [
+                {
+                  "type": "damage",
+                  "dice": "1d6+2",
+                  "damageType": "bludgeoning"
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "acNote": "natural armor",
+      "immunities": ["poison", "psychic"],
+      "conditionImmunities": [
+        "blinded",
+        "charmed",
+        "deafened",
+        "exhaustion",
+        "frightened",
+        "paralyzed",
+        "petrified",
+        "poisoned"
+      ],
+      "traits": [
+        {
+          "id": "antimagic-susceptibility",
+          "name": "Antimagic Susceptibility",
+          "summary": "Shuts down inside an antimagic field; Dispel Magic stuns it."
+        },
+        {
+          "id": "false-appearance",
+          "name": "False Appearance",
+          "summary": "Motionless, it looks like ordinary armor."
+        }
+      ],
+      "multiattack": ["slam", "slam"],
+      "usedIn": ["F17", "F18"],
+      "art": "Varrow's forge-guards in soot-black plate with ember eye-slits",
+      "verify": true,
+      "verifyNote": "AC, HP, speed and CR from the MM PDF (✅). Ability scores, hit dice and attack lines from memory: check them."
+    },
+    {
+      "id": "gargoyle",
+      "name": "Gargoyle",
+      "size": "Medium",
+      "type": "elemental",
+      "cr": "2",
+      "xp": 450,
+      "ac": 15,
+      "hp": 52,
+      "hitDice": "7d8+21",
+      "speed": {
+        "walk": 30,
+        "fly": 60
+      },
+      "abilities": {
+        "str": 15,
+        "dex": 11,
+        "con": 16,
+        "int": 6,
+        "wis": 11,
+        "cha": 7
+      },
+      "actions": [
+        {
+          "id": "bite",
+          "name": "Bite",
+          "effects": [
+            {
+              "type": "attack",
+              "kind": "melee",
+              "toHit": 4,
+              "reach": 5,
+              "onHit": [
+                {
+                  "type": "damage",
+                  "dice": "1d6+2",
+                  "damageType": "piercing"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "claws",
+          "name": "Claws",
+          "effects": [
+            {
+              "type": "attack",
+              "kind": "melee",
+              "toHit": 4,
+              "reach": 5,
+              "onHit": [
+                {
+                  "type": "damage",
+                  "dice": "1d6+2",
+                  "damageType": "slashing"
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "acNote": "natural armor",
+      "darkvision": 60,
+      "resistances": ["bludgeoning", "piercing", "slashing"],
+      "resistancesNonmagicalOnly": true,
+      "immunities": ["poison"],
+      "conditionImmunities": ["exhaustion", "petrified", "poisoned"],
+      "traits": [
+        {
+          "id": "false-appearance",
+          "name": "False Appearance",
+          "summary": "Motionless, it looks like a statue."
+        }
+      ],
+      "multiattack": ["bite", "claws"],
+      "usedIn": ["F16 Kiln Gate"],
+      "art": "Dwarf-carved gate-wardens cracked by heat",
+      "verify": true,
+      "verifyNote": "AC, HP, speed and CR from the MM PDF (✅). Ability scores, hit dice and attack lines from memory: check them."
+    },
+    {
+      "id": "earth-elemental",
+      "name": "Earth elemental",
+      "size": "Large",
+      "type": "elemental",
+      "cr": "5",
+      "xp": 1800,
+      "ac": 17,
+      "hp": 126,
+      "hitDice": "12d10+60",
+      "speed": {
+        "walk": 30,
+        "burrow": 30
+      },
+      "abilities": {
+        "str": 20,
+        "dex": 8,
+        "con": 20,
+        "int": 5,
+        "wis": 10,
+        "cha": 5
+      },
+      "actions": [
+        {
+          "id": "slam",
+          "name": "Slam",
+          "effects": [
+            {
+              "type": "attack",
+              "kind": "melee",
+              "toHit": 8,
+              "reach": 10,
+              "onHit": [
+                {
+                  "type": "damage",
+                  "dice": "2d8+5",
+                  "damageType": "bludgeoning"
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "acNote": "natural armor",
+      "darkvision": 60,
+      "vulnerabilities": ["thunder"],
+      "resistances": ["bludgeoning", "piercing", "slashing"],
+      "resistancesNonmagicalOnly": true,
+      "immunities": ["poison"],
+      "conditionImmunities": ["exhaustion", "paralyzed", "petrified", "poisoned", "unconscious"],
+      "traits": [
+        {
+          "id": "earth-glide",
+          "name": "Earth Glide",
+          "summary": "Burrows through earth and stone without disturbing it."
+        },
+        {
+          "id": "siege-monster",
+          "name": "Siege Monster",
+          "summary": "Double damage to objects and structures."
+        }
+      ],
+      "multiattack": ["slam", "slam"],
+      "usedIn": ["F19 Ember Galleries"],
+      "art": "A living Ammarindar wall with a dwarven face carved in it",
+      "verify": true,
+      "verifyNote": "AC, HP, speed and CR from the MM PDF (✅). Ability scores, hit dice and attack lines from memory: check them."
+    },
+    {
+      "id": "fire-elemental",
+      "name": "Fire elemental",
+      "size": "Large",
+      "type": "elemental",
+      "cr": "5",
+      "xp": 1800,
+      "ac": 13,
+      "hp": 102,
+      "hitDice": "12d10+36",
+      "speed": {
+        "walk": 50
+      },
+      "abilities": {
+        "str": 10,
+        "dex": 17,
+        "con": 16,
+        "int": 6,
+        "wis": 10,
+        "cha": 7
+      },
+      "actions": [
+        {
+          "id": "touch",
+          "name": "Touch",
+          "effects": [
+            {
+              "type": "attack",
+              "kind": "melee",
+              "toHit": 6,
+              "reach": 5,
+              "onHit": [
+                {
+                  "type": "damage",
+                  "dice": "2d6+3",
+                  "damageType": "fire"
+                },
+                {
+                  "type": "special",
+                  "id": "ignite",
+                  "note": "catches fire: 1d10 fire at the start of each turn until someone uses an action to douse it"
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "darkvision": 60,
+      "resistances": ["bludgeoning", "piercing", "slashing"],
+      "resistancesNonmagicalOnly": true,
+      "immunities": ["fire", "poison"],
+      "conditionImmunities": [
+        "exhaustion",
+        "grappled",
+        "paralyzed",
+        "petrified",
+        "poisoned",
+        "prone",
+        "restrained",
+        "unconscious"
+      ],
+      "traits": [
+        {
+          "id": "fire-form",
+          "name": "Fire Form",
+          "summary": "Moves through tiny gaps; touching or hitting it in melee deals 1d10 fire and can set things alight."
+        },
+        {
+          "id": "illumination",
+          "name": "Illumination",
+          "summary": "Sheds bright light 30 ft."
+        },
+        {
+          "id": "water-susceptibility",
+          "name": "Water Susceptibility",
+          "summary": "Takes 1 cold damage per 5 ft moved in water, or per gallon splashed on it."
+        }
+      ],
+      "multiattack": ["touch", "touch"],
+      "usedIn": ["The Cold Forge"],
+      "art": "The forge's old spirit, angry at being woken",
+      "verify": true,
+      "verifyNote": "AC, HP, speed and CR from the MM PDF (✅). Ability scores, hit dice and attack lines from memory: check them."
+    },
+    {
+      "id": "magma-mephit",
+      "name": "Magma mephit",
+      "size": "Small",
+      "type": "elemental",
+      "cr": "1/2",
+      "xp": 100,
+      "ac": 11,
+      "hp": 22,
+      "hitDice": "5d6+5",
+      "speed": {
+        "walk": 30,
+        "fly": 30
+      },
+      "abilities": {
+        "str": 8,
+        "dex": 12,
+        "con": 12,
+        "int": 7,
+        "wis": 10,
+        "cha": 10
+      },
+      "actions": [
+        {
+          "id": "claws",
+          "name": "Claws",
+          "effects": [
+            {
+              "type": "attack",
+              "kind": "melee",
+              "toHit": 3,
+              "reach": 5,
+              "onHit": [
+                {
+                  "type": "damage",
+                  "dice": "1d4+1",
+                  "damageType": "slashing"
+                },
+                {
+                  "type": "damage",
+                  "dice": "1d4",
+                  "damageType": "fire"
+                }
+              ]
+            }
+          ],
+          "verify": true,
+          "verifyNote": "Monster_Roster.md says +1d4 fire; memory says 2d4 fire. Docs win until checked."
+        },
+        {
+          "id": "fire-breath",
+          "name": "Fire Breath",
+          "effects": [
+            {
+              "type": "save",
+              "ability": "dex",
+              "dc": 11,
+              "onFail": [
+                {
+                  "type": "damage",
+                  "dice": "2d6",
+                  "damageType": "fire"
+                }
+              ],
+              "onSuccess": "half"
+            }
+          ],
+          "area": {
+            "shape": "cone",
+            "size": 15
+          },
+          "recharge": {
+            "roll": 6
+          }
+        }
+      ],
+      "darkvision": 60,
+      "skills": {
+        "stealth": 3
+      },
+      "vulnerabilities": ["cold"],
+      "immunities": ["fire", "poison"],
+      "conditionImmunities": ["poisoned"],
+      "traits": [
+        {
+          "id": "death-burst",
+          "name": "Death Burst",
+          "summary": "Explodes when it dies: creatures within 5 ft make a DC 11 Dex save, 2d6 fire, half on a success."
+        },
+        {
+          "id": "false-appearance",
+          "name": "False Appearance",
+          "summary": "Motionless, it looks like a mound of magma."
+        }
+      ],
+      "usedIn": ["F19", "Cold Forge", "travel"],
+      "art": "Giggling, dripping imps of lava",
+      "verify": true,
+      "verifyNote": "⚠ row in Monster_Roster.md: AC, HP and CR were not readable in the PDF either. Check everything."
+    },
+    {
+      "id": "hell-hound",
+      "name": "Hell hound",
+      "size": "Medium",
+      "type": "fiend",
+      "cr": "3",
+      "xp": 700,
+      "ac": 15,
+      "hp": 45,
+      "hitDice": "7d8+14",
+      "speed": {
+        "walk": 50
+      },
+      "abilities": {
+        "str": 17,
+        "dex": 12,
+        "con": 14,
+        "int": 6,
+        "wis": 13,
+        "cha": 6
+      },
+      "actions": [
+        {
+          "id": "bite",
+          "name": "Bite",
+          "effects": [
+            {
+              "type": "attack",
+              "kind": "melee",
+              "toHit": 5,
+              "reach": 5,
+              "onHit": [
+                {
+                  "type": "damage",
+                  "dice": "1d8+3",
+                  "damageType": "piercing"
+                },
+                {
+                  "type": "damage",
+                  "dice": "2d6",
+                  "damageType": "fire"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "fire-breath",
+          "name": "Fire Breath",
+          "effects": [
+            {
+              "type": "save",
+              "ability": "dex",
+              "dc": 12,
+              "onFail": [
+                {
+                  "type": "damage",
+                  "dice": "6d6",
+                  "damageType": "fire"
+                }
+              ],
+              "onSuccess": "half"
+            }
+          ],
+          "area": {
+            "shape": "cone",
+            "size": 15
+          },
+          "recharge": {
+            "roll": 5
+          }
+        }
+      ],
+      "acNote": "natural armor",
+      "darkvision": 60,
+      "skills": {
+        "perception": 5
+      },
+      "immunities": ["fire"],
+      "traits": [
+        {
+          "id": "keen-senses",
+          "name": "Keen Senses",
+          "summary": "Advantage on Perception checks that use hearing or smell (or sight)."
+        },
+        {
+          "id": "pack-tactics",
+          "name": "Pack Tactics",
+          "summary": "Advantage on attacks against a creature that has one of its allies next to it."
+        }
+      ],
+      "usedIn": ["Last Boats", "travel"],
+      "art": "Coal-black hounds with ember-crack skin, loosed from the Kiln",
+      "verify": true,
+      "verifyNote": "AC, HP, speed and CR from the MM PDF (✅). Ability scores, hit dice and attack lines from memory: check them."
+    },
+    {
+      "id": "salamander",
+      "name": "Salamander",
+      "size": "Large",
+      "type": "elemental",
+      "cr": "5",
+      "xp": 1800,
+      "ac": 15,
+      "hp": 90,
+      "hitDice": "12d10+24",
+      "speed": {
+        "walk": 30
+      },
+      "abilities": {
+        "str": 18,
+        "dex": 14,
+        "con": 15,
+        "int": 11,
+        "wis": 10,
+        "cha": 12
+      },
+      "actions": [
+        {
+          "id": "spear",
+          "name": "Spear",
+          "effects": [
+            {
+              "type": "attack",
+              "kind": "melee",
+              "toHit": 7,
+              "reach": 5,
+              "onHit": [
+                {
+                  "type": "damage",
+                  "dice": "2d6+4",
+                  "damageType": "piercing"
+                },
+                {
+                  "type": "damage",
+                  "dice": "1d6",
+                  "damageType": "fire"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "tail",
+          "name": "Tail",
+          "effects": [
+            {
+              "type": "attack",
+              "kind": "melee",
+              "toHit": 7,
+              "reach": 10,
+              "onHit": [
+                {
+                  "type": "damage",
+                  "dice": "2d6+4",
+                  "damageType": "bludgeoning"
+                },
+                {
+                  "type": "damage",
+                  "dice": "2d6",
+                  "damageType": "fire"
+                },
+                {
+                  "type": "condition",
+                  "condition": "grappled"
+                },
+                {
+                  "type": "condition",
+                  "condition": "restrained"
+                }
+              ]
+            }
+          ],
+          "summary": "Grappled (escape DC 14) and restrained."
+        }
+      ],
+      "acNote": "natural armor",
+      "darkvision": 60,
+      "vulnerabilities": ["cold"],
+      "resistances": ["bludgeoning", "piercing", "slashing"],
+      "resistancesNonmagicalOnly": true,
+      "immunities": ["fire"],
+      "traits": [
+        {
+          "id": "heated-body",
+          "name": "Heated Body",
+          "summary": "Touching it or hitting it in melee from within 5 ft deals 2d6 fire."
+        },
+        {
+          "id": "heated-weapons",
+          "name": "Heated Weapons",
+          "summary": "Its metal weapons deal +1d6 fire (included)."
+        }
+      ],
+      "multiattack": ["spear", "tail"],
+      "usedIn": ["spare"],
+      "verify": true,
+      "verifyNote": "AC, HP, speed and CR from the MM PDF (✅). Ability scores, hit dice and attack lines from memory: check them."
+    },
+    {
+      "id": "ogre",
+      "name": "Ogre",
+      "size": "Large",
+      "type": "giant",
+      "cr": "2",
+      "xp": 450,
+      "ac": 11,
+      "hp": 59,
+      "hitDice": "7d10+21",
+      "speed": {
+        "walk": 40
+      },
+      "abilities": {
+        "str": 19,
+        "dex": 8,
+        "con": 16,
+        "int": 5,
+        "wis": 7,
+        "cha": 7
+      },
+      "actions": [
+        {
+          "id": "greatclub",
+          "name": "Greatclub",
+          "effects": [
+            {
+              "type": "attack",
+              "kind": "melee",
+              "toHit": 6,
+              "reach": 5,
+              "onHit": [
+                {
+                  "type": "damage",
+                  "dice": "2d8+4",
+                  "damageType": "bludgeoning"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "javelin",
+          "name": "Javelin",
+          "effects": [
+            {
+              "type": "attack",
+              "kind": "melee",
+              "toHit": 6,
+              "reach": 5,
+              "onHit": [
+                {
+                  "type": "damage",
+                  "dice": "2d6+4",
+                  "damageType": "piercing"
+                }
+              ]
+            },
+            {
+              "type": "attack",
+              "kind": "ranged",
+              "toHit": 6,
+              "range": [30, 120],
+              "onHit": [
+                {
+                  "type": "damage",
+                  "dice": "2d6+4",
+                  "damageType": "piercing"
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "acNote": "hide armor",
+      "darkvision": 60,
+      "usedIn": ["F14", "F15 Ashfall Pass", "Wix quest"],
+      "art": "Ogre brothers in scorched furs who want breakfast, not blood",
+      "verify": true,
+      "verifyNote": "AC, HP, speed and CR from the MM PDF (✅). Ability scores, hit dice and attack lines from memory: check them."
+    },
+    {
+      "id": "hill-giant",
+      "name": "Hill giant",
+      "size": "Huge",
+      "type": "giant",
+      "cr": "5",
+      "xp": 1800,
+      "ac": 13,
+      "hp": 105,
+      "hitDice": "10d12+40",
+      "speed": {
+        "walk": 40
+      },
+      "abilities": {
+        "str": 21,
+        "dex": 8,
+        "con": 19,
+        "int": 5,
+        "wis": 9,
+        "cha": 6
+      },
+      "actions": [
+        {
+          "id": "greatclub",
+          "name": "Greatclub",
+          "effects": [
+            {
+              "type": "attack",
+              "kind": "melee",
+              "toHit": 8,
+              "reach": 10,
+              "onHit": [
+                {
+                  "type": "damage",
+                  "dice": "3d8+5",
+                  "damageType": "bludgeoning"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "rock",
+          "name": "Rock",
+          "effects": [
+            {
+              "type": "attack",
+              "kind": "ranged",
+              "toHit": 8,
+              "range": [60, 240],
+              "onHit": [
+                {
+                  "type": "damage",
+                  "dice": "3d10+5",
+                  "damageType": "bludgeoning"
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "acNote": "natural armor",
+      "skills": {
+        "perception": 2
+      },
+      "multiattack": ["greatclub", "greatclub"],
+      "usedIn": ["Wix's Homecoming"],
+      "art": "A giant squatting in the goblin caves, eating the clan's mushroom farm",
+      "verify": true,
+      "verifyNote": "AC, HP, speed and CR from the MM PDF (✅). Ability scores, hit dice and attack lines from memory: check them."
+    },
+    {
+      "id": "fire-giant",
+      "name": "Fire giant",
+      "size": "Huge",
+      "type": "giant",
+      "cr": "9",
+      "xp": 5000,
+      "ac": 18,
+      "hp": 162,
+      "hitDice": "13d12+78",
+      "speed": {
+        "walk": 30
+      },
+      "abilities": {
+        "str": 25,
+        "dex": 9,
+        "con": 23,
+        "int": 10,
+        "wis": 14,
+        "cha": 13
+      },
+      "actions": [
+        {
+          "id": "greatsword",
+          "name": "Greatsword",
+          "effects": [
+            {
+              "type": "attack",
+              "kind": "melee",
+              "toHit": 11,
+              "reach": 10,
+              "onHit": [
+                {
+                  "type": "damage",
+                  "dice": "6d6+7",
+                  "damageType": "slashing"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "rock",
+          "name": "Rock",
+          "effects": [
+            {
+              "type": "attack",
+              "kind": "ranged",
+              "toHit": 11,
+              "range": [60, 240],
+              "onHit": [
+                {
+                  "type": "damage",
+                  "dice": "4d10+7",
+                  "damageType": "bludgeoning"
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "acNote": "plate",
+      "saves": {
+        "dex": 3,
+        "con": 10,
+        "cha": 5
+      },
+      "skills": {
+        "athletics": 11,
+        "perception": 6
+      },
+      "immunities": ["fire"],
+      "multiattack": ["greatsword", "greatsword"],
+      "usedIn": ["Vorrag the Kiln-Smith (Act III elite)"],
+      "art": "Coal-black skin, beard of live embers, a leather apron of dragon hide; politely terrifying",
+      "verify": true,
+      "verifyNote": "AC 18 and HP 162 from the MM PDF (✅). CR 9 is \"believed\" in the docs; abilities and attacks from memory."
+    },
+    {
+      "id": "troll",
+      "name": "Troll",
+      "size": "Large",
+      "type": "giant",
+      "cr": "5",
+      "xp": 1800,
+      "ac": 15,
+      "hp": 84,
+      "hitDice": "8d10+40",
+      "speed": {
+        "walk": 30
+      },
+      "abilities": {
+        "str": 18,
+        "dex": 13,
+        "con": 20,
+        "int": 7,
+        "wis": 9,
+        "cha": 7
+      },
+      "actions": [
+        {
+          "id": "bite",
+          "name": "Bite",
+          "effects": [
+            {
+              "type": "attack",
+              "kind": "melee",
+              "toHit": 7,
+              "reach": 5,
+              "onHit": [
+                {
+                  "type": "damage",
+                  "dice": "1d6+4",
+                  "damageType": "piercing"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "claw",
+          "name": "Claw",
+          "effects": [
+            {
+              "type": "attack",
+              "kind": "melee",
+              "toHit": 7,
+              "reach": 5,
+              "onHit": [
+                {
+                  "type": "damage",
+                  "dice": "2d6+4",
+                  "damageType": "slashing"
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "acNote": "natural armor",
+      "darkvision": 60,
+      "skills": {
+        "perception": 2
+      },
+      "traits": [
+        {
+          "id": "keen-smell",
+          "name": "Keen Smell",
+          "summary": "Advantage on Perception checks that use smell."
+        },
+        {
+          "id": "regeneration",
+          "name": "Regeneration",
+          "summary": "Regains 10 HP at the start of its turn unless it took acid or fire damage since its last turn; it only dies if it starts its turn at 0 HP without regenerating."
+        }
+      ],
+      "multiattack": ["bite", "claw", "claw"],
+      "usedIn": ["travel (rare)"],
+      "art": "A rope-bridge troll",
+      "verify": true,
+      "verifyNote": "AC, HP, speed and CR from the MM PDF (✅). Ability scores, hit dice and attack lines from memory: check them."
+    },
+    {
+      "id": "green-hag",
+      "name": "Green hag",
+      "size": "Medium",
+      "type": "fey",
+      "cr": "3",
+      "xp": 700,
+      "ac": 17,
+      "hp": 82,
+      "hitDice": "11d8+33",
+      "speed": {
+        "walk": 30
+      },
+      "abilities": {
+        "str": 18,
+        "dex": 12,
+        "con": 16,
+        "int": 13,
+        "wis": 14,
+        "cha": 14
+      },
+      "actions": [
+        {
+          "id": "claws",
+          "name": "Claws",
+          "effects": [
+            {
+              "type": "attack",
+              "kind": "melee",
+              "toHit": 6,
+              "reach": 5,
+              "onHit": [
+                {
+                  "type": "damage",
+                  "dice": "2d8+4",
+                  "damageType": "slashing"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "illusory-appearance",
+          "name": "Illusory Appearance",
+          "summary": "Disguises itself as another creature of its size until it ends the effect or dies.",
+          "effects": [
+            {
+              "type": "special",
+              "id": "disguise"
+            }
+          ]
+        },
+        {
+          "id": "invisible-passage",
+          "name": "Invisible Passage",
+          "summary": "Turns invisible until it attacks or casts a spell.",
+          "effects": [
+            {
+              "type": "condition",
+              "condition": "invisible"
+            }
+          ]
+        }
+      ],
+      "acNote": "natural armor",
+      "darkvision": 60,
+      "skills": {
+        "arcana": 3,
+        "deception": 4,
+        "perception": 4,
+        "stealth": 3
+      },
+      "traits": [
+        {
+          "id": "amphibious",
+          "name": "Amphibious",
+          "summary": "Breathes air and water."
+        },
+        {
+          "id": "mimicry",
+          "name": "Mimicry",
+          "summary": "Imitates animal sounds and voices (Insight to see through it)."
+        }
+      ],
+      "spellcasting": {
+        "ability": "cha",
+        "dc": 12,
+        "attackBonus": 4,
+        "innate": true,
+        "spells": {
+          "0": ["dancing-lights", "minor-illusion", "vicious-mockery"]
+        },
+        "verify": true,
+        "verifyNote": "Innate spells from memory."
+      },
+      "usedIn": ["Mother Sallow"],
+      "art": "A kindly-looking old woman whose reflection in the bog water is not kind",
+      "verify": true,
+      "verifyNote": "AC, HP, speed and CR from the MM PDF (✅). Ability scores, hit dice and attack lines from memory: check them."
+    },
+    {
+      "id": "red-dragon-wyrmling",
+      "name": "Red dragon wyrmling",
+      "size": "Medium",
+      "type": "dragon",
+      "cr": "4",
+      "xp": 1100,
+      "ac": 17,
+      "hp": 75,
+      "hitDice": "10d8+30",
+      "speed": {
+        "walk": 30,
+        "climb": 30,
+        "fly": 60
+      },
+      "abilities": {
+        "str": 19,
+        "dex": 10,
+        "con": 17,
+        "int": 12,
+        "wis": 11,
+        "cha": 15
+      },
+      "actions": [
+        {
+          "id": "bite",
+          "name": "Bite",
+          "effects": [
+            {
+              "type": "attack",
+              "kind": "melee",
+              "toHit": 6,
+              "reach": 5,
+              "onHit": [
+                {
+                  "type": "damage",
+                  "dice": "1d10+4",
+                  "damageType": "piercing"
+                },
+                {
+                  "type": "damage",
+                  "dice": "1d6",
+                  "damageType": "fire"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "fire-breath",
+          "name": "Fire Breath",
+          "effects": [
+            {
+              "type": "save",
+              "ability": "dex",
+              "dc": 13,
+              "onFail": [
+                {
+                  "type": "damage",
+                  "dice": "7d6",
+                  "damageType": "fire"
+                }
+              ],
+              "onSuccess": "half"
+            }
+          ],
+          "area": {
+            "shape": "cone",
+            "size": 15
+          },
+          "recharge": {
+            "roll": 5
+          }
+        }
+      ],
+      "acNote": "natural armor",
+      "darkvision": 60,
+      "saves": {
+        "dex": 2,
+        "con": 5,
+        "wis": 2,
+        "cha": 4
+      },
+      "skills": {
+        "perception": 4,
+        "stealth": 2
+      },
+      "immunities": ["fire"],
+      "usedIn": ["Scald (Act I elite)"],
+      "art": "Scald: dog-sized, eggshell still stuck to one horn, curious and vicious, hoarding copper pots stolen from the goblins",
+      "verify": true,
+      "verifyNote": "AC, HP, speed and CR from the MM PDF (✅). Ability scores, hit dice and attack lines from memory: check them."
+    },
+    {
+      "id": "young-red-dragon",
+      "name": "Young red dragon",
+      "size": "Large",
+      "type": "dragon",
+      "cr": "10",
+      "xp": 5900,
+      "ac": 18,
+      "hp": 178,
+      "hitDice": "17d10+85",
+      "speed": {
+        "walk": 40,
+        "climb": 40,
+        "fly": 80
+      },
+      "abilities": {
+        "str": 23,
+        "dex": 10,
+        "con": 21,
+        "int": 14,
+        "wis": 11,
+        "cha": 19
+      },
+      "actions": [
+        {
+          "id": "bite",
+          "name": "Bite",
+          "effects": [
+            {
+              "type": "attack",
+              "kind": "melee",
+              "toHit": 10,
+              "reach": 10,
+              "onHit": [
+                {
+                  "type": "damage",
+                  "dice": "2d10+6",
+                  "damageType": "piercing"
+                },
+                {
+                  "type": "damage",
+                  "dice": "1d6",
+                  "damageType": "fire"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "claw",
+          "name": "Claw",
+          "effects": [
+            {
+              "type": "attack",
+              "kind": "melee",
+              "toHit": 10,
+              "reach": 5,
+              "onHit": [
+                {
+                  "type": "damage",
+                  "dice": "2d6+6",
+                  "damageType": "slashing"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "fire-breath",
+          "name": "Fire Breath",
+          "effects": [
+            {
+              "type": "save",
+              "ability": "dex",
+              "dc": 17,
+              "onFail": [
+                {
+                  "type": "damage",
+                  "dice": "16d6",
+                  "damageType": "fire"
+                }
+              ],
+              "onSuccess": "half"
+            }
+          ],
+          "area": {
+            "shape": "cone",
+            "size": 30
+          },
+          "recharge": {
+            "roll": 5
+          }
+        }
+      ],
+      "acNote": "natural armor",
+      "darkvision": 120,
+      "saves": {
+        "dex": 4,
+        "con": 9,
+        "wis": 4,
+        "cha": 8
+      },
+      "skills": {
+        "perception": 8,
+        "stealth": 4
+      },
+      "immunities": ["fire"],
+      "multiattack": ["bite", "claw", "claw"],
+      "referenceOnly": true,
+      "usedIn": ["reference only (too strong for L5-6)"],
+      "verify": true,
+      "verifyNote": "⚠ row in Monster_Roster.md: AC, HP and CR were not readable in the PDF either. Check everything."
+    },
+    {
+      "id": "ember-wraith",
+      "name": "Cindrath's ember-wraith",
+      "size": "Large",
+      "type": "dragon",
+      "cr": "7",
+      "xp": 2900,
+      "ac": 17,
+      "hp": 110,
+      "speed": {
+        "walk": 0,
+        "fly": 60,
+        "hover": true
+      },
+      "abilities": {
+        "str": 21,
+        "dex": 10,
+        "con": 19,
+        "int": 14,
+        "wis": 11,
+        "cha": 19
+      },
+      "actions": [
+        {
+          "id": "bite",
+          "name": "Bite",
+          "effects": [
+            {
+              "type": "attack",
+              "kind": "melee",
+              "toHit": 8,
+              "reach": 10,
+              "onHit": [
+                {
+                  "type": "damage",
+                  "dice": "2d10+5",
+                  "damageType": "piercing"
+                },
+                {
+                  "type": "damage",
+                  "dice": "2d6",
+                  "damageType": "fire"
+                }
+              ]
+            }
+          ],
+          "verify": true,
+          "verifyNote": "Homebrew placeholder numbers [inferred]; tune with the balance simulator (M10)."
+        },
+        {
+          "id": "claw",
+          "name": "Claw",
+          "effects": [
+            {
+              "type": "attack",
+              "kind": "melee",
+              "toHit": 8,
+              "reach": 5,
+              "onHit": [
+                {
+                  "type": "damage",
+                  "dice": "2d6+5",
+                  "damageType": "fire"
+                }
+              ]
+            }
+          ],
+          "verify": true,
+          "verifyNote": "Homebrew placeholder [inferred]."
+        },
+        {
+          "id": "ember-breath",
+          "name": "Ember Breath",
+          "effects": [
+            {
+              "type": "save",
+              "ability": "dex",
+              "dc": 15,
+              "onFail": [
+                {
+                  "type": "damage",
+                  "dice": "8d6",
+                  "damageType": "fire"
+                }
+              ],
+              "onSuccess": "half"
+            }
+          ],
+          "area": {
+            "shape": "cone",
+            "size": 30
+          },
+          "recharge": {
+            "roll": 5
+          },
+          "summary": "About 8d6 fire in a 30-ft cone (Monster_Roster)."
+        }
+      ],
+      "darkvision": 120,
+      "immunities": ["fire"],
+      "conditionImmunities": ["frightened", "charmed"],
+      "homebrew": true,
+      "traits": [
+        {
+          "id": "bound-to-the-circle",
+          "name": "Bound to the Circle",
+          "summary": "Can't leave the ritual circle."
+        },
+        {
+          "id": "shard-bound",
+          "name": "Shard-Bound",
+          "summary": "Loses HP each time a crown shard is struck (amount set in M9)."
+        },
+        {
+          "id": "half-formed",
+          "name": "Half-Formed",
+          "summary": "Its back half is still stone: it can't be flanked from behind [inferred flavor]."
+        }
+      ],
+      "multiattack": ["bite", "claw"],
+      "usedIn": ["F21 finale, phase 2"],
+      "art": "A half-formed dragon of smoke and molten gold. Its \"skin\" is the cracking crown, and it's missing its back half, which is still stone",
+      "verify": true,
+      "verifyNote": "Homebrew. AC 17, about 110 HP, fly 60, 30-ft cone of about 8d6 fire and CR budget 6-7 come from the docs; ability scores, attack numbers and save DC are my placeholders [inferred]. Fire immunity from Items.md (\"Cindrath is immune to fire\")."
+    }
+  ]
+}

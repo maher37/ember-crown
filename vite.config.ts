@@ -6,6 +6,8 @@ import { defineConfig } from 'vitest/config';
 export default defineConfig({
   base: '/ember-crown/',
   plugins: [react()],
+  // All game data (spells, monsters...) loads and is validated at startup: ~500 KB, ~135 KB gzipped.
+  build: { chunkSizeWarningLimit: 1000 },
   test: {
     environment: 'jsdom',
     include: ['tests/unit/**/*.test.{ts,tsx}'],

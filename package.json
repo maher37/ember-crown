@@ -13,7 +13,8 @@
     "lint": "eslint .",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
-    "validate-data": "tsx scripts/validate-data.ts"
+    "validate-data": "tsx scripts/validate-data.ts",
+    "verify-list": "tsx scripts/verify-list.ts"
   },
   "dependencies": {
     "react": "^19.3.1",
