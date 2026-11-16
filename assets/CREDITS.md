@@ -13,3 +13,4 @@ This work includes material taken from the System Reference Document 5.1 ("SRD 5
 ## Art
 
 - Title emblem and favicon: original SVG made for this project.
+- Character portraits: original layered SVG (from the Portrait mockup) made for this project.

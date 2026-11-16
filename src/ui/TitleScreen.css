@@ -301,3 +301,28 @@
   font-weight: 600;
   color: var(--muted);
 }
+.slot-full {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 10px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  font-size: 12px;
+  color: var(--muted);
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+.slot-full .slot-name {
+  color: var(--text);
+}
+.title-screen {
+  position: relative;
+}
+.slot-full span {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}

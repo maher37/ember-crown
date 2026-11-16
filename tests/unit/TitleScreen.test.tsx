@@ -51,9 +51,14 @@ describe('TitleScreen', () => {
     expect(sw).toHaveAttribute('aria-checked', 'true');
   });
 
-  it('disables Continue and Load Game while there are no saves', () => {
+  it('disables Continue while there are no saves, and opens the load dialog', async () => {
+    const user = userEvent.setup();
     render(<TitleScreen />);
     expect(screen.getByRole('button', { name: 'Continue' })).toBeDisabled();
-    expect(screen.getByRole('button', { name: 'Load Game' })).toBeDisabled();
+    expect(screen.getAllByText('Empty')).toHaveLength(3);
+    await user.click(screen.getByRole('button', { name: 'Load Game' }));
+    expect(screen.getByRole('dialog', { name: 'Load game' })).toBeVisible();
+    await user.keyboard('{Escape}');
+    expect(screen.queryByRole('dialog')).toBeNull();
   });
 });

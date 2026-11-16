@@ -16,3 +16,4 @@ export * from './rests';
 export * from './rng';
 export * from './status';
 export * from './skills';
+export * from './abilityScores';
