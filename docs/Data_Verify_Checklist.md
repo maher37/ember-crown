@@ -4,7 +4,7 @@
 
 Each line was entered from memory or is marked ⚠ in the design docs. Check it against your PDFs. When a line is right (or fixed), remove its `verify` and `verifyNote` from the JSON and run `npm run verify-list` again.
 
-**241 items to check.**
+**243 items to check.**
 
 ## species.json
 
@@ -273,3 +273,11 @@ Each line was entered from memory or is marked ⚠ in the design docs. Check it 
 - [ ] **items › The Drowned Lantern**: Name found in the DMG tables (✅); effect summarized from memory (Items.md CONFIRM LOCALLY).
 - [ ] **items › Wix's Clan Gift**: Name found in the DMG tables (✅); effect summarized from memory (Items.md CONFIRM LOCALLY).
 - [ ] **items › Dragon Slayer**: Name found in the DMG tables (✅); effect summarized from memory (Items.md CONFIRM LOCALLY).
+
+## encounters.json
+
+- [ ] **(whole file)**: Map layout, positions and the per-difficulty enemy lists come from docs/mockups/Combat.dc.html; terrain types (trees block, brush is difficult terrain and a hiding spot, boulders give half cover) are my design [inferred].
+
+## loadouts.json
+
+- [ ] **(whole file)**: [inferred] Default spells per class so heroes can fight before the spell-choice screen exists (M5). Not from the docs; change freely.

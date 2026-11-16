@@ -2,6 +2,9 @@ import armorJson from './armor.json';
 import backgroundsJson from './backgrounds.json';
 import classesJson from './classes.json';
 import difficultiesJson from './difficulties.json';
+import encountersJson from './encounters.json';
+import loadoutsJson from './loadouts.json';
+import { EncounterFile, LoadoutFile } from './schemas/encounter';
 import foesJson from './foes.json';
 import magicItemsJson from './magicItems.json';
 import monstersJson from './monsters.json';
@@ -31,6 +34,10 @@ export const foes = NamedFoeFile.parse(foesJson).foes;
 export const weapons = WeaponFile.parse(weaponsJson).weapons;
 export const armor = ArmorFile.parse(armorJson).armor;
 export const magicItems = MagicItemFile.parse(magicItemsJson).items;
+export const encounters = EncounterFile.parse(encountersJson).encounters;
+const loadoutFile = LoadoutFile.parse(loadoutsJson);
+export const loadouts = loadoutFile.loadouts;
+export const defaultChoices = loadoutFile.defaultChoices;
 
 export const gameData = {
   difficulties,
@@ -44,5 +51,7 @@ export const gameData = {
   weapons,
   armor,
   magicItems,
+  encounters,
+  loadouts,
 };
 export type GameData = typeof gameData;

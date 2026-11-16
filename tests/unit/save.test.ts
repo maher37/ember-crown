@@ -178,3 +178,36 @@ describe('game store', () => {
     expect(useGame.getState()).toMatchObject({ screen: 'party', rngState: 42 });
   });
 });
+
+describe('save version 1 → 2 (M4: spells, slots and resources)', () => {
+  it('adds default spells and empty usage to old heroes', () => {
+    const g = game();
+    const oldParty = g.party.map((h) => {
+      const {
+        cantrips: _c,
+        spells: _s,
+        invocations: _i,
+        slotsUsed: _u,
+        resourcesUsed: _r,
+        ...rest
+      } = h;
+      void [_c, _s, _i, _u, _r];
+      return { ...rest, classId: 'wizard' };
+    });
+    const v1 = {
+      saveVersion: 1,
+      savedAt: '2026-11-16T00:00:00.000Z',
+      game: { ...g, party: oldParty },
+    };
+    const r = parseSave(JSON.stringify(v1));
+    expect(r.ok).toBe(true);
+    const h = r.ok ? r.save.game.party[0]! : null;
+    expect(h).toMatchObject({
+      cantrips: ['fire-bolt', 'ray-of-frost', 'mage-hand'],
+      slotsUsed: [],
+      resourcesUsed: {},
+      invocations: [],
+    });
+    expect(r.ok && r.save.saveVersion).toBe(2);
+  });
+});

@@ -132,6 +132,34 @@ export function crossCheck(d: GameData): { errors: string[]; warnings: string[] 
       if (!itemIds.has(r)) errors.push(`foe ${f.id}: unknown reward item "${r}"`);
   }
 
+  // Encounters: real monsters, enemies and the party on walkable ground, inside the map.
+  for (const e of d.encounters) {
+    const walkable = (x: number, y: number) => {
+      const ch = e.map.terrain[y]?.[x];
+      return ch !== undefined && ch !== 'T' && ch !== 'r';
+    };
+    for (const en of e.enemies) {
+      if (!monsterIds.has(en.monster))
+        errors.push(`encounter ${e.id}: unknown monster "${en.monster}"`);
+      if (!walkable(...en.pos)) errors.push(`encounter ${e.id}: ${en.id} starts on blocked ground`);
+    }
+    for (const p of e.partyStart)
+      if (!walkable(...p)) errors.push(`encounter ${e.id}: a party start is on blocked ground`);
+    const cells = [...e.partyStart, ...e.enemies.map((x) => x.pos)].map((c) => c.join(','));
+    if (new Set(cells).size !== cells.length)
+      warnings.push(`encounter ${e.id}: two creatures share a starting square`);
+  }
+  // Loadouts name real classes and spells the class can cast.
+  for (const l of d.loadouts) {
+    if (!classIds.has(l.classId)) errors.push(`loadout: unknown class "${l.classId}"`);
+    for (const id of [...l.cantrips, ...l.spells]) {
+      const sp = d.spells.find((s) => s.id === id);
+      if (!sp) errors.push(`loadout ${l.classId}: unknown spell "${id}"`);
+      else if (!sp.classes.includes(l.classId as never))
+        errors.push(`loadout ${l.classId}: ${id} is not a ${l.classId} spell`);
+    }
+  }
+
   // Magic weapons point at real weapons.
   for (const i of d.magicItems) {
     const bw = i.baseWeapon;

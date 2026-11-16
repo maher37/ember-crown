@@ -1,4 +1,12 @@
-import { armor as armorList, backgrounds, classes, species as speciesList } from '../data';
+import {
+  armor as armorList,
+  backgrounds,
+  classes,
+  defaultChoices,
+  loadouts,
+  spellSlots,
+  species as speciesList,
+} from '../data';
 import type { ClassDef } from '../data/schemas/class';
 import type { Species } from '../data/schemas/species';
 import {
@@ -46,6 +54,15 @@ export interface Hero extends Creature {
   speed: number;
   portrait: Portrait;
   equipment: { armor: string | null; shield: boolean; weapons: string[] };
+  /** Cantrips and leveled spells known or prepared. */
+  cantrips: string[];
+  spells: string[];
+  /** Warlock invocations (defaults until the level-up screen, M5). */
+  invocations: string[];
+  /** Spell slots spent, per slot level (index 0 = 1st level). Max comes from class and level. */
+  slotsUsed: number[];
+  /** Uses spent of class resources (rage, ki, second-wind...). Max comes from class data. */
+  resourcesUsed: Record<string, number>;
 }
 
 /** What the player has picked so far in the creator. */
@@ -336,6 +353,10 @@ export function buildHero(draft: HeroDraft, id: string): Hero {
     speed: sp.speed,
     portrait: { ...draft.portrait },
     equipment,
+    ...defaultSpells(cls.id),
+    invocations: [],
+    slotsUsed: [],
+    resourcesUsed: {},
   };
 }
 
@@ -350,3 +371,107 @@ export function skillBonus(
 }
 
 export { ABILITIES };
+
+// ── Spells and resources ──
+
+/** Spell slots available at this level, per slot level (index 0 = 1st). Warlocks: pact slots. */
+export function maxSlots(hero: Pick<Hero, 'classId' | 'level'>): number[] {
+  const sc = getClass(hero.classId).spellcasting;
+  if (!sc) return [];
+  const i = Math.min(hero.level, 6) - 1;
+  if (sc.progression === 'pact') {
+    const p = spellSlots.pact[i]!;
+    return Array.from({ length: p.slotLevel }, (_, k) => (k === p.slotLevel - 1 ? p.slots : 0));
+  }
+  return [...(sc.progression === 'full' ? spellSlots.full : spellSlots.half)[i]!];
+}
+
+export function slotsLeft(hero: Pick<Hero, 'classId' | 'level' | 'slotsUsed'>): number[] {
+  return maxSlots(hero).map((n, k) => Math.max(0, n - (hero.slotsUsed[k] ?? 0)));
+}
+
+/** Max uses of a class resource at the hero's level. */
+export function resourceMax(
+  hero: Pick<Hero, 'classId' | 'level' | 'abilities'>,
+  id: string,
+): number {
+  const r = getClass(hero.classId).resources.find((x) => x.id === id);
+  if (!r) return 0;
+  if (r.perLevel) return r.perLevel[Math.min(hero.level, 6) - 1] ?? 0;
+  const cha = abilityModifier(hero.abilities.cha);
+  switch (r.formula) {
+    case 'cha-mod-min-1':
+      return Math.max(1, cha);
+    case '1+cha-mod':
+      return Math.max(1, 1 + cha);
+    case '5-x-level':
+      return 5 * hero.level;
+    default:
+      throw new Error(`Unknown resource formula "${r.formula}"`);
+  }
+}
+
+export function resourceLeft(
+  hero: Pick<Hero, 'classId' | 'level' | 'abilities' | 'resourcesUsed'>,
+  id: string,
+): number {
+  return Math.max(0, resourceMax(hero, id) - (hero.resourcesUsed[id] ?? 0));
+}
+
+/** Default spells for a class (src/data/loadouts.json) [inferred until spell choice, M5]. */
+export function defaultSpells(classId: string): { cantrips: string[]; spells: string[] } {
+  const l = loadouts.find((x) => x.classId === classId);
+  return { cantrips: [...(l?.cantrips ?? [])], spells: [...(l?.spells ?? [])] };
+}
+
+export function defaultInvocations(classId: string, level: number): string[] {
+  return classId === 'warlock' && level >= 2 ? [...defaultChoices.warlockInvocations] : [];
+}
+
+/**
+ * Raise a hero one level with fixed HP (PHB average), refreshing derived values. Used by the
+ * Prepare step until the level-up screen (M5) lets the player choose.
+ */
+export function levelUpHero(hero: Hero): Hero {
+  const cls = getClass(hero.classId);
+  const sp = getSpecies(hero.speciesId);
+  const level = hero.level + 1;
+  const extra = [
+    ...sp.traits.flatMap((t) => t.mechanics),
+    ...cls.levels[0]!.features.flatMap((f) => f.mechanics),
+  ].reduce((n, m) => n + (m.type === 'hpPerLevel' ? m.amount : 0), 0);
+  // PHB: Hit Points at higher levels: fixed value (die / 2 + 1) + Con modifier, at least 1.
+  const gain = Math.max(1, cls.hitDie / 2 + 1 + abilityModifier(hero.abilities.con)) + extra;
+  return {
+    ...hero,
+    level,
+    xp: Math.max(hero.xp, [0, 300, 900, 2700, 6500, 14000][level - 1]!),
+    proficiencyBonus: proficiencyBonus(level),
+    maxHp: hero.maxHp + gain,
+    hp: hero.dead ? hero.hp : hero.hp + gain,
+    hitDice: {
+      ...hero.hitDice,
+      total: hero.hitDice.total + 1,
+      remaining: hero.hitDice.remaining + 1,
+    },
+    invocations: hero.invocations.length
+      ? hero.invocations
+      : defaultInvocations(hero.classId, level),
+    speed: sp.speed + (hero.classId === 'monk' && level >= 2 ? 10 : 0),
+  };
+}
+
+/** Spellcasting numbers. PHB: spell save DC = 8 + proficiency + ability modifier. */
+export function spellNumbers(
+  hero: Pick<Hero, 'classId' | 'abilities' | 'proficiencyBonus'>,
+): { ability: Ability; mod: number; attack: number; dc: number } | null {
+  const sc = getClass(hero.classId).spellcasting;
+  if (!sc) return null;
+  const mod = abilityModifier(hero.abilities[sc.ability]);
+  return {
+    ability: sc.ability,
+    mod,
+    attack: mod + hero.proficiencyBonus,
+    dc: 8 + mod + hero.proficiencyBonus,
+  };
+}

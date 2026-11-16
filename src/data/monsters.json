@@ -1277,9 +1277,16 @@
                   "damageType": "piercing"
                 },
                 {
-                  "type": "special",
-                  "id": "save-or-prone",
-                  "note": "Str save DC 11 or knocked prone"
+                  "type": "save",
+                  "ability": "str",
+                  "dc": 11,
+                  "onFail": [
+                    {
+                      "type": "condition",
+                      "condition": "prone"
+                    }
+                  ],
+                  "onSuccess": "none"
                 }
               ]
             }
@@ -1346,9 +1353,16 @@
                   "damageType": "piercing"
                 },
                 {
-                  "type": "special",
-                  "id": "save-or-prone",
-                  "note": "Str save DC 13 or knocked prone"
+                  "type": "save",
+                  "ability": "str",
+                  "dc": 13,
+                  "onFail": [
+                    {
+                      "type": "condition",
+                      "condition": "prone"
+                    }
+                  ],
+                  "onSuccess": "none"
                 }
               ]
             }
@@ -1409,9 +1423,16 @@
                   "damageType": "piercing"
                 },
                 {
-                  "type": "special",
-                  "id": "save-or-prone",
-                  "note": "Str save DC 13 or knocked prone"
+                  "type": "save",
+                  "ability": "str",
+                  "dc": 13,
+                  "onFail": [
+                    {
+                      "type": "condition",
+                      "condition": "prone"
+                    }
+                  ],
+                  "onSuccess": "none"
                 }
               ]
             }
