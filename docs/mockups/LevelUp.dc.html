@@ -1,0 +1,201 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Level up – Mira, Fighter 3 to 4</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+a{color:#e8a060}a:hover{color:#ffc58a}
+</style>
+</helmet>
+<div style="width: 1280px; height: 720px; box-sizing: border-box; background: #2b3442; color: #eef2f7; font-family: Inter, system-ui, sans-serif; display: flex; flex-direction: column; overflow: hidden">
+  <header style="height: 56px; flex-shrink: 0; box-sizing: border-box; padding: 0 24px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid #51607a; background: #262f3c">
+    <div style="display: flex; align-items: baseline; gap: 14px">
+      <h1 style="margin: 0; font-family: Cinzel, Georgia, serif; font-size: 22px; font-weight: 700; color: #f8f3e8">Level up!</h1>
+      <span style="font-size: 14px; color: #c3ccd9">Mira Ashgrove · Fighter 3 → <span style="color: #e8a060; font-weight: 600">4</span></span>
+    </div>
+    <span style="font-size: 13px; color: #c3ccd9">Hover or focus any ability to see exactly what it changes</span>
+  </header>
+
+  <div style="flex-grow: 1; display: flex; gap: 22px; padding: 18px 24px; min-height: 0">
+    <section aria-label="Character" style="width: 270px; flex-shrink: 0; display: flex; flex-direction: column; gap: 12px">
+      <div style="width: 200px; height: 250px; border: 3px solid #8a6a3a; border-radius: 6px; overflow: hidden; align-self: center">
+        <dc-import name="Portrait" skin="#c99a74" hair="#3b2a20" eyes="#4a7a5a" cloth="#5a5f66" hair-style="long" ears="human" beard="{{ false }}" scar="{{ true }}" bg="#3a4558" label="Portrait of Mira Ashgrove" hint-size="200px,250px"></dc-import>
+      </div>
+      <div style="display: flex; flex-direction: column; gap: 6px">
+        <div style="display: flex; justify-content: space-between; font-size: 12px"><span style="color: #c3ccd9">XP</span><span>2,700 / 2,700</span></div>
+        <div style="height: 8px; border-radius: 4px; background: #e8833a"></div>
+      </div>
+      <div style="background: #364256; border: 1px solid #51607a; border-radius: 8px; padding: 12px; display: flex; flex-direction: column; gap: 8px">
+        <span style="font-size: 11px; font-weight: 600; letter-spacing: 1.2px; text-transform: uppercase; color: #e8a060">Step 1 · Hit points (d10)</span>
+        <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 6px">
+          <button type="button" aria-pressed="{{avgPressed}}" onClick="{{pickAvg}}" style="{{avgStyle}}">Take average (6)</button>
+          <button type="button" aria-pressed="{{rollPressed}}" onClick="{{pickRoll}}" style="{{rollStyle}}">Roll d10</button>
+        </div>
+        <span style="font-size: 13px; color: #e7ebf1">{{hpLine}}</span>
+      </div>
+    </section>
+
+    <section aria-label="Ability score improvement" style="flex-grow: 1; min-width: 0; display: flex; flex-direction: column; gap: 10px">
+      <div style="display: flex; justify-content: space-between; align-items: baseline">
+        <h2 style="margin: 0; font-size: 11px; font-weight: 600; letter-spacing: 1.2px; text-transform: uppercase; color: #e8a060">Step 2 · Ability Score Improvement</h2>
+        <span style="{{ptsStyle}}">{{ptsText}}</span>
+      </div>
+      <p style="margin: 0; font-size: 13px; color: #c3ccd9">Add +2 to one ability, or +1 to two. Maximum 20. A modifier only goes up on even scores.</p>
+      <div style="display: flex; flex-direction: column; border: 1px solid #51607a; border-radius: 8px; overflow: hidden">
+        <div style="display: grid; grid-template-columns: 1.6fr 0.8fr 0.8fr 1.4fr 0.8fr 0.8fr; gap: 6px; padding: 8px 14px; background: #364256; font-size: 11px; letter-spacing: 1px; text-transform: uppercase; color: #aeb9c9">
+          <span>Ability</span><span>Now</span><span>Mod</span><span>Change</span><span>New</span><span>Mod</span>
+        </div>
+        <sc-for list="{{rows}}" as="r" hint-placeholder-count="6">
+          <div onMouseEnter="{{r.hover}}" style="{{r.rowStyle}}">
+            <span style="font-weight: 600">{{r.name}}<span style="font-weight: 400; color: #aeb9c9; font-size: 12px"> {{r.full}}</span></span>
+            <span>{{r.score}}</span>
+            <span style="color: #c3ccd9">{{r.mod}}</span>
+            <span style="display: flex; align-items: center; gap: 6px">
+              <button type="button" aria-label="{{r.minusLabel}}" onClick="{{r.minus}}" onFocus="{{r.hover}}" style="{{r.minusStyle}}">−</button>
+              <span style="min-width: 22px; text-align: center; font-weight: 600; color: #e8a060">{{r.added}}</span>
+              <button type="button" aria-label="{{r.plusLabel}}" onClick="{{r.plus}}" onFocus="{{r.hover}}" style="{{r.plusStyle}}">+</button>
+            </span>
+            <span style="{{r.newStyle}}">{{r.newScore}}</span>
+            <span style="{{r.newModStyle}}">{{r.newMod}}</span>
+          </div>
+        </sc-for>
+      </div>
+      <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px">
+        <div style="background: #364256; border: 1px solid #51607a; border-radius: 8px; padding: 10px 12px; display: flex; flex-direction: column; gap: 3px">
+          <span style="font-size: 11px; color: #aeb9c9; text-transform: uppercase; letter-spacing: 1px">Gained at level 4</span>
+          <span style="font-size: 14px; font-weight: 600">Ability Score Improvement</span>
+          <span style="font-size: 12px; color: #c3ccd9">Feats aren't in version 1.</span>
+        </div>
+        <div style="background: #323d4f; border: 1px dashed #63738e; border-radius: 8px; padding: 10px 12px; display: flex; flex-direction: column; gap: 3px">
+          <span style="font-size: 11px; color: #aeb9c9; text-transform: uppercase; letter-spacing: 1px">Coming at level 5</span>
+          <span style="font-size: 14px; font-weight: 600">Extra Attack</span>
+          <span style="font-size: 12px; color: #c3ccd9">Two attacks per Attack action. Proficiency rises to +3.</span>
+        </div>
+      </div>
+    </section>
+
+    <aside style="width: 390px; flex-shrink: 0; display: flex; flex-direction: column; gap: 10px">
+      <div style="background: #364256; border: 1px solid #63738e; border-radius: 8px; padding: 14px 16px; display: flex; flex-direction: column; gap: 8px; min-height: 250px">
+        <span style="font-size: 11px; font-weight: 600; letter-spacing: 1.2px; text-transform: uppercase; color: #e8a060">If you raise {{hoverName}}</span>
+        <sc-for list="{{effects}}" as="e" hint-placeholder-count="5">
+          <div style="display: flex; justify-content: space-between; gap: 10px; font-size: 13px; line-height: 1.4">
+            <span style="color: #e7ebf1">{{e.label}}</span>
+            <span style="{{e.valStyle}}">{{e.val}}</span>
+          </div>
+        </sc-for>
+        <span style="font-size: 12px; line-height: 1.45; color: #c3ccd9; margin-top: 4px">{{hoverNote}}</span>
+      </div>
+      <div style="flex-grow: 1; min-height: 0; background: #222a36; border: 1px solid #51607a; border-radius: 8px; padding: 12px 14px; display: flex; flex-direction: column; gap: 6px; overflow-y: auto">
+        <span style="font-size: 11px; font-weight: 600; letter-spacing: 1.2px; text-transform: uppercase; color: #aeb9c9">Summary of this level-up</span>
+        <sc-for list="{{summary}}" as="s" hint-placeholder-count="3">
+          <div style="display: flex; justify-content: space-between; font-size: 13px"><span>{{s.label}}</span><span style="color: #9fd18a; font-weight: 600">{{s.val}}</span></div>
+        </sc-for>
+      </div>
+      <button type="button" style="{{confirmStyle}}">{{confirmText}}</button>
+    </aside>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1280,"height":720}}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = { pts: { STR: 0, DEX: 0, CON: 0, INT: 0, WIS: 0, CHA: 0 }, hover: 'STR', hpMode: 'avg', hpRoll: null };
+  }
+  renderVals() {
+    const S = this.state;
+    const base = { STR: 16, DEX: 14, CON: 15, INT: 9, WIS: 13, CHA: 11 };
+    const full = { STR: 'Strength', DEX: 'Dexterity', CON: 'Constitution', INT: 'Intelligence', WIS: 'Wisdom', CHA: 'Charisma' };
+    const prof = 2;
+    const mod = (s) => Math.floor((s - 10) / 2);
+    const f = (n) => (n >= 0 ? '+' + n : String(n));
+    const used = Object.values(S.pts).reduce((a, b) => a + b, 0);
+    const now = {}, nxt = {};
+    Object.keys(base).forEach((k) => { now[k] = base[k]; nxt[k] = base[k] + S.pts[k]; });
+    const hpGain = S.hpMode === 'roll' && S.hpRoll ? S.hpRoll : 6;
+    const conOld = mod(now.CON), conNew = mod(nxt.CON);
+    const hpOld = 28;
+    const hpNew = hpOld + hpGain + conNew + (conNew - conOld) * 3;
+    const passive = (w) => 10 + mod(w) + prof;
+    const cmp = (a, b) => (a === b ? a : a + ' → ' + b);
+    const changed = (a, b) => a !== b;
+    const k = S.hover;
+    const sOld = now[k], sNew = Math.min(20, base[k] + Math.max(S.pts[k], 1));
+    const mOld = mod(sOld), mNew = mod(sNew);
+    const eff = {
+      STR: [['Longsword attack', f(prof + mOld), f(prof + mNew)], ['Longsword damage', '1d8' + f(mOld), '1d8' + f(mNew)], ['Athletics (proficient)', f(prof + mOld), f(prof + mNew)], ['Strength saves (proficient)', f(prof + mOld), f(prof + mNew)], ['Carrying capacity', 15 * sOld + ' lb', 15 * sNew + ' lb']],
+      DEX: [['Armor Class', '18', '18'], ['Initiative', f(mOld), f(mNew)], ['Acrobatics', f(mOld), f(mNew)], ['Stealth', f(mOld), f(mNew)], ['Dexterity saves', f(mOld), f(mNew)]],
+      CON: [['Max HP after this level', String(hpOld + hpGain + mod(now.CON)), String(hpOld + hpGain + mNew + (mNew - mOld) * 3)], ['HP each future level', '6' + f(mOld), '6' + f(mNew)], ['Constitution saves (proficient)', f(prof + mOld), f(prof + mNew)], ['Second Wind healing', '1d10+4', '1d10+4']],
+      INT: [['Investigation', f(mOld), f(mNew)], ['Arcana / History', f(mOld), f(mNew)], ['Intelligence saves', f(mOld), f(mNew)]],
+      WIS: [['Perception (proficient)', f(prof + mOld), f(prof + mNew)], ['Passive Perception (spots ambushes)', String(passive(sOld)), String(passive(sNew))], ['Survival (proficient)', f(prof + mOld), f(prof + mNew)], ['Insight', f(mOld), f(mNew)], ['Wisdom saves (vs charm, fear, Hold Person)', f(mOld), f(mNew)]],
+      CHA: [['Intimidation (proficient)', f(prof + mOld), f(prof + mNew)], ['Persuasion (dialogue checks)', f(mOld), f(mNew)], ['Deception', f(mOld), f(mNew)], ['Charisma saves', f(mOld), f(mNew)]]
+    }[k];
+    const notes = {
+      STR: 'Mira’s main stat. Every point of modifier is +1 to hit and +1 damage on every swing, and doubles in value at level 5 with Extra Attack.',
+      DEX: 'Chain mail is heavy armor, so Dexterity doesn’t add to AC. Chain mail also gives disadvantage on Stealth.',
+      CON: 'Raising the modifier is retroactive: +1 max HP for every level you already have, plus +1 on every future level.',
+      INT: 'Mostly helps you spot clues. The party’s wizard probably rolls these checks anyway (party-best rule).',
+      WIS: 'Passive Perception decides whether you spot road ambushes and traps before they spot you.',
+      CHA: 'Dialogue checks use the party’s best bonus, so this matters only if Mira would become the best talker.'
+    };
+    const oddNote = (sNew % 2 === 1 && sNew > sOld) ? ' Note: ' + sOld + ' → ' + sNew + ' doesn’t change the modifier on its own.' : '';
+    const btn = (enabled) => 'width: 32px; height: 32px; border-radius: 6px; font-size: 18px; font-weight: 600; line-height: 1; cursor: ' + (enabled ? 'pointer' : 'not-allowed') + '; ' +
+      (enabled ? 'background: #3e4b60; color: #eef2f7; border: 1px solid #63738e;' : 'background: #2f3848; color: #6b7891; border: 1px solid #45526a;');
+    const rows = Object.keys(base).map((a) => {
+      const canPlus = used < 2 && S.pts[a] < 2 && base[a] + S.pts[a] < 20;
+      const canMinus = S.pts[a] > 0;
+      const up = S.pts[a] > 0;
+      const modUp = mod(nxt[a]) > mod(now[a]);
+      return {
+        name: a, full: full[a], score: now[a], mod: f(mod(now[a])), added: up ? '+' + S.pts[a] : '0',
+        newScore: nxt[a], newMod: f(mod(nxt[a])),
+        hover: () => { if (S.hover !== a) this.setState({ hover: a }); },
+        plus: () => { if (!canPlus) return; this.setState({ pts: { ...S.pts, [a]: S.pts[a] + 1 }, hover: a }); },
+        minus: () => { if (!canMinus) return; this.setState({ pts: { ...S.pts, [a]: S.pts[a] - 1 }, hover: a }); },
+        plusLabel: 'Increase ' + full[a], minusLabel: 'Decrease ' + full[a],
+        plusStyle: btn(canPlus), minusStyle: btn(canMinus),
+        rowStyle: 'display: grid; grid-template-columns: 1.6fr 0.8fr 0.8fr 1.4fr 0.8fr 0.8fr; gap: 6px; align-items: center; min-height: 48px; padding: 0 14px; font-size: 15px; border-top: 1px solid #45526a; ' + (S.hover === a ? 'background: #3b4860;' : ''),
+        newStyle: 'font-weight: 600; ' + (up ? 'color: #9fd18a;' : 'color: #eef2f7;'),
+        newModStyle: 'font-weight: 600; ' + (modUp ? 'color: #9fd18a;' : 'color: #c3ccd9;')
+      };
+    });
+    const summary = [];
+    const m = (a) => mod(nxt[a]);
+    const o = (a) => mod(now[a]);
+    summary.push({ label: 'Level', val: '3 → 4' });
+    summary.push({ label: 'Max HP', val: hpOld + ' → ' + hpNew });
+    if (changed(o('STR'), m('STR'))) { summary.push({ label: 'Longsword attack', val: f(prof + o('STR')) + ' → ' + f(prof + m('STR')) }); summary.push({ label: 'Longsword damage', val: '1d8' + f(o('STR')) + ' → 1d8' + f(m('STR')) }); }
+    if (changed(o('DEX'), m('DEX'))) summary.push({ label: 'Initiative', val: f(o('DEX')) + ' → ' + f(m('DEX')) });
+    if (changed(o('WIS'), m('WIS'))) summary.push({ label: 'Passive Perception', val: passive(now.WIS) + ' → ' + passive(nxt.WIS) });
+    if (changed(o('CHA'), m('CHA'))) summary.push({ label: 'Intimidation', val: f(prof + o('CHA')) + ' → ' + f(prof + m('CHA')) });
+    Object.keys(base).forEach((a) => { if (S.pts[a] > 0) summary.push({ label: full[a], val: now[a] + ' → ' + nxt[a] }); });
+    const seg = (on) => 'height: 38px; border-radius: 6px; cursor: pointer; font-family: Inter, sans-serif; font-size: 13px; font-weight: 600; ' + (on ? 'background: #5a3b22; border: 1px solid #e8833a; color: #ffe9cf;' : 'background: #323d4f; border: 1px solid #51607a; color: #dde3eb;');
+    const done = used === 2;
+    return {
+      rows,
+      ptsText: (2 - used) + ' point' + (2 - used === 1 ? '' : 's') + ' left',
+      ptsStyle: 'font-size: 13px; font-weight: 600; ' + (done ? 'color: #9fd18a;' : 'color: #e8c27a;'),
+      hoverName: full[k], effects: eff.map((e) => ({ label: e[0], val: cmp(e[1], e[2]), valStyle: 'font-weight: 600; white-space: nowrap; ' + (e[1] !== e[2] ? 'color: #9fd18a;' : 'color: #aeb9c9;') })),
+      hoverNote: notes[k] + oddNote,
+      summary,
+      avgPressed: S.hpMode === 'avg' ? 'true' : 'false', rollPressed: S.hpMode === 'roll' ? 'true' : 'false',
+      avgStyle: seg(S.hpMode === 'avg'), rollStyle: seg(S.hpMode === 'roll'),
+      pickAvg: () => this.setState({ hpMode: 'avg' }),
+      pickRoll: () => this.setState({ hpMode: 'roll', hpRoll: 1 + Math.floor(Math.random() * 10) }),
+      hpLine: (S.hpMode === 'roll' && S.hpRoll ? 'Rolled d10 (' + S.hpRoll + ')' : 'Average 6') + ' ' + f(conNew) + ' Con = +' + (hpGain + conNew) + ' HP' + (conNew > conOld ? ' (+3 more from the Con increase, retroactive)' : ''),
+      confirmText: done ? 'Confirm level 4' : 'Spend ' + (2 - used) + ' more point' + (2 - used === 1 ? '' : 's'),
+      confirmStyle: 'height: 50px; border-radius: 6px; font-family: Cinzel, Georgia, serif; font-size: 17px; font-weight: 700; cursor: pointer; ' + (done ? 'background: #e8833a; color: #1a120c; border: none;' : 'background: #3e4b60; color: #aeb9c9; border: 1px solid #51607a;')
+    };
+  }
+}
+</script>
+</body>
+</html>

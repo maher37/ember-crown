@@ -1,0 +1,258 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Combat – Ashford road ambush</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+a{color:#e8a060}a:hover{color:#ffc58a}
+</style>
+</helmet>
+<div style="width: 1280px; height: 720px; box-sizing: border-box; background: #2b3442; color: #eef2f7; font-family: Inter, system-ui, sans-serif; display: flex; flex-direction: column; overflow: hidden">
+  <header style="height: 52px; flex-shrink: 0; box-sizing: border-box; padding: 0 20px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid #51607a; background: #262f3c">
+    <div style="display: flex; align-items: baseline; gap: 14px">
+      <h1 style="margin: 0; font-family: Cinzel, Georgia, serif; font-size: 20px; font-weight: 700; color: #f8f3e8">Ambush on the Ashford road</h1>
+      <span style="font-size: 13px; color: #c3ccd9">Round {{round}} · {{encounterText}}</span>
+    </div>
+    <div role="radiogroup" aria-label="Difficulty" style="display: flex; align-items: center; gap: 4px; padding: 3px; border: 1px solid #51607a; border-radius: 8px; background: #2b3442">
+      <sc-for list="{{diffs}}" as="d" hint-placeholder-count="3">
+        <button type="button" role="radio" aria-checked="{{d.checked}}" onClick="{{d.pick}}" style="{{d.style}}">{{d.name}}</button>
+      </sc-for>
+    </div>
+  </header>
+
+  <div aria-label="Turn order" style="height: 60px; flex-shrink: 0; box-sizing: border-box; padding: 0 20px; display: flex; align-items: center; gap: 6px; border-bottom: 1px solid #3e4b60">
+    <span style="font-size: 11px; font-weight: 600; letter-spacing: 1.2px; text-transform: uppercase; color: #aeb9c9; margin-right: 6px">Initiative</span>
+    <sc-for list="{{order}}" as="o" hint-placeholder-count="8">
+      <div style="{{o.chipStyle}}">
+        <span style="{{o.dotStyle}}"></span>
+        <span>{{o.name}}</span>
+        <span style="opacity: 0.75">{{o.init}}</span>
+      </div>
+    </sc-for>
+  </div>
+
+  <div style="flex-grow: 1; display: flex; gap: 16px; padding: 12px 20px 0 20px; min-height: 0">
+    <div style="position: relative; width: 768px; height: 432px; flex-shrink: 0; border: 1px solid #51607a; border-radius: 6px; overflow: hidden">
+      <svg viewBox="0 0 768 432" width="768" height="432" aria-hidden="true" style="position: absolute; left: 0; top: 0">
+        <rect x="0" y="0" width="768" height="432" fill="#27301f"></rect>
+        <path d="M0 140 C200 120 420 180 768 150 L768 262 C420 290 200 236 0 256 Z" fill="#6b5638"></path>
+        <path d="M0 176 C200 160 420 214 768 186 M0 222 C200 204 420 256 768 228" fill="none" stroke="#54432b" stroke-width="5" stroke-linecap="round"></path>
+        <g fill="#1d2a17">
+          <circle cx="40" cy="40" r="44"></circle><circle cx="130" cy="24" r="40"></circle><circle cx="250" cy="30" r="34"></circle>
+          <circle cx="560" cy="60" r="46"></circle><circle cx="640" cy="20" r="40"></circle><circle cx="740" cy="70" r="44"></circle>
+          <circle cx="60" cy="400" r="46"></circle><circle cx="200" cy="420" r="40"></circle><circle cx="700" cy="400" r="50"></circle><circle cx="560" cy="430" r="36"></circle>
+        </g>
+        <g fill="#2f4226">
+          <circle cx="44" cy="34" r="26"></circle><circle cx="128" cy="20" r="22"></circle><circle cx="562" cy="52" r="28"></circle>
+          <circle cx="744" cy="62" r="26"></circle><circle cx="62" cy="394" r="28"></circle><circle cx="702" cy="392" r="30"></circle>
+        </g>
+        <g fill="#5f5a52" stroke="#3b3833" stroke-width="2">
+          <path d="M330 60 L360 50 L378 70 L362 88 L334 84 Z"></path>
+          <path d="M420 350 L446 342 L460 360 L440 376 L418 368 Z"></path>
+        </g>
+        <g stroke="#000000" stroke-opacity="0.18" stroke-width="1">
+          <path d="M48 0 V432 M96 0 V432 M144 0 V432 M192 0 V432 M240 0 V432 M288 0 V432 M336 0 V432 M384 0 V432 M432 0 V432 M480 0 V432 M528 0 V432 M576 0 V432 M624 0 V432 M672 0 V432 M720 0 V432"></path>
+          <path d="M0 48 H768 M0 96 H768 M0 144 H768 M0 192 H768 M0 240 H768 M0 288 H768 M0 336 H768 M0 384 H768"></path>
+        </g>
+        <path d="M312 216 L360 168" stroke="#f8f3e8" stroke-width="2" stroke-dasharray="5 4"></path>
+      </svg>
+      <sc-for list="{{tokens}}" as="t" hint-placeholder-count="8">
+        <div style="{{t.style}}">{{t.short}}</div>
+      </sc-for>
+      <div style="position: absolute; left: 140px; top: 66px; width: 214px; background: #262f3c; border: 1px solid #e06a3b; border-radius: 6px; padding: 8px 10px; display: flex; flex-direction: column; gap: 3px; font-size: 12px">
+        <span style="font-weight: 600; font-size: 13px; color: #f7c6ae">Goblin A · AC 15 · HP {{gaHp}}/7</span>
+        <span style="color: #e7ebf1">Longsword: {{hitChance}} to hit</span>
+        <span style="color: #c3ccd9">Damage 1d8 + 3 slashing</span>
+      </div>
+    </div>
+
+    <aside style="flex-grow: 1; min-width: 0; display: flex; flex-direction: column; gap: 10px; height: 432px">
+      <div style="display: flex; gap: 10px; align-items: center; background: #364256; border: 2px solid #7fb3e6; border-radius: 6px; padding: 8px">
+        <div style="width: 64px; height: 80px; flex-shrink: 0; border-radius: 4px; overflow: hidden">
+          <dc-import name="Portrait" skin="#c99a74" hair="#3b2a20" eyes="#4a7a5a" cloth="#5a5f66" hair-style="long" ears="human" beard="{{ false }}" scar="{{ true }}" bg="#3a4558" label="Portrait of Mira Ashgrove" hint-size="64px,80px"></dc-import>
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 4px; flex-grow: 1">
+          <div style="display: flex; justify-content: space-between; align-items: baseline">
+            <span style="font-family: Cinzel, Georgia, serif; font-size: 15px; font-weight: 700; color: #f8f3e8">Mira Ashgrove</span>
+            <span style="font-size: 12px; color: #9cc7f0">Your turn</span>
+          </div>
+          <span style="font-size: 12px; color: #c3ccd9">Human Fighter 2 · AC 16 · Speed 30 ft</span>
+          <div style="display: flex; align-items: center; gap: 8px">
+            <div style="flex-grow: 1; height: 8px; border-radius: 4px; background: #51607a; overflow: hidden"><div style="{{hpBarStyle}}"></div></div>
+            <span style="font-size: 12px; font-weight: 600">{{miraHp}} / 20 HP</span>
+          </div>
+        </div>
+      </div>
+      <div style="display: flex; justify-content: space-between; align-items: baseline">
+        <h2 style="margin: 0; font-size: 11px; font-weight: 600; letter-spacing: 1.2px; text-transform: uppercase; color: #e8a060">Combat log · newest first</h2>
+        <span style="font-size: 11px; color: #aeb9c9">Dice: automatic</span>
+      </div>
+      <div role="log" aria-live="polite" style="flex-grow: 1; min-height: 0; overflow-y: auto; background: #222a36; border: 1px solid #51607a; border-radius: 6px; padding: 10px 12px; display: flex; flex-direction: column; gap: 6px; font-size: 13px; line-height: 1.4">
+        <sc-for list="{{log}}" as="l" hint-placeholder-count="6">
+          <div style="{{l.style}}">{{l.text}}</div>
+        </sc-for>
+      </div>
+    </aside>
+  </div>
+
+  <footer style="height: 112px; flex-shrink: 0; box-sizing: border-box; padding: 12px 20px; display: flex; align-items: center; gap: 18px">
+    <div style="display: flex; flex-direction: column; gap: 8px; width: 210px; flex-shrink: 0">
+      <div style="display: flex; gap: 12px; font-size: 12px">
+        <span style="display: flex; align-items: center; gap: 6px"><span style="{{actionPip}}"></span>Action</span>
+        <span style="display: flex; align-items: center; gap: 6px"><span style="{{bonusPip}}"></span>Bonus</span>
+        <span style="display: flex; align-items: center; gap: 6px"><span style="width: 12px; height: 12px; border-radius: 6px; background: #b07ad9"></span>Reaction</span>
+      </div>
+      <div style="display: flex; flex-direction: column; gap: 4px">
+        <div style="display: flex; justify-content: space-between; font-size: 12px"><span>Movement</span><span style="color: #c3ccd9">30 / 30 ft</span></div>
+        <div style="height: 6px; border-radius: 3px; background: #e8c27a"></div>
+      </div>
+    </div>
+    <div style="display: flex; gap: 8px; flex-wrap: wrap; flex-grow: 1">
+      <button type="button" onClick="{{attack}}" style="display: flex; flex-direction: column; align-items: flex-start; justify-content: center; gap: 2px; height: 64px; padding: 0 16px; background: #e8833a; border: none; border-radius: 6px; color: #1a120c; font-family: Inter, sans-serif; cursor: pointer"><span style="font-size: 15px; font-weight: 700">Attack · Longsword</span><span style="font-size: 12px; font-weight: 500">Action · +5 to hit · 1d8+3</span></button>
+      <button type="button" onClick="{{secondWind}}" style="display: flex; flex-direction: column; align-items: flex-start; justify-content: center; gap: 2px; height: 64px; padding: 0 14px; background: #364256; border: 1px solid #63738e; border-radius: 6px; color: #eef2f7; font-family: Inter, sans-serif; cursor: pointer"><span style="font-size: 14px; font-weight: 600">Second Wind</span><span style="font-size: 12px; color: #c3ccd9">Bonus · heal 1d10+2 · {{swLeft}}</span></button>
+      <button type="button" onClick="{{actionSurge}}" style="display: flex; flex-direction: column; align-items: flex-start; justify-content: center; gap: 2px; height: 64px; padding: 0 14px; background: #364256; border: 1px solid #63738e; border-radius: 6px; color: #eef2f7; font-family: Inter, sans-serif; cursor: pointer"><span style="font-size: 14px; font-weight: 600">Action Surge</span><span style="font-size: 12px; color: #c3ccd9">Extra action · {{asLeft}}</span></button>
+      <button type="button" style="height: 64px; padding: 0 14px; background: #364256; border: 1px solid #63738e; border-radius: 6px; color: #eef2f7; font-family: Inter, sans-serif; font-size: 14px; font-weight: 600; cursor: pointer">Dash</button>
+      <button type="button" style="height: 64px; padding: 0 14px; background: #364256; border: 1px solid #63738e; border-radius: 6px; color: #eef2f7; font-family: Inter, sans-serif; font-size: 14px; font-weight: 600; cursor: pointer">Dodge</button>
+      <button type="button" style="height: 64px; padding: 0 14px; background: #364256; border: 1px solid #63738e; border-radius: 6px; color: #eef2f7; font-family: Inter, sans-serif; font-size: 14px; font-weight: 600; cursor: pointer">Disengage</button>
+    </div>
+    <div style="display: flex; flex-direction: column; align-items: stretch; gap: 6px; width: 140px; flex-shrink: 0">
+      <button type="button" onClick="{{endTurn}}" style="height: 48px; background: #3e4b60; border: 1px solid #e8833a; border-radius: 6px; color: #ffd2a6; font-family: Cinzel, Georgia, serif; font-size: 15px; font-weight: 700; cursor: pointer">End turn</button>
+      <a href="Exploration.dc.html" style="align-self: center; font-size: 12px; padding: 4px">Back to map (demo)</a>
+    </div>
+  </footer>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1280,"height":720}}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = {
+      diff: 'medium', round: 1, gaHp: 7, miraHp: 13, actionUsed: false, bonusUsed: false, swUsed: false, asUsed: false,
+      log: [
+        { k: 'head', t: 'Round 1 · Mira’s turn' },
+        { k: 'dmg', t: 'Thorn takes 1d6 (4) + 2 = 6 slashing. HP 15 → 9.' },
+        { k: 'foe', t: 'Goblin A attacks Thorn with a scimitar: d20 (12) + 4 = 16 vs AC 14 → HIT' },
+        { k: 'dmg', t: 'Mira takes 1d6 (5) + 2 = 7 piercing. HP 20 → 13.' },
+        { k: 'foe', t: 'Goblin B shoots Mira from the trees: d20 (15) + 4 = 19 vs AC 16 → HIT' },
+        { k: 'info', t: 'Initiative rolled for everyone. Goblin B 18, Goblin A 16, Mira 15, Thorn 14, …' },
+        { k: 'head', t: 'Goblins burst from the treeline!' }
+      ]
+    };
+  }
+  d(n) { return 1 + Math.floor(Math.random() * n); }
+  push(entries) { this.setState({ log: entries.concat(this.state.log).slice(0, 40) }); }
+  renderVals() {
+    const S = this.state;
+    const allFoes = [
+      { id: 'A', name: 'Goblin A', c: 7, r: 3, init: 16 },
+      { id: 'B', name: 'Goblin B', c: 11, r: 2, init: 18 },
+      { id: 'C', name: 'Goblin C', c: 11, r: 5, init: 12 },
+      { id: 'D', name: 'Goblin D', c: 13, r: 4, init: 6 },
+      { id: 'E', name: 'Goblin E', c: 14, r: 6, init: 5 },
+      { id: 'W', name: 'Wolf', c: 10, r: 7, init: 13 }
+    ];
+    const counts = { easy: ['A', 'B', 'C'], medium: ['A', 'B', 'C', 'D'], hard: ['A', 'B', 'C', 'D', 'E', 'W'] };
+    const encounter = {
+      easy: '3 goblins · 150 XP × 2 = 300 adjusted · Easy for four level-2 heroes',
+      medium: '4 goblins · 200 XP × 2 = 400 adjusted · Medium for four level-2 heroes',
+      hard: '5 goblins + wolf · 300 XP × 2 = 600 adjusted · Hard for four level-2 heroes'
+    };
+    const foes = allFoes.filter((f) => counts[S.diff].includes(f.id));
+    const allies = [
+      { name: 'Mira', short: 'M', c: 6, r: 4, init: 15, active: true },
+      { name: 'Thorn', short: 'T', c: 5, r: 5, init: 14 },
+      { name: 'Ilse', short: 'I', c: 4, r: 3, init: 10 },
+      { name: 'Wren', short: 'W', c: 3, r: 4, init: 8 }
+    ];
+    const tokens = allies.map((a) => ({
+      short: a.short,
+      style: 'position: absolute; left: ' + (a.c * 48 + 4) + 'px; top: ' + (a.r * 48 + 4) + 'px; width: 40px; height: 40px; box-sizing: border-box; border-radius: 20px; display: flex; align-items: center; justify-content: center; font-weight: 600; font-size: 15px; color: #e6f0fa; background: #1f2a36; border: 3px solid #7fb3e6;' + (a.active ? ' box-shadow: 0 0 0 3px #2b3442, 0 0 0 5px #7fb3e6;' : '')
+    })).concat(foes.map((f) => {
+      const dead = f.id === 'A' && S.gaHp <= 0;
+      const target = f.id === 'A';
+      return {
+        short: f.id === 'W' ? 'Wf' : 'G' + f.id,
+        style: 'position: absolute; left: ' + (f.c * 48 + 4) + 'px; top: ' + (f.r * 48 + 4) + 'px; width: 40px; height: 40px; box-sizing: border-box; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-weight: 600; font-size: 13px; color: #ffe2d4; background: #3a1d12; border: 3px solid #e06a3b;' +
+          (target && !dead ? ' box-shadow: 0 0 0 3px #2b3442, 0 0 0 5px #f8f3e8;' : '') + (dead ? ' opacity: 0.35; text-decoration: line-through;' : '')
+      };
+    }));
+    const order = allies.map((a) => ({ name: a.name, init: a.init, ally: true, active: !!a.active }))
+      .concat(foes.map((f) => ({ name: f.name, init: f.init, ally: false, active: false, dead: f.id === 'A' && S.gaHp <= 0 })))
+      .sort((a, b) => b.init - a.init)
+      .map((o) => ({
+        name: o.name, init: o.init,
+        chipStyle: 'display: flex; align-items: center; gap: 6px; height: 34px; padding: 0 10px; border-radius: 17px; font-size: 12px; font-weight: 500; ' +
+          (o.active ? 'background: #1f2a36; border: 2px solid #7fb3e6; color: #e6f0fa;' : 'background: #323d4f; border: 1px solid #51607a; color: #dde3eb;') + (o.dead ? ' opacity: 0.4;' : ''),
+        dotStyle: 'width: 10px; height: 10px; ' + (o.ally ? 'border-radius: 5px; background: #7fb3e6;' : 'border-radius: 2px; background: #e06a3b;')
+      }));
+    const colors = { head: 'color: #e8c27a; font-weight: 600;', you: 'color: #9cc7f0;', foe: 'color: #f0a07a;', dmg: 'color: #dde3eb;', crit: 'color: #ffd56a; font-weight: 600;', info: 'color: #aeb9c9;' };
+    const pip = (used, color) => 'width: 12px; height: 12px; border-radius: 6px; box-sizing: border-box; ' + (used ? 'border: 2px solid ' + color + '; background: transparent;' : 'background: ' + color + ';');
+    const sel = (on) => 'height: 36px; padding: 0 14px; border-radius: 6px; cursor: pointer; font-family: Inter, sans-serif; font-size: 13px; font-weight: 600; border: none; ' + (on ? 'background: #e8833a; color: #1a120c;' : 'background: transparent; color: #dde3eb;');
+    return {
+      round: S.round,
+      encounterText: encounter[S.diff],
+      diffs: [['easy', 'Easy'], ['medium', 'Medium'], ['hard', 'Hard']].map(([id, name]) => ({
+        name, checked: S.diff === id ? 'true' : 'false', pick: () => this.setState({ diff: id }), style: sel(S.diff === id)
+      })),
+      tokens, order,
+      gaHp: Math.max(0, S.gaHp),
+      hitChance: '55%',
+      miraHp: S.miraHp,
+      hpBarStyle: 'height: 8px; width: ' + Math.round((S.miraHp / 20) * 100) + '%; background: ' + (S.miraHp > 10 ? '#5f9a4a' : '#c9a23a') + ';',
+      log: S.log.map((l) => ({ text: l.t, style: colors[l.k] || '' })),
+      actionPip: pip(S.actionUsed, '#e8833a'),
+      bonusPip: pip(S.bonusUsed, '#e8c27a'),
+      swLeft: S.swUsed ? 'used' : '1 left',
+      asLeft: S.asUsed ? 'used' : '1 left',
+      attack: () => {
+        if (S.actionUsed) { this.push([{ k: 'info', t: 'Mira has already used her action. Try Action Surge or End turn.' }]); return; }
+        if (S.gaHp <= 0) { this.push([{ k: 'info', t: 'Goblin A is down. (In the full game you would pick a new target.)' }]); this.setState({ actionUsed: true }); return; }
+        const r = this.d(20);
+        const total = r + 5;
+        const crit = r === 20;
+        const hit = crit || (r !== 1 && total >= 15);
+        const lines = [];
+        const verdict = crit ? 'CRITICAL HIT' : hit ? 'HIT' : (r === 1 ? 'MISS (natural 1)' : 'MISS');
+        const atk = { k: crit ? 'crit' : 'you', t: 'Mira swings her longsword at Goblin A: d20 (' + r + ') + 5 = ' + total + ' vs AC 15 → ' + verdict };
+        let hp = S.gaHp;
+        if (hit) {
+          const d1 = this.d(8);
+          const d2 = crit ? this.d(8) : 0;
+          const dmg = d1 + d2 + 3;
+          const diceTxt = crit ? '2d8 (' + d1 + ' + ' + d2 + ')' : '1d8 (' + d1 + ')';
+          const after = Math.max(0, hp - dmg);
+          if (after <= 0) lines.push({ k: 'head', t: 'Goblin A falls!' });
+          lines.push({ k: 'dmg', t: 'Goblin A takes ' + diceTxt + ' + 3 = ' + dmg + ' slashing. HP ' + hp + ' → ' + after + '.' });
+          hp = after;
+        }
+        lines.push(atk);
+        this.setState({ actionUsed: true, gaHp: hp, log: lines.concat(S.log).slice(0, 40) });
+      },
+      secondWind: () => {
+        if (S.swUsed || S.bonusUsed) { this.push([{ k: 'info', t: 'Second Wind is not available right now.' }]); return; }
+        const r = this.d(10);
+        const heal = r + 2;
+        const after = Math.min(20, S.miraHp + heal);
+        this.setState({ swUsed: true, bonusUsed: true, miraHp: after, log: [{ k: 'you', t: 'Second Wind: 1d10 (' + r + ') + 2 = ' + heal + ' healing. Mira HP ' + S.miraHp + ' → ' + after + '.' }].concat(S.log).slice(0, 40) });
+      },
+      actionSurge: () => {
+        if (S.asUsed) { this.push([{ k: 'info', t: 'Action Surge is used until a short rest.' }]); return; }
+        this.setState({ asUsed: true, actionUsed: false, log: [{ k: 'you', t: 'Action Surge! Mira gains one extra action.' }].concat(S.log).slice(0, 40) });
+      },
+      endTurn: () => {
+        this.setState({ round: S.round + 1, actionUsed: false, bonusUsed: false, log: [{ k: 'head', t: 'Round ' + (S.round + 1) + ' · Mira’s turn (mockup skips everyone else)' }, { k: 'info', t: 'Mira ends her turn.' }].concat(S.log).slice(0, 40) });
+      }
+    };
+  }
+}
+</script>
+</body>
+</html>

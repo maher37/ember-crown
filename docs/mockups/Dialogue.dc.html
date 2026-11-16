@@ -1,0 +1,142 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Dialogue – Brannoc the innkeeper</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&amp;family=Inter:wght@400;500;600&amp;family=Spectral:ital,wght@0,400;1,400&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+a{color:#e8a060}a:hover{color:#ffc58a}
+</style>
+</helmet>
+<div style="position: relative; width: 1280px; height: 720px; box-sizing: border-box; background: #222a36; color: #eef2f7; font-family: Inter, system-ui, sans-serif; overflow: hidden">
+  <svg viewBox="0 0 1280 720" width="1280" height="720" aria-hidden="true" style="position: absolute; left: 0; top: 0">
+    <circle cx="80" cy="520" r="420" fill="#e8833a" opacity="0.06"></circle>
+    <circle cx="80" cy="520" r="220" fill="#e8833a" opacity="0.06"></circle>
+    <rect x="0" y="0" width="1280" height="300" fill="#2a3340"></rect>
+    <g fill="#2a1f17">
+      <rect x="700" y="60" width="560" height="12"></rect>
+      <rect x="700" y="150" width="560" height="12"></rect>
+    </g>
+    <g fill="#3a2a1c">
+      <rect x="720" y="28" width="14" height="32" rx="3"></rect><rect x="746" y="20" width="12" height="40" rx="3"></rect><rect x="790" y="32" width="18" height="28" rx="3"></rect>
+      <rect x="860" y="24" width="12" height="36" rx="3"></rect><rect x="900" y="30" width="16" height="30" rx="3"></rect><rect x="1010" y="22" width="12" height="38" rx="3"></rect>
+      <rect x="740" y="118" width="16" height="32" rx="3"></rect><rect x="820" y="112" width="12" height="38" rx="3"></rect><rect x="940" y="120" width="18" height="30" rx="3"></rect><rect x="1100" y="114" width="14" height="36" rx="3"></rect>
+    </g>
+    <rect x="0" y="640" width="1280" height="80" fill="#1d242f"></rect>
+  </svg>
+
+  <div style="position: absolute; left: 64px; top: 72px; width: 320px; display: flex; flex-direction: column; gap: 12px">
+    <div style="width: 320px; height: 400px; border: 3px solid #8a6a3a; border-radius: 6px; overflow: hidden">
+      <dc-import name="Portrait" skin="#b07a55" hair="#8f8a84" eyes="#6b4a2b" cloth="#6b4a2f" hair-style="bald" ears="human" beard="{{ true }}" scar="{{ false }}" bg="#3a4558" label="Portrait of Brannoc Hale, the innkeeper" hint-size="320px,400px"></dc-import>
+    </div>
+    <div style="display: flex; flex-direction: column; gap: 2px">
+      <span style="font-family: Cinzel, Georgia, serif; font-size: 22px; font-weight: 700; color: #f8f3e8">Brannoc Hale</span>
+      <span style="font-size: 13px; color: #c3ccd9">Innkeeper of the Drowned Lantern</span>
+    </div>
+  </div>
+
+  <section aria-label="Conversation" style="position: absolute; left: 440px; top: 72px; width: 776px; height: 560px; box-sizing: border-box; background: #262f3c; border: 1px solid #63738e; border-radius: 8px; padding: 24px 28px; display: flex; flex-direction: column; gap: 16px">
+    <p style="margin: 0; font-family: Spectral, Georgia, serif; font-size: 19px; line-height: 1.55; color: #f8f3e8">“He came in off the river road an hour past dusk, half-dead and clutching that satchel like it was his own heart. Then three strangers walked in after him, asking after ‘a lost letter.’ I don’t want trouble in my house, friends. But I think trouble’s already sitting at my tables.”</p>
+
+    <sc-if value="{{hasResult}}" hint-placeholder-val="{{ false }}">
+      <div style="display: flex; flex-direction: column; gap: 10px; padding: 14px 16px; background: #222a36; border: 1px solid #51607a; border-radius: 6px">
+        <span style="{{resultHeadStyle}}">{{resultHead}}</span>
+        <p style="margin: 0; font-family: Spectral, Georgia, serif; font-size: 17px; line-height: 1.5; color: #e7ebf1">{{resultText}}</p>
+        <sc-if value="{{hasJournal}}" hint-placeholder-val="{{ false }}">
+          <span style="font-size: 12px; font-weight: 600; color: #e8c27a">{{journal}}</span>
+        </sc-if>
+      </div>
+      <div style="display: flex; gap: 10px; margin-top: auto">
+        <button type="button" onClick="{{reset}}" style="height: 44px; padding: 0 18px; background: #3e4b60; border: 1px solid #63738e; border-radius: 6px; color: #eef2f7; font-family: Inter, sans-serif; font-size: 14px; font-weight: 600; cursor: pointer">Ask something else</button>
+        <a href="Exploration.dc.html" style="display: flex; align-items: center; height: 44px; padding: 0 18px; box-sizing: border-box; background: #e8833a; border-radius: 6px; color: #1a120c; font-size: 14px; font-weight: 600; text-decoration: none">Back to the tavern</a>
+      </div>
+    </sc-if>
+
+    <sc-if value="{{noResult}}" hint-placeholder-val="{{ true }}">
+      <div style="display: flex; flex-direction: column; gap: 8px; margin-top: auto">
+        <sc-for list="{{choices}}" as="c" hint-placeholder-count="5">
+          <button type="button" onClick="{{c.pick}}" style="display: flex; align-items: center; gap: 12px; min-height: 48px; padding: 8px 14px; box-sizing: border-box; background: #364256; border: 1px solid #51607a; border-radius: 6px; color: #eef2f7; font-family: Inter, sans-serif; font-size: 15px; text-align: left; cursor: pointer">
+            <span style="flex-shrink: 0; width: 22px; color: #aeb9c9; font-weight: 600">{{c.num}}.</span>
+            <sc-if value="{{c.isCheck}}" hint-placeholder-val="{{ false }}">
+              <span style="flex-shrink: 0; padding: 3px 8px; border-radius: 4px; background: #5a3b22; border: 1px solid #e8833a; color: #ffd2a6; font-size: 12px; font-weight: 600">{{c.tag}}</span>
+            </sc-if>
+            <span>{{c.text}}</span>
+          </button>
+        </sc-for>
+      </div>
+    </sc-if>
+  </section>
+
+  <div style="position: absolute; left: 440px; top: 648px; display: flex; align-items: center; gap: 10px">
+    <div style="width: 40px; height: 50px; border-radius: 4px; overflow: hidden; border: 2px solid #7fb3e6">
+      <dc-import name="Portrait" skin="#c99a74" hair="#3b2a20" eyes="#4a7a5a" cloth="#5a5f66" hair-style="long" ears="human" beard="{{ false }}" scar="{{ true }}" bg="#3a4558" label="Portrait of Mira Ashgrove" hint-size="40px,50px"></dc-import>
+    </div>
+    <span style="font-size: 13px; color: #c3ccd9">Mira speaks for the party. Skill checks use whoever in the party is best at that skill.</span>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1280,"height":720}}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = { result: null };
+  }
+  renderVals() {
+    const S = this.state;
+    const opts = [
+      { text: 'Who was the courier, and who wants that letter?',
+        plain: 'His name’s Edric. He rides for the mayor’s office. As for who wants the letter, look at the men by the hearth. They’re not from Ashford, and they haven’t touched their ale.' },
+      { text: 'Let me see to his wounds.', skill: 'Medicine', who: 'Ilse', mod: 5, dc: 10,
+        win: 'Ilse stops the bleeding. Edric’s eyes flutter open: “The old mine… they’re digging for it… warn the mayor—” Then he slips back under. He will live.',
+        lose: 'The wound is deeper than it looks. Edric groans but doesn’t wake. “Keep pressure on it,” Brannoc says. “I’ll fetch hot water.”',
+        journalWin: 'Journal updated: Edric mentioned the old mine.' },
+      { text: 'You knew him. What aren’t you telling us?', skill: 'Insight', who: 'Thorn', mod: 3, dc: 12,
+        win: 'Brannoc’s jaw tightens. “Fine. Edric’s my sister’s boy. The letter’s under the bar. I meant to burn it if those men pushed.”',
+        lose: 'Brannoc meets your eyes and holds them. You can’t read him. “I’ve told you what I know.”' },
+      { text: 'Give us the letter. We’ll handle this.', skill: 'Persuasion', who: 'Mira', mod: 2, dc: 14,
+        win: 'He slides a wax-sealed letter across the bar. Pressed into the wax is a hollow, eight-pointed star.',
+        lose: '“I don’t know you. Earn a little trust first.” He nods at the cellar door. “Something’s been gnawing down there for a week.”',
+        journalWin: 'Item received: Sealed letter.', journalLose: 'Side quest added: Something in the Cellar.' },
+      { text: 'We’ll keep our heads down tonight.', plain: '“Wise, maybe. But those men won’t wait for morning.”' }
+    ];
+    const choices = opts.map((o, i) => ({
+      num: i + 1,
+      text: o.text,
+      isCheck: !!o.skill,
+      tag: o.skill ? o.skill + ' DC ' + o.dc + ' · ' + o.who + ' +' + o.mod : '',
+      pick: () => {
+        if (!o.skill) { this.setState({ result: { head: 'Brannoc', ok: null, text: o.plain, journal: '' } }); return; }
+        const r = 1 + Math.floor(Math.random() * 20);
+        const total = r + o.mod;
+        const ok = total >= o.dc;
+        this.setState({ result: {
+          head: o.skill + ' check (' + o.who + '): d20 (' + r + ') + ' + o.mod + ' = ' + total + ' vs DC ' + o.dc + ' → ' + (ok ? 'SUCCESS' : 'FAILURE'),
+          ok, text: ok ? o.win : o.lose,
+          journal: (ok ? o.journalWin : o.journalLose) || ''
+        } });
+      }
+    }));
+    const res = S.result;
+    return {
+      choices,
+      hasResult: !!res,
+      noResult: !res,
+      resultHead: res ? res.head : '',
+      resultText: res ? res.text : '',
+      hasJournal: !!(res && res.journal),
+      journal: res ? res.journal : '',
+      resultHeadStyle: 'font-size: 13px; font-weight: 600; letter-spacing: 0.3px; ' + (!res || res.ok === null ? 'color: #c3ccd9;' : res.ok ? 'color: #9fd18a;' : 'color: #f0a07a;'),
+      reset: () => this.setState({ result: null })
+    };
+  }
+}
+</script>
+</body>
+</html>

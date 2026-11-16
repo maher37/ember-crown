@@ -1,0 +1,290 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Character creator</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+a{color:#e8a060}a:hover{color:#ffc58a}
+</style>
+</helmet>
+<div style="width: 1280px; height: 720px; box-sizing: border-box; background: #2b3442; color: #eef2f7; font-family: Inter, system-ui, sans-serif; display: flex; flex-direction: column; overflow: hidden">
+  <header style="height: 64px; flex-shrink: 0; box-sizing: border-box; padding: 0 28px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid #51607a; background: #262f3c">
+    <div style="display: flex; align-items: center; gap: 16px">
+      <a href="Main.dc.html" aria-label="Back to title screen" style="display: flex; align-items: center; justify-content: center; width: 44px; height: 44px; border-radius: 6px; border: 1px solid #63738e; color: #eef2f7">
+        <svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true"><path d="M11 3 L5 9 L11 15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+      </a>
+      <h1 style="margin: 0; font-family: Cinzel, Georgia, serif; font-size: 24px; font-weight: 700; color: #f8f3e8">Create your party</h1>
+      <div role="radiogroup" aria-label="Character type" style="display: flex; gap: 4px; padding: 3px; border: 1px solid #51607a; border-radius: 8px; margin-left: 12px">
+        <button type="button" role="radio" aria-checked="{{customChecked}}" onClick="{{pickCustom}}" style="{{customStyle}}">Custom hero</button>
+        <button type="button" role="radio" aria-checked="{{originChecked}}" onClick="{{pickOrigin}}" style="{{originStyle}}">Origin: Corin Varrow</button>
+      </div>
+    </div>
+    <div style="display: flex; align-items: center; gap: 10px">
+      <span style="font-size: 13px; color: #c3ccd9">Party member 1 of 4</span>
+      <span style="display: flex; align-items: center; justify-content: center; width: 32px; height: 32px; border-radius: 16px; background: #e8833a; color: #1a120c; font-weight: 600; font-size: 14px">1</span>
+      <span style="display: flex; align-items: center; justify-content: center; width: 32px; height: 32px; border-radius: 16px; border: 1px dashed #7d8ca6; color: #aeb9c9; font-size: 14px">2</span>
+      <span style="display: flex; align-items: center; justify-content: center; width: 32px; height: 32px; border-radius: 16px; border: 1px dashed #7d8ca6; color: #aeb9c9; font-size: 14px">3</span>
+      <span style="display: flex; align-items: center; justify-content: center; width: 32px; height: 32px; border-radius: 16px; border: 1px dashed #7d8ca6; color: #aeb9c9; font-size: 14px">4</span>
+    </div>
+  </header>
+
+  <div style="flex-grow: 1; display: flex; gap: 28px; padding: 20px 28px; box-sizing: border-box; min-height: 0">
+
+    <section aria-label="Appearance" style="width: 300px; flex-shrink: 0; display: flex; flex-direction: column; gap: 10px">
+      <div style="display: flex; gap: 14px; align-items: flex-end">
+        <div style="width: 168px; height: 210px; border: 2px solid #8a6a3a; border-radius: 6px; overflow: hidden; flex-shrink: 0">
+          <dc-import name="Portrait" skin="{{skin}}" hair="{{hair}}" eyes="{{eyes}}" cloth="{{cloth}}" hair-style="{{hairStyle}}" ears="{{ears}}" beard="{{beard}}" scar="{{scar}}" bg="#3a4558" label="Portrait of your character" hint-size="168px,210px"></dc-import>
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 4px; padding-bottom: 4px">
+          <span style="font-family: Cinzel, Georgia, serif; font-size: 15px; font-weight: 700; color: #f8f3e8">{{speciesName}}</span>
+          <span style="font-size: 13px; color: #c3ccd9">{{className}} · Level 1</span>
+        </div>
+      </div>
+      <sc-if value="{{isCustom}}" hint-placeholder-val="{{ true }}">
+        <label style="display: flex; flex-direction: column; gap: 4px; font-size: 12px; color: #c3ccd9">Name
+          <input type="text" value="Mira Ashgrove" style="height: 40px; box-sizing: border-box; padding: 0 12px; background: #323d4f; border: 1px solid #63738e; border-radius: 6px; color: #eef2f7; font-family: Inter, sans-serif; font-size: 15px">
+        </label>
+      </sc-if>
+      <sc-if value="{{isOrigin}}" hint-placeholder-val="{{ false }}">
+        <div style="display: flex; flex-direction: column; gap: 4px; font-size: 12px; color: #c3ccd9">Name
+          <div style="height: 40px; box-sizing: border-box; padding: 0 12px; display: flex; align-items: center; gap: 8px; background: #323d4f; border: 1px solid #e8833a; border-radius: 6px; color: #f8f3e8; font-size: 15px; font-weight: 600">Corin Varrow<span style="font-size: 11px; font-weight: 600; color: #e8a060; letter-spacing: 1px; text-transform: uppercase">Origin</span></div>
+        </div>
+      </sc-if>
+      <div style="display: flex; align-items: center; gap: 8px">
+        <span style="width: 44px; font-size: 12px; color: #c3ccd9">Skin</span>
+        <sc-for list="{{skins}}" as="s" hint-placeholder-count="6">
+          <button type="button" aria-label="{{s.label}}" aria-pressed="{{s.pressed}}" onClick="{{s.pick}}" style="{{s.style}}"></button>
+        </sc-for>
+      </div>
+      <div style="display: flex; align-items: center; gap: 8px">
+        <span style="width: 44px; font-size: 12px; color: #c3ccd9">Hair</span>
+        <sc-for list="{{hairs}}" as="s" hint-placeholder-count="6">
+          <button type="button" aria-label="{{s.label}}" aria-pressed="{{s.pressed}}" onClick="{{s.pick}}" style="{{s.style}}"></button>
+        </sc-for>
+      </div>
+      <div style="display: flex; align-items: center; gap: 8px">
+        <span style="width: 44px; font-size: 12px; color: #c3ccd9">Eyes</span>
+        <sc-for list="{{eyeList}}" as="s" hint-placeholder-count="4">
+          <button type="button" aria-label="{{s.label}}" aria-pressed="{{s.pressed}}" onClick="{{s.pick}}" style="{{s.style}}"></button>
+        </sc-for>
+      </div>
+      <div style="display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 6px">
+        <sc-for list="{{styles}}" as="s" hint-placeholder-count="4">
+          <button type="button" aria-pressed="{{s.pressed}}" onClick="{{s.pick}}" style="{{s.style}}">{{s.label}}</button>
+        </sc-for>
+      </div>
+      <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 6px">
+        <sc-for list="{{features}}" as="s" hint-placeholder-count="2">
+          <button type="button" aria-pressed="{{s.pressed}}" onClick="{{s.pick}}" style="{{s.style}}">{{s.label}}</button>
+        </sc-for>
+      </div>
+      <p style="margin: 0; font-size: 12px; line-height: 1.4; color: #aeb9c9">Elf and half-elf ears are set automatically. Horns and scales for other species come in v2.</p>
+    </section>
+
+    <section aria-label="Species and class" style="flex-grow: 1; min-width: 0; display: flex; flex-direction: column; gap: 12px">
+      <sc-if value="{{isOrigin}}" hint-placeholder-val="{{ false }}">
+        <div style="background: #4a3524; border: 1px solid #e8833a; border-radius: 8px; padding: 12px 14px; display: flex; flex-direction: column; gap: 6px">
+          <span style="font-family: Cinzel, Georgia, serif; font-size: 16px; font-weight: 700; color: #ffe9cf">Corin Varrow · the last king's blood</span>
+          <span style="font-size: 13px; line-height: 1.45; color: #f3e3d0">Home for the first time in eight years because his sister asked. His magic is the dragon's ember in the Varrow blood. Unique scenes, [Corin] dialogue choices, the Ember bargains and his own endings.</span>
+        </div>
+      </sc-if>
+      <h2 style="margin: 0; font-size: 12px; font-weight: 600; letter-spacing: 1.2px; text-transform: uppercase; color: #e8a060">Species</h2>
+      <div style="display: flex; flex-wrap: wrap; gap: 6px">
+        <sc-for list="{{speciesList}}" as="s" hint-placeholder-count="9">
+          <button type="button" aria-pressed="{{s.pressed}}" onClick="{{s.pick}}" style="{{s.style}}">{{s.name}}</button>
+        </sc-for>
+      </div>
+      <h2 style="margin: 6px 0 0 0; font-size: 12px; font-weight: 600; letter-spacing: 1.2px; text-transform: uppercase; color: #e8a060">Class</h2>
+      <div style="display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px">
+        <sc-for list="{{classList}}" as="c" hint-placeholder-count="12">
+          <button type="button" aria-pressed="{{c.pressed}}" onClick="{{c.pick}}" style="{{c.style}}">
+            <span style="font-family: Cinzel, Georgia, serif; font-size: 15px; font-weight: 700">{{c.name}}</span>
+            <span style="font-size: 12px; opacity: 0.8">{{c.role}} · d{{c.hd}}</span>
+          </button>
+        </sc-for>
+      </div>
+      <div style="background: #364256; border: 1px solid #51607a; border-radius: 8px; padding: 14px 16px; display: flex; flex-direction: column; gap: 10px">
+        <div style="display: flex; align-items: baseline; justify-content: space-between">
+          <span style="font-family: Cinzel, Georgia, serif; font-size: 20px; font-weight: 700; color: #f8f3e8">{{className}}</span>
+          <span style="font-size: 13px; color: #e8a060">{{classRole}}</span>
+        </div>
+        <p style="margin: 0; font-size: 14px; line-height: 1.45; color: #e7ebf1">{{classBlurb}}</p>
+        <div style="display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px">
+          <div style="display: flex; flex-direction: column; gap: 2px"><span style="font-size: 11px; color: #aeb9c9; text-transform: uppercase; letter-spacing: 1px">Hit die</span><span style="font-size: 14px; font-weight: 600">d{{classHd}}</span></div>
+          <div style="display: flex; flex-direction: column; gap: 2px"><span style="font-size: 11px; color: #aeb9c9; text-transform: uppercase; letter-spacing: 1px">Primary</span><span style="font-size: 14px; font-weight: 600">{{classPrimary}}</span></div>
+          <div style="display: flex; flex-direction: column; gap: 2px"><span style="font-size: 11px; color: #aeb9c9; text-transform: uppercase; letter-spacing: 1px">Saves</span><span style="font-size: 14px; font-weight: 600">{{classSaves}}</span></div>
+          <div style="display: flex; flex-direction: column; gap: 2px"><span style="font-size: 11px; color: #aeb9c9; text-transform: uppercase; letter-spacing: 1px">Subclass</span><span style="font-size: 14px; font-weight: 600">{{classSub}}</span></div>
+        </div>
+      </div>
+    </section>
+
+    <section aria-label="Ability scores" style="width: 340px; flex-shrink: 0; display: flex; flex-direction: column; gap: 10px">
+      <h2 style="margin: 0; font-size: 12px; font-weight: 600; letter-spacing: 1.2px; text-transform: uppercase; color: #e8a060">Ability scores</h2>
+      <div role="tablist" aria-label="Score method" style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 6px">
+        <sc-for list="{{methods}}" as="m" hint-placeholder-count="3">
+          <button type="button" role="tab" aria-selected="{{m.pressed}}" onClick="{{m.pick}}" style="{{m.style}}">{{m.label}}</button>
+        </sc-for>
+      </div>
+      <div style="display: flex; align-items: center; justify-content: space-between; min-height: 32px; gap: 8px">
+        <span style="font-size: 12px; color: #c3ccd9">{{methodNote}}</span>
+        <button type="button" onClick="{{roll}}" style="flex-shrink: 0; height: 32px; padding: 0 12px; background: #3e4b60; border: 1px solid #e8833a; border-radius: 6px; color: #ffd2a6; font-family: Inter, sans-serif; font-size: 13px; font-weight: 600; cursor: pointer">Roll 4d6</button>
+      </div>
+      <div style="display: flex; flex-direction: column; border: 1px solid #51607a; border-radius: 8px; overflow: hidden">
+        <div style="display: grid; grid-template-columns: 2fr 1fr 1fr 1fr 1fr; gap: 4px; padding: 6px 12px; background: #364256; font-size: 11px; letter-spacing: 1px; text-transform: uppercase; color: #aeb9c9">
+          <span>Ability</span><span>Base</span><span>Species</span><span>Total</span><span>Mod</span>
+        </div>
+        <sc-for list="{{scores}}" as="r" hint-placeholder-count="6">
+          <div style="{{r.rowStyle}}">
+            <span style="font-weight: 600">{{r.name}}</span><span>{{r.base}}</span><span style="color: #e8a060">{{r.bonus}}</span><span style="font-weight: 600">{{r.total}}</span><span style="font-weight: 600; color: #f8f3e8">{{r.mod}}</span>
+          </div>
+        </sc-for>
+      </div>
+      <div style="display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 6px">
+        <div style="background: #364256; border: 1px solid #51607a; border-radius: 6px; padding: 8px; display: flex; flex-direction: column; align-items: center; gap: 2px"><span style="font-size: 11px; color: #aeb9c9">HP</span><span style="font-size: 18px; font-weight: 600">{{hp}}</span></div>
+        <div style="background: #364256; border: 1px solid #51607a; border-radius: 6px; padding: 8px; display: flex; flex-direction: column; align-items: center; gap: 2px"><span style="font-size: 11px; color: #aeb9c9">Initiative</span><span style="font-size: 18px; font-weight: 600">{{init}}</span></div>
+        <div style="background: #364256; border: 1px solid #51607a; border-radius: 6px; padding: 8px; display: flex; flex-direction: column; align-items: center; gap: 2px"><span style="font-size: 11px; color: #aeb9c9">Prof.</span><span style="font-size: 18px; font-weight: 600">+2</span></div>
+        <div style="background: #364256; border: 1px solid #51607a; border-radius: 6px; padding: 8px; display: flex; flex-direction: column; align-items: center; gap: 2px"><span style="font-size: 11px; color: #aeb9c9">Speed</span><span style="font-size: 18px; font-weight: 600">{{speed}} ft</span></div>
+      </div>
+      <div style="display: flex; flex-direction: column; gap: 6px; margin-top: auto">
+        <button type="button" style="height: 48px; background: #e8833a; border: none; border-radius: 6px; color: #1a120c; font-family: Cinzel, Georgia, serif; font-size: 16px; font-weight: 700; cursor: pointer">Next: Background &amp; skills</button>
+        <a href="Exploration.dc.html" style="align-self: center; font-size: 13px; padding: 6px">Skip ahead to the tavern (demo)</a>
+      </div>
+    </section>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1280,"height":720}}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = { origin: false, species: 'human', cls: 'fighter', skin: '#c99a74', hair: '#3b2a20', eyes: '#4a7a5a', hairStyle: 'long', beard: false, scar: true, method: 'array', rolled: null, rollText: '' };
+  }
+  roll4d6() {
+    const d = () => 1 + Math.floor(Math.random() * 6);
+    const r = [d(), d(), d(), d()].sort((a, b) => b - a);
+    return r[0] + r[1] + r[2];
+  }
+  renderVals() {
+    const S = this.state;
+    const AB = [['STR', 'Strength'], ['DEX', 'Dexterity'], ['CON', 'Constitution'], ['INT', 'Intelligence'], ['WIS', 'Wisdom'], ['CHA', 'Charisma']];
+    const classes = [
+      { id: 'barbarian', name: 'Barbarian', role: 'Melee tank', hd: 12, primary: 'STR', saves: 'STR, CON', sub: 'Berserker (3)', pri: [0, 2, 1, 4, 5, 3], cloth: '#6b4a2f', blurb: 'Enters a rage to hit harder and shrug off weapon damage.' },
+      { id: 'bard', name: 'Bard', role: 'Support caster', hd: 8, primary: 'CHA', saves: 'DEX, CHA', sub: 'College of Lore (3)', pri: [5, 1, 2, 4, 3, 0], cloth: '#7a3b5a', blurb: 'Inspires allies, heals, and charms foes with magic and wit.' },
+      { id: 'cleric', name: 'Cleric', role: 'Healer', hd: 8, primary: 'WIS', saves: 'WIS, CHA', sub: 'Life Domain (1)', pri: [4, 2, 0, 1, 5, 3], cloth: '#8a7a50', blurb: 'Divine caster in heavy armor and the party’s strongest healer.' },
+      { id: 'druid', name: 'Druid', role: 'Nature caster', hd: 8, primary: 'WIS', saves: 'INT, WIS', sub: 'Circle of the Land (2)', pri: [4, 2, 1, 3, 5, 0], cloth: '#4a6a3a', blurb: 'Nature magic for healing and battlefield control, plus Wild Shape.' },
+      { id: 'fighter', name: 'Fighter', role: 'Weapon master', hd: 10, primary: 'STR or DEX', saves: 'STR, CON', sub: 'Champion (3)', pri: [0, 2, 1, 4, 5, 3], cloth: '#5a5f66', blurb: 'Trained in every weapon and armor, with Second Wind and Action Surge.' },
+      { id: 'monk', name: 'Monk', role: 'Mobile striker', hd: 8, primary: 'DEX, WIS', saves: 'STR, DEX', sub: 'Way of the Open Hand (3)', pri: [1, 4, 2, 0, 3, 5], cloth: '#a0702a', blurb: 'Unarmored martial artist with flurries of blows and fast movement.' },
+      { id: 'paladin', name: 'Paladin', role: 'Holy knight', hd: 10, primary: 'STR, CHA', saves: 'WIS, CHA', sub: 'Oath of Devotion (3)', pri: [0, 5, 2, 4, 1, 3], cloth: '#7d8590', blurb: 'Armored warrior who spends spell slots on Divine Smite.' },
+      { id: 'ranger', name: 'Ranger', role: 'Skirmisher', hd: 10, primary: 'DEX, WIS', saves: 'STR, DEX', sub: 'Hunter (3)', pri: [1, 4, 2, 0, 3, 5], cloth: '#3f5a3a', blurb: 'Expert hunter and archer with a touch of nature magic.' },
+      { id: 'rogue', name: 'Rogue', role: 'Precision striker', hd: 8, primary: 'DEX', saves: 'DEX, INT', sub: 'Thief (3)', pri: [1, 2, 4, 3, 5, 0], cloth: '#2f2f36', blurb: 'Sneak Attack, many skills, and Cunning Action to strike and slip away.' },
+      { id: 'sorcerer', name: 'Sorcerer', role: 'Innate caster', hd: 6, primary: 'CHA', saves: 'CON, CHA', sub: 'Draconic Bloodline (1)', pri: [5, 2, 1, 4, 3, 0], cloth: '#7a2f2f', blurb: 'Born with magic, bending spells with Metamagic.' },
+      { id: 'warlock', name: 'Warlock', role: 'Pact caster', hd: 8, primary: 'CHA', saves: 'WIS, CHA', sub: 'The Fiend (1)', pri: [5, 2, 1, 4, 3, 0], cloth: '#4a2f5a', blurb: 'Draws power from a patron: Eldritch Blast and spell slots that return on a short rest.' },
+      { id: 'wizard', name: 'Wizard', role: 'Arcane scholar', hd: 6, primary: 'INT', saves: 'INT, WIS', sub: 'School of Evocation (2)', pri: [3, 2, 1, 4, 5, 0], cloth: '#3d4f7a', blurb: 'Learns the widest range of spells, recorded in a spellbook.' }
+    ];
+    const species = [
+      { id: 'human', name: 'Human', bonus: [1, 1, 1, 1, 1, 1], speed: 30, ears: 'human' },
+      { id: 'dwarf', name: 'Hill Dwarf', bonus: [0, 0, 2, 0, 1, 0], speed: 25, ears: 'human' },
+      { id: 'elf', name: 'High Elf', bonus: [0, 2, 0, 1, 0, 0], speed: 30, ears: 'elf' },
+      { id: 'halfling', name: 'Lightfoot Halfling', bonus: [0, 2, 0, 0, 0, 1], speed: 25, ears: 'human' },
+      { id: 'dragonborn', name: 'Dragonborn', bonus: [2, 0, 0, 0, 0, 1], speed: 30, ears: 'human' },
+      { id: 'gnome', name: 'Rock Gnome', bonus: [0, 0, 1, 2, 0, 0], speed: 25, ears: 'human' },
+      { id: 'halfelf', name: 'Half-Elf', bonus: null, speed: 30, ears: 'elf' },
+      { id: 'halforc', name: 'Half-Orc', bonus: [2, 0, 1, 0, 0, 0], speed: 30, ears: 'human' },
+      { id: 'tiefling', name: 'Tiefling', bonus: [0, 0, 0, 1, 0, 2], speed: 30, ears: 'human' }
+    ];
+    const cls = classes.find((c) => c.id === S.cls);
+    const sp = species.find((s) => s.id === S.species);
+
+    let bonus = sp.bonus;
+    if (!bonus) {
+      bonus = [0, 0, 0, 0, 0, 2];
+      cls.pri.filter((i) => i !== 5).slice(0, 2).forEach((i) => { bonus[i] = 1; });
+    }
+    let pool = [15, 14, 13, 12, 10, 8];
+    if (S.method === 'point') pool = [15, 15, 15, 8, 8, 8];
+    if (S.method === 'roll' && S.rolled) pool = S.rolled;
+    const base = [0, 0, 0, 0, 0, 0];
+    cls.pri.forEach((ab, i) => { base[ab] = pool[i]; });
+    const fmt = (n) => (n >= 0 ? '+' + n : String(n));
+    const mods = [];
+    const scores = AB.map((a, i) => {
+      const total = base[i] + bonus[i];
+      const m = Math.floor((total - 10) / 2);
+      mods.push(m);
+      const top = cls.pri[0] === i;
+      return {
+        name: a[0], base: base[i], bonus: bonus[i] ? '+' + bonus[i] : '—', total, mod: fmt(m),
+        rowStyle: 'display: grid; grid-template-columns: 2fr 1fr 1fr 1fr 1fr; gap: 4px; align-items: center; height: 36px; padding: 0 12px; font-size: 14px; border-top: 1px solid #45526a; ' + (top ? 'background: #44506a;' : '')
+      };
+    });
+
+    const pill = (sel) => 'min-height: 40px; padding: 0 12px; border-radius: 6px; cursor: pointer; font-family: Inter, sans-serif; font-size: 13px; font-weight: 500; ' +
+      (sel ? 'background: #5a3b22; border: 1px solid #e8833a; color: #ffe9cf;' : 'background: #323d4f; border: 1px solid #51607a; color: #dde3eb;');
+    const seg = (on) => 'height: 36px; padding: 0 12px; border-radius: 6px; border: none; cursor: pointer; font-family: Inter, sans-serif; font-size: 13px; font-weight: 600; ' +
+      (on ? 'background: #e8833a; color: #1a120c;' : 'background: transparent; color: #dde3eb;');
+    const swatch = (color, sel) => 'width: 28px; height: 28px; padding: 0; border-radius: 14px; cursor: pointer; background: ' + color + '; ' +
+      (sel ? 'border: 2px solid #f8f3e8; box-shadow: 0 0 0 2px #e8833a;' : 'border: 2px solid #51607a;');
+    const mkSw = (list, key, word) => list.map((c, i) => ({
+      label: word + ' ' + (i + 1), pressed: S[key] === c ? 'true' : 'false',
+      pick: () => this.setState({ [key]: c }), style: swatch(c, S[key] === c)
+    }));
+
+    const methodNotes = {
+      array: 'Standard array 15, 14, 13, 12, 10, 8, placed for your class.',
+      point: '27-point buy. Shown: 15, 15, 15, 8, 8, 8.',
+      roll: S.rolled ? 'Rolled (4d6, drop lowest): ' + S.rollText : 'Press Roll to roll 4d6, drop the lowest, six times.'
+    };
+
+    return {
+      skin: S.skin, hair: S.hair, eyes: S.eyes, cloth: cls.cloth, hairStyle: S.hairStyle, ears: sp.ears, beard: S.beard, scar: S.scar,
+      speciesName: sp.name, className: cls.name, classRole: cls.role, classBlurb: cls.blurb, classHd: cls.hd,
+      classPrimary: cls.primary, classSaves: cls.saves, classSub: cls.sub,
+      skins: mkSw(['#f1c9a5', '#d9a982', '#c99a74', '#a06b48', '#7a4a30', '#4e3224'], 'skin', 'Skin tone'),
+      hairs: mkSw(['#1e1712', '#3b2a20', '#7a4a2a', '#a0522d', '#d8c27a', '#9a9a9a'], 'hair', 'Hair color'),
+      eyeList: mkSw(['#4a7a5a', '#4a6fa5', '#6b4a2b', '#9a8a3a'], 'eyes', 'Eye color'),
+      styles: [['short', 'Short'], ['long', 'Long'], ['bald', 'Bald'], ['hood', 'Hood']].map(([id, label]) => ({
+        label, pressed: S.hairStyle === id ? 'true' : 'false', pick: () => this.setState({ hairStyle: id }), style: pill(S.hairStyle === id)
+      })),
+      features: [['beard', 'Beard'], ['scar', 'Scar']].map(([id, label]) => ({
+        label, pressed: S[id] ? 'true' : 'false', pick: () => this.setState({ [id]: !S[id] }), style: pill(!!S[id])
+      })),
+      speciesList: species.map((s) => ({ name: s.name, pressed: s.id === S.species ? 'true' : 'false', pick: () => this.setState({ species: s.id, origin: false }), style: pill(s.id === S.species) })),
+      classList: classes.map((c) => ({
+        name: c.name, role: c.role, hd: c.hd, pressed: c.id === S.cls ? 'true' : 'false', pick: () => this.setState({ cls: c.id, origin: false }),
+        style: 'display: flex; flex-direction: column; align-items: flex-start; gap: 2px; min-height: 58px; padding: 8px 12px; box-sizing: border-box; border-radius: 6px; cursor: pointer; text-align: left; font-family: Inter, sans-serif; ' +
+          (c.id === S.cls ? 'background: #5a3b22; border: 2px solid #e8833a; color: #ffe9cf;' : 'background: #323d4f; border: 2px solid #51607a; color: #dde3eb;')
+      })),
+      methods: [['array', 'Standard'], ['point', 'Point buy'], ['roll', 'Roll']].map(([id, label]) => ({
+        label, pressed: S.method === id ? 'true' : 'false', pick: () => this.setState({ method: id }), style: pill(S.method === id)
+      })),
+      methodNote: methodNotes[S.method],
+      roll: () => {
+        const r = [0, 0, 0, 0, 0, 0].map(() => this.roll4d6()).sort((a, b) => b - a);
+        this.setState({ method: 'roll', rolled: r, rollText: r.join(', ') });
+      },
+      scores,
+      isOrigin: !!S.origin,
+      isCustom: !S.origin,
+      customChecked: S.origin ? 'false' : 'true',
+      originChecked: S.origin ? 'true' : 'false',
+      customStyle: seg(!S.origin),
+      originStyle: seg(!!S.origin),
+      pickCustom: () => this.setState({ origin: false, cls: 'fighter', species: 'human', skin: '#c99a74', hair: '#3b2a20', eyes: '#4a7a5a', hairStyle: 'long', beard: false, scar: true }),
+      pickOrigin: () => this.setState({ origin: true, cls: 'sorcerer', species: 'human', skin: '#d9a982', hair: '#1e1712', eyes: '#9a8a3a', hairStyle: 'short', beard: false, scar: false, method: 'array' }),
+      hp: cls.hd + mods[2],
+      init: fmt(mods[1]),
+      speed: sp.speed
+    };
+  }
+}
+</script>
+</body>
+</html>
