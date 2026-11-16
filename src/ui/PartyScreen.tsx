@@ -13,8 +13,8 @@ import { downloadSave } from './saveFiles';
  * until exploration arrives (M5).
  */
 export function PartyScreen() {
-  const { game, saveTo, goto, openPrepare, lastResult } = useGame();
-  const [message, setMessage] = useState('Autosaved.');
+  const { game, saveTo, goto } = useGame();
+  const [message, setMessage] = useState('');
   if (!game) return null;
 
   const save = (slot: SlotId) => {
@@ -30,16 +30,12 @@ export function PartyScreen() {
     <div className="party-screen">
       <header className="party-header">
         <div>
-          <h1>Your party</h1>
+          <h1>Party sheet</h1>
           <p className="muted">The Drowned Lantern, Ashford · Act I: Lantern Night</p>
         </div>
         <div className="party-actions">
-          <button
-            type="button"
-            className="menu-primary small-btn"
-            onClick={() => openPrepare('f2-road-ambush')}
-          >
-            Road ambush (F2)
+          <button type="button" className="menu-primary small-btn" onClick={() => goto('explore')}>
+            Back to the tavern
           </button>
           <button type="button" className="menu-secondary small-btn" onClick={() => save('slot1')}>
             Save to Slot 1
@@ -60,8 +56,7 @@ export function PartyScreen() {
         </div>
       </header>
       <p className="party-status" role="status">
-        {lastResult ? `Victory! +${lastResult.xpEach} XP each. ${lastResult.notes.join(' ')} ` : ''}
-        {message} Try the road ambush; the tavern and the story arrive in Milestone M5.
+        {message}
       </p>
       <div className="party-grid">
         {game.party.map((h) => (

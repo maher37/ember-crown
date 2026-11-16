@@ -4,7 +4,7 @@
 
 Each line was entered from memory or is marked ⚠ in the design docs. Check it against your PDFs. When a line is right (or fixed), remove its `verify` and `verifyNote` from the JSON and run `npm run verify-list` again.
 
-**243 items to check.**
+**244 items to check.**
 
 ## species.json
 
@@ -281,3 +281,7 @@ Each line was entered from memory or is marked ⚠ in the design docs. Check it 
 ## loadouts.json
 
 - [ ] **(whole file)**: [inferred] Default spells per class so heroes can fight before the spell-choice screen exists (M5). Not from the docs; change freely.
+
+## npcs.json
+
+- [ ] **(whole file)**: Portraits for Brannoc come from docs/mockups/Dialogue.dc.html; the others are my own picks [inferred].

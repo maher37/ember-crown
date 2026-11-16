@@ -5,6 +5,9 @@ import classesJson from './classes.json';
 import difficultiesJson from './difficulties.json';
 import encountersJson from './encounters.json';
 import loadoutsJson from './loadouts.json';
+import npcsJson from './npcs.json';
+import questsJson from './quests.json';
+import { NpcFile, QuestFile } from './schemas/story';
 import { EncounterFile, LoadoutFile } from './schemas/encounter';
 import foesJson from './foes.json';
 import magicItemsJson from './magicItems.json';
@@ -37,4 +40,6 @@ export const dataFiles = [
   { name: 'magicItems.json', schema: MagicItemFile, raw: magicItemsJson },
   { name: 'encounters.json', schema: EncounterFile, raw: encountersJson },
   { name: 'loadouts.json', schema: LoadoutFile, raw: loadoutsJson },
+  { name: 'quests.json', schema: QuestFile, raw: questsJson },
+  { name: 'npcs.json', schema: NpcFile, raw: npcsJson },
 ] as const satisfies readonly { name: string; schema: z.ZodType; raw: unknown }[];

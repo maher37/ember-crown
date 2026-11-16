@@ -1,9 +1,10 @@
 import { z } from 'zod';
 import { AbilityId, ConditionIdSchema, DamageTypeId, SkillId } from '../data/schemas/common';
 import { defaultInvocations, defaultSpells, type Hero } from './hero';
+import type { QuestState } from './journal';
 
 /** Bump when the save format changes, and add a migration below. Never break old saves. */
-export const SAVE_VERSION = 2;
+export const SAVE_VERSION = 3;
 
 export interface GameState {
   id: string;
@@ -18,6 +19,12 @@ export interface GameState {
   playSeconds: number;
   /** Story flags: choices made, people met, Corin's Ember meter... */
   flags: Record<string, boolean | number | string>;
+  /** Quest progress, by quest id (src/data/quests.json). */
+  quests: Record<string, QuestState>;
+  /** Journal notes: clues and rumors, in the order found. */
+  notes: { text: string; at: string }[];
+  /** Saved Ink story state per dialogue file (visit counts and variables). */
+  ink: Record<string, string>;
 }
 
 export interface SaveFile {
@@ -103,6 +110,7 @@ export const HeroSchema = z.object({
   invocations: z.array(z.string()),
   slotsUsed: z.array(z.number().int().min(0)),
   resourcesUsed: z.record(z.string(), z.number().int().min(0)),
+  choices: z.record(z.string(), z.array(z.string())),
 }) satisfies z.ZodType<Hero>;
 
 export const GameStateSchema = z.object({
@@ -115,6 +123,12 @@ export const GameStateSchema = z.object({
   location: z.string().min(1),
   playSeconds: z.number().min(0),
   flags: z.record(z.string(), z.union([z.boolean(), z.number(), z.string()])),
+  quests: z.record(
+    z.string(),
+    z.object({ status: z.enum(['active', 'done']), steps: z.array(z.string()) }),
+  ),
+  notes: z.array(z.object({ text: z.string(), at: z.string() })),
+  ink: z.record(z.string(), z.string()),
 }) satisfies z.ZodType<GameState>;
 
 export const SaveFileSchema = z.object({
@@ -140,6 +154,23 @@ export const MIGRATIONS: Record<number, (old: Record<string, unknown>) => Record
         ...h,
       }));
       return { ...old, game: { ...game, party } };
+    },
+    // v2 → v3 (M5): quests, journal notes, Ink state, and level-up choices on heroes.
+    2: (old) => {
+      const game = old.game as { party: Record<string, unknown>[] };
+      const party = game.party.map((h) => ({ choices: {}, ...h }) as Record<string, unknown>);
+      // A party that already reached level 2 (the M4 shortcut) has finished Lantern Night.
+      const past = party.some((h) => Number(h.xp) >= 300);
+      const quests = past
+        ? {
+            'lantern-night': {
+              status: 'done',
+              steps: ['talk-brannoc', 'tend-edric', 'secure-letter'],
+            },
+            'old-mine': { status: 'active', steps: [] },
+          }
+        : { 'lantern-night': { status: 'active', steps: [] } };
+      return { ...old, game: { notes: [], ink: {}, ...game, party, quests } };
     },
   };
 

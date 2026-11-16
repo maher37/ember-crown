@@ -63,6 +63,8 @@ export interface Hero extends Creature {
   slotsUsed: number[];
   /** Uses spent of class resources (rage, ki, second-wind...). Max comes from class data. */
   resourcesUsed: Record<string, number>;
+  /** Level-up picks by feature id (metamagic, pact-boon, hunters-prey, favored-enemy...). */
+  choices: Record<string, string[]>;
 }
 
 /** What the player has picked so far in the creator. */
@@ -357,17 +359,25 @@ export function buildHero(draft: HeroDraft, id: string): Hero {
     invocations: [],
     slotsUsed: [],
     resourcesUsed: {},
+    choices: {},
   };
 }
 
-/** Skill bonus for the character sheet (proficiency doubled with Expertise). */
+/**
+ * Skill bonus for the character sheet and dialogue checks (proficiency doubled with Expertise).
+ * PHB: Bard, Jack of All Trades. Half proficiency (rounded down) on skills without proficiency.
+ */
 export function skillBonus(
-  hero: Pick<Hero, 'abilities' | 'skills' | 'expertise' | 'proficiencyBonus'>,
+  hero: Pick<Hero, 'abilities' | 'skills' | 'expertise' | 'proficiencyBonus'> &
+    Partial<Pick<Hero, 'classId' | 'level'>>,
   skill: Skill,
 ): number {
   const base = abilityModifier(hero.abilities[SKILLS[skill]]);
   if (hero.expertise.includes(skill)) return base + hero.proficiencyBonus * 2;
-  return base + (hero.skills.includes(skill) ? hero.proficiencyBonus : 0);
+  if (hero.skills.includes(skill)) return base + hero.proficiencyBonus;
+  if (hero.classId === 'bard' && (hero.level ?? 1) >= 2)
+    return base + Math.floor(hero.proficiencyBonus / 2);
+  return base;
 }
 
 export { ABILITIES };

@@ -35,6 +35,9 @@ const game = (): GameState => ({
   location: 'drowned-lantern',
   playSeconds: 754,
   flags: {},
+  quests: { 'lantern-night': { status: 'active', steps: [] } },
+  notes: [],
+  ink: {},
 });
 
 describe('save files', () => {
@@ -142,12 +145,12 @@ describe('game store', () => {
     useGame.setState({ screen: 'title', game: null, pendingParty: [] });
   });
 
-  it('makes a party of four, autosaves, and opens the party screen', () => {
+  it('makes a party of four, autosaves, and opens the tavern', () => {
     const g = useGame.getState();
     g.startNewGame(99);
     for (let i = 1; i <= 4; i++) useGame.getState().addHero(hero(i));
     const save = useGame.getState().beginAdventure();
-    expect(useGame.getState().screen).toBe('party');
+    expect(useGame.getState().screen).toBe('explore');
     expect(save.game.party).toHaveLength(4);
     expect(save.game.seed).toBe(99);
     expect(readSlot('autosave').save!.game.id).toBe(save.game.id);
@@ -175,7 +178,7 @@ describe('game store', () => {
 
   it('loads a save back into play', () => {
     useGame.getState().loadGame(makeSave(game()));
-    expect(useGame.getState()).toMatchObject({ screen: 'party', rngState: 42 });
+    expect(useGame.getState()).toMatchObject({ screen: 'explore', rngState: 42 });
   });
 });
 
@@ -208,6 +211,29 @@ describe('save version 1 → 2 (M4: spells, slots and resources)', () => {
       resourcesUsed: {},
       invocations: [],
     });
-    expect(r.ok && r.save.saveVersion).toBe(2);
+    expect(r.ok && r.save.saveVersion).toBe(3);
+  });
+});
+
+describe('save version 2 → 3 (M5: quests, notes, Ink state)', () => {
+  it('starts Lantern Night for a fresh party, and marks it done for a level-2 party', () => {
+    const { quests: _q, notes: _n, ink: _k, ...g } = game();
+    void [_q, _n, _k];
+    const party = g.party.map(({ choices: _c, ...h }) => (void _c, h));
+    const fresh = parseSave(
+      JSON.stringify({ saveVersion: 2, savedAt: 'x', game: { ...g, party } }),
+    );
+    expect(fresh.ok && fresh.save.game.quests).toEqual({
+      'lantern-night': { status: 'active', steps: [] },
+    });
+    const veteran = parseSave(
+      JSON.stringify({
+        saveVersion: 2,
+        savedAt: 'x',
+        game: { ...g, party: party.map((h) => ({ ...h, xp: 350, level: 2 })) },
+      }),
+    );
+    expect(veteran.ok && veteran.save.game.quests['lantern-night']!.status).toBe('done');
+    expect(veteran.ok && veteran.save.game.party[0]!.choices).toEqual({});
   });
 });

@@ -1,0 +1,52 @@
+{
+  "quests": [
+    {
+      "id": "lantern-night",
+      "title": "Lantern Night",
+      "kind": "main",
+      "act": 1,
+      "summary": "A wounded courier, a stolen letter, and three strangers who want it back.",
+      "xp": 275,
+      "steps": [
+        { "id": "talk-brannoc", "text": "Speak with Brannoc, the innkeeper" },
+        { "id": "tend-edric", "text": "See to the wounded courier (Medicine)" },
+        { "id": "secure-letter", "text": "Find out who wants the courier's letter" }
+      ],
+      "completeWhen": ["tend-edric", "secure-letter"],
+      "next": "old-mine"
+    },
+    {
+      "id": "old-mine",
+      "title": "The Old Mine",
+      "kind": "main",
+      "act": 1,
+      "summary": "Someone is digging in the old mine. The road there runs through goblin country.",
+      "xp": 0,
+      "steps": [
+        { "id": "road", "text": "Take the Ashford road toward the old mine (F2)" },
+        { "id": "warren", "text": "The goblin warren (arrives in Milestone M7)" }
+      ],
+      "completeWhen": ["warren"]
+    },
+    {
+      "id": "cellar",
+      "title": "Something in the Cellar",
+      "kind": "side",
+      "act": 1,
+      "summary": "Brannoc has heard scratching under the floorboards for a week.",
+      "xp": 300,
+      "steps": [
+        { "id": "start", "text": "Ask Brannoc about the scratching" },
+        { "id": "clear", "text": "Clear Brannoc's cellar (arrives in Milestone M7)" }
+      ],
+      "completeWhen": ["clear"]
+    }
+  ],
+  "awards": [
+    {
+      "id": "f1-strangers",
+      "xp": 25,
+      "reason": "Faced down the Grey Company (F1: talking past a fight is worth the same XP, D16)"
+    }
+  ]
+}

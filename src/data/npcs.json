@@ -1,0 +1,76 @@
+{
+  "verify": true,
+  "verifyNote": "Portraits for Brannoc come from docs/mockups/Dialogue.dc.html; the others are my own picks [inferred].",
+  "npcs": [
+    {
+      "id": "brannoc",
+      "name": "Brannoc Hale",
+      "title": "Innkeeper of the Drowned Lantern",
+      "portrait": {
+        "skin": "#b07a55",
+        "hair": "#8f8a84",
+        "eyes": "#6b4a2b",
+        "hairStyle": "short",
+        "beard": true,
+        "scar": false,
+        "cloth": "#6b4a2f"
+      }
+    },
+    {
+      "id": "edric",
+      "name": "Edric Hale",
+      "title": "Courier for Ashford Hall",
+      "portrait": {
+        "skin": "#d9a982",
+        "hair": "#7a4a2a",
+        "eyes": "#4a6fa5",
+        "hairStyle": "short",
+        "beard": false,
+        "scar": true,
+        "cloth": "#3d4f7a"
+      }
+    },
+    {
+      "id": "grey-company",
+      "name": "Grey Company bruisers",
+      "title": "Mercenaries for the Coinwright Guild",
+      "portrait": {
+        "skin": "#a06b48",
+        "hair": "#1e1712",
+        "eyes": "#6b4a2b",
+        "hairStyle": "bald",
+        "beard": true,
+        "scar": true,
+        "cloth": "#5a5f66"
+      }
+    },
+    {
+      "id": "hooded",
+      "name": "Hooded figure",
+      "title": "A stranger with a red-flamed lantern",
+      "portrait": {
+        "skin": "#d9a982",
+        "hair": "#1e1712",
+        "eyes": "#9a8a3a",
+        "hairStyle": "hood",
+        "beard": false,
+        "scar": false,
+        "cloth": "#2f2f36"
+      }
+    },
+    {
+      "id": "tavern",
+      "name": "The Drowned Lantern",
+      "title": "Ashford · Lantern Night",
+      "portrait": {
+        "skin": "#c99a74",
+        "hair": "#3b2a20",
+        "eyes": "#4a7a5a",
+        "hairStyle": "hood",
+        "beard": false,
+        "scar": false,
+        "cloth": "#5b402b"
+      }
+    }
+  ]
+}

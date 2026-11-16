@@ -5,6 +5,7 @@ import { getEncounter, parseMapForUi } from './combatUi';
 import { getClass, slotsLeft } from '../game/hero';
 import { useSettings } from '../game/settings';
 import { useGame } from '../game/store';
+import { canLevelUp } from '../rules';
 import './Combat.css';
 
 // DMG encounter multipliers (docs/Encounters_and_XP.md §3).
@@ -51,8 +52,8 @@ export function PrepareScreen() {
     <div className="prepare">
       <header className="combat-header">
         <h1>Prepare: {enc.name}</h1>
-        <button type="button" className="menu-secondary small-btn" onClick={() => goto('party')}>
-          Back to party
+        <button type="button" className="menu-secondary small-btn" onClick={() => goto('explore')}>
+          Back to the tavern
         </button>
       </header>
       <div className="prepare-body">
@@ -194,11 +195,14 @@ export function PrepareScreen() {
         </section>
 
         <section className="prepare-col" aria-label="Ready">
-          {below && (
+          {party.some((h) => canLevelUp(h)) && (
             <p className="notice">
-              Your heroes reach level 2 for this fight (the Lantern Night XP; the story arrives in
-              M5). HP rises by the fixed amount.
+              Some heroes have enough XP to level up. Go back to the tavern and use “Level up!” on
+              the party bar first.
             </p>
+          )}
+          {below && !party.some((h) => canLevelUp(h)) && (
+            <p className="notice">This fight is built for level-2 heroes. It will be hard.</p>
           )}
           {casters.length > 0 && (
             <>

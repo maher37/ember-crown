@@ -160,6 +160,12 @@ export function crossCheck(d: GameData): { errors: string[]; warnings: string[] 
     }
   }
 
+  // Quests chain to real quests.
+  const questIds = ids(d.quests);
+  for (const q of d.quests)
+    if (q.next && !questIds.has(q.next))
+      errors.push(`quest ${q.id}: unknown next quest "${q.next}"`);
+
   // Magic weapons point at real weapons.
   for (const i of d.magicItems) {
     const bw = i.baseWeapon;
