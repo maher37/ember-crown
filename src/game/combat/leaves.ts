@@ -1,6 +1,7 @@
 import type { Effect, LeafEffect } from '../../data/schemas/common';
 import {
   addCondition,
+  removeCondition,
   grantTempHp,
   roll,
   stabilize,
@@ -53,6 +54,8 @@ export interface LeafOpts {
   upcastDice?: string;
   /** Agonizing Blast etc.: flat bonus to this spell's damage. */
   damageBonus?: number;
+  /** The slot level the spell was cast with. */
+  slotLevel?: number;
 }
 
 export function rollLeafDamage(
@@ -263,6 +266,12 @@ export const HANDLED_SPECIALS = new Set([
   'multiple-rays',
   'save-or-prone',
   'swarm-half-damage',
+  'summoned-weapon',
+  'end-condition',
+  'aid',
+  'next-hit-bonus',
+  'mirror-image',
+  'ability-drain',
 ]);
 
 function applySpecial(
@@ -398,6 +407,100 @@ function applySpecial(
       });
       say(s, 'you', `${target.name} is warded by Sanctuary`);
       return;
+    case 'summoned-weapon': {
+      // PHB: Spiritual Weapon. Lasts 1 minute; +1d8 for every two slot levels above 2nd.
+      const extra = Math.floor(Math.max(0, (opts.slotLevel ?? 2) - 2) / 2);
+      source.effects = source.effects.filter((e) => e.tag !== 'spiritual-weapon');
+      addEffect(source, {
+        id: 'spiritual-weapon',
+        name: 'Spiritual Weapon',
+        sourceId: source.id,
+        tag: 'spiritual-weapon',
+        data: { dice: `${1 + extra}d8` },
+        expires: { turnOf: source.id, when: 'start', round: s.round + 10 },
+      });
+      return;
+    }
+    case 'end-condition': {
+      // PHB: Lesser Restoration. Ends blinded, deafened, paralyzed or poisoned.
+      const ended = (['paralyzed', 'poisoned', 'blinded', 'deafened'] as const).find((cid) =>
+        target.creature.conditions.some((x) => x.id === cid),
+      );
+      if (!ended) return void say(s, 'info', `${target.name} has nothing for ${name} to cure`);
+      target.creature = removeCondition(target.creature, ended);
+      target.effects = target.effects.filter((e) => e.data?.condition !== ended);
+      say(s, 'you', `${name} ends ${target.name}'s ${ended} condition`);
+      return;
+    }
+    case 'aid': {
+      // PHB: Aid. +5 maximum and current HP (+5 more per slot level above 2nd).
+      if (target.effects.some((e) => e.tag === 'aid')) return;
+      const amount = 5 * (1 + Math.max(0, (opts.slotLevel ?? 2) - 2));
+      addEffect(target, {
+        id: 'aid',
+        name: 'Aid',
+        sourceId: source.id,
+        tag: 'aid',
+        data: { amount },
+      });
+      target.creature = {
+        ...target.creature,
+        maxHp: target.creature.maxHp + amount,
+        hp: target.creature.dead ? 0 : target.creature.hp + amount,
+      };
+      say(s, 'you', `${target.name} is bolstered by Aid (+${amount} HP)`);
+      return;
+    }
+    case 'next-hit-bonus': {
+      // PHB: Branding Smite. The next weapon hit deals +2d6 radiant (+1d6 per slot level above 2nd).
+      const n = 2 + Math.max(0, (opts.slotLevel ?? 2) - 2);
+      addEffect(source, {
+        id: 'branding-smite',
+        name,
+        sourceId: source.id,
+        tag: 'next-hit',
+        concentration: opts.concentration,
+        data: { dice: `${n}d6`, type: 'radiant' },
+      });
+      say(s, 'you', `${source.name}'s weapon brands with light`);
+      return;
+    }
+    case 'mirror-image':
+      addEffect(target, {
+        id: 'mirror-image',
+        name: 'Mirror Image',
+        sourceId: source.id,
+        tag: 'mirror-image',
+        data: { images: 3 },
+        expires: { turnOf: source.id, when: 'start', round: s.round + 10 },
+      });
+      say(s, 'you', `Three illusory copies of ${target.name} shimmer into being`);
+      return;
+    case 'ability-drain': {
+      // MM: Shadow, Strength Drain. Strength drops by 1d4; at 0 the target dies.
+      // [inferred] It returns when the fight ends (RAW: after a short or long rest).
+      if (target.creature.dead) return;
+      const d = ctx.rng.die(4);
+      const str = Math.max(0, target.creature.abilities.str - d);
+      const lost = target.creature.abilities.str - str;
+      target.creature = { ...target.creature, abilities: { ...target.creature.abilities, str } };
+      const prev = target.effects.find((e) => e.tag === 'str-drain');
+      if (prev) prev.data = { amount: Number(prev.data?.amount ?? 0) + lost };
+      else
+        addEffect(target, {
+          id: 'str-drain',
+          name: 'Strength drained',
+          sourceId: source.id,
+          tag: 'str-drain',
+          data: { amount: lost },
+        });
+      say(s, 'dmg', `${target.name}'s Strength drains away: d4 (${d}) → Str ${str}`);
+      if (str === 0) {
+        target.creature = { ...target.creature, hp: 0, dead: true };
+        say(s, 'crit', `${target.name} fades into shadow and dies`);
+      }
+      return;
+    }
     case 'save-or-prone':
     case 'swarm-half-damage':
     case 'ignores-cover':

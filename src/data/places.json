@@ -47,6 +47,19 @@
       "desc": "Abandoned since the Varrows were driven out. Shadows move like a family at a dinner table."
     },
     {
+      "id": "ashwood",
+      "name": "The Ashwood",
+      "x": 222,
+      "y": 292,
+      "kind": "side",
+      "tag": "Act I · side quest",
+      "act": 1,
+      "region": "road",
+      "desc": "Old charcoal-burners' woods west of town. Old Wynn's granddaughter walked in here and didn't walk out.",
+      "verify": true,
+      "verifyNote": "Added in M7 for The Herbalist's Granddaughter ('track her through the Ashwood'); the map position is my pick [inferred]."
+    },
+    {
       "id": "steaming-cave",
       "name": "Steaming Cave",
       "x": 440,

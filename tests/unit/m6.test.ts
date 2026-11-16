@@ -65,6 +65,7 @@ function game(patch: Partial<GameState> = {}): GameState {
     clock: GAME_START,
     lastLongRest: null,
     letters: [],
+    inventory: {},
     ...patch,
   };
 }
@@ -269,7 +270,9 @@ describe('talk or fight (D16: same XP)', () => {
         success++;
         expect(g.party[0]!.xp).toBe(43);
         expect(g.location).toBe('mill');
-        expect(useGame.getState().screen).toBe('map');
+        // M7: arriving opens the place's scene.
+        expect(useGame.getState().screen).toBe('dialogue');
+        expect(useGame.getState().conversation!.storyId).toBe('mill');
       } else {
         failure++;
         expect(r.text).toMatch(/Persuasion check: d20 \(\d+\).*FAIL\. "Unbelievers!"/);

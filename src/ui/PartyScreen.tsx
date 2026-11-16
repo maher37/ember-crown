@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { getBackground, getClass, getSpecies, skillBonus, type Hero } from '../game/hero';
 import { SLOT_NAMES, type SlotId } from '../game/save';
 import { useGame } from '../game/store';
-import { ABILITIES, abilityModifier } from '../rules';
+import { ABILITIES, abilityModifier, canLevelUp } from '../rules';
 import { CLASS_COPY, ELF_EARS, signed, SKILL_NAMES } from './creatorCopy';
 import './PartyScreen.css';
 import { Portrait } from './Portrait';
@@ -13,7 +13,7 @@ import { downloadSave } from './saveFiles';
  * until exploration arrives (M5).
  */
 export function PartyScreen() {
-  const { game, saveTo, goto } = useGame();
+  const { game, saveTo, goto, goHome, openLevelUp } = useGame();
   const [message, setMessage] = useState('');
   if (!game) return null;
 
@@ -31,12 +31,27 @@ export function PartyScreen() {
       <header className="party-header">
         <div>
           <h1>Party sheet</h1>
-          <p className="muted">The Drowned Lantern, Ashford · Act I: Lantern Night</p>
+          <p className="muted">
+            {game.location === 'drowned-lantern' ? 'The Drowned Lantern, Ashford' : 'On the road'} ·
+            Act {['I', 'II', 'III'][game.act - 1]}
+          </p>
         </div>
         <div className="party-actions">
-          <button type="button" className="menu-primary small-btn" onClick={() => goto('explore')}>
-            Back to the tavern
+          <button type="button" className="menu-primary small-btn" onClick={goHome}>
+            {game.location === 'drowned-lantern' ? 'Back to the tavern' : 'Back to the map'}
           </button>
+          {game.party
+            .filter((h) => canLevelUp(h))
+            .map((h) => (
+              <button
+                key={h.id}
+                type="button"
+                className="menu-primary small-btn"
+                onClick={() => openLevelUp(h.id)}
+              >
+                Level up {h.name.split(' ')[0]}!
+              </button>
+            ))}
           <button type="button" className="menu-secondary small-btn" onClick={() => save('slot1')}>
             Save to Slot 1
           </button>

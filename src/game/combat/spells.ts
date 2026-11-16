@@ -2,8 +2,8 @@ import { spells } from '../../data';
 import type { Effect, LeafEffect } from '../../data/schemas/common';
 import type { Spell } from '../../data/schemas/spell';
 import { getMonster } from '../creatures';
-import { getClass, slotsLeft, spellNumbers } from '../hero';
-import { attackRoll, roll, startConcentration, type DiceRoll } from '../../rules';
+import { getClass, resourceLeft, slotsLeft, spellNumbers } from '../hero';
+import { abilityModifier, attackRoll, roll, startConcentration, type DiceRoll } from '../../rules';
 import {
   classLevel,
   combatSave,
@@ -13,10 +13,15 @@ import {
   heroOf,
   say,
   sayAll,
+  spendResource,
   spendSlot,
   type Ctx,
 } from './core';
 import {
+  blocksMovement,
+  inBounds,
+  occupant,
+  terrainAt,
   CELL_FEET,
   conscious,
   coneCells,
@@ -56,6 +61,8 @@ export function combatReady(sp: Spell): boolean {
 
 export type Targeting =
   | { kind: 'self' }
+  /** Misty Step: pick an empty square. */
+  | { kind: 'point'; rangeFeet: number }
   | { kind: 'creatures'; count: number; rangeFeet: number; repeat: boolean }
   | {
       kind: 'area';
@@ -68,7 +75,46 @@ export function rangeFeet(sp: Spell): number {
   return sp.range === 'self' ? 0 : sp.range === 'touch' ? CELL_FEET : sp.range.feet;
 }
 
-export function targeting(sp: Spell, slotLevel: number): Targeting {
+export type Metamagic = 'quickened' | 'twinned' | 'careful' | 'distant';
+export const METAMAGIC_NAMES: Record<Metamagic, string> = {
+  quickened: 'Quickened',
+  twinned: 'Twinned',
+  careful: 'Careful',
+  distant: 'Distant',
+};
+
+/** PHB: Metamagic costs. Twinned costs the spell's level (1 for a cantrip). */
+export function metamagicCost(slotLevel: number, mm: Metamagic): number {
+  if (mm === 'quickened') return 2;
+  if (mm === 'twinned') return Math.max(1, slotLevel);
+  return 1;
+}
+
+/** Does this Metamagic option make sense for this spell? Null if yes, else why not. */
+export function metamagicFits(sp: Spell, slotLevel: number, mm: Metamagic): string | null {
+  const t = targeting(sp, slotLevel);
+  if (mm === 'quickened') return sp.castingTime === 'action' ? null : 'only for 1-action spells';
+  if (mm === 'twinned')
+    return t.kind === 'creatures' && t.count === 1 && !t.repeat && sp.range !== 'self'
+      ? null
+      : 'only for single-target spells';
+  if (mm === 'careful')
+    return t.kind === 'area' && sp.effects.some((e) => e.type === 'save')
+      ? null
+      : 'only for area spells with a save';
+  return sp.range === 'self' ? 'only for spells with a range' : null;
+}
+
+export function targeting(sp: Spell, slotLevel: number, mm?: Metamagic): Targeting {
+  const t = baseTargeting(sp, slotLevel);
+  // PHB: Distant Spell doubles the range (touch becomes 30 ft); Twinned adds a second target.
+  if (mm === 'distant' && t.kind !== 'self')
+    return { ...t, rangeFeet: sp.range === 'touch' ? 30 : t.rangeFeet * 2 };
+  if (mm === 'twinned' && t.kind === 'creatures') return { ...t, count: t.count + 1 };
+  return t;
+}
+
+function baseTargeting(sp: Spell, slotLevel: number): Targeting {
   const extra = Math.max(0, slotLevel - sp.level);
   if (sp.area)
     return { kind: 'area', shape: sp.area.shape, size: sp.area.size, rangeFeet: rangeFeet(sp) };
@@ -76,6 +122,8 @@ export function targeting(sp: Spell, slotLevel: number): Targeting {
     return { kind: 'creatures', count: 3 + extra, rangeFeet: 120, repeat: true };
   if (sp.id === 'scorching-ray')
     return { kind: 'creatures', count: 3 + extra, rangeFeet: 120, repeat: true };
+  const tele = sp.effects.find((e) => e.type === 'move' && e.kind === 'teleport');
+  if (tele && tele.type === 'move') return { kind: 'point', rangeFeet: tele.feet ?? 30 };
   if (sp.range === 'self') return { kind: 'self' };
   const count = (sp.targets ?? 1) + (sp.upcast?.targetsPerLevel ?? 0) * extra;
   return { kind: 'creatures', count, rangeFeet: rangeFeet(sp), repeat: false };
@@ -90,7 +138,7 @@ export interface SpellChoice {
 }
 
 /** The spells a hero (or caster) could cast on this turn. */
-export function spellChoices(c: Combatant): SpellChoice[] {
+export function spellChoices(c: Combatant, mm?: Metamagic): SpellChoice[] {
   const h = heroOf(c);
   if (!h || c.wildShape) return [];
   const left = slotsLeft(h);
@@ -102,13 +150,23 @@ export function spellChoices(c: Combatant): SpellChoice[] {
       sp.level === 0 ? [0] : left.flatMap((n, i) => (n > 0 && i + 1 >= sp.level ? [i + 1] : []));
     let blocked: string | undefined;
     const t = c.turn;
-    const isBonus = sp.castingTime === 'bonus';
+    const isBonus =
+      sp.castingTime === 'bonus' || (mm === 'quickened' && sp.castingTime === 'action');
     if (isBonus ? t.bonusUsed : t.actionUsed && t.extraActions === 0)
       blocked = isBonus ? 'bonus action used' : 'action used';
     // PHB: Bonus Action casting. After a bonus-action spell, only a cantrip with a casting time of 1 action.
     else if (!isBonus && t.bonusSpellCast && sp.level > 0)
       blocked = 'only a cantrip after a bonus-action spell';
-    else if (!levels.length) blocked = 'no spell slots left';
+    else if (isBonus && t.actionSpellCast) blocked = 'not after a levelled action spell';
+    else if (mm) {
+      const h2 = heroOf(c)!;
+      const lvl0 = sp.level === 0 ? 0 : (levels[0] ?? sp.level);
+      blocked =
+        metamagicFits(sp, lvl0, mm) ??
+        (resourceLeft(h2, 'sorcery-points') < metamagicCost(lvl0, mm)
+          ? 'not enough sorcery points'
+          : undefined);
+    } else if (!levels.length) blocked = 'no spell slots left';
     return [{ spell: sp, levels, blocked }];
   });
 }
@@ -162,16 +220,31 @@ export interface CastRequest {
   slotLevel: number;
   targetIds?: string[];
   point?: Pos;
+  /** Sorcerer Metamagic applied to this cast. */
+  metamagic?: Metamagic;
 }
 
 /** Check a cast before doing it. Null if fine, else the reason. */
 export function castProblem(ctx: Ctx, caster: Combatant, req: CastRequest): string | null {
-  const choice = spellChoices(caster).find((c) => c.spell.id === req.spellId);
+  const choice = spellChoices(caster, req.metamagic).find((c) => c.spell.id === req.spellId);
   if (!choice) return 'not a spell you can cast in combat';
   if (choice.blocked) return choice.blocked;
   if (!choice.levels.includes(req.slotLevel)) return 'no slot of that level';
   const sp = choice.spell;
-  const t = targeting(sp, req.slotLevel);
+  const t = targeting(sp, req.slotLevel, req.metamagic);
+  if (req.metamagic) {
+    const h = heroOf(caster);
+    if (!h?.choices['metamagic']?.includes(req.metamagic)) return "you don't know that Metamagic";
+    const why = metamagicFits(sp, req.slotLevel, req.metamagic);
+    if (why) return why;
+    if (resourceLeft(h, 'sorcery-points') < metamagicCost(req.slotLevel, req.metamagic))
+      return 'not enough sorcery points';
+    if (
+      req.metamagic === 'twinned' &&
+      new Set(req.targetIds ?? []).size !== (req.targetIds ?? []).length
+    )
+      return 'twin two different creatures';
+  }
   if (t.kind === 'creatures') {
     const ids = req.targetIds ?? [];
     if (!ids.length) return 'choose a target';
@@ -183,6 +256,13 @@ export function castProblem(ctx: Ctx, caster: Combatant, req: CastRequest): stri
         return `${target.name} is out of range`;
       if (!hasLineOfSight(ctx.s.map, caster.pos, target.pos)) return `can't see ${target.name}`;
     }
+  }
+  if (t.kind === 'point') {
+    const p = req.point;
+    if (!p) return 'choose where to go';
+    if (distanceFeet(caster.pos, p) > t.rangeFeet) return 'out of range';
+    if (!hasLineOfSight(ctx.s.map, caster.pos, p)) return 'no line of sight';
+    if (!isOpen(ctx.s, p)) return 'that space is not free';
   }
   if (t.kind === 'area' && sp.range !== 'self') {
     if (!req.point) return 'choose where to aim';
@@ -208,20 +288,24 @@ export function castSpell(ctx: Ctx, caster: Combatant, req: CastRequest): void {
   const lvl = req.slotLevel;
   const t = caster.turn;
 
-  // Action economy and the slot.
-  if (sp.castingTime === 'bonus') {
+  // Action economy and the slot. PHB: Quickened Spell turns a 1-action spell into a bonus action.
+  const mm = req.metamagic;
+  const castingTime = mm === 'quickened' && sp.castingTime === 'action' ? 'bonus' : sp.castingTime;
+  if (castingTime === 'bonus') {
     t.bonusUsed = true;
     if (sp.level > 0) t.bonusSpellCast = true;
-  } else if (sp.castingTime === 'action') {
+  } else if (castingTime === 'action') {
     if (t.actionUsed) t.extraActions -= 1;
     t.actionUsed = true;
+    if (sp.level > 0) t.actionSpellCast = true;
   }
+  if (mm) spendResource(caster, 'sorcery-points', metamagicCost(lvl, mm));
   if (lvl > 0) spendSlot(caster, lvl);
   caster.effects = caster.effects.filter((e) => e.tag !== 'hidden');
   say(
     s,
     caster.side === 'party' ? 'you' : 'foe',
-    `${caster.name} casts ${sp.name}${lvl > sp.level ? ` at level ${lvl}` : ''}`,
+    `${caster.name} casts ${sp.name}${lvl > sp.level ? ` at level ${lvl}` : ''}${mm ? ` (${METAMAGIC_NAMES[mm]} Spell)` : ''}`,
   );
 
   // PHB: Concentration. A new concentration spell ends the old one.
@@ -251,13 +335,24 @@ export function castSpell(ctx: Ctx, caster: Combatant, req: CastRequest): void {
     healBonus,
     upcastDice,
     damageBonus,
+    slotLevel: lvl,
   };
 
   if (sp.id === 'magic-missile') return magicMissile(ctx, caster, req.targetIds ?? [], opts);
   if (specialsIn(effects).includes('hp-pool-condition'))
     return hpPool(ctx, caster, sp, req, upcastDice);
 
-  const tg = targeting(sp, lvl);
+  const tg = targeting(sp, lvl, mm);
+  // PHB: Misty Step. Teleport to an unoccupied space you can see.
+  if (tg.kind === 'point') {
+    caster.pos = req.point!;
+    say(
+      s,
+      caster.side === 'party' ? 'you' : 'foe',
+      `${caster.name} vanishes in silver mist and reappears`,
+    );
+    return;
+  }
   let targets: Combatant[];
   if (tg.kind === 'self') targets = [caster];
   else if (tg.kind === 'creatures')
@@ -276,6 +371,13 @@ export function castSpell(ctx: Ctx, caster: Combatant, req: CastRequest): void {
     }
     if (!targets.length) say(s, 'info', `${sp.name} catches no one`);
   }
+  // PHB: Careful Spell. Up to Cha modifier (min 1) allies automatically succeed on the save.
+  const careful = new Set<string>();
+  if (mm === 'careful' && h)
+    for (const c of targets
+      .filter((x) => x.side === caster.side)
+      .slice(0, Math.max(1, abilityModifier(h.abilities.cha))))
+      careful.add(c.id);
 
   // PHB: Damage rolls for an area are rolled once for every creature in it.
   const preRolled = new Map<LeafEffect, DiceRoll>();
@@ -308,11 +410,16 @@ export function castSpell(ctx: Ctx, caster: Combatant, req: CastRequest): void {
             ? 'none'
             : coverOf(ctx, caster, target);
         const condition = e.onFail.find((x) => x.type === 'condition');
-        const res = combatSave(ctx, target, e.ability, nums.dc, {
-          magic: true,
-          cover,
-          against: condition?.type === 'condition' ? condition.condition : undefined,
-        });
+        const res = careful.has(target.id)
+          ? (say(s, 'you', `${target.name} is spared by Careful Spell (automatic success)`),
+            {
+              success: true,
+            })
+          : combatSave(ctx, target, e.ability, nums.dc, {
+              magic: true,
+              cover,
+              against: condition?.type === 'condition' ? condition.condition : undefined,
+            });
         const leafOpts = { ...opts, preRolled };
         if (!res.success) for (const x of e.onFail) applyLeaf(ctx, caster, target, x, leafOpts);
         else if (e.onSuccess === 'half')
@@ -322,6 +429,48 @@ export function castSpell(ctx: Ctx, caster: Combatant, req: CastRequest): void {
       } else applyLeaf(ctx, caster, target, e, { ...opts, preRolled });
     }
   }
+}
+
+/** An empty, walkable square (no creature, no wall). */
+function isOpen(s: Ctx['s'], p: Pos): boolean {
+  if (!inBounds(s.map, p) || blocksMovement(terrainAt(s.map, p))) return false;
+  return !occupant(s, p);
+}
+
+/** PHB: Spiritual Weapon. A bonus action: the weapon strikes (melee spell attack, 1d8 + modifier force). */
+export function spiritAttack(ctx: Ctx, caster: Combatant, target: Combatant): void {
+  const { s, rng } = ctx;
+  const eff = caster.effects.find((e) => e.tag === 'spiritual-weapon');
+  const h = heroOf(caster);
+  const nums = h ? spellNumbers(h)! : monsterSpellNumbers(caster);
+  caster.turn.bonusUsed = true;
+  const r = attackRoll(caster.creature, { ...target.creature, ac: currentAc(target) }, rng, {
+    attackBonus: nums.attack,
+    melee: true,
+    within5ft: true,
+    label: 'Spiritual Weapon',
+  });
+  sayAll(s, [r.log], caster);
+  if (r.hit)
+    applyLeaf(
+      ctx,
+      caster,
+      target,
+      {
+        type: 'damage',
+        dice: String(eff?.data?.dice ?? '1d8'),
+        damageType: 'force',
+        addModifier: true,
+      },
+      { mod: nums.mod, spellName: 'Spiritual Weapon' },
+      r.critical,
+    );
+}
+
+/** The spell numbers for any caster (hero or monster). */
+export function casterNumbers(c: Combatant) {
+  const h = heroOf(c);
+  return h ? spellNumbers(h)! : monsterSpellNumbers(c);
 }
 
 function coverOf(ctx: Ctx, from: Combatant, to: Combatant): 'none' | 'half' {

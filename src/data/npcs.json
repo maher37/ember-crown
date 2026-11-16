@@ -71,6 +71,167 @@
         "scar": false,
         "cloth": "#5b402b"
       }
+    },
+    {
+      "id": "wix",
+      "name": "Wix",
+      "title": "Goblin scout · very hungry",
+      "portrait": {
+        "skin": "#8a9a4a",
+        "hair": "#2b2418",
+        "eyes": "#d9a03a",
+        "hairStyle": "bald",
+        "beard": false,
+        "scar": false,
+        "cloth": "#6b5a3a"
+      }
+    },
+    {
+      "id": "grisk",
+      "name": "Grisk Two-Teeth",
+      "title": "Hobgoblin chief of the warren",
+      "portrait": {
+        "skin": "#b0603a",
+        "hair": "#1e1712",
+        "eyes": "#e0b040",
+        "hairStyle": "long",
+        "beard": false,
+        "scar": true,
+        "cloth": "#5a2a1f"
+      }
+    },
+    {
+      "id": "ulric",
+      "name": "Brother Ulric",
+      "title": "Foreman of the Hollow Star",
+      "portrait": {
+        "skin": "#c99a74",
+        "hair": "#9a948c",
+        "eyes": "#6b4a2b",
+        "hairStyle": "bald",
+        "beard": true,
+        "scar": true,
+        "cloth": "#4a3a5a"
+      }
+    },
+    {
+      "id": "maelis",
+      "name": "Maelis Varrow",
+      "title": "The Lamplighter",
+      "portrait": {
+        "skin": "#e0b896",
+        "hair": "#3a2418",
+        "eyes": "#c88a3a",
+        "hairStyle": "long",
+        "beard": false,
+        "scar": false,
+        "cloth": "#2f3a4f"
+      }
+    },
+    {
+      "id": "wynn",
+      "name": "Old Wynn",
+      "title": "Ashford's herbalist",
+      "portrait": {
+        "skin": "#d9b08c",
+        "hair": "#e8e4dc",
+        "eyes": "#5a7a4a",
+        "hairStyle": "hood",
+        "beard": false,
+        "scar": false,
+        "cloth": "#5a6b3a"
+      }
+    },
+    {
+      "id": "tamsin",
+      "name": "Tamsin",
+      "title": "Old Wynn's granddaughter",
+      "portrait": {
+        "skin": "#e0b896",
+        "hair": "#8a4a2a",
+        "eyes": "#5a7a4a",
+        "hairStyle": "long",
+        "beard": false,
+        "scar": false,
+        "cloth": "#4a3a5a"
+      }
+    },
+    {
+      "id": "lysa",
+      "name": "Lysa Varrow",
+      "title": "A ghost in the mill",
+      "portrait": {
+        "skin": "#d8dde6",
+        "hair": "#c3ccd9",
+        "eyes": "#c88a3a",
+        "hairStyle": "long",
+        "beard": false,
+        "scar": false,
+        "cloth": "#9aa6b8"
+      }
+    },
+    {
+      "id": "miners",
+      "name": "The missing miners",
+      "title": "Ashford diggers",
+      "portrait": {
+        "skin": "#b07a55",
+        "hair": "#4a3a2a",
+        "eyes": "#6b4a2b",
+        "hairStyle": "short",
+        "beard": true,
+        "scar": false,
+        "cloth": "#5a5a4a"
+      }
+    },
+    {
+      "id": "diggers",
+      "name": "Diggers of the Hollow Star",
+      "title": "Cult labour at the mine mouth",
+      "portrait": {
+        "skin": "#a06b48",
+        "hair": "#2b2418",
+        "eyes": "#6b4a2b",
+        "hairStyle": "hood",
+        "beard": true,
+        "scar": false,
+        "cloth": "#4a3a5a"
+      }
+    },
+    {
+      "id": "road",
+      "name": "The Ashford road",
+      "title": "Along the Grayflow"
+    },
+    {
+      "id": "warren",
+      "name": "The goblin warren",
+      "title": "East of the river road"
+    },
+    {
+      "id": "mine",
+      "name": "The Old Mine",
+      "title": "Varrow's old diggings"
+    },
+    {
+      "id": "mill",
+      "name": "Varrow's Mill",
+      "title": "Abandoned ten years"
+    },
+    {
+      "id": "ashwood",
+      "name": "The Ashwood",
+      "title": "Charcoal-burners' woods"
+    },
+    {
+      "id": "cave",
+      "name": "The Steaming Cave",
+      "title": "Above the Old Mine"
+    },
+    {
+      "id": "cellar",
+      "name": "The cellar",
+      "title": "Under the Drowned Lantern"
     }
   ]
 }

@@ -4,7 +4,7 @@
 
 Each line was entered from memory or is marked ⚠ in the design docs. Check it against your PDFs. When a line is right (or fixed), remove its `verify` and `verifyNote` from the JSON and run `npm run verify-list` again.
 
-**252 items to check.**
+**265 items to check.**
 
 ## species.json
 
@@ -187,6 +187,7 @@ Each line was entered from memory or is marked ⚠ in the design docs. Check it 
 ## monsters.json
 
 - [ ] **monsters › Bandit**: AC, HP, speed and CR from the MM PDF (✅). Ability scores, hit dice and attack lines from memory: check them.
+- [ ] **monsters › Grey Company bruiser**: Bandit stats (Encounters_and_XP F1: 'bandit stats, fists and clubs'); club and bottle attacks are my own [inferred].
 - [ ] **monsters › Bandit captain**: AC, HP, speed and CR from the MM PDF (✅). Ability scores, hit dice and attack lines from memory: check them.
 - [ ] **monsters › Thug**: AC, HP, speed and CR from the MM PDF (✅). Ability scores, hit dice and attack lines from memory: check them.
 - [ ] **monsters › Scout**: AC, HP, speed and CR from the MM PDF (✅). Ability scores, hit dice and attack lines from memory: check them.
@@ -277,6 +278,17 @@ Each line was entered from memory or is marked ⚠ in the design docs. Check it 
 ## encounters.json
 
 - [ ] **(whole file)**: Map layout, positions and the per-difficulty enemy lists come from docs/mockups/Combat.dc.html; terrain types (trees block, brush is difficult terrain and a hiding spot, boulders give half cover) are my design [inferred].
+- [ ] **encounters › Brawl at the Drowned Lantern**: Encounters_and_XP F1: 4 bruisers on Medium. Easy −1 / Hard +1 is my pick [inferred].
+- [ ] **encounters › The warren gate**: Encounters_and_XP F3: 2 wolves + 2 goblins on Medium. Easy/Hard changes are my pick [inferred].
+- [ ] **encounters › Grisk's hall**: Encounters_and_XP F4: Grisk (hobgoblin) + 3 goblins on Medium. Easy/Hard changes are my pick [inferred].
+- [ ] **encounters › The mine mouth**: Encounters_and_XP F5: 4 cultists + 1 thug on Medium. Easy/Hard changes are my pick [inferred].
+- [ ] **encounters › The Deep Seam**: Encounters_and_XP F6: 4 giant centipedes on Medium. Easy/Hard changes are my pick [inferred].
+- [ ] **encounters › The sunken shrine**: Encounters_and_XP F7: Ulric + 4 skeletons (Hard at L3). Parley DCs (15, 11 with Brannoc's name) are my pick [inferred].
+- [ ] **encounters › Brannoc's cellar**: Encounters_and_XP side quests: 2 swarms of rats + 4 giant rats on Medium. Easy/Hard changes are my pick [inferred].
+- [ ] **encounters › Wolves in the Ashwood**: Encounters_and_XP side quests: 3 wolves (Easy at L2). Easy/Hard changes are my pick [inferred].
+- [ ] **encounters › Shadows in the mill**: Encounters_and_XP side quests: 3 shadows (Hard at L2). Easy/Hard changes are my pick [inferred].
+- [ ] **encounters › The luck-stone shrine**: Encounters_and_XP side quests: hobgoblin + 2 goblins on Medium. Easy/Hard changes are my pick [inferred].
+- [ ] **encounters › Scald**: Items.md Elites: red dragon wyrmling (275 XP/PC bonus). One wyrmling on every difficulty [inferred].
 - [ ] **encounters › Starving wolves**: Monsters and raw XP from Encounters_and_XP.md §5b; XP per character = raw ÷ 4 (§3). Easy removes one enemy and Hard adds one [inferred, D9 says Easy/Hard add or remove enemies]; map and positions are mine [inferred].
 - [ ] **encounters › Goblin foragers**: Monsters and raw XP from Encounters_and_XP.md §5b; XP per character = raw ÷ 4 (§3). Easy removes one enemy and Hard adds one [inferred, D9 says Easy/Hard add or remove enemies]; map and positions are mine [inferred].
 - [ ] **encounters › River-road bandits**: Monsters and raw XP from Encounters_and_XP.md §5b; XP per character = raw ÷ 4 (§3). Easy removes one enemy and Hard adds one [inferred, D9 says Easy/Hard add or remove enemies]; map and positions are mine [inferred].
@@ -296,3 +308,4 @@ Each line was entered from memory or is marked ⚠ in the design docs. Check it 
 ## places.json
 
 - [ ] **(whole file)**: Positions, text and the travel-time formula (distance ÷ 32 hours) come from docs/mockups/WorldMap.dc.html; the formula itself is a mockup choice, not a rule.
+- [ ] **places › The Ashwood**: Added in M7 for The Herbalist's Granddaughter ('track her through the Ashwood'); the map position is my pick [inferred].

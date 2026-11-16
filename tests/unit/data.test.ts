@@ -242,6 +242,7 @@ describe('monsters, foes and items', () => {
     expect(monsters.map((m) => m.id).sort()).toEqual(
       [
         'bandit',
+        'grey-bruiser',
         'bandit-captain',
         'thug',
         'scout',

@@ -110,32 +110,18 @@ describe('level-1 hit points', () => {
 
 // PHB: Armor and Shields, Unarmored Defense, Draconic Resilience.
 describe('armor class', () => {
-  const none = { armor: null, shield: false, weapons: [] };
+  const none = { armor: null, shield: false };
   const a = s(16, 14, 15, 10, 16, 10); // Dex +2, Con +2, Wis +3
   it('chain mail 16 + shield 2, Defense +1', () => {
-    expect(computeAc('fighter', a, { armor: 'chain-mail', shield: true, weapons: [] }, null)).toBe(
-      18,
-    );
-    expect(
-      computeAc('fighter', a, { armor: 'chain-mail', shield: true, weapons: [] }, 'defense'),
-    ).toBe(19);
+    expect(computeAc('fighter', a, { armor: 'chain-mail', shield: true }, null)).toBe(18);
+    expect(computeAc('fighter', a, { armor: 'chain-mail', shield: true }, 'defense')).toBe(19);
   });
   it('light armor adds all of Dex; medium at most 2', () => {
     expect(
-      computeAc(
-        'rogue',
-        s(10, 18, 10, 10, 10, 10),
-        { armor: 'leather', shield: false, weapons: [] },
-        null,
-      ),
+      computeAc('rogue', s(10, 18, 10, 10, 10, 10), { armor: 'leather', shield: false }, null),
     ).toBe(15);
     expect(
-      computeAc(
-        'ranger',
-        s(10, 18, 10, 10, 10, 10),
-        { armor: 'scale-mail', shield: false, weapons: [] },
-        null,
-      ),
+      computeAc('ranger', s(10, 18, 10, 10, 10, 10), { armor: 'scale-mail', shield: false }, null),
     ).toBe(16);
   });
   it('unarmored: 10 + Dex; barbarian adds Con; monk adds Wis; draconic sorcerer 13 + Dex', () => {

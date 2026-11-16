@@ -8,9 +8,18 @@
       "summary": "A wounded courier, a stolen letter, and three strangers who want it back.",
       "xp": 275,
       "steps": [
-        { "id": "talk-brannoc", "text": "Speak with Brannoc, the innkeeper" },
-        { "id": "tend-edric", "text": "See to the wounded courier (Medicine)" },
-        { "id": "secure-letter", "text": "Find out who wants the courier's letter" }
+        {
+          "id": "talk-brannoc",
+          "text": "Speak with Brannoc, the innkeeper"
+        },
+        {
+          "id": "tend-edric",
+          "text": "See to the wounded courier (Medicine)"
+        },
+        {
+          "id": "secure-letter",
+          "text": "Find out who wants the courier's letter"
+        }
       ],
       "completeWhen": ["tend-edric", "secure-letter"],
       "next": "old-mine"
@@ -20,13 +29,47 @@
       "title": "The Old Mine",
       "kind": "main",
       "act": 1,
-      "summary": "Someone is digging in the old mine. The road there runs through goblin country.",
-      "xp": 0,
+      "summary": "Someone is digging in the old mine. The road there runs through goblin country, and Grisk Two-Teeth holds the missing miners.",
+      "xp": 300,
       "steps": [
-        { "id": "road", "text": "Take the Ashford road toward the old mine (F2)" },
-        { "id": "warren", "text": "The goblin warren (arrives in Milestone M7)" }
+        {
+          "id": "road",
+          "text": "Take the Ashford road toward the old mine (F2)"
+        },
+        {
+          "id": "warren-gate",
+          "text": "Get past the goblin warren's gate (F3)"
+        },
+        {
+          "id": "grisk",
+          "text": "Deal with Grisk Two-Teeth (F4: fight, sneak or trade)"
+        },
+        {
+          "id": "miners",
+          "text": "Bring the missing miners out of the warren"
+        },
+        {
+          "id": "mine-mouth",
+          "text": "Get past the diggers at the mine mouth (F5)"
+        },
+        {
+          "id": "deep-seam",
+          "text": "Cross the Deep Seam (F6)"
+        },
+        {
+          "id": "halls",
+          "text": "Find the way into the old Ammarindar halls"
+        },
+        {
+          "id": "shrine",
+          "text": "Face Brother Ulric in the sunken shrine (F7)"
+        },
+        {
+          "id": "maelis",
+          "text": "Climb back to the mine mouth with the shard"
+        }
       ],
-      "completeWhen": ["warren"]
+      "completeWhen": ["maelis"]
     },
     {
       "id": "cellar",
@@ -34,12 +77,91 @@
       "kind": "side",
       "act": 1,
       "summary": "Brannoc has heard scratching under the floorboards for a week.",
+      "xp": 250,
+      "steps": [
+        {
+          "id": "start",
+          "text": "Ask Brannoc about the scratching"
+        },
+        {
+          "id": "clear",
+          "text": "Clear Brannoc's cellar"
+        },
+        {
+          "id": "tunnel",
+          "text": "Follow the old tunnel under the cellar"
+        }
+      ],
+      "completeWhen": ["tunnel"]
+    },
+    {
+      "id": "herbalist",
+      "title": "The Herbalist's Granddaughter",
+      "kind": "side",
+      "act": 1,
+      "summary": "Old Wynn's granddaughter Tamsin has gone into the Ashwood after the Hollow Star's recruiters.",
+      "xp": 350,
+      "steps": [
+        {
+          "id": "plea",
+          "text": "Hear Old Wynn out at the Drowned Lantern"
+        },
+        {
+          "id": "track",
+          "text": "Track Tamsin through the Ashwood"
+        },
+        {
+          "id": "camp",
+          "text": "Find the recruiters' camp: bring Tamsin home, or let her choose"
+        }
+      ],
+      "completeWhen": ["camp"]
+    },
+    {
+      "id": "mill",
+      "title": "The Mill at Night",
+      "kind": "side",
+      "act": 1,
+      "summary": "Shadows move inside Varrow's Mill like a family sitting down to dinner.",
       "xp": 300,
       "steps": [
-        { "id": "start", "text": "Ask Brannoc about the scratching" },
-        { "id": "clear", "text": "Clear Brannoc's cellar (arrives in Milestone M7)" }
+        {
+          "id": "investigate",
+          "text": "Investigate Varrow's Mill after dark"
+        },
+        {
+          "id": "shadows",
+          "text": "Drive out the shadows"
+        },
+        {
+          "id": "rest",
+          "text": "Find Lysa Varrow's locket and lay her ghost to rest"
+        }
       ],
-      "completeWhen": ["clear"]
+      "completeWhen": ["rest"]
+    },
+    {
+      "id": "wix",
+      "title": "The Goblin Who Stayed",
+      "kind": "side",
+      "act": 1,
+      "summary": "A goblin scout named Wix owes you his life, and he has opinions about pie.",
+      "xp": 350,
+      "steps": [
+        {
+          "id": "spare",
+          "text": "Spare the goblin scout on the road"
+        },
+        {
+          "id": "pies",
+          "text": "Settle the matter of the stolen pies with Brannoc"
+        },
+        {
+          "id": "luck-stone",
+          "text": "Bring Wix's clan luck-stone out of the warren"
+        }
+      ],
+      "completeWhen": ["luck-stone"]
     }
   ],
   "awards": [
@@ -47,6 +169,56 @@
       "id": "f1-strangers",
       "xp": 25,
       "reason": "Faced down the Grey Company (F1: talking past a fight is worth the same XP, D16)"
+    },
+    {
+      "id": "miners-rescued",
+      "xp": 200,
+      "reason": "Rescued the miners from the goblin warren"
+    },
+    {
+      "id": "ammarindar-halls",
+      "xp": 150,
+      "reason": "Found the way into the old Ammarindar halls"
+    },
+    {
+      "id": "f3-sneak",
+      "xp": 50,
+      "reason": "Slipped past the warren gate (F3: avoiding a fight is worth the same XP, D16)"
+    },
+    {
+      "id": "f4-trade",
+      "xp": 62,
+      "reason": "Traded with Grisk instead of fighting (F4, D16)"
+    },
+    {
+      "id": "f5-talk",
+      "xp": 50,
+      "reason": "Talked the diggers at the mine mouth down (F5, D16)"
+    },
+    {
+      "id": "luck-stone-sneak",
+      "xp": 50,
+      "reason": "Stole the luck-stone back without a fight (D16)"
+    },
+    {
+      "id": "discover-tunnel",
+      "xp": 10,
+      "reason": "Discovery: the old dwarf tunnel under the Lantern"
+    },
+    {
+      "id": "discover-breathing",
+      "xp": 10,
+      "reason": "Discovery: Wix's warning that the mountain is breathing"
+    },
+    {
+      "id": "discover-runes",
+      "xp": 10,
+      "reason": "Discovery: read the Ammarindar runes in the halls"
+    },
+    {
+      "id": "discover-scald",
+      "xp": 10,
+      "reason": "Discovery: read the signs of a young red dragon"
     }
   ]
 }

@@ -7,7 +7,7 @@ import { Portrait } from './Portrait';
 
 /** A conversation (rebuilt from docs/mockups/Dialogue.dc.html). */
 export function DialogueScreen() {
-  const { conversation, choose, leaveDialogue, game } = useGame();
+  const { conversation, choose, leaveDialogue, game, afterDialogue } = useGame();
   useGame((s) => s.dialogueTick); // re-render after each step
   const c = conversation!;
   const npc = npcById(c.speaker) ?? npcById('tavern')!;
@@ -28,7 +28,16 @@ export function DialogueScreen() {
     <div className="dialogue">
       <div className="npc">
         <div className="npc-portrait">
-          <Portrait {...npc.portrait} ears="human" label={`Portrait of ${npc.name}`} />
+          {npc.portrait ? (
+            <Portrait {...npc.portrait} ears="human" label={`Portrait of ${npc.name}`} />
+          ) : (
+            <svg viewBox="0 0 120 120" role="img" aria-label={npc.name} className="place-emblem">
+              <rect width="120" height="120" rx="10" fill="#323d4f" />
+              <path d="M18 92 L44 50 L60 70 L76 40 L102 92 Z" fill="#51607a" />
+              <path d="M76 40 L84 54 L70 54 Z" fill="#eef2f7" opacity="0.7" />
+              <circle cx="88" cy="28" r="9" fill="#e8833a" />
+            </svg>
+          )}
         </div>
         <div className="npc-name">
           <span className="name">{npc.name}</span>
@@ -58,7 +67,17 @@ export function DialogueScreen() {
         {c.ended ? (
           <button type="button" className="choice leave" autoFocus onClick={leaveDialogue}>
             <span className="num">↵</span>
-            <span>{c.travel ? 'Set out' : 'Back to the tavern'}</span>
+            <span>
+              {c.fight
+                ? 'To battle (prepare)'
+                : c.travel
+                  ? 'Set out'
+                  : afterDialogue === 'place'
+                    ? 'Go on'
+                    : game!.location === 'drowned-lantern'
+                      ? 'Back to the tavern'
+                      : 'Back to the map'}
+            </span>
           </button>
         ) : (
           <div className="choices">
@@ -80,6 +99,11 @@ export function DialogueScreen() {
                   </span>
                 )}
                 <span>{ch.text}</span>
+                {ch.fight && (
+                  <span className="tag fight" aria-label="starts combat">
+                    ⚔ (starts combat)
+                  </span>
+                )}
               </button>
             ))}
           </div>

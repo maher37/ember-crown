@@ -3,6 +3,83 @@
   "verifyNote": "Map layout, positions and the per-difficulty enemy lists come from docs/mockups/Combat.dc.html; terrain types (trees block, brush is difficult terrain and a hiding spot, boulders give half cover) are my design [inferred].",
   "encounters": [
     {
+      "id": "f1-tavern-brawl",
+      "code": "F1",
+      "name": "Brawl at the Drowned Lantern",
+      "act": 1,
+      "xpPerPc": 25,
+      "briefing": "Chairs scrape back. The Grey Company's bruisers come at you with fists, chair legs and bottles. Nobody here wants a killing: knock them flat (a melee hit that drops a foe to 0 knocks it out).",
+      "surprise": false,
+      "map": {
+        "width": 16,
+        "height": 9,
+        "style": "tavern",
+        "terrain": [
+          "TTTTTTTTTTTTTTTT",
+          "T..r...b...r...T",
+          "T..............T",
+          "T.r..======..r.T",
+          "T....======....T",
+          "T.r..======..r.T",
+          "T..............T",
+          "T..b...r....b..T",
+          "TTTTTTT..TTTTTTT"
+        ]
+      },
+      "partyStart": [
+        [3, 4],
+        [4, 6],
+        [2, 6],
+        [4, 2]
+      ],
+      "enemies": [
+        {
+          "id": "bruiser-a",
+          "monster": "grey-bruiser",
+          "name": "Bruiser A",
+          "pos": [12, 2],
+          "difficulties": ["easy", "medium", "hard"],
+          "tactic": "melee"
+        },
+        {
+          "id": "bruiser-b",
+          "monster": "grey-bruiser",
+          "name": "Bruiser B",
+          "pos": [12, 4],
+          "difficulties": ["easy", "medium", "hard"],
+          "tactic": "melee"
+        },
+        {
+          "id": "bruiser-c",
+          "monster": "grey-bruiser",
+          "name": "Bruiser C",
+          "pos": [11, 6],
+          "difficulties": ["easy", "medium", "hard"],
+          "tactic": "melee"
+        },
+        {
+          "id": "bruiser-d",
+          "monster": "grey-bruiser",
+          "name": "Bruiser D",
+          "pos": [13, 6],
+          "difficulties": ["medium", "hard"],
+          "tactic": "ranged"
+        },
+        {
+          "id": "bruiser-e",
+          "monster": "grey-bruiser",
+          "name": "Bruiser E",
+          "pos": [14, 4],
+          "difficulties": ["hard"],
+          "tactic": "ranged"
+        }
+      ],
+      "nonlethal": true,
+      "defeatContinues": true,
+      "verify": true,
+      "verifyNote": "Encounters_and_XP F1: 4 bruisers on Medium. Easy −1 / Hard +1 is my pick [inferred]."
+    },
+    {
       "id": "f2-road-ambush",
       "code": "F2",
       "name": "Ambush on the Ashford road",
@@ -82,6 +159,739 @@
           "tactic": "melee"
         }
       ]
+    },
+    {
+      "id": "f3-warren-gate",
+      "code": "F3",
+      "name": "The warren gate",
+      "act": 1,
+      "xpPerPc": 50,
+      "briefing": "Two half-starved wolves are chained at the warren's mouth, and goblin archers watch from the rocks behind them.",
+      "surprise": false,
+      "map": {
+        "width": 16,
+        "height": 9,
+        "style": "cave",
+        "terrain": [
+          "TTTTTTTTTTTTTTTT",
+          "TT....b...rTTTTT",
+          "T.......r.....TT",
+          "=====.........TT",
+          "=====....b.....T",
+          "=====.........TT",
+          "T........r....TT",
+          "TT....b.....TTTT",
+          "TTTTTTTTTTTTTTTT"
+        ]
+      },
+      "partyStart": [
+        [2, 3],
+        [2, 5],
+        [1, 4],
+        [3, 4]
+      ],
+      "enemies": [
+        {
+          "id": "wolf-a",
+          "monster": "wolf",
+          "name": "Wolf A",
+          "pos": [8, 3],
+          "difficulties": ["easy", "medium", "hard"],
+          "tactic": "melee"
+        },
+        {
+          "id": "wolf-b",
+          "monster": "wolf",
+          "name": "Wolf B",
+          "pos": [8, 5],
+          "difficulties": ["easy", "medium", "hard"],
+          "tactic": "melee"
+        },
+        {
+          "id": "goblin-a",
+          "monster": "goblin",
+          "name": "Goblin A",
+          "pos": [12, 2],
+          "difficulties": ["easy", "medium", "hard"],
+          "tactic": "ranged"
+        },
+        {
+          "id": "goblin-b",
+          "monster": "goblin",
+          "name": "Goblin B",
+          "pos": [12, 6],
+          "difficulties": ["medium", "hard"],
+          "tactic": "ranged"
+        },
+        {
+          "id": "goblin-c",
+          "monster": "goblin",
+          "name": "Goblin C",
+          "pos": [13, 4],
+          "difficulties": ["hard"],
+          "tactic": "ranged"
+        }
+      ],
+      "verify": true,
+      "verifyNote": "Encounters_and_XP F3: 2 wolves + 2 goblins on Medium. Easy/Hard changes are my pick [inferred]."
+    },
+    {
+      "id": "f4-grisk",
+      "code": "F4",
+      "name": "Grisk's hall",
+      "act": 1,
+      "xpPerPc": 62,
+      "briefing": "Grisk Two-Teeth rises from a throne of stolen mine carts. His goblins grab spears; the captured miners shout from a pen at the back.",
+      "surprise": false,
+      "map": {
+        "width": 16,
+        "height": 9,
+        "style": "cave",
+        "terrain": [
+          "TTTTTTTTTTTTTTTT",
+          "T....r....r....T",
+          "T..............T",
+          "==.....bb......T",
+          "==.............T",
+          "==.....bb......T",
+          "T..............T",
+          "T....r....r....T",
+          "TTTTTTTTTTTTTTTT"
+        ]
+      },
+      "partyStart": [
+        [2, 3],
+        [2, 5],
+        [1, 4],
+        [3, 4]
+      ],
+      "enemies": [
+        {
+          "id": "grisk",
+          "monster": "hobgoblin",
+          "name": "Grisk Two-Teeth",
+          "pos": [12, 4],
+          "difficulties": ["easy", "medium", "hard"],
+          "tactic": "melee"
+        },
+        {
+          "id": "goblin-a",
+          "monster": "goblin",
+          "name": "Goblin A",
+          "pos": [10, 2],
+          "difficulties": ["easy", "medium", "hard"],
+          "tactic": "melee"
+        },
+        {
+          "id": "goblin-b",
+          "monster": "goblin",
+          "name": "Goblin B",
+          "pos": [11, 6],
+          "difficulties": ["easy", "medium", "hard"],
+          "tactic": "ranged"
+        },
+        {
+          "id": "goblin-c",
+          "monster": "goblin",
+          "name": "Goblin C",
+          "pos": [13, 2],
+          "difficulties": ["medium", "hard"],
+          "tactic": "ranged"
+        },
+        {
+          "id": "goblin-d",
+          "monster": "goblin",
+          "name": "Goblin D",
+          "pos": [13, 6],
+          "difficulties": ["hard"],
+          "tactic": "ranged"
+        }
+      ],
+      "verify": true,
+      "verifyNote": "Encounters_and_XP F4: Grisk (hobgoblin) + 3 goblins on Medium. Easy/Hard changes are my pick [inferred]."
+    },
+    {
+      "id": "f5-mine-mouth",
+      "code": "F5",
+      "name": "The mine mouth",
+      "act": 1,
+      "xpPerPc": 50,
+      "briefing": "Hollow Star diggers drop their picks and pick up knives. Their foreman, a scarred thug, plants himself in front of the shaft.",
+      "surprise": false,
+      "map": {
+        "width": 16,
+        "height": 9,
+        "style": "cave",
+        "terrain": [
+          "TTTTTTTTTTTTTTTT",
+          "TTTT..r.....TTTT",
+          "TT..........b.TT",
+          "T....====.......",
+          "......====.....T",
+          "T......====.....",
+          "TT..b.......r.TT",
+          "TTTT........TTTT",
+          "TTTTTTTTTTTTTTTT"
+        ]
+      },
+      "partyStart": [
+        [1, 4],
+        [2, 3],
+        [2, 5],
+        [3, 4]
+      ],
+      "enemies": [
+        {
+          "id": "cultist-a",
+          "monster": "cultist",
+          "name": "Digger A",
+          "pos": [9, 2],
+          "difficulties": ["easy", "medium", "hard"],
+          "tactic": "melee"
+        },
+        {
+          "id": "cultist-b",
+          "monster": "cultist",
+          "name": "Digger B",
+          "pos": [10, 4],
+          "difficulties": ["easy", "medium", "hard"],
+          "tactic": "melee"
+        },
+        {
+          "id": "cultist-c",
+          "monster": "cultist",
+          "name": "Digger C",
+          "pos": [10, 6],
+          "difficulties": ["easy", "medium", "hard"],
+          "tactic": "melee"
+        },
+        {
+          "id": "cultist-d",
+          "monster": "cultist",
+          "name": "Digger D",
+          "pos": [12, 3],
+          "difficulties": ["medium", "hard"],
+          "tactic": "melee"
+        },
+        {
+          "id": "thug",
+          "monster": "thug",
+          "name": "Foreman Dace",
+          "pos": [13, 5],
+          "difficulties": ["easy", "medium", "hard"],
+          "tactic": "melee"
+        },
+        {
+          "id": "cultist-e",
+          "monster": "cultist",
+          "name": "Digger E",
+          "pos": [11, 7],
+          "difficulties": ["hard"],
+          "tactic": "melee"
+        }
+      ],
+      "verify": true,
+      "verifyNote": "Encounters_and_XP F5: 4 cultists + 1 thug on Medium. Easy/Hard changes are my pick [inferred]."
+    },
+    {
+      "id": "f6-deep-seam",
+      "code": "F6",
+      "name": "The Deep Seam",
+      "act": 1,
+      "xpPerPc": 50,
+      "briefing": "The seam is warm as a bread oven. Pale centipedes as long as a man pour out of cracks in the old Ammarindar stone.",
+      "surprise": false,
+      "map": {
+        "width": 16,
+        "height": 9,
+        "style": "cave",
+        "terrain": [
+          "TTTTTTTTTTTTTTTT",
+          "TTT...TTTT...TTT",
+          "T....b....b....T",
+          "==.............T",
+          "==....r....r...T",
+          "==.............T",
+          "T....b....b....T",
+          "TTT...TTTT...TTT",
+          "TTTTTTTTTTTTTTTT"
+        ]
+      },
+      "partyStart": [
+        [1, 3],
+        [1, 5],
+        [2, 4],
+        [0, 4]
+      ],
+      "enemies": [
+        {
+          "id": "centipede-a",
+          "monster": "giant-centipede",
+          "name": "Centipede A",
+          "pos": [9, 2],
+          "difficulties": ["easy", "medium", "hard"],
+          "tactic": "melee"
+        },
+        {
+          "id": "centipede-b",
+          "monster": "giant-centipede",
+          "name": "Centipede B",
+          "pos": [10, 4],
+          "difficulties": ["easy", "medium", "hard"],
+          "tactic": "melee"
+        },
+        {
+          "id": "centipede-c",
+          "monster": "giant-centipede",
+          "name": "Centipede C",
+          "pos": [9, 6],
+          "difficulties": ["easy", "medium", "hard"],
+          "tactic": "melee"
+        },
+        {
+          "id": "centipede-d",
+          "monster": "giant-centipede",
+          "name": "Centipede D",
+          "pos": [13, 3],
+          "difficulties": ["medium", "hard"],
+          "tactic": "melee"
+        },
+        {
+          "id": "centipede-e",
+          "monster": "giant-centipede",
+          "name": "Centipede E",
+          "pos": [13, 5],
+          "difficulties": ["hard"],
+          "tactic": "melee"
+        }
+      ],
+      "verify": true,
+      "verifyNote": "Encounters_and_XP F6: 4 giant centipedes on Medium. Easy/Hard changes are my pick [inferred]."
+    },
+    {
+      "id": "f7-sunken-shrine",
+      "code": "F7",
+      "name": "The sunken shrine",
+      "act": 1,
+      "xpPerPc": 162,
+      "briefing": "Brother Ulric stands at the drowned altar with the shard in his hook-hand. The skeletons of Varrow's old miners rise from the water, helmet-lamps flickering. You can still try to talk him down mid-fight.",
+      "surprise": false,
+      "map": {
+        "width": 16,
+        "height": 9,
+        "style": "cave",
+        "terrain": [
+          "TTTTTTTTTTTTTTTT",
+          "TT.....r......TT",
+          "T....b....b....T",
+          "==.............T",
+          "==......rr.....T",
+          "==.............T",
+          "T....b....b....T",
+          "TT.....r......TT",
+          "TTTTTTTTTTTTTTTT"
+        ]
+      },
+      "partyStart": [
+        [1, 3],
+        [1, 5],
+        [2, 4],
+        [0, 4]
+      ],
+      "enemies": [
+        {
+          "id": "ulric",
+          "monster": "cult-fanatic",
+          "name": "Brother Ulric",
+          "pos": [13, 4],
+          "difficulties": ["easy", "medium", "hard"],
+          "tactic": "melee"
+        },
+        {
+          "id": "skeleton-a",
+          "monster": "skeleton",
+          "name": "Skeleton A",
+          "pos": [8, 2],
+          "difficulties": ["easy", "medium", "hard"],
+          "tactic": "melee"
+        },
+        {
+          "id": "skeleton-b",
+          "monster": "skeleton",
+          "name": "Skeleton B",
+          "pos": [8, 6],
+          "difficulties": ["easy", "medium", "hard"],
+          "tactic": "melee"
+        },
+        {
+          "id": "skeleton-c",
+          "monster": "skeleton",
+          "name": "Skeleton C",
+          "pos": [11, 2],
+          "difficulties": ["easy", "medium", "hard"],
+          "tactic": "ranged"
+        },
+        {
+          "id": "skeleton-d",
+          "monster": "skeleton",
+          "name": "Skeleton D",
+          "pos": [11, 6],
+          "difficulties": ["medium", "hard"],
+          "tactic": "ranged"
+        },
+        {
+          "id": "skeleton-e",
+          "monster": "skeleton",
+          "name": "Skeleton E",
+          "pos": [12, 3],
+          "difficulties": ["hard"],
+          "tactic": "melee"
+        }
+      ],
+      "parley": {
+        "skills": ["persuasion", "insight"],
+        "dc": 15,
+        "easierFlag": "knows_ulric",
+        "easierDc": 11,
+        "text": "Ulric lowers his hook. \"Brannoc's crew… the widows' pensions…\" The skeletons sag back into the water. \"Enough. Take the cursed thing.\""
+      },
+      "verify": true,
+      "verifyNote": "Encounters_and_XP F7: Ulric + 4 skeletons (Hard at L3). Parley DCs (15, 11 with Brannoc's name) are my pick [inferred]."
+    },
+    {
+      "id": "s1-cellar-rats",
+      "code": "S1",
+      "name": "Brannoc's cellar",
+      "act": 1,
+      "xpPerPc": 50,
+      "briefing": "The trapdoor opens on a heaving carpet of rats. Beneath the barrels, an old dwarf tunnel breathes warm air.",
+      "surprise": false,
+      "map": {
+        "width": 16,
+        "height": 9,
+        "style": "cave",
+        "terrain": [
+          "TTTTTTTTTTTTTTTT",
+          "T.r..r..r..TTTTT",
+          "T..............T",
+          "T..r.......b...T",
+          "T..........b....",
+          "T..r.......b...T",
+          "T..............T",
+          "T.r..r..r..TTTTT",
+          "TTTTTTTTTTTTTTTT"
+        ]
+      },
+      "partyStart": [
+        [2, 4],
+        [1, 3],
+        [1, 5],
+        [3, 4]
+      ],
+      "enemies": [
+        {
+          "id": "swarm-a",
+          "monster": "swarm-of-rats",
+          "name": "Rat swarm A",
+          "pos": [9, 3],
+          "difficulties": ["easy", "medium", "hard"],
+          "tactic": "melee"
+        },
+        {
+          "id": "swarm-b",
+          "monster": "swarm-of-rats",
+          "name": "Rat swarm B",
+          "pos": [9, 5],
+          "difficulties": ["medium", "hard"],
+          "tactic": "melee"
+        },
+        {
+          "id": "rat-a",
+          "monster": "giant-rat",
+          "name": "Giant rat A",
+          "pos": [12, 2],
+          "difficulties": ["easy", "medium", "hard"],
+          "tactic": "melee"
+        },
+        {
+          "id": "rat-b",
+          "monster": "giant-rat",
+          "name": "Giant rat B",
+          "pos": [12, 6],
+          "difficulties": ["easy", "medium", "hard"],
+          "tactic": "melee"
+        },
+        {
+          "id": "rat-c",
+          "monster": "giant-rat",
+          "name": "Giant rat C",
+          "pos": [14, 4],
+          "difficulties": ["easy", "medium", "hard"],
+          "tactic": "melee"
+        },
+        {
+          "id": "rat-d",
+          "monster": "giant-rat",
+          "name": "Giant rat D",
+          "pos": [13, 3],
+          "difficulties": ["medium", "hard"],
+          "tactic": "melee"
+        },
+        {
+          "id": "rat-e",
+          "monster": "giant-rat",
+          "name": "Giant rat E",
+          "pos": [13, 5],
+          "difficulties": ["hard"],
+          "tactic": "melee"
+        }
+      ],
+      "verify": true,
+      "verifyNote": "Encounters_and_XP side quests: 2 swarms of rats + 4 giant rats on Medium. Easy/Hard changes are my pick [inferred]."
+    },
+    {
+      "id": "s2-ashwood-wolves",
+      "code": "S2",
+      "name": "Wolves in the Ashwood",
+      "act": 1,
+      "xpPerPc": 37,
+      "briefing": "Three grey wolves, ribs showing, have been following you for a mile. Now they stop pretending.",
+      "surprise": false,
+      "map": {
+        "width": 16,
+        "height": 9,
+        "style": "forest-road",
+        "terrain": [
+          "TTTbb..r....bTTT",
+          "TTb.........bbTT",
+          "b......T.......b",
+          "....TT.....b....",
+          "========........",
+          "....b......TT...",
+          "b.......r.....b.",
+          "Tb............bT",
+          "TTT.....r...bTTT"
+        ]
+      },
+      "partyStart": [
+        [2, 4],
+        [3, 3],
+        [1, 4],
+        [3, 5]
+      ],
+      "enemies": [
+        {
+          "id": "wolf-a",
+          "monster": "wolf",
+          "name": "Wolf A",
+          "pos": [11, 2],
+          "difficulties": ["easy", "medium", "hard"],
+          "tactic": "melee"
+        },
+        {
+          "id": "wolf-b",
+          "monster": "wolf",
+          "name": "Wolf B",
+          "pos": [12, 4],
+          "difficulties": ["easy", "medium", "hard"],
+          "tactic": "melee"
+        },
+        {
+          "id": "wolf-c",
+          "monster": "wolf",
+          "name": "Wolf C",
+          "pos": [11, 6],
+          "difficulties": ["medium", "hard"],
+          "tactic": "melee"
+        },
+        {
+          "id": "wolf-d",
+          "monster": "wolf",
+          "name": "Wolf D",
+          "pos": [14, 3],
+          "difficulties": ["hard"],
+          "tactic": "melee"
+        }
+      ],
+      "verify": true,
+      "verifyNote": "Encounters_and_XP side quests: 3 wolves (Easy at L2). Easy/Hard changes are my pick [inferred]."
+    },
+    {
+      "id": "s3-mill-shadows",
+      "code": "S3",
+      "name": "Shadows in the mill",
+      "act": 1,
+      "xpPerPc": 75,
+      "briefing": "The shadows peel off the walls, three of them, the shapes of a man, a woman and a boy. Ordinary weapons barely touch them; magic and radiant light do.",
+      "surprise": false,
+      "map": {
+        "width": 16,
+        "height": 9,
+        "style": "mill",
+        "terrain": [
+          "TTTTTTTTTTTTTTTT",
+          "T..b.......b...T",
+          "T....=====.....T",
+          "T....=====..r..T",
+          "....====r====..T",
+          "T....=====..r..T",
+          "T....=====.....T",
+          "T..b.......b...T",
+          "TTTTTTTTTTTTTTTT"
+        ]
+      },
+      "partyStart": [
+        [1, 4],
+        [2, 3],
+        [2, 5],
+        [0, 4]
+      ],
+      "enemies": [
+        {
+          "id": "shadow-a",
+          "monster": "shadow",
+          "name": "Shadow of a man",
+          "pos": [10, 2],
+          "difficulties": ["easy", "medium", "hard"],
+          "tactic": "melee"
+        },
+        {
+          "id": "shadow-b",
+          "monster": "shadow",
+          "name": "Shadow of a woman",
+          "pos": [12, 4],
+          "difficulties": ["medium", "hard"],
+          "tactic": "melee"
+        },
+        {
+          "id": "shadow-c",
+          "monster": "shadow",
+          "name": "Shadow of a boy",
+          "pos": [10, 6],
+          "difficulties": ["easy", "medium", "hard"],
+          "tactic": "melee"
+        },
+        {
+          "id": "shadow-d",
+          "monster": "shadow",
+          "name": "Shadow without a face",
+          "pos": [14, 6],
+          "difficulties": ["hard"],
+          "tactic": "melee"
+        }
+      ],
+      "verify": true,
+      "verifyNote": "Encounters_and_XP side quests: 3 shadows (Hard at L2). Easy/Hard changes are my pick [inferred]."
+    },
+    {
+      "id": "s4-luck-stone",
+      "code": "S4",
+      "name": "The luck-stone shrine",
+      "act": 1,
+      "xpPerPc": 50,
+      "briefing": "The luck-stone sits in a niche of goblin skulls and copper pots. Its hobgoblin keeper and two goblins were waiting for a thief.",
+      "surprise": false,
+      "map": {
+        "width": 16,
+        "height": 9,
+        "style": "cave",
+        "terrain": [
+          "TTTTTTTTTTTTTTTT",
+          "TTTT....r...TTTT",
+          "TT...........bTT",
+          "==......r.......",
+          "==..............",
+          "==...b..........",
+          "TT...........rTT",
+          "TTTT....r...TTTT",
+          "TTTTTTTTTTTTTTTT"
+        ]
+      },
+      "partyStart": [
+        [1, 3],
+        [1, 5],
+        [2, 4],
+        [0, 4]
+      ],
+      "enemies": [
+        {
+          "id": "keeper",
+          "monster": "hobgoblin",
+          "name": "Stone-keeper",
+          "pos": [12, 4],
+          "difficulties": ["easy", "medium", "hard"],
+          "tactic": "melee"
+        },
+        {
+          "id": "goblin-a",
+          "monster": "goblin",
+          "name": "Goblin A",
+          "pos": [10, 2],
+          "difficulties": ["easy", "medium", "hard"],
+          "tactic": "melee"
+        },
+        {
+          "id": "goblin-b",
+          "monster": "goblin",
+          "name": "Goblin B",
+          "pos": [10, 6],
+          "difficulties": ["medium", "hard"],
+          "tactic": "ranged"
+        },
+        {
+          "id": "goblin-c",
+          "monster": "goblin",
+          "name": "Goblin C",
+          "pos": [14, 3],
+          "difficulties": ["hard"],
+          "tactic": "ranged"
+        }
+      ],
+      "verify": true,
+      "verifyNote": "Encounters_and_XP side quests: hobgoblin + 2 goblins on Medium. Easy/Hard changes are my pick [inferred]."
+    },
+    {
+      "id": "e1-scald",
+      "code": "E1",
+      "name": "Scald",
+      "act": 1,
+      "xpPerPc": 275,
+      "briefing": "A dog-sized red dragon, eggshell still stuck to one horn, rears up on a hoard of stolen copper pots. Spread out: its fire breath fills a 15-foot cone. ☠ Deadly at level 2, Hard at level 3.",
+      "surprise": false,
+      "map": {
+        "width": 16,
+        "height": 9,
+        "style": "cave",
+        "terrain": [
+          "TTTTTTTTTTTTTTTT",
+          "TTT....b....TTTT",
+          "T....r....r....T",
+          "==.............T",
+          "==.............T",
+          "==.............T",
+          "T....r....r....T",
+          "TTT....b....TTTT",
+          "TTTTTTTTTTTTTTTT"
+        ]
+      },
+      "partyStart": [
+        [1, 3],
+        [1, 5],
+        [2, 4],
+        [0, 4]
+      ],
+      "enemies": [
+        {
+          "id": "scald",
+          "monster": "red-dragon-wyrmling",
+          "name": "Scald",
+          "pos": [12, 4],
+          "difficulties": ["easy", "medium", "hard"],
+          "tactic": "melee"
+        }
+      ],
+      "verify": true,
+      "verifyNote": "Items.md Elites: red dragon wyrmling (275 XP/PC bonus). One wyrmling on every difficulty [inferred]."
     },
     {
       "id": "road-wolves",

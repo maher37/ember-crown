@@ -6,6 +6,7 @@ import {
   spendHitDie,
   type RandomSource,
 } from '../rules';
+import { hasItem } from './items';
 import type { GameState } from './save';
 
 export interface RestResult {
@@ -54,8 +55,17 @@ export function spendDie(game: GameState, heroId: string, rng: RandomSource): Re
   const h = game.party.find((x) => x.id === heroId);
   if (!h) throw new Error(`No hero ${heroId}`);
   const r = spendHitDie(h, rng);
-  const party = game.party.map((x) => (x.id === heroId ? (r.creature as Hero) : x));
-  return { game: { ...game, party }, log: r.log.map((l) => l.text) };
+  let healed = r.creature as Hero;
+  const log = r.log.map((l) => l.text);
+  // DMG: Periapt of Wound Closure (Lysa's Locket). Hit Dice healing is doubled.
+  if (hasItem(h, 'lysas-locket')) {
+    const gained = healed.hp - h.hp;
+    const hp = Math.min(h.maxHp, healed.hp + gained);
+    log.push(`Lysa's Locket doubles it: +${hp - healed.hp} more HP.`);
+    healed = { ...healed, hp };
+  }
+  const party = game.party.map((x) => (x.id === heroId ? healed : x));
+  return { game: { ...game, party }, log };
 }
 
 /**

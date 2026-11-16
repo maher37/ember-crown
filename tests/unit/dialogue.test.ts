@@ -1,7 +1,12 @@
 import { describe, expect, it } from 'vitest';
-import src from '../../src/content/dialogue/tavern.ink?raw';
-import { awards, quests } from '../../src/data';
-import { bestFor, Conversation } from '../../src/game/dialogue';
+import { awards, encounters, magicItems, npcs, quests } from '../../src/data';
+import { bestFor, Conversation, TRUTHS } from '../../src/game/dialogue';
+
+const INK = import.meta.glob('../../src/content/dialogue/*.ink', {
+  query: '?raw',
+  import: 'default',
+  eager: true,
+}) as Record<string, string>;
 import { buildHero, corinDraft, newDraft, skillBonus, type HeroDraft } from '../../src/game/hero';
 import type { GameState } from '../../src/game/save';
 import { ScriptedRng, SeededRng } from '../../src/rules';
@@ -57,6 +62,7 @@ function game(withCorin = false, soldier = false): GameState {
     clock: 7972,
     lastLongRest: null,
     letters: [],
+    inventory: {},
   };
 }
 
@@ -144,11 +150,27 @@ describe('the tavern dialogue (Ink)', () => {
     expect(c.ended).toBe(true);
   });
 
-  it('a failed persuasion with the strangers leads to the (placeholder) brawl, still forward', () => {
+  it('a failed persuasion with the strangers starts the F1 brawl, and the story picks up after', () => {
     const c = new Conversation('tavern', game(), roll(1)).start('strangers');
     choose(c, /Drink up and go/);
-    expect(c.lines.map((l) => l.text).join(' ')).toContain('arrives in Milestone M7');
-    expect(c.game.flags['strangers_gone']).toBe(true);
+    expect(c.fight).toEqual({ encounterId: 'f1-tavern-brawl', resume: 'strangers.after_brawl' });
+    expect(c.ended).toBe(true);
+    // Lost the brawl (nonlethal): the story still goes on, and Edric still gives the clue.
+    const lost = { ...c.game, flags: { ...c.game.flags, 'lost:f1-tavern-brawl': true } };
+    const after = new Conversation('tavern', lost, roll(10)).start('strangers.after_brawl');
+    expect(after.lines.map((l) => l.text).join(' ')).toMatch(/come round on the floor/);
+    expect(after.game.flags['strangers_gone']).toBe(true);
+    expect(after.game.flags['edric_clue']).toBe(true);
+    // Won: Brannoc trusts you.
+    const won = { ...c.game, flags: { ...c.game.flags, 'won:f1-tavern-brawl': true } };
+    const after2 = new Conversation('tavern', won, roll(10)).start('strangers.after_brawl');
+    expect(after2.game.flags['brannoc_trust']).toBe(true);
+  });
+
+  it('marks the choice that starts a fight (Encounters_and_XP §6)', () => {
+    const c = new Conversation('tavern', game(), roll(10)).start('strangers');
+    expect(c.choices.find((x) => /come and take it/.test(x.text))!.fight).toBe(true);
+    expect(c.choices.find((x) => /Who's asking/.test(x.text))!.fight).toBeUndefined();
   });
 
   it('[Corin] options appear only when Corin is in the party', () => {
@@ -205,7 +227,8 @@ describe('the tavern dialogue (Ink)', () => {
     }
   });
 
-  it('only uses quest steps and awards that exist in the data', () => {
+  it('only uses quest steps, awards, items, fights, Truths and speakers that exist', () => {
+    const src = Object.values(INK).join('\n');
     for (const [, q, s] of src.matchAll(/quest_step\("([^"]+)", "([^"]+)"\)/g)) {
       const quest = quests.find((x) => x.id === q);
       expect(quest, q).toBeDefined();
@@ -216,6 +239,14 @@ describe('the tavern dialogue (Ink)', () => {
     }
     for (const [, a] of src.matchAll(/award\("([^"]+)"\)/g))
       expect(awards.map((x) => x.id)).toContain(a);
+    for (const [, i] of src.matchAll(/give_item\("([^"]+)"/g))
+      expect(magicItems.map((x) => x.id)).toContain(i);
+    for (const [, e] of src.matchAll(/fight\("([^"]+)"/g))
+      expect(encounters.map((x) => x.id)).toContain(e);
+    for (const [, t] of src.matchAll(/truth\("([^"]+)"\)/g))
+      expect(Object.keys(TRUTHS)).toContain(t);
+    for (const [, sp] of src.matchAll(/#speaker:([a-z-]+)/g))
+      expect(npcs.map((x) => x.id)).toContain(sp);
   });
 });
 

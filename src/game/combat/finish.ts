@@ -25,6 +25,8 @@ export interface CombatResult {
   party: Hero[];
   xpEach: number;
   notes: string[];
+  /** Potions left after the fight. */
+  inventory: Record<string, number>;
 }
 
 /**
@@ -34,11 +36,33 @@ export interface CombatResult {
  */
 export function finishCombat(state: CombatState, party: Hero[]): CombatResult {
   const notes: string[] = [];
-  const xpEach = state.outcome === 'victory' ? state.xpPerPc : 0;
+  const won = state.outcome === 'victory' || state.outcome === 'parley';
+  // A story brawl you lose still counts (the F1 XP is part of the level curve) [inferred].
+  const xpEach = won || (state.defeatContinues && state.outcome === 'defeat') ? state.xpPerPc : 0;
   const out = party.map((orig) => {
     const c = state.combatants[orig.id];
     if (!c) return orig;
     let h = { ...(c.creature as Hero) };
+    // Strength drained by shadows comes back when the fight ends [inferred: RAW after a rest].
+    const drain = c.effects.find((e) => e.tag === 'str-drain');
+    if (drain)
+      h = {
+        ...h,
+        abilities: { ...h.abilities, str: h.abilities.str + Number(drain.data?.amount ?? 0) },
+      };
+    // Aid's extra hit points end with the fight [inferred: RAW 8 hours].
+    const aid = c.effects.find((e) => e.tag === 'aid');
+    if (aid)
+      h = {
+        ...h,
+        maxHp: h.maxHp - Number(aid.data?.amount ?? 0),
+        hp: Math.min(h.hp, h.maxHp - Number(aid.data?.amount ?? 0)),
+      };
+    // PHB: Berserker, Frenzy. One level of exhaustion when the frenzied rage ends.
+    if (c.effects.some((e) => e.tag === 'frenzy') || state.flags[`frenzied:${c.id}`]) {
+      h = { ...h, exhaustion: Math.min(6, h.exhaustion + 1) };
+      notes.push(`${h.name} is exhausted after the frenzy (exhaustion ${h.exhaustion}).`);
+    }
     h = {
       ...h,
       tempHp: 0,
@@ -47,7 +71,10 @@ export function finishCombat(state: CombatState, party: Hero[]): CombatResult {
       deathSaves: h.hp > 0 ? { successes: 0, failures: 0 } : h.deathSaves,
     };
     if (!h.dead && h.hp === 0) {
-      if (state.difficulty === 'easy' && state.outcome === 'victory') {
+      if (
+        (state.difficulty === 'easy' && won) ||
+        (state.defeatContinues && state.outcome === 'defeat')
+      ) {
         h = { ...h, hp: 1, stable: false, deathSaves: { successes: 0, failures: 0 } };
         notes.push(`${h.name} gets back up with 1 HP.`);
       } else {
@@ -59,5 +86,5 @@ export function finishCombat(state: CombatState, party: Hero[]): CombatResult {
     if (xpEach && !h.dead) h = awardXp(h, xpEach).creature as Hero;
     return h;
   });
-  return { party: out, xpEach, notes };
+  return { party: out, xpEach, notes, inventory: state.inventory };
 }

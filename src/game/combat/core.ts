@@ -1,5 +1,6 @@
 import { getMonster } from '../creatures';
 import { getClass, type Hero } from '../hero';
+import { itemMods } from '../items';
 import {
   abilityModifier,
   adjustForDefenses,
@@ -14,6 +15,7 @@ import {
   type ConditionId,
   type Creature,
   type DamageInstance,
+  type DamageType,
   type DiceRoll,
   type LogEntry,
   type RandomSource,
@@ -116,7 +118,9 @@ export function currentAc(c: Combatant): number {
 
 /** The creature as the rules see it for damage: Wild Shape stats, Rage resistance. */
 function damageView(c: Combatant): Creature {
-  const extra = hasEffect(c, 'rage') ? (['bludgeoning', 'piercing', 'slashing'] as const) : [];
+  const extra: DamageType[] = hasEffect(c, 'rage') ? ['bludgeoning', 'piercing', 'slashing'] : [];
+  // Potion of Resistance and similar: resistance to one damage type while the effect lasts.
+  for (const e of effectsWith(c, 'resistance')) extra.push(String(e.data?.type) as DamageType);
   const d = c.creature.defenses;
   return {
     ...c.creature,
@@ -162,9 +166,22 @@ export function dealDamage(
   }
 
   const before = target.creature;
+  // A brawl (PHB: Knocking a Creature Out): everyone pulls their punches [inferred: ranged and spells too].
+  const knockOut = s.nonlethal;
+  // House rule (Rules_Scope §7, M7): in a brawl, a blow never does more than the HP left, so
+  // massive damage can't kill anyone.
+  if (knockOut && target.creature.hp > 0) {
+    let room = target.creature.hp + target.creature.tempHp;
+    parts = parts.map((p) => {
+      const amount = Math.min(p.amount, Math.max(0, room));
+      room -= amount;
+      return { ...p, amount };
+    });
+  }
   const out = applyDamage(damageView(target), parts, rng, {
     critical: opts.critical,
-    melee: opts.melee,
+    melee: knockOut || opts.melee,
+    knockOut,
   });
   // Keep the real defenses (Rage resistance is not permanent).
   target.creature = { ...out.creature, defenses: before.defenses };
@@ -266,6 +283,8 @@ export function combatSave(
       adv.push('Dark Devotion');
   }
   const bonuses = opts.cover === 'half' && ability === 'dex' ? [{ label: 'cover', value: 2 }] : [];
+  const itemSave = h ? itemMods(h).save : 0;
+  if (itemSave) bonuses.push({ label: 'items', value: itemSave });
   const r = savingThrow(target.creature, ability, dc, ctx.rng, {
     advantage: adv,
     disadvantage: dis,
@@ -299,7 +318,12 @@ export function spendResource(c: Combatant, id: string, n = 1): void {
 
 export function spendSlot(c: Combatant, level: number): void {
   const h = heroOf(c);
-  if (!h) return;
+  if (!h) {
+    // Monsters with Spellcasting track their own slots for the fight.
+    if (c.monsterSlots && c.monsterSlots[level] !== undefined)
+      c.monsterSlots = { ...c.monsterSlots, [level]: Math.max(0, c.monsterSlots[level]! - 1) };
+    return;
+  }
   const used = [...h.slotsUsed];
   while (used.length < level) used.push(0);
   used[level - 1] = (used[level - 1] ?? 0) + 1;

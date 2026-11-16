@@ -68,6 +68,73 @@
       "verifyNote": "AC, HP, speed and CR from the MM PDF (✅). Ability scores, hit dice and attack lines from memory: check them."
     },
     {
+      "id": "grey-bruiser",
+      "name": "Grey Company bruiser",
+      "size": "Medium",
+      "type": "humanoid",
+      "cr": "1/8",
+      "xp": 25,
+      "ac": 12,
+      "hp": 11,
+      "hitDice": "2d8+2",
+      "speed": {
+        "walk": 30
+      },
+      "abilities": {
+        "str": 11,
+        "dex": 12,
+        "con": 12,
+        "int": 10,
+        "wis": 10,
+        "cha": 10
+      },
+      "actions": [
+        {
+          "id": "club",
+          "name": "Chair leg",
+          "effects": [
+            {
+              "type": "attack",
+              "kind": "melee",
+              "toHit": 3,
+              "reach": 5,
+              "onHit": [
+                {
+                  "type": "damage",
+                  "dice": "1d4+1",
+                  "damageType": "bludgeoning"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "bottle",
+          "name": "Thrown bottle",
+          "effects": [
+            {
+              "type": "attack",
+              "kind": "ranged",
+              "toHit": 3,
+              "range": [20, 60],
+              "onHit": [
+                {
+                  "type": "damage",
+                  "dice": "1d4+1",
+                  "damageType": "bludgeoning"
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "acNote": "leather jerkin",
+      "usedIn": ["F1 tavern brawl"],
+      "art": "Grey Company bruiser: grey sash, split knuckles, a chair leg for a club",
+      "verify": true,
+      "verifyNote": "Bandit stats (Encounters_and_XP F1: 'bandit stats, fists and clubs'); club and bottle attacks are my own [inferred]."
+    },
+    {
       "id": "bandit-captain",
       "name": "Bandit captain",
       "size": "Medium",

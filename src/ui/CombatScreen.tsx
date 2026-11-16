@@ -17,6 +17,8 @@ import {
   type CombatState,
   type Combatant,
   type FeatureId,
+  type Metamagic,
+  METAMAGIC_NAMES,
   type PlayerAction,
   type Pos,
 } from '../game/combat';
@@ -29,14 +31,16 @@ import './Combat.css';
 import { briefLine, hitChance, isDiceLine } from './combatUi';
 import { CLASS_COPY, ELF_EARS } from './creatorCopy';
 import { Portrait } from './Portrait';
-import { TERRAIN_FILL } from './PrepareScreen';
+import { terrainFill, terrainName } from './mapStyle';
+import { getItem } from '../game/items';
 
 const CELL = 48;
 
 type Mode =
   | { kind: 'idle' }
   | { kind: 'attack'; optionId: string; offhand?: boolean }
-  | { kind: 'spell'; spellId: string; level: number; targets: string[] }
+  | { kind: 'spell'; spellId: string; level: number; targets: string[]; mm?: Metamagic }
+  | { kind: 'item'; itemId: string }
   | { kind: 'feature'; id: FeatureId; target: 'ally' | 'enemy' }
   | { kind: 'help' }
   | { kind: 'shove'; mode: 'prone' | 'push' }
@@ -54,6 +58,7 @@ export function CombatScreen() {
   const [hover, setHover] = useState<Pos | null>(null);
   const [message, setMessage] = useState('');
   const [smite, setSmite] = useState(0);
+  const [mm, setMm] = useState<Metamagic | ''>('');
   const s = combat!;
   const me = s.combatants[s.order[s.turnIndex]!]!;
   const myTurn = me.side === 'party' && !s.outcome && !s.prompt;
@@ -94,7 +99,11 @@ export function CombatScreen() {
     [s, me, myTurn, mode.kind],
   );
   const options = useMemo(() => (myTurn ? attackOptions(me) : []), [me, myTurn]);
-  const spells = useMemo(() => (myTurn ? spellChoices(me) : []), [me, myTurn]);
+  const spells = useMemo(() => (myTurn ? spellChoices(me, mm || undefined) : []), [me, myTurn, mm]);
+  const knownMetamagic = (isHero(me) ? (me.creature.choices['metamagic'] ?? []) : []).filter(
+    (x): x is Metamagic => x in METAMAGIC_NAMES,
+  );
+  const potions = Object.entries(s.inventory).filter(([id, n]) => n > 0 && getItem(id).consumable);
   const features = myTurn ? featureList(me) : [];
 
   // Which tokens can be clicked in the current mode.
@@ -117,6 +126,17 @@ export function CombatScreen() {
       );
     if (mode.kind === 'help')
       return new Set(all.filter((c) => c.side === 'party' && c.id !== me.id).map((c) => c.id));
+    if (mode.kind === 'item')
+      return new Set(
+        all
+          .filter(
+            (c) =>
+              c.side === 'party' &&
+              (c.id === me.id ||
+                (Math.abs(c.pos.x - me.pos.x) <= 1 && Math.abs(c.pos.y - me.pos.y) <= 1)),
+          )
+          .map((c) => c.id),
+      );
     if (mode.kind === 'feature')
       return new Set(
         all
@@ -126,7 +146,7 @@ export function CombatScreen() {
     if (mode.kind === 'spell') {
       const sp = spells.find((x) => x.spell.id === mode.spellId)?.spell;
       if (!sp) return new Set<string>();
-      const t = targeting(sp, mode.level);
+      const t = targeting(sp, mode.level, mode.mm);
       if (t.kind !== 'creatures') return new Set<string>();
       return new Set(
         all
@@ -136,6 +156,7 @@ export function CombatScreen() {
                 spellId: sp.id,
                 slotLevel: mode.level,
                 targetIds: [c.id],
+                metamagic: mode.mm,
               }),
           )
           .map((c) => c.id),
@@ -147,7 +168,9 @@ export function CombatScreen() {
   const areaPreview = useMemo(() => {
     if (mode.kind !== 'spell' || !hover) return new Set<string>();
     const sp = spells.find((x) => x.spell.id === mode.spellId)?.spell;
-    if (!sp || targeting(sp, mode.level).kind !== 'area') return new Set<string>();
+    if (!sp) return new Set<string>();
+    if (targeting(sp, mode.level).kind === 'point') return new Set([posKey(hover)]);
+    if (targeting(sp, mode.level).kind !== 'area') return new Set<string>();
     return new Set(areaCells({ s, rng: new SeededRng(1) }, me, sp, hover).map(posKey));
   }, [mode, hover, spells, s, me]);
 
@@ -168,16 +191,23 @@ export function CombatScreen() {
     else if (mode.kind === 'shove') doAct({ type: 'shove', targetId: c.id, mode: mode.mode });
     else if (mode.kind === 'grapple') doAct({ type: 'grapple', targetId: c.id });
     else if (mode.kind === 'feature') doAct({ type: 'feature', id: mode.id, targetId: c.id });
+    else if (mode.kind === 'item') doAct({ type: 'use-item', itemId: mode.itemId, targetId: c.id });
     else if (mode.kind === 'spell') {
       const sp = spells.find((x) => x.spell.id === mode.spellId)!.spell;
-      const t = targeting(sp, mode.level);
+      const t = targeting(sp, mode.level, mode.mm);
       if (t.kind === 'area') return clickCell(c.pos);
       if (t.kind !== 'creatures') return;
       if (!t.repeat && mode.targets.includes(c.id))
         return setMode({ ...mode, targets: mode.targets.filter((x) => x !== c.id) });
       const targets = [...mode.targets, c.id];
       if (targets.length >= t.count)
-        doAct({ type: 'cast', spellId: sp.id, slotLevel: mode.level, targetIds: targets });
+        doAct({
+          type: 'cast',
+          spellId: sp.id,
+          slotLevel: mode.level,
+          targetIds: targets,
+          metamagic: mode.mm,
+        });
       else setMode({ ...mode, targets });
     }
   };
@@ -185,7 +215,13 @@ export function CombatScreen() {
   const clickCell = (p: Pos) => {
     if (!myTurn) return;
     if (mode.kind === 'spell') {
-      doAct({ type: 'cast', spellId: mode.spellId, slotLevel: mode.level, point: p });
+      doAct({
+        type: 'cast',
+        spellId: mode.spellId,
+        slotLevel: mode.level,
+        point: p,
+        metamagic: mode.mm,
+      });
       return;
     }
     if (mode.kind === 'idle' && routes.has(posKey(p))) doAct({ type: 'move', to: p });
@@ -194,10 +230,12 @@ export function CombatScreen() {
   const pickSpell = (spellId: string, level: number) => {
     setMenu(null);
     const sp = spells.find((x) => x.spell.id === spellId)!.spell;
-    const t = targeting(sp, level);
+    const meta = mm || undefined;
+    const t = targeting(sp, level, meta);
     if (t.kind === 'self' || (t.kind === 'area' && sp.area!.shape === 'aura'))
-      doAct({ type: 'cast', spellId, slotLevel: level });
-    else setMode({ kind: 'spell', spellId, level, targets: [] });
+      doAct({ type: 'cast', spellId, slotLevel: level, metamagic: meta });
+    else setMode({ kind: 'spell', spellId, level, targets: [], mm: meta });
+    setMm('');
   };
 
   const pickFeature = (id: FeatureId) => {
@@ -224,7 +262,35 @@ export function CombatScreen() {
   const hoverOpt =
     mode.kind === 'attack' ? options.find((o) => o.id === mode.optionId) : options[0];
   const banner = targetBanner(mode, options, spells);
+  const actionLeft = !me.turn.actionUsed || me.turn.extraActions > 0;
   const moreActions: { label: string; detail: string; onClick: () => void; blocked?: string }[] = [
+    ...(s.parley
+      ? [
+          {
+            label: 'Talk them down',
+            detail: `${s.parley.skills.join(' or ')} check · uses your action · once each`,
+            onClick: () => doAct({ type: 'parley' }),
+            blocked: s.parleyTried.includes(me.id)
+              ? 'already tried'
+              : actionLeft
+                ? undefined
+                : 'no action left',
+          },
+        ]
+      : []),
+    ...potions.map(([id, n]) => ({
+      label: `${getItem(id).name} (${n})`,
+      detail: 'drink it, or give it to an adjacent ally · action',
+      onClick: () => setMode({ kind: 'item', itemId: id }),
+      blocked:
+        actionLeft ||
+        (hero &&
+          hero.creature.classId === 'rogue' &&
+          hero.creature.level >= 3 &&
+          !me.turn.bonusUsed)
+          ? undefined
+          : 'no action left',
+    })),
     {
       label: 'Help',
       detail: 'an ally gets advantage on their next attack',
@@ -268,7 +334,6 @@ export function CombatScreen() {
           : 'attack with a light weapon first',
     })),
   ];
-  const actionLeft = !me.turn.actionUsed || me.turn.extraActions > 0;
 
   return (
     <div className="combat">
@@ -338,12 +403,12 @@ export function CombatScreen() {
                     y={y * CELL}
                     width={CELL}
                     height={CELL}
-                    fill={TERRAIN_FILL[t]}
+                    fill={terrainFill(s.map.style, t)}
                   />
-                  {t === 'trees' && (
+                  {t === 'trees' && s.map.style === 'forest-road' && (
                     <circle cx={x * CELL + 24} cy={y * CELL + 24} r={22} fill="#2f4226" />
                   )}
-                  {t === 'boulder' && (
+                  {t === 'boulder' && (s.map.style === 'forest-road' || s.map.style === 'cave') && (
                     <path
                       d={`M${x * CELL + 8} ${y * CELL + 34} L${x * CELL + 16} ${y * CELL + 12} L${x * CELL + 36} ${y * CELL + 10} L${x * CELL + 42} ${y * CELL + 32} L${x * CELL + 24} ${y * CELL + 42} Z`}
                       fill="#6f6a62"
@@ -351,7 +416,19 @@ export function CombatScreen() {
                       strokeWidth="2"
                     />
                   )}
-                  {t === 'brush' && (
+                  {t === 'boulder' && s.map.style !== 'forest-road' && s.map.style !== 'cave' && (
+                    <rect
+                      x={x * CELL + 6}
+                      y={y * CELL + 6}
+                      width={CELL - 12}
+                      height={CELL - 12}
+                      rx={s.map.style === 'mill' ? 18 : 3}
+                      fill="none"
+                      stroke="#00000055"
+                      strokeWidth="3"
+                    />
+                  )}
+                  {t === 'brush' && s.map.style === 'forest-road' && (
                     <path
                       d={`M${x * CELL + 10} ${y * CELL + 40} q6 -18 12 0 q6 -22 12 0 q6 -16 10 0`}
                       fill="none"
@@ -459,7 +536,9 @@ export function CombatScreen() {
               {hovered.effects.length > 0 && (
                 <span className="muted">{hovered.effects.map((e) => e.name).join(', ')}</span>
               )}
-              <span className="muted">{terrainAt(s.map, hovered.pos)}</span>
+              <span className="muted">
+                {terrainName(s.map.style, terrainAt(s.map, hovered.pos))}
+              </span>
             </div>
           )}
           {banner && myTurn && (
@@ -478,6 +557,7 @@ export function CombatScreen() {
                       spellId: mode.spellId,
                       slotLevel: mode.level,
                       targetIds: mode.targets,
+                      metamagic: mode.mm,
                     })
                   }
                 >
@@ -677,6 +757,25 @@ export function CombatScreen() {
                     : 'More actions'
               }
             >
+              {menu === 'spells' && knownMetamagic.length > 0 && (
+                <div className="menu-row">
+                  <label className="small">
+                    Metamagic{' '}
+                    <select
+                      value={mm}
+                      onChange={(e) => setMm(e.target.value as Metamagic | '')}
+                      aria-label="Metamagic"
+                    >
+                      <option value="">none</option>
+                      {knownMetamagic.map((m) => (
+                        <option key={m} value={m}>
+                          {METAMAGIC_NAMES[m]}
+                        </option>
+                      ))}
+                    </select>
+                  </label>
+                </div>
+              )}
               {menu === 'spells' &&
                 spells.map((c) => (
                   <div key={c.spell.id} className="menu-row">
@@ -778,17 +877,29 @@ export function CombatScreen() {
             aria-labelledby="outcome-title"
             className="dialog outcome"
           >
-            <h2 id="outcome-title">{s.outcome === 'victory' ? 'Victory!' : 'Defeat'}</h2>
-            {s.outcome === 'victory' ? (
+            <h2 id="outcome-title">
+              {s.outcome === 'victory'
+                ? 'Victory!'
+                : s.outcome === 'parley'
+                  ? 'The fight is over'
+                  : s.defeatContinues
+                    ? 'Beaten'
+                    : 'Defeat'}
+            </h2>
+            {s.outcome !== 'defeat' || s.defeatContinues ? (
               <>
-                <p>The goblins are beaten. Each surviving hero earns {s.xpPerPc} XP.</p>
+                <p>
+                  {s.outcome === 'defeat'
+                    ? 'Your party is knocked flat, but the story goes on.'
+                    : `${s.outcome === 'parley' ? 'Words won where swords would have.' : 'The enemy is beaten.'} Each surviving hero earns ${s.xpPerPc} XP.`}
+                </p>
                 <button type="button" className="primary" autoFocus onClick={endFight}>
                   Continue
                 </button>
               </>
             ) : (
               <>
-                <p>Your party has fallen on the Ashford road.</p>
+                <p>Your party has fallen.</p>
                 <button
                   type="button"
                   className="primary"
@@ -833,7 +944,9 @@ function PromptDialog({
         ? `${name(p.attackerId)} hits ${name(p.reactorId)} with a ${p.total}. Cast Shield (+5 AC, uses a spell slot) to turn it into a miss?`
         : p.kind === 'protection'
           ? `${name(p.attackerId)} attacks ${name(p.targetId)}. Should ${name(p.reactorId)} use Protection (disadvantage on the attack)?`
-          : `${name(p.attackerId)} just hurt ${name(p.reactorId)}. Answer with Hellish Rebuke (uses a spell slot)?`;
+          : p.kind === 'cutting-words'
+            ? `${name(p.attackerId)} hits ${name(p.targetId)} with a ${p.total}. Should ${name(p.reactorId)} use Cutting Words (a Bardic Inspiration die off the roll)?`
+            : `${name(p.attackerId)} just hurt ${name(p.reactorId)}. Answer with Hellish Rebuke (uses a spell slot)?`;
   return (
     <div className="dialog-backdrop">
       <div
@@ -882,5 +995,7 @@ function targetBanner(
       return 'Choose an enemy next to you to shove.';
     case 'grapple':
       return 'Choose an enemy next to you to grapple.';
+    case 'item':
+      return 'Choose who drinks it: yourself or an ally next to you.';
   }
 }

@@ -13,7 +13,7 @@ const multiplier = (n: number) => (n <= 1 ? 1 : n === 2 ? 1.5 : n <= 6 ? 2 : 2.5
 
 /** The pre-combat "Prepare" step: what you face, difficulty, formation, then fight. */
 export function PrepareScreen() {
-  const { game, encounterId, startFight, goto, pendingArrival, backToCamp, talkPast } = useGame();
+  const { game, encounterId, startFight, goHome, pendingArrival, backToCamp, talkPast } = useGame();
   const [talkResult, setTalkResult] = useState<{ success: boolean; text: string } | null>(null);
   const onRoad = !!pendingArrival || backToCamp;
   const settings = useSettings();
@@ -61,12 +61,8 @@ export function PrepareScreen() {
               : ''}
           </span>
         ) : (
-          <button
-            type="button"
-            className="menu-secondary small-btn"
-            onClick={() => goto('explore')}
-          >
-            Back to the tavern
+          <button type="button" className="menu-secondary small-btn" onClick={goHome}>
+            Not yet
           </button>
         )}
       </header>
