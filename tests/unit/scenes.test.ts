@@ -224,10 +224,10 @@ describe('the tavern in M7', () => {
     expect(c.game.flags['pies_settled']).toBe(true);
   });
 
-  it('after Lantern Night Brannoc gives two healing potions once, and names Ulric', () => {
+  it('after Lantern Night Brannoc gives four healing potions once (one each), and names Ulric', () => {
     let c = new Conversation('tavern', game(), hi()).start('brannoc');
     pick(c, /supplies for the road/);
-    expect(c.game.inventory['potion-of-healing']).toBe(2);
+    expect(c.game.inventory['potion-of-healing']).toBe(4);
     pick(c, /old mine/);
     expect(c.game.flags['knows_ulric']).toBe(true);
     c = new Conversation('tavern', c.game, hi()).start('brannoc');

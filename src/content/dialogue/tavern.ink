@@ -111,8 +111,8 @@ Three strangers in grey came in behind him, asking quietly after "a lost letter.
     ~ note("Brannoc's old shift partner, Ulric Dunmore, may be behind the digging at the old mine. Saying Brannoc's name might make him listen.")
     -> menu
 * {quest_done("lantern-night")} [We'll need supplies for the road.]
-    He sets two stoppered flasks on the bar. "Healing draughts. On the house, once. After that you're paying like everyone else."
-    ~ give_item("potion-of-healing", 2)
+    He sets four stoppered flasks on the bar, one in front of each of you. "Healing draughts. On the house, once. After that you're paying like everyone else."
+    ~ give_item("potion-of-healing", 4)
     -> menu
 * {quest_done("lantern-night")} [Who's the old woman crying by the window?]
     -> wynn

@@ -32,12 +32,12 @@ test('Act I: a scene starts the tavern brawl and picks up after it; potions; a m
   await pick(page, /Will you trust us with the letter now/);
   await expect(page.getByText('Quest complete: Lantern Night')).toBeVisible();
   await pick(page, /supplies for the road/);
-  await expect(page.getByText('Received: Potion of Healing ×2')).toBeVisible();
+  await expect(page.getByText('Received: Potion of Healing ×4')).toBeVisible();
   await pick(page, /\d\. Back to the tavern\./);
   await leave(page);
   await page.getByRole('button', { name: 'Inventory' }).click();
   await expect(page.getByRole('dialog', { name: 'Inventory' })).toContainText(
-    'Potion of Healing ×2',
+    'Potion of Healing ×4',
   );
   await page.getByRole('button', { name: 'Close' }).click();
 
