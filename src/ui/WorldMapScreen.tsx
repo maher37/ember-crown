@@ -3,6 +3,9 @@ import { places } from '../data';
 import { formatDate } from '../game/calendar';
 import { useGame } from '../game/store';
 import { currentPlace, isUnlocked, travelHours } from '../game/travel';
+import { PLACE_SCENES } from '../game/dialogue';
+import { canLevelUp } from '../rules';
+import { InventoryDialog } from './ExploreDialogs';
 import mapArt from './art/worldmap.svg?raw';
 import './World.css';
 
@@ -29,10 +32,11 @@ const DANGER: Record<string, [string, string]> = {
 
 /** Travel map of the southern Greypeaks (rebuilt from docs/mockups/WorldMap.dc.html). */
 export function WorldMapScreen() {
-  const { game, travelTo, travelLog, goto, openCamp } = useGame();
+  const { game, travelTo, travelLog, goto, openCamp, enterPlace } = useGame();
+  const [items, setItems] = useState(false);
   const g = game!;
   const here = currentPlace(g);
-  const [selId, setSel] = useState(here.id === 'ashford' ? 'old-mine' : 'ashford');
+  const [selId, setSel] = useState(here.id === 'ashford' ? 'old-mine' : here.id);
   const sel = places.find((p) => p.id === selId)!;
   const locked = !isUnlocked(g, sel);
   const isHere = sel.id === here.id;
@@ -76,6 +80,12 @@ export function WorldMapScreen() {
               Make camp here
             </button>
           )}
+          <button type="button" className="menu-secondary small-btn" onClick={() => goto('party')}>
+            Party{g.party.some((h) => canLevelUp(h)) ? ' · level up!' : ''}
+          </button>
+          <button type="button" className="menu-secondary small-btn" onClick={() => setItems(true)}>
+            Inventory
+          </button>
         </div>
       </header>
       <div className="world-main">
@@ -148,6 +158,11 @@ export function WorldMapScreen() {
                 <dd>{REGION_NAMES[sel.region === 'none' ? here.region : sel.region]}</dd>
               </div>
             </dl>
+            {isHere && PLACE_SCENES[sel.id] && (
+              <button type="button" className="travel-btn" onClick={() => enterPlace(sel.id)}>
+                Explore {sel.name}
+              </button>
+            )}
             <button
               type="button"
               className="travel-btn"
@@ -160,10 +175,10 @@ export function WorldMapScreen() {
                   ? `Unlocks in Act ${['I', 'II', 'III'][sel.act - 1]}`
                   : `Travel (${hours} h)`}
             </button>
-            {!isHere && !locked && sel.id !== 'ashford' && (
+            {!isHere && !locked && sel.id !== 'ashford' && !PLACE_SCENES[sel.id] && (
               <span className="small muted">
-                What waits there arrives with Act I's content (Milestone M7); you can camp there and
-                travel back.
+                What waits there arrives with Act II's content (a later milestone); you can camp
+                there and travel back.
               </span>
             )}
           </div>
@@ -197,6 +212,7 @@ export function WorldMapScreen() {
           </div>
         </aside>
       </div>
+      {items && <InventoryDialog onClose={() => setItems(false)} />}
     </div>
   );
 }

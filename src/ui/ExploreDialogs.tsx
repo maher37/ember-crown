@@ -4,9 +4,11 @@ import { getClass, slotsLeft, maxSlots } from '../game/hero';
 import { SLOT_NAMES, type SlotId } from '../game/save';
 import { getLetter, trust } from '../game/letters';
 import { useGame } from '../game/store';
+import { TRUTHS } from '../game/dialogue';
+import { attunedCount, getItem, MAX_ATTUNED } from '../game/items';
 import { downloadSave } from './saveFiles';
 
-function Modal({
+export function Modal({
   title,
   onClose,
   children,
@@ -95,6 +97,22 @@ export function JournalDialog({ onClose }: { onClose: () => void }) {
           <p className="small muted">Trust with M.V.: {trust(g)}</p>
         </section>
         <section>
+          <h3 className="eyebrow">Truths</h3>
+          {Object.entries(TRUTHS).some(([id]) => g.flags[`truth_${id}`]) ? (
+            <ul>
+              {Object.entries(TRUTHS)
+                .filter(([id]) => g.flags[`truth_${id}`])
+                .map(([id, name]) => (
+                  <li key={id}>{name}</li>
+                ))}
+            </ul>
+          ) : (
+            <p className="small muted">
+              None yet. Each Truth you hold opens a way to talk Maelis down at the end.
+            </p>
+          )}
+        </section>
+        <section>
           <h3 className="eyebrow">Notes</h3>
           {g.notes.length ? (
             <ul>
@@ -175,6 +193,116 @@ export function SaveDialog({ onClose }: { onClose: () => void }) {
       <p className="small" role="status">
         {message}
       </p>
+    </Modal>
+  );
+}
+
+/** The party's pack and what each hero wears (Items.md: attune during a short rest). */
+export function InventoryDialog({ onClose }: { onClose: () => void }) {
+  const { game, equipItem, unequipItem, drinkPotion, shortRest } = useGame();
+  const g = game!;
+  const [msg, setMsg] = useState('');
+  const [who, setWho] = useState(g.party[0]!.id);
+  const pack = Object.entries(g.inventory).filter(([, n]) => n > 0);
+  const hero = g.party.find((h) => h.id === who)!;
+  return (
+    <Modal title="Inventory" onClose={onClose}>
+      <div className="journal-scroll">
+        <label className="small">
+          Hero{' '}
+          <select value={who} onChange={(e) => setWho(e.target.value)} aria-label="Hero">
+            {g.party.map((h) => (
+              <option key={h.id} value={h.id}>
+                {h.name} (HP {h.hp}/{h.maxHp})
+              </option>
+            ))}
+          </select>
+        </label>
+        <section>
+          <h3 className="eyebrow">
+            {hero.name} wears · attuned {attunedCount(hero)}/{MAX_ATTUNED}
+          </h3>
+          {(hero.equipment.magic ?? []).length ? (
+            <ul className="item-list">
+              {hero.equipment.magic.map((id) => (
+                <li key={id}>
+                  <span>
+                    <span className="strong">{getItem(id).name}</span>{' '}
+                    <span className="small muted">{getItem(id).summary}</span>
+                  </span>
+                  <button
+                    type="button"
+                    className="menu-secondary small-btn"
+                    onClick={() => unequipItem(hero.id, id)}
+                  >
+                    Take off
+                  </button>
+                </li>
+              ))}
+            </ul>
+          ) : (
+            <p className="small muted">No magic items.</p>
+          )}
+        </section>
+        <section>
+          <h3 className="eyebrow">The pack</h3>
+          {pack.length ? (
+            <ul className="item-list">
+              {pack.map(([id, n]) => {
+                const it = getItem(id);
+                return (
+                  <li key={id}>
+                    <span>
+                      <span className="strong">
+                        {it.name}
+                        {n > 1 ? ` ×${n}` : ''}
+                      </span>{' '}
+                      <span className="small muted">
+                        {it.summary}
+                        {it.attunement ? ' · requires attunement' : ''}
+                      </span>
+                    </span>
+                    {it.consumable ? (
+                      it.effects.some((e) => e.type === 'heal') ? (
+                        <button
+                          type="button"
+                          className="menu-secondary small-btn"
+                          onClick={() => setMsg(drinkPotion(hero.id, id) ?? '')}
+                        >
+                          {hero.name.split(' ')[0]} drinks
+                        </button>
+                      ) : (
+                        <span className="small muted">use it in a fight</span>
+                      )
+                    ) : (
+                      <button
+                        type="button"
+                        className="menu-secondary small-btn"
+                        onClick={() =>
+                          setMsg(equipItem(hero.id, id) ?? `${hero.name} takes ${it.name}.`)
+                        }
+                      >
+                        {it.attunement ? 'Attune' : 'Equip'}
+                      </button>
+                    )}
+                  </li>
+                );
+              })}
+            </ul>
+          ) : (
+            <p className="small muted">Nothing in the pack.</p>
+          )}
+          {!shortRest && (
+            <p className="small muted">
+              Items that need attunement can only be attuned during a short rest (Camp → Short
+              rest).
+            </p>
+          )}
+          <p className="small" role="status">
+            {msg}
+          </p>
+        </section>
+      </div>
     </Modal>
   );
 }

@@ -10,7 +10,12 @@ const LETTERS: Record<string, TerrainKind> = {
 };
 
 export function parseMap(width: number, height: number, rows: string[]): CombatMap {
-  return { width, height, terrain: rows.map((r) => [...r].map((ch) => LETTERS[ch] ?? 'open')) };
+  return {
+    width,
+    height,
+    style: 'forest-road',
+    terrain: rows.map((r) => [...r].map((ch) => LETTERS[ch] ?? 'open')),
+  };
 }
 
 export const samePos = (a: Pos, b: Pos) => a.x === b.x && a.y === b.y;

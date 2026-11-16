@@ -42,6 +42,7 @@ const game = (): GameState => ({
   clock: 7972,
   lastLongRest: null,
   letters: [],
+  inventory: {},
 });
 
 describe('save files', () => {
@@ -215,7 +216,7 @@ describe('save version 1 → 2 (M4: spells, slots and resources)', () => {
       resourcesUsed: {},
       invocations: [],
     });
-    expect(r.ok && r.save.saveVersion).toBe(4);
+    expect(r.ok && r.save.saveVersion).toBe(5);
   });
 });
 

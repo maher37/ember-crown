@@ -7,7 +7,7 @@ import { useGame } from '../game/store';
 import { canLevelUp, XP_THRESHOLDS } from '../rules';
 import { CLASS_COPY, ELF_EARS } from './creatorCopy';
 import './Explore.css';
-import { JournalDialog, SaveDialog, SpellsDialog } from './ExploreDialogs';
+import { InventoryDialog, JournalDialog, SaveDialog, SpellsDialog } from './ExploreDialogs';
 import { Portrait } from './Portrait';
 
 interface Hotspot {
@@ -28,7 +28,7 @@ interface Hotspot {
 /** The Drowned Lantern on Lantern Night (rebuilt from docs/mockups/Exploration.dc.html). */
 export function ExploreScreen() {
   const { game, talk, openLevelUp, toasts, clearToasts, goto, saveTo, openCamp } = useGame();
-  const [dialog, setDialog] = useState<null | 'journal' | 'spells' | 'save'>(null);
+  const [dialog, setDialog] = useState<null | 'journal' | 'spells' | 'save' | 'inventory'>(null);
   const g = game!;
   const f = (k: string) => !!g.flags[k];
 
@@ -301,11 +301,7 @@ export function ExploreScreen() {
           ))}
         </div>
         <nav aria-label="Actions" className="explore-actions">
-          <button
-            type="button"
-            disabled
-            title="Inventory arrives with Act I's items (Milestone M7)"
-          >
+          <button type="button" onClick={() => setDialog('inventory')}>
             Inventory
           </button>
           <button type="button" onClick={() => setDialog('spells')}>
@@ -328,6 +324,7 @@ export function ExploreScreen() {
       {dialog === 'journal' && <JournalDialog onClose={() => setDialog(null)} />}
       {dialog === 'spells' && <SpellsDialog onClose={() => setDialog(null)} />}
       {dialog === 'save' && <SaveDialog onClose={() => setDialog(null)} />}
+      {dialog === 'inventory' && <InventoryDialog onClose={() => setDialog(null)} />}
     </div>
   );
 }

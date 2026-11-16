@@ -1,6 +1,7 @@
 import { weapons } from '../../data';
 import type { Effect, LeafEffect } from '../../data/schemas/common';
 import { getMonster } from '../creatures';
+import { getItem, magicWeaponBase } from '../items';
 import {
   abilityModifier,
   attackRoll,
@@ -50,6 +51,8 @@ export interface AttackOption {
   /** Counts as a monk weapon or unarmed strike (Martial Arts). */
   monk: boolean;
   unarmed: boolean;
+  /** Overcomes resistance to nonmagical weapons (shadows, wights...). */
+  magical?: boolean;
 }
 
 const fmt = (n: number) => (n >= 0 ? `+${n}` : `${n}`);
@@ -127,6 +130,69 @@ export function attackOptions(c: Combatant): AttackOption[] {
         ],
       });
     }
+  }
+  // Magic weapons (Deepdelver: +1 warhammer). DMG: +1 Weapon.
+  for (const id of h.equipment.magic ?? []) {
+    const item = getItem(id);
+    const w = magicWeaponBase(item);
+    if (!w) continue;
+    const bonus = item.effects.reduce(
+      (n, e) =>
+        n +
+        (e.type === 'modifier' && e.target === 'attack' && typeof e.value === 'number'
+          ? e.value
+          : 0),
+      0,
+    );
+    const finesse = w.properties.includes('finesse');
+    const useDex = w.kind === 'ranged' || (finesse && dex > str);
+    const mod = useDex ? dex : str;
+    const twoHands =
+      w.properties.includes('two-handed') ||
+      (!!w.versatile && !h.equipment.shield && meleeCount === 0);
+    const die = twoHands && w.versatile ? w.versatile : w.damage.dice;
+    const dueling = style === 'dueling' && w.kind === 'melee' && !twoHands ? 2 : 0;
+    opts.unshift({
+      id: item.id,
+      name: item.name,
+      kind: w.kind,
+      toHit:
+        mod + h.proficiencyBonus + bonus + (style === 'archery' && w.kind === 'ranged' ? 2 : 0),
+      reach: w.properties.includes('reach') ? 10 : 5,
+      range: w.kind === 'ranged' ? w.range : undefined,
+      damage: [{ dice: `${die}${fmt(mod + bonus + dueling)}`, type: w.damage.type as DamageType }],
+      onHit: [],
+      finesse,
+      light: w.properties.includes('light'),
+      twoHanded: twoHands && w.kind === 'melee',
+      ability: useDex ? 'dex' : 'str',
+      weaponId: item.id,
+      monk: false,
+      unarmed: false,
+      magical: true,
+    });
+  }
+  // PHB: Pact of the Blade. A summoned pact weapon (we use a longsword) that counts as magical.
+  if (h.choices['pact-boon']?.includes('pact-of-the-blade')) {
+    const mod = str;
+    const twoHands = !h.equipment.shield;
+    opts.unshift({
+      id: 'pact-blade',
+      name: 'Pact blade',
+      kind: 'melee',
+      toHit: mod + h.proficiencyBonus,
+      reach: 5,
+      damage: [{ dice: `${twoHands ? '1d10' : '1d8'}${mod ? fmt(mod) : ''}`, type: 'slashing' }],
+      onHit: [],
+      finesse: false,
+      light: false,
+      twoHanded: twoHands,
+      ability: 'str',
+      weaponId: 'longsword',
+      monk: false,
+      unarmed: false,
+      magical: true,
+    });
   }
   // PHB: Unarmed Strike: 1 + Str bludgeoning. Monks use Dex and the martial arts die.
   const uMod = monk ? Math.max(str, dex) : str;
@@ -278,6 +344,24 @@ export function makeAttack(
   )
     adv.push('Pack Tactics');
 
+  // PHB: Mirror Image. The attack may hit a duplicate instead (d20: 6+ with 3, 8+ with 2, 11+ with 1).
+  const images = effectsWith(target, 'mirror-image')[0];
+  if (images && Number(images.data?.images) > 0) {
+    const n = Number(images.data!.images);
+    const d = rng.die(20);
+    if (d >= [0, 11, 8, 6][n]!) {
+      const dupAc = 10 + abilityModifier(target.creature.abilities.dex);
+      const r0 = rng.die(20) + opt.toHit;
+      say(
+        s,
+        attacker.side === 'party' ? 'you' : 'foe',
+        `${attacker.name} targets a mirror image of ${target.name} (d20 ${d}): ${r0} vs AC ${dupAc} → ${r0 >= dupAc ? 'the image vanishes' : 'MISS'}`,
+      );
+      if (r0 >= dupAc) images.data = { ...images.data, images: n - 1 };
+      attacker.effects = attacker.effects.filter((e) => e.tag !== 'hidden');
+      return { hit: false, critical: false, total: r0, natural: 0 };
+    }
+  }
   const cover = coverBetween(s, attacker.pos, target.pos, [attacker.id, target.id]);
   const h = heroOf(attacker);
   const critRange = h && h.classId === 'fighter' && h.level >= 3 ? 19 : 20;
@@ -375,6 +459,25 @@ export function applyHit(
   }
   if (hasEffect(attacker, 'divine-favor') && opt.weaponId)
     parts.push({ dice: '1d4', type: 'radiant' });
+  // Branding Smite and similar: the next weapon hit deals extra damage.
+  const nextHit = effectsWith(attacker, 'next-hit')[0];
+  if (nextHit && opt.weaponId) {
+    parts.push({
+      dice: String(nextHit.data?.dice ?? '2d6'),
+      type: String(nextHit.data?.type ?? 'radiant') as DamageType,
+    });
+    removeEffect(attacker, nextHit);
+  }
+  // PHB: Hunter, Colossus Slayer. Once per turn, +1d8 against a creature below its HP maximum.
+  if (
+    h?.choices['hunters-prey']?.includes('colossus-slayer') &&
+    !attacker.turn.colossusUsed &&
+    opt.weaponId &&
+    target.creature.hp < target.creature.maxHp
+  ) {
+    parts.push({ dice: '1d8', type: parts[0]!.type });
+    attacker.turn.colossusUsed = true;
+  }
   // PHB: Divine Smite. 2d8 radiant, +1d8 per slot level above 1st, +1d8 vs undead or fiends.
   if (extras.smiteLevel && opt.kind === 'melee' && opt.weaponId) {
     spendSlot(attacker, extras.smiteLevel);
@@ -411,6 +514,25 @@ export function applyHit(
     opt.name,
   );
   sayAll(s, [dmg.log], attacker);
+  // PHB: Monk, Deflect Missiles (level 3). Reaction: reduce ranged weapon damage by 1d10 + Dex + monk level [used automatically].
+  const monkLvl = classLevel(target, 'monk');
+  if (
+    monkLvl >= 3 &&
+    opt.kind === 'ranged' &&
+    !target.reactionUsed &&
+    conscious(target) &&
+    !isIncapacitated(target.creature)
+  ) {
+    const cut = ctx.rng.die(10) + abilityModifier(target.creature.abilities.dex) + monkLvl;
+    target.reactionUsed = true;
+    say(s, 'you', `${target.name} deflects the missile: −${cut} damage`);
+    let left = cut;
+    for (const inst of dmg.instances) {
+      const take = Math.min(inst.amount, left);
+      inst.amount -= take;
+      left -= take;
+    }
+  }
   dealDamage(ctx, target, dmg.instances, { critical, melee: opt.kind === 'melee', attacker });
 
   // Armor of Agathys: a melee attacker takes cold damage while the temporary HP last.

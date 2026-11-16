@@ -85,7 +85,14 @@ test('F2 Road ambush: prepare, fight to the end, and come back with XP', async (
 
   if (await page.getByRole('heading', { name: 'Victory!' }).isVisible()) {
     await page.getByRole('button', { name: 'Continue' }).click();
-    // The party arrives where it was going, and the map's travel log has the news.
+    // The goblin who stayed (side quest part 1), then the Old Mine's scene.
+    await expect(page.getByText(/Wix is too small to eat/)).toBeVisible();
+    await pick(page, /Spare him/);
+    await page.getByRole('button', { name: 'Go on' }).click();
+    await expect(page.getByText(/Private dig/)).toBeVisible();
+    await pick(page, /Leave \(to the map\)/);
+    await page.getByRole('button', { name: 'Back to the map' }).click();
+    // The party arrived where it was going, and the map's travel log has the news.
     await expect(page.getByRole('heading', { name: 'The Southern Greypeaks' })).toBeVisible();
     await expect(page.getByRole('log')).toContainText('Victory! +50 XP each.');
     await expect(page.getByRole('log')).toContainText('Journal updated: Take the Ashford road');

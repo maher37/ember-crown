@@ -220,10 +220,22 @@ Warlock (pact magic; recharges on a short rest): L1: one 1st-level slot; L2: two
 - [ ] (Proposed, M4) Magic Missile darts share one damage roll (Sage Advice reading).
 - [ ] (Proposed, M4) A versatile weapon is used two-handed when the hero has no shield and no other melee weapon.
 - [ ] (Proposed, M5) Spells and cantrips can be re-picked freely at each level-up (the creator doesn't ask for them yet). RAW only lets known casters swap one spell per level.
-- [ ] (Proposed, M5) Until the tavern brawl exists (M7), a failed check with the Grey Company ends with Brannoc firing a crossbow into the ceiling; the F1 XP (25) is still awarded so the level curve holds.
+- [x] ~~(Proposed, M5) Until the tavern brawl exists (M7), a failed check with the Grey Company ends with Brannoc firing a crossbow into the ceiling.~~ Replaced in M7 by the real brawl (F1).
 - [ ] (Proposed, M6) Arcane Recovery (wizard) and Natural Recovery (Land druid) are used automatically after a short rest, recovering the lowest spent slots first.
 - [ ] (Proposed, M6) A road encounter during a long rest in the wild interrupts it: fight (or talk), then try to rest again.
 - [ ] (Proposed, M6) Random road encounters scale by difficulty with one fewer enemy on Easy and one more on Hard (single monsters stay single).
+- [ ] (Proposed, M7) The tavern brawl (F1): every hit knocks out instead of killing, including ranged attacks and spells (RAW: melee only), and a blow never does more damage than the HP left, so massive damage can't kill anyone in a brawl.
+- [ ] (Proposed, M7) Losing the brawl still gives its 25 XP (the level curve needs it); everyone wakes with 1 HP.
+- [ ] (Proposed, M7) Talking Brother Ulric down mid-fight: each hero may try once, using their action, with the better of Persuasion or Insight; DC 15, or DC 11 once Brannoc has given you Ulric's name. Success ends the fight with full XP (D16).
+- [ ] (Proposed, M7) Brother Ulric only casts Hold Person on Hard (bot tests showed it was too swingy at level 3 on Medium).
+- [ ] (Proposed, M7) Monster breath weapons only count standing heroes when aiming (they don't breathe on the fallen).
+- [ ] (Proposed, M7) A shadow's Strength Drain returns when the fight ends (RAW: after a short or long rest). Aid's extra HP also end with the fight (RAW: 8 hours).
+- [ ] (Proposed, M7) Deflect Missiles (monk) and Giant Killer (Hunter ranger) are used automatically when they apply; Cutting Words (Lore bard) asks first.
+- [ ] (Proposed, M7) Metamagic in combat: Quickened, Twinned, Careful and Distant. Empowered, Extended, Heightened and Subtle can be chosen at level-up but don't do anything in fights yet.
+- [ ] (Proposed, M7) Pact of the Blade always makes a longsword (RAW: any melee weapon form).
+- [ ] (Proposed, M7) Traps in dialogue (the cellar tunnel's falling beam): the party's leader makes the save, and a trap can't drop anyone below 1 HP outside a fight.
+- [ ] (Proposed, M7) Magic items that don't need attunement can be equipped any time; attuning (Items.md) happens during a short rest.
+- [ ] (Proposed, M7) Brannoc gives two Potions of Healing once, after Lantern Night (there's no shop or money yet).
 
 ## CONFIRM LOCALLY
 - [ ] Spell details for anything not marked ✅. They're summarized from memory of the 2014 PHB, so verify damage dice and saves when entering data (the PHB text extracts cleanly enough to check each spell).

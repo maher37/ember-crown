@@ -2,6 +2,7 @@ import type { DifficultyId } from '../../data/schemas/difficulty';
 import type { Encounter } from '../../data/schemas/encounter';
 import { getMonster, monsterToCreature } from '../creatures';
 import type { Hero } from '../hero';
+import { hasItem } from '../items';
 import {
   abilityCheck,
   abilityModifier,
@@ -11,6 +12,7 @@ import {
   isDying,
   isIncapacitated,
   removeCondition,
+  stabilize,
   rollD20,
   describeTotal,
   type RandomSource,
@@ -70,6 +72,10 @@ export interface StartOptions {
   formation?: Record<string, Pos>;
   /** Heroes who cast Mage Armor before the fight (spends a 1st-level slot). */
   mageArmor?: string[];
+  /** The party's consumables (potions). */
+  inventory?: Record<string, number>;
+  /** Story flags the fight can read. */
+  flags?: Record<string, boolean | number | string>;
 }
 
 /** Set up a fight: place everyone, roll initiative (and surprise), and start the first turn. */
@@ -79,7 +85,7 @@ export function startCombat(o: StartOptions): CombatState {
     encounterId: e.id,
     name: e.name,
     difficulty: o.difficulty,
-    map: parseMap(e.map.width, e.map.height, e.map.terrain),
+    map: { ...parseMap(e.map.width, e.map.height, e.map.terrain), style: e.map.style },
     round: 1,
     order: [],
     turnIndex: 0,
@@ -90,6 +96,12 @@ export function startCombat(o: StartOptions): CombatState {
     xpPerPc: e.xpPerPc,
     prompt: null,
     plan: null,
+    nonlethal: !!e.nonlethal,
+    defeatContinues: !!e.defeatContinues,
+    parley: e.parley ?? null,
+    parleyTried: [],
+    inventory: { ...(o.inventory ?? {}) },
+    flags: { ...(o.flags ?? {}) },
   };
   return produce(base, (ctx) => {
     const { s } = ctx;
@@ -121,6 +133,10 @@ export function startCombat(o: StartOptions): CombatState {
         m.speed.walk,
       );
       c.monsterId = m.id;
+      if (m.spellcasting?.slots) c.monsterSlots = { ...m.spellcasting.slots };
+      const rechargeable = m.actions.filter((a) => a.recharge && 'roll' in a.recharge);
+      if (rechargeable.length)
+        c.recharge = Object.fromEntries(rechargeable.map((a) => [a.id, true]));
       c.tactic = en.tactic;
       s.combatants[en.id] = c;
     }
@@ -285,6 +301,13 @@ function beginTurn(ctx: Ctx): boolean {
   c.turn = freshTurn(speedNow(c));
   if (c.gone || c.creature.dead) return false;
   const who = c.side === 'party' ? 'you' : 'foe';
+  // DMG: Periapt of Wound Closure (Lysa's Locket). While dying, you stabilize at the start of your turn.
+  const wearer = heroOf(c);
+  if (isDying(c.creature) && wearer && hasItem(wearer, 'lysas-locket')) {
+    c.creature = stabilize(c.creature);
+    say(s, 'you', `${c.name}'s locket glows: ${c.name} is stable`);
+    return false;
+  }
   if (isDying(c.creature)) {
     const r = deathSave(c.creature, rng);
     c.creature = r.creature;
@@ -293,6 +316,16 @@ function beginTurn(ctx: Ctx): boolean {
     c.turn = freshTurn(speedNow(c));
   }
   if (c.creature.hp === 0) return false;
+  // MM: Recharge X–6. Roll a d6 at the start of the monster's turn; on X or higher the ability is back.
+  if (c.monsterId && c.recharge) {
+    for (const a of getMonster(c.monsterId).actions)
+      if (a.recharge && 'roll' in a.recharge && c.recharge[a.id] === false) {
+        const d = rng.die(6);
+        const back = d >= a.recharge.roll;
+        c.recharge = { ...c.recharge, [a.id]: back };
+        say(s, 'foe', `${c.name} ${a.name} recharge: d6 (${d}) ${back ? '→ ready!' : '→ not yet'}`);
+      }
+  }
   if (c.surprised) {
     say(s, who, `${c.name} is surprised and loses this turn`);
     return false;
@@ -334,6 +367,7 @@ function finishTurn(ctx: Ctx): void {
 }
 
 export function checkOutcome(s: CombatState): CombatState['outcome'] {
+  if (s.outcome === 'parley') return 'parley';
   const up = (side: string) =>
     Object.values(s.combatants).some(
       (c) => c.side === side && conscious(c) && !hasCondition(c.creature, 'unconscious'),
@@ -385,7 +419,13 @@ function announce(s: CombatState): void {
   say(
     s,
     'head',
-    s.outcome === 'victory' ? 'Victory! The road is clear.' : 'Your party has fallen…',
+    s.outcome === 'victory'
+      ? 'Victory!'
+      : s.outcome === 'parley'
+        ? 'The fighting stops.'
+        : s.defeatContinues
+          ? 'Your party is beaten…'
+          : 'Your party has fallen…',
   );
 }
 

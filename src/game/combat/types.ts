@@ -13,6 +13,8 @@ export type TerrainKind = 'open' | 'road' | 'brush' | 'trees' | 'boulder';
 export interface CombatMap {
   width: number;
   height: number;
+  /** Look of the map: forest-road, road, tavern, cave, mill... */
+  style: string;
   terrain: TerrainKind[][]; // [y][x]
 }
 
@@ -48,8 +50,14 @@ export interface TurnState {
   extraActions: number;
   /** A leveled spell (not a cantrip) was cast with the bonus action this turn. */
   bonusSpellCast: boolean;
+  /** A spell of 1st level or higher was cast with the action this turn. */
+  actionSpellCast?: boolean;
   /** Attacks left in the current Attack action (Extra Attack gives 2 from level 5). */
   attacksLeft: number;
+  /** Horde Breaker used this turn. */
+  hordeUsed?: boolean;
+  /** Colossus Slayer used this turn. */
+  colossusUsed?: boolean;
 }
 
 export interface Combatant {
@@ -77,6 +85,10 @@ export interface Combatant {
   wildShape?: { monsterId: string; hp: number; maxHp: number };
   /** Bardic Inspiration die held by this creature. */
   inspiration?: number;
+  /** A spellcasting monster's remaining slots, by level. */
+  monsterSlots?: Record<string, number>;
+  /** Recharge abilities (a dragon's breath): true when ready. */
+  recharge?: Record<string, boolean>;
 }
 
 export interface LogLine {
@@ -99,7 +111,14 @@ export type Prompt =
       total: number;
     }
   | { kind: 'protection'; reactorId: string; attackerId: string; targetId: string }
-  | { kind: 'hellish-rebuke'; reactorId: string; attackerId: string };
+  | { kind: 'hellish-rebuke'; reactorId: string; attackerId: string }
+  | {
+      kind: 'cutting-words';
+      reactorId: string;
+      attackerId: string;
+      targetId: string;
+      total: number;
+    };
 
 /** Enemy turn in progress (so it can pause for a reaction prompt and resume). */
 export interface EnemyPlan {
@@ -115,6 +134,10 @@ export type PlanStep =
   | { type: 'bonus'; what: 'disengage' | 'hide' | 'dash' }
   | { type: 'action'; what: 'dash' | 'dodge' }
   | { type: 'move'; path: Pos[] }
+  | { type: 'cast'; spellId: string; slotLevel: number; targetIds?: string[]; point?: Pos }
+  | { type: 'spirit-attack'; targetId: string }
+  /** A monster's area action (Fire Breath), aimed at a square. */
+  | { type: 'area-action'; actionId: string; point: Pos }
   | {
       type: 'attack';
       targetId: string;
@@ -137,7 +160,26 @@ export interface CombatState {
   combatants: Record<string, Combatant>;
   log: LogLine[];
   rngState: number;
-  outcome: null | 'victory' | 'defeat';
+  /** 'parley': the enemy was talked down mid-fight (counts as a win). */
+  outcome: null | 'victory' | 'defeat' | 'parley';
+  /** A brawl: anyone dropped to 0 HP is knocked out, not killed (PHB: Knocking a Creature Out). */
+  nonlethal: boolean;
+  /** Losing this fight doesn't end the game; the story goes on. */
+  defeatContinues: boolean;
+  /** Talk the enemy down mid-fight (e.g. Brother Ulric). */
+  parley: {
+    skills: string[];
+    dc: number;
+    easierFlag?: string;
+    easierDc?: number;
+    text: string;
+  } | null;
+  /** Heroes who already tried to parley this fight. */
+  parleyTried: string[];
+  /** The party's potions and other consumables (written back after the fight). */
+  inventory: Record<string, number>;
+  /** Story flags the fight can read (e.g. Brannoc's name helps with Ulric). */
+  flags: Record<string, boolean | number | string>;
   xpPerPc: number;
   prompt: Prompt | null;
   plan: EnemyPlan | null;

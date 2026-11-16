@@ -53,7 +53,7 @@ export interface Hero extends Creature {
   fightingStyle: string | null;
   speed: number;
   portrait: Portrait;
-  equipment: { armor: string | null; shield: boolean; weapons: string[] };
+  equipment: { armor: string | null; shield: boolean; weapons: string[]; magic: string[] };
   /** Cantrips and leveled spells known or prepared. */
   cantrips: string[];
   spells: string[];
@@ -278,7 +278,7 @@ export function draftProblems(draft: HeroDraft): string[] {
 export function computeAc(
   classId: string,
   abilities: AbilityScores,
-  equipment: Hero['equipment'],
+  equipment: Pick<Hero['equipment'], 'armor' | 'shield'>,
   fightingStyle: string | null,
 ): number {
   const dex = abilityModifier(abilities.dex);
@@ -318,7 +318,12 @@ export function buildHero(draft: HeroDraft, id: string): Hero {
   const abilities = finalAbilities(draft);
   const maxHp = levelOneHp(draft);
   const kit = cls.startingKit;
-  const equipment = { armor: kit.armor ?? null, shield: kit.shield, weapons: [...kit.weapons] };
+  const equipment = {
+    armor: kit.armor ?? null,
+    shield: kit.shield,
+    weapons: [...kit.weapons],
+    magic: [] as string[],
+  };
   const resistances = sp.traits.flatMap((t) =>
     t.mechanics.flatMap((m) => (m.type === 'resistance' ? [m.damageType as DamageType] : [])),
   );

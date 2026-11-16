@@ -20,6 +20,9 @@ export {
   castProblem,
   getSpell,
   combatReady,
+  metamagicFits,
+  METAMAGIC_NAMES,
+  type Metamagic,
   type SpellChoice,
   type Targeting,
 } from './spells';

@@ -12,11 +12,21 @@ Dialogue is written in [Ink](https://github.com/inkle/ink/blob/master/Documentat
 | `~ award("id")` | One-off XP (ids and amounts in `quests.json` → `awards`) |
 | `~ note("text")` | A journal note |
 | `roller()` / `leader()` | Who rolled the last check / the party's first hero |
-| `~ travel("f2-road-ambush")` | Leave the scene for an encounter |
+| `~ travel("map")` | Leave the scene and open the world map |
+| `~ fight("f3-warren-gate", "arrive.after_gate")` | Start a fight (ids in `src/data/encounters.json`); after it, the story picks up at that knot. The fight's result is a flag: `won:<id>`, `lost:<id>` (only for fights you can lose and carry on) or `parley:<id>` |
+| `~ give_item("potion-of-healing", 2)` / `has_item("luck-stone")` | Put items in the party's pack / does anyone have it? (ids in `magicItems.json`) |
+| `~ truth("collapse")` | One of the three Truths (`collapse`, `crown`, `family`) |
+| `~ set_act(2)` | Move the story to the next act (unlocks its map places) |
+| `trap("dex", 12, "2d6", "bludgeoning")` | The leader makes a save; returns whether it succeeded (damage on a failure, never below 1 HP) |
 
 ## Choice tags
 
 - `+ [Let me see to his wounds. #check:medicine:10]`: a skill check. The party member with the best bonus rolls (D11); the result is in the variable `passed`. Always write both outcomes, and make failure move the story on.
 - `+ {has("corin")} [You know me, Brannoc. #as:corin]`: a character option, shown as **[Corin]**; that character speaks (and rolls, if there's also a check).
+- `+ [Fight him. #fight]`: marks a choice that starts a fight with ⚔ "(starts combat)" (Encounters_and_XP §6).
+
+## Stories and places
+
+Each `.ink` file is one story (`src/game/dialogue.ts` → `STORIES`). Arriving at a map place opens its scene (`PLACE_SCENES`): `warren`, `mine` (the Old Mine), `mill`, `ashwood` and `cave` (the Steaming Cave) start at their `arrive` knot; the tavern's hotspots open knots in `tavern.ink`; `road.ink` holds Wix's scene after the road ambush.
 
 Lines can switch the portrait with `#speaker:edric` (ids in `src/data/npcs.json`). Keep NPC lines to 3 sentences and choices to 5 (Story_Bible §10–11). `tests/unit/dialogue.test.ts` checks that every quest step and award the script names exists.

@@ -11,6 +11,7 @@ import wild from './art/camp-wild.svg?raw';
 import moth from './art/moth.svg?raw';
 import './art/camp-anim.css';
 import './World.css';
+import { InventoryDialog } from './ExploreDialogs';
 
 const ART: Record<CampScene, string> = { wild, inn, cave };
 const SCENES: Record<
@@ -55,6 +56,7 @@ export function CampScreen() {
   const [sleeping, setSleeping] = useState(false);
   const [joke, setJoke] = useState(-1);
   const [letterId, setLetterId] = useState<string | null>(null);
+  const [showItems, setShowItems] = useState(false);
   const place = currentPlace(g);
   const inTown = place.id === 'ashford';
   const hasWix = !!g.flags['wix_companion'];
@@ -224,12 +226,23 @@ export function CampScreen() {
                 <div key={i}>{l}</div>
               ))}
             </div>
-            <button type="button" className="primary" onClick={endShortRest}>
-              Finish the short rest
-            </button>
+            <div className="row">
+              <button type="button" className="primary" onClick={endShortRest}>
+                Finish the short rest
+              </button>
+              <button
+                type="button"
+                className="menu-secondary small-btn"
+                onClick={() => setShowItems(true)}
+              >
+                Attune items
+              </button>
+            </div>
           </div>
         </div>
       )}
+
+      {showItems && <InventoryDialog onClose={() => setShowItems(false)} />}
 
       {letter && letterState && (
         <div className="dialog-backdrop">

@@ -1,5 +1,12 @@
 import { create } from 'zustand';
-import { abilityCheck, abilityModifier, SeededRng, SKILLS, type RandomSource } from '../rules';
+import {
+  abilityCheck,
+  abilityModifier,
+  roll,
+  SeededRng,
+  SKILLS,
+  type RandomSource,
+} from '../rules';
 import type { DifficultyId } from '../data/schemas/difficulty';
 import {
   act,
@@ -12,7 +19,8 @@ import {
   type PlayerAction,
   type Pos,
 } from './combat';
-import { Conversation } from './dialogue';
+import { Conversation, PLACE_SCENES } from './dialogue';
+import { equip, getItem, unequip } from './items';
 import type { Hero } from './hero';
 import { GAME_START } from './calendar';
 import { formatDate } from './calendar';
@@ -80,8 +88,22 @@ interface GameStore {
   campLog: string[];
   /** Heroes who spent Hit Dice during the current short rest (null: no short rest running). */
   shortRest: string[] | null;
+  /** The scene to pick up after the fight it started (story id and knot). */
+  resume: { story: string; knot: string } | null;
+  /** After this conversation, open the scene of the place the party is at. */
+  afterDialogue: 'place' | null;
+
+  /** Open the story scene of a map location (the current one by default). */
+  enterPlace: (placeId?: string) => void;
+  /** Wear or wield an item from the pack. Returns an error, if any. */
+  equipItem: (heroId: string, itemId: string) => string | undefined;
+  unequipItem: (heroId: string, itemId: string) => void;
+  /** Drink a potion outside a fight. */
+  drinkPotion: (heroId: string, itemId: string) => string | undefined;
 
   goto: (screen: Screen) => void;
+  /** Back to wherever the party is: the tavern, or the map. */
+  goHome: () => void;
   startNewGame: (seed?: number) => void;
   /** Runs `fn` with the game's seeded dice and remembers where the dice got to. */
   withRng: <T>(fn: (rng: RandomSource) => T) => T;
@@ -102,7 +124,7 @@ interface GameStore {
   setCombatDifficulty: (d: DifficultyId) => void;
   /** After a victory: keep HP and spent resources, award XP, autosave, back to the party. */
   endFight: () => void;
-  talk: (knot: string) => void;
+  talk: (knot: string, story?: string) => void;
   choose: (index: number) => void;
   leaveDialogue: () => void;
   openLevelUp: (heroId: string) => void;
@@ -144,8 +166,14 @@ export const useGame = create<GameStore>()((set, get) => ({
   campScene: 'wild',
   campLog: [],
   shortRest: null,
+  resume: null,
+  afterDialogue: null,
 
   goto: (screen) => set({ screen }),
+  goHome: () => {
+    const g = get().game;
+    set({ screen: !g || g.location === 'drowned-lantern' ? 'explore' : 'map', resume: null });
+  },
 
   startNewGame: (seed = newSeed()) =>
     set({
@@ -192,6 +220,7 @@ export const useGame = create<GameStore>()((set, get) => ({
       ink: {},
       clock: GAME_START,
       lastLongRest: null,
+      inventory: {},
       letters: pendingParty.some((h) => h.origin === 'corin')
         ? [{ id: 'letter-0', read: false }]
         : [],
@@ -231,6 +260,8 @@ export const useGame = create<GameStore>()((set, get) => ({
       rngState: get().rngState,
       formation,
       mageArmor,
+      inventory: game.inventory,
+      flags: game.flags,
     });
     set({ combat, screen: 'combat' });
   },
@@ -257,10 +288,26 @@ export const useGame = create<GameStore>()((set, get) => ({
 
   endFight: () => {
     const { combat, game } = get();
-    if (!combat || !game || combat.outcome !== 'victory') return;
+    if (!combat || !game || !combat.outcome) return;
+    const lost = combat.outcome === 'defeat';
+    if (lost && !combat.defeatContinues) return;
     const result = finishCombat(combat, game.party);
-    let next = { ...game, party: result.party, rngState: combat.rngState };
-    const messages = [`Victory! +${result.xpEach} XP each.`, ...result.notes];
+    // Scenes read how the fight went: won:<id>, parley:<id> or lost:<id>.
+    const how = lost ? 'lost' : combat.outcome === 'parley' ? 'parley' : 'won';
+    let next: GameState = {
+      ...game,
+      party: result.party,
+      rngState: combat.rngState,
+      inventory: result.inventory,
+      flags: { ...game.flags, [`${how}:${combat.encounterId}`]: true },
+    };
+    const xpText = result.xpEach ? ` +${result.xpEach} XP each.` : '';
+    const messages = [
+      `${lost ? 'Beaten, but not finished.' : how === 'parley' ? 'The fight ends in words.' : 'Victory!'}${xpText}`,
+      ...result.notes,
+    ];
+    let resume = get().resume;
+    let after: 'place' | null = null;
     if (combat.encounterId === 'f2-road-ambush') {
       const r = completeStep(
         { ...next, flags: { ...next.flags, road_done: true } },
@@ -269,9 +316,15 @@ export const useGame = create<GameStore>()((set, get) => ({
       );
       next = r.game;
       messages.push(...r.messages);
+      // The goblin who stayed: the last goblin begs for its life.
+      if (!next.flags['wix_met']) {
+        resume = { story: 'road', knot: 'wix' };
+        after = 'place';
+      }
     }
     const { pendingArrival, backToCamp } = get();
     if (pendingArrival) next = arrive(next, pendingArrival);
+    if (!resume && pendingArrival && PLACE_SCENES[pendingArrival]) after = 'place';
     set({
       game: next,
       combat: null,
@@ -289,15 +342,20 @@ export const useGame = create<GameStore>()((set, get) => ({
         : get().campLog,
       pendingArrival: null,
       backToCamp: false,
+      resume: null,
     });
     get().saveTo('autosave');
+    if (resume) {
+      get().talk(resume.knot, resume.story);
+      set({ afterDialogue: after });
+    } else if (after === 'place') get().enterPlace();
   },
 
-  talk: (knot) => {
+  talk: (knot, story = 'tavern') => {
     const { game, rngState } = get();
     if (!game) return;
     const rng = SeededRng.fromState(rngState);
-    const conversation = new Conversation('tavern', game, rng).start(knot);
+    const conversation = new Conversation(story, game, rng).start(knot);
     set({
       conversation,
       game: conversation.game,
@@ -320,13 +378,92 @@ export const useGame = create<GameStore>()((set, get) => ({
   },
 
   leaveDialogue: () => {
-    const { conversation } = get();
+    const { conversation, game, afterDialogue } = get();
     const travel = conversation?.travel;
-    set({ conversation: null, screen: 'explore' });
+    const fight = conversation?.fight;
+    set({
+      conversation: null,
+      afterDialogue: null,
+      screen: !game || game.location === 'drowned-lantern' ? 'explore' : 'map',
+    });
     // Autosave after every conversation, so story progress is never lost [inferred].
     get().saveTo('autosave');
-    if (travel === 'map') get().openMap();
+    if (fight && conversation) {
+      set({ resume: { story: conversation.storyId, knot: fight.resume } });
+      get().openPrepare(fight.encounterId);
+    } else if (travel === 'map') get().openMap();
     else if (travel) get().openPrepare(travel);
+    else if (afterDialogue === 'place') get().enterPlace();
+  },
+
+  enterPlace: (placeId) => {
+    const { game } = get();
+    if (!game) return;
+    const id = placeId ?? game.location;
+    const scene = PLACE_SCENES[id];
+    if (!scene) {
+      set({ screen: id === 'drowned-lantern' || id === 'ashford' ? 'explore' : 'map' });
+      return;
+    }
+    get().talk(scene.knot, scene.story);
+  },
+
+  equipItem: (heroId, itemId) => {
+    const { game, shortRest } = get();
+    if (!game) return 'No game';
+    if ((game.inventory[itemId] ?? 0) < 1) return 'That item is not in the pack.';
+    const item = getItem(itemId);
+    // Items.md: attuning happens during a short rest.
+    if (item.attunement && !shortRest)
+      return `Attuning to ${item.name} takes a short rest (Camp → Short rest).`;
+    const hero = game.party.find((h) => h.id === heroId)!;
+    const r = equip(hero, itemId);
+    if (r.error) return r.error;
+    set({
+      game: {
+        ...game,
+        party: game.party.map((h) => (h.id === heroId ? r.hero : h)),
+        inventory: { ...game.inventory, [itemId]: game.inventory[itemId]! - 1 },
+      },
+    });
+    return undefined;
+  },
+
+  unequipItem: (heroId, itemId) => {
+    const { game } = get();
+    if (!game) return;
+    set({
+      game: {
+        ...game,
+        party: game.party.map((h) => (h.id === heroId ? unequip(h, itemId) : h)),
+        inventory: { ...game.inventory, [itemId]: (game.inventory[itemId] ?? 0) + 1 },
+      },
+    });
+  },
+
+  drinkPotion: (heroId, itemId) => {
+    const { game, rngState } = get();
+    if (!game) return 'No game';
+    if ((game.inventory[itemId] ?? 0) < 1) return 'None left.';
+    const item = getItem(itemId);
+    const heal = item.effects.find((e) => e.type === 'heal');
+    if (!heal || heal.type !== 'heal') return `${item.name} only matters in a fight.`;
+    const hero = game.party.find((h) => h.id === heroId)!;
+    if (hero.dead) return `${hero.name} is beyond a potion's help.`;
+    if (hero.hp >= hero.maxHp) return `${hero.name} is already at full health.`;
+    const rng = SeededRng.fromState(rngState);
+    const r = roll(heal.dice, rng);
+    const hp = Math.min(hero.maxHp, hero.hp + r.total);
+    set({
+      rngState: rng.state,
+      game: {
+        ...game,
+        party: game.party.map((h) => (h.id === heroId ? { ...h, hp } : h)),
+        inventory: { ...game.inventory, [itemId]: game.inventory[itemId]! - 1 },
+      },
+    });
+    get().toast([`${hero.name} drinks ${item.name}: ${r.text} → ${hp}/${hero.maxHp} HP`]);
+    return undefined;
   },
 
   openLevelUp: (heroId) => set({ levelUpId: heroId, screen: 'levelup' }),
@@ -336,7 +473,8 @@ export const useGame = create<GameStore>()((set, get) => ({
     if (!game) return;
     const party = game.party.map((h) => (h.id === heroId ? applyLevelUp(h, plan) : h));
     const h = party.find((x) => x.id === heroId)!;
-    set({ game: { ...game, party }, levelUpId: null, screen: 'explore' });
+    set({ game: { ...game, party }, levelUpId: null });
+    get().goHome();
     get().toast([`${h.name} reaches level ${h.level}!`]);
     get().saveTo('autosave');
   },
@@ -357,6 +495,7 @@ export const useGame = create<GameStore>()((set, get) => ({
       next = arrive(next, placeId);
       log.push(`Arrived at ${to.name}. ${formatDate(next.clock)}.`);
     }
+    const scene = out.kind === 'arrive' && PLACE_SCENES[placeId];
     set({
       game: next,
       rngState: rng.state,
@@ -369,6 +508,7 @@ export const useGame = create<GameStore>()((set, get) => ({
     }
     get().saveTo('autosave');
     if (placeId === 'ashford') set({ screen: 'explore' });
+    else if (scene) get().enterPlace(placeId);
   },
 
   openCamp: (scene) => {
@@ -516,6 +656,7 @@ export const useGame = create<GameStore>()((set, get) => ({
       campLog: backToCamp ? [...get().campLog, ...messages] : get().campLog,
     });
     get().saveTo('autosave');
+    if (!backToCamp && pendingArrival && PLACE_SCENES[pendingArrival]) get().enterPlace();
     return { success: true, text: r.log.text };
   },
 
@@ -528,9 +669,11 @@ export const useGame = create<GameStore>()((set, get) => ({
       seed: save.game.seed,
       rngState: save.game.rngState,
       pendingParty: [],
-      screen: 'explore',
+      screen: save.game.location === 'drowned-lantern' ? 'explore' : 'map',
       sessionStart: Date.now(),
       combat: null,
+      resume: null,
+      afterDialogue: null,
       lastResult: null,
       conversation: null,
       toasts: [],

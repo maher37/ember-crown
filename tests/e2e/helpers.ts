@@ -54,7 +54,9 @@ export async function makeParty(page: Page) {
   await expertise.getByRole('button', { name: 'Insight' }).click();
   await page.getByRole('button', { name: /Add to party and begin/ }).click();
 
-  // New games open on the Lantern Night scene card, then the tavern.
+  // Corin's origin opening (the barge), then the Lantern Night scene card, then the tavern.
+  await expect(page.getByText(/The evening barge noses into Ashford/)).toBeVisible();
+  await pick(page, /Pull the hood up and walk/);
   await expect(page.getByText(/Every lantern on the Grayflow flared red/)).toBeVisible();
   await page.getByRole('button', { name: 'Back to the tavern' }).click();
   await expect(page.getByRole('heading', { name: 'The Drowned Lantern' })).toBeVisible();
@@ -81,6 +83,8 @@ export async function lanternNight(page: Page) {
   await leave(page);
   await page.getByRole('button', { name: /Strangers by the hearth/ }).click();
   await pick(page, /Leave this house/);
+  // A failed check starts the brawl (F1); losing it is fine, the story goes on.
+  if (await page.getByRole('button', { name: /To battle/ }).isVisible()) await sitOutFight(page);
   await leave(page);
   await page.getByRole('button', { name: /Brannoc/ }).click();
   await pick(page, /Will you trust us with the letter now|You know me, Brannoc/);
@@ -98,4 +102,23 @@ export async function levelUpAll(page: Page) {
     await page.getByRole('button', { name: /^Confirm level/ }).click();
   }
   await expect(page.getByRole('button', { name: 'Level up!' })).toHaveCount(0);
+}
+
+/**
+ * Start the fight a scene offered and let the party stand there (ending turns) until it ends,
+ * then continue. Only for fights the story survives losing (the tavern brawl).
+ */
+export async function sitOutFight(page: Page) {
+  await page.getByRole('button', { name: /To battle/ }).click();
+  await page.getByRole('button', { name: 'Fight!' }).click();
+  const outcome = page.getByRole('dialog', { name: /Victory!|Beaten|Defeat|The fight is over/ });
+  for (let i = 0; i < 400 && !(await outcome.isVisible()); i++) {
+    const prompt = page.getByRole('alertdialog', { name: 'Reaction' });
+    if (await prompt.isVisible()) await prompt.getByRole('button', { name: 'No' }).click();
+    else if (await page.getByRole('button', { name: 'End turn' }).isEnabled())
+      await page.getByRole('button', { name: 'End turn' }).click();
+    else await page.waitForTimeout(200);
+  }
+  await expect(outcome).toBeVisible();
+  await page.getByRole('button', { name: 'Continue' }).click();
 }

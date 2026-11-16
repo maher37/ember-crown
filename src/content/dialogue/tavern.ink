@@ -4,8 +4,10 @@
 //   flag(name)     a story flag (false if unset)        set_flag(name, value)
 //   quest_step(q, s) / quest_done(q)                    award(id)   note(text)
 //   roller()       who rolled the last check            leader()    the party's first hero
-//   travel(where)  leave the scene (e.g. an encounter id)
-// Choice tags: #check:skill:dc  (party-best roll, D11)   #as:tag  (that character only)
+//   travel(where)  leave the scene ("map")
+//   fight(encounter, knot)  start a fight; the story picks up at `knot` (flags won:/lost:/parley:<id>)
+//   give_item(id, qty)  has_item(id)  truth(id)  set_act(n)  trap(ability, dc, dice, type)
+// Choice tags: #check:skill:dc  (party-best roll, D11)   #as:tag  (that character only)   #fight (starts combat)
 // Before a #check choice is followed, the engine sets `passed`.
 
 EXTERNAL has(tag)
@@ -18,10 +20,38 @@ EXTERNAL note(text)
 EXTERNAL roller()
 EXTERNAL leader()
 EXTERNAL travel(where)
+EXTERNAL fight(encounter, resume)
+EXTERNAL give_item(id, qty)
+EXTERNAL has_item(id)
+EXTERNAL truth(id)
+EXTERNAL set_act(n)
+EXTERNAL trap(ability, dc, dice, type)
 
 VAR passed = false
 
 === intro ===
+{ has("corin") && not flag("corin_barge"):
+    -> corin_barge
+}
+-> lantern_night
+
+// ── Corin's origin opening (Story_Bible §9) ──
+=== corin_barge ===
+#speaker:road
+The evening barge noses into Ashford's landing under a sky the colour of a bruise. Corin Varrow hasn't set foot here in ten years.
+His sister's letter is creased soft from rereading: the first word from her in eight years, and it asks him to come home for Lantern Night.
+~ set_flag("corin_barge", true)
+* [Read the letter again.]
+    Her handwriting hasn't changed. The last line still reads like a promise and a threat at once. (Find it in the journal under Letters.)
+    -> walk_in
+* [Pull the hood up and walk.]
+    -> walk_in
+= walk_in
+At the Drowned Lantern the potboy takes one look at those amber eyes and suddenly has somewhere else to be. A miner at the bar spits into the rushes. "Varrow," he says, to nobody.
+Brannoc's hands go still on the mug he's wiping. He doesn't say a word. Yet.
+-> lantern_night
+
+=== lantern_night ===
 #speaker:tavern
 Every lantern on the Grayflow flared red at once. Minutes later a young courier staggered through the door of the Drowned Lantern and fell across a table, bleeding.
 Three strangers in grey came in behind him, asking quietly after "a lost letter." Now the whole room is pretending not to watch them.
@@ -30,6 +60,10 @@ Three strangers in grey came in behind him, asking quietly after "a lost letter.
 // ── Brannoc Hale, the innkeeper ──
 === brannoc ===
 #speaker:brannoc
+{ flag("wix_spared") && not flag("pies_settled"):
+    "You." Brannoc points the mug at {leader()}. "A goblin's been in my kitchen. Three pies gone, and it keeps telling the cook you're its 'friends.'"
+    -> pies
+}
 { brannoc > 1:
     Brannoc wipes a mug that was clean an hour ago. "Still here? Good. I could use the company."
 - else:
@@ -71,6 +105,17 @@ Three strangers in grey came in behind him, asking quietly after "a lost letter.
         ~ quest_step("cellar", "start")
         -> menu
     }
+* {quest_done("lantern-night")} [What do you know about the old mine?]
+    "I dug it for twenty years, until the Collapse." He sets the mug down. "If there's digging there now, Ulric Dunmore's behind it. My old shift partner. Tell him Brannoc sent you; he might listen."
+    ~ set_flag("knows_ulric", true)
+    ~ note("Brannoc's old shift partner, Ulric Dunmore, may be behind the digging at the old mine. Saying Brannoc's name might make him listen.")
+    -> menu
+* {quest_done("lantern-night")} [We'll need supplies for the road.]
+    He sets two stoppered flasks on the bar. "Healing draughts. On the house, once. After that you're paying like everyone else."
+    ~ give_item("potion-of-healing", 2)
+    -> menu
+* {quest_done("lantern-night")} [Who's the old woman crying by the window?]
+    -> wynn
 + [Back to the tavern.]
     "Mind the strangers," Brannoc mutters.
     -> END
@@ -158,6 +203,8 @@ Pressed into the wax is a hollow, eight-pointed star. It's addressed to "our fri
 + {has("background:soldier")} [I know Kell's outfit. Does he know you're brawling in taverns on his coin? #as:background:soldier]
     The big one straightens without meaning to. "...No need to bother the captain." They're out the door in a minute.
     -> gone
++ {not flag("has_letter") && not has("background:soldier")} [Then come and take it. #fight]
+    -> brawl
 + {flag("has_letter")} [Here. Take the letter and go.]
     He breaks the seal, reads, and pockets it. "Pleasure doing business." Brannoc says nothing at all, which is worse than shouting.
     ~ set_flag("has_letter", false)
@@ -169,10 +216,26 @@ Pressed into the wax is a hollow, eight-pointed star. It's addressed to "our fri
 + [Never mind.]
     -> END
 = brawl
-"Wrong answer." Chairs scrape. A bottle flies past {leader()}'s ear—and Brannoc fires a crossbow bolt into the ceiling. "Not in my house!"
-[The tavern brawl (F1) arrives in Milestone M7. For now, the strangers back off.]
-The three of them back out into the rain, promising to come back.
--> gone
+"Wrong answer." Chairs scrape. A fourth bruiser steps in from the door, and a bottle flies past {leader()}'s ear.
+~ fight("f1-tavern-brawl", "strangers.after_brawl")
+-> END
+= after_brawl
+{ flag("won:f1-tavern-brawl"):
+    The last bruiser hits the floorboards and stays there. Brannoc lowers the crossbow he never had to fire. "Out," he tells the ones who can still crawl, and they go.
+    "That's the first time in ten years anyone's stood up in my house." He pours four ales nobody ordered.
+    ~ set_flag("brannoc_trust", true)
+- else:
+    You come round on the floor with a split lip and the taste of sawdust. Brannoc is standing over you with his crossbow; the Grey Company are gone, cursing, into the rain.
+    "Not your night," he says, and hauls {leader()} up by the collar. "But you tried. That counts in this house."
+}
+{ not flag("edric_clue"):
+    Over by the hearth, Edric stirs at the noise. "The old mine," he gasps. "They're digging for it." Then he's out again.
+    ~ set_flag("edric_clue", true)
+    ~ note("Edric gasped that someone is digging for something in the old mine.")
+}
+~ set_flag("strangers_gone", true)
+~ note("The Grey Company wants the courier's letter for the Coinwright Guild.")
+-> END
 = gone
 ~ set_flag("strangers_gone", true)
 ~ award("f1-strangers")
@@ -216,22 +279,105 @@ A woman in a dark travelling cloak sits alone, a hooded lantern on the table. It
 // ── The cellar trapdoor (side quest: Something in the Cellar) ──
 === cellar ===
 #speaker:brannoc
+{ flag("won:s1-cellar-rats"):
+    { quest_done("cellar"):
+        The cellar smells of fresh lime. Brannoc has bricked up the tunnel and hung a horseshoe over it, just in case.
+        -> END
+    }
+    The tunnel behind the barrels breathes warm air.
+    -> tunnel
+}
 Something scratches under the trapdoor, steady as a heartbeat.
 { not flag("cellar_asked"):
     "Rats, I hope," Brannoc says. "Been at it a week. If you're the sort who fixes things, I'd not say no."
     ~ set_flag("cellar_asked", true)
     ~ quest_step("cellar", "start")
 }
-+ {has("species:hill-dwarf")} [That's not rats on stone. That's digging. #as:species:hill-dwarf]
+-> choices
+= choices
+* {has("species:hill-dwarf")} [That's not rats on stone. That's digging. #as:species:hill-dwarf]
     {roller()} presses an ear to the floorboards. "Old tunnel under here, mark me. Something's using it."
     ~ note("There's an old tunnel under the Drowned Lantern's cellar.")
-    -> later
-+ [Open the trapdoor.]
-    -> later
+    ~ award("discover-tunnel")
+    -> choices
++ [Open the trapdoor. #fight]
+    -> open
 + [Not tonight.]
     -> END
-= later
-[The cellar fight arrives in Milestone M7.] You lower the trapdoor again. The scratching stops, then starts.
+= open
+~ fight("s1-cellar-rats", "cellar.after_rats")
+-> END
+= after_rats
+The last rat goes squealing into the dark. Behind the barrels, a hole in the wall opens onto an old dwarf tunnel, shored with timbers older than the inn.
+~ quest_step("cellar", "clear")
+-> tunnel
+
+= tunnel
+#speaker:cellar
+* [Follow the tunnel.]
+    The timbers groan. Twenty yards in, a beam gives way overhead.
+    { trap("dex", 12, "2d6", "bludgeoning"):
+        {roller()} throws themselves clear as the beam slams down where they stood.
+    - else:
+        The beam clips {roller()} across the shoulders before they roll clear.
+    }
+    -> journal
+* [Not yet.]
+    -> END
+= journal
+At the tunnel's end, a dead miner sits against the rock with his lamp in his lap. In his coat is a journal, its last pages written by feel in the dark.
+"Foreman Varrow told them the seam wasn't safe. The Guild clerk wrote it up the other way. Hadric's name is on the report; Tarrow's hand wrote it."
+~ truth("collapse")
+~ note("A dead miner's journal: Hadric Varrow warned the Guild the seam was unsafe. The clerk who wrote the report blaming him was Oswin Tarrow, now Ashford's mayor.")
+~ quest_step("cellar", "tunnel")
+-> END
+
+// ── Old Wynn, the herbalist (side quest: The Herbalist's Granddaughter) ──
+=== wynn ===
+#speaker:wynn
+{ quest_done("herbalist"):
+    Old Wynn is mixing poultices again, humming. She waves a spoon at you like a blessing.
+    -> END
+}
+"My Tamsin." She twists a handkerchief to rags. "Men in grey robes with a star sewn on, talking about wages and a fair wage and justice. She went into the Ashwood after them three days ago."
+* [We'll find her.]
+    "Bring her home. Or…" She stops. "Or let her tell you why, at least. I've potions for whoever tries."
+    ~ quest_step("herbalist", "plea")
+    ~ note("Old Wynn's granddaughter Tamsin followed Hollow Star recruiters into the Ashwood, west of town.")
+    -> END
+* [What is this star they wear?]
+    "The Hollow Star. They pay in good silver for digging. Half the widows in Ashford have a son on their rolls." She sniffs. "Silver from where, I'd like to know."
+    ~ quest_step("herbalist", "plea")
+    ~ note("Old Wynn's granddaughter Tamsin followed Hollow Star recruiters into the Ashwood, west of town.")
+    -> END
+* [Not now.]
+    -> END
+
+// ── The goblin who stayed: pies (side quest part 2) ──
+=== pies ===
+#speaker:wix
+Wix is sitting on the kitchen table with pastry on both ears. "Friends! Tell the big human Wix is a guest. Guests get pie. This is known."
++ [He's with us. Put the pies on our account. #check:persuasion:12]
+    #speaker:brannoc
+    { passed:
+        Brannoc looks from the goblin to you and back. "Fine. But he works it off. Pots. All of them."
+    - else:
+        "Your account's not that deep," Brannoc says. Then he sighs. "He scrubs pots till midnight, and we never speak of this again."
+    }
+    -> settled
++ {has("class:bard")} [Let me sing for the pies. #as:class:bard]
+    #speaker:brannoc
+    {roller()} gives the whole room a song about a goblin and a pie that ends in a marriage. Brannoc laughs despite himself. "Pies are paid for. Never sing that again."
+    -> settled
+* [Ask Wix why he stole them.]
+    "Wix didn't steal. Wix rescued. The pies were alone on a windowsill." He lowers his voice. "Also the warren took Wix's clan luck-stone. No luck, no food. Wix was hungry from no luck."
+    -> pies
+= settled
+#speaker:wix
+~ set_flag("pies_settled", true)
+~ quest_step("wix", "pies")
+"Wix owes you twice now," the goblin says, solemn as a priest. "The clan luck-stone is in the warren, in Grisk's shrine. Bring it out, and Wix follows you anywhere. Even places without pie."
+~ note("Wix's clan luck-stone is in a shrine inside the goblin warren. Bring it out and he'll join you.")
 -> END
 
 // ── The front door ──
@@ -244,6 +390,7 @@ Something scratches under the trapdoor, steady as a heartbeat.
 }
 { not flag("road_done"):
     The Ashford road runs north along the Grayflow toward the old mine. Goblins have been seen on it, coming down from the mountains.
+    (Side roads lead to Varrow's Mill and the Ashwood, if anyone's asked you to look there.)
 - else:
     The door opens on the Grayflow valley and the dark line of the Greypeaks beyond.
 }

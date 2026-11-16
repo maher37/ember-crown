@@ -1,20 +1,55 @@
 import { Story } from 'inkjs';
+import ashwoodInk from '../content/dialogue/ashwood.ink';
+import caveInk from '../content/dialogue/cave.ink';
+import millInk from '../content/dialogue/mill.ink';
+import mineInk from '../content/dialogue/mine.ink';
+import roadInk from '../content/dialogue/road.ink';
 import tavernInk from '../content/dialogue/tavern.ink';
+import warrenInk from '../content/dialogue/warren.ink';
 import { backgrounds, classes, npcs, species } from '../data';
 import {
   abilityCheck,
   abilityModifier,
   SKILL_IDS,
+  roll,
   SKILLS,
+  type Ability,
   type RandomSource,
   type Skill,
 } from '../rules';
 import { skillBonus, type Hero } from './hero';
+import { getItem, hasItem, itemMods } from './items';
+import { savingThrow } from '../rules';
+
 import { addNote, completeStep, giveAward, questDone } from './journal';
 import type { GameState } from './save';
 
 /** Every compiled Ink story, by id. Add new dialogue files here. */
-export const STORIES: Record<string, string> = { tavern: tavernInk };
+export const STORIES: Record<string, string> = {
+  tavern: tavernInk,
+  road: roadInk,
+  warren: warrenInk,
+  mine: mineInk,
+  mill: millInk,
+  ashwood: ashwoodInk,
+  cave: caveInk,
+};
+
+/** The scene that opens when the party arrives at a map location (Ashford is the tavern). */
+export const PLACE_SCENES: Record<string, { story: string; knot: string }> = {
+  warren: { story: 'warren', knot: 'arrive' },
+  'old-mine': { story: 'mine', knot: 'arrive' },
+  mill: { story: 'mill', knot: 'arrive' },
+  ashwood: { story: 'ashwood', knot: 'arrive' },
+  'steaming-cave': { story: 'cave', knot: 'arrive' },
+};
+
+/** The Truths (Story_Bible §6) by id. */
+export const TRUTHS: Record<string, string> = {
+  collapse: 'The Collapse',
+  crown: 'The Crown',
+  family: 'The Family',
+};
 
 const SKILL_NAMES: Record<Skill, string> = {
   acrobatics: 'Acrobatics',
@@ -63,9 +98,40 @@ export function tagLabel(tag: string): string {
   return list.find((x) => x.id === id)?.name ?? id!;
 }
 
+/** A hero's full bonus for a check: skill plus items (the Luck-Stone). */
+export const checkBonus = (h: Hero, skill: Skill) => skillBonus(h, skill) + itemMods(h).check;
+
 /** D11: the party member with the best bonus rolls (ties: earlier in the party). */
 export function bestFor(g: GameState, skill: Skill): Hero {
-  return alive(g).reduce((best, h) => (skillBonus(h, skill) > skillBonus(best, skill) ? h : best));
+  return alive(g).reduce((best, h) => (checkBonus(h, skill) > checkBonus(best, skill) ? h : best));
+}
+
+/** Does anyone carry or wear this item? */
+export const partyHasItem = (g: GameState, id: string) =>
+  (g.inventory[id] ?? 0) > 0 || g.party.some((h) => hasItem(h, id));
+
+/** Put items in the party's pack. */
+export function giveItem(
+  g: GameState,
+  id: string,
+  qty = 1,
+): { game: GameState; messages: string[] } {
+  const item = getItem(id);
+  return {
+    game: { ...g, inventory: { ...g.inventory, [id]: (g.inventory[id] ?? 0) + qty } },
+    messages: [`Received: ${item.name}${qty > 1 ? ` ×${qty}` : ''}`],
+  };
+}
+
+/** A Truth for the finale (Story_Bible §6), kept as a flag. */
+export function learnTruth(g: GameState, id: string): { game: GameState; messages: string[] } {
+  const name = TRUTHS[id];
+  if (!name) throw new Error(`Unknown Truth "${id}"`);
+  if (g.flags[`truth_${id}`]) return { game: g, messages: [] };
+  return {
+    game: { ...g, flags: { ...g.flags, [`truth_${id}`]: true } },
+    messages: [`Truth learned: ${name}`],
+  };
 }
 
 export interface CheckRoll {
@@ -84,6 +150,8 @@ export interface ChoiceView {
   check?: { skill: Skill; skillName: string; dc: number; heroName: string; bonus: number };
   /** Character-specific option: "[Corin]" and who it is. */
   as?: { label: string; heroName: string };
+  /** Encounters_and_XP §6: choices that start a fight are marked (#fight). */
+  fight?: boolean;
 }
 
 export interface DialogueLine {
@@ -103,6 +171,8 @@ export class Conversation {
   messages: string[] = [];
   lastCheck: CheckRoll | null = null;
   travel: string | null = null;
+  /** A fight the scene started, and the knot to pick the story up at afterwards. */
+  fight: { encounterId: string; resume: string } | null = null;
   private story: Story;
   rng: RandomSource;
   private lastRoller: string | null = null;
@@ -148,12 +218,63 @@ export class Conversation {
     s.BindExternalFunction('travel', (where: string) => {
       this.travel = where;
     });
+    s.BindExternalFunction('fight', (encounterId: string, resume: string) => {
+      this.fight = { encounterId, resume };
+    });
+    s.BindExternalFunction('give_item', (id: string, qty: number) =>
+      apply(giveItem(this.game, id, qty)),
+    );
+    s.BindExternalFunction('has_item', (id: string) => partyHasItem(this.game, id), true);
+    s.BindExternalFunction('truth', (id: string) => apply(learnTruth(this.game, id)));
+    s.BindExternalFunction('set_act', (n: number) => {
+      this.game = { ...this.game, act: n as GameState['act'] };
+      this.messages.push(`Act ${['I', 'II', 'III'][n - 1]} begins.`);
+    });
+    s.BindExternalFunction('trap', (ability: string, dc: number, dice: string, type: string) =>
+      this.trap(ability as Ability, dc, dice, type),
+    );
+  }
+
+  /**
+   * A trap: the party's leader makes a saving throw; on a failure they take the damage (never
+   * below 1 HP outside a fight [inferred]). Returns whether the save succeeded.
+   */
+  private trap(ability: Ability, dc: number, dice: string, type: string): boolean {
+    const h = alive(this.game)[0]!;
+    const luck = itemMods(h).save;
+    const save = savingThrow(h, ability, dc, this.rng, {
+      bonuses: luck ? [{ label: 'items', value: luck }] : [],
+    });
+    this.lastRoller = h.name.split(' ')[0]!;
+    const lines = [save.log.text];
+    let hp = h.hp;
+    if (!save.success) {
+      const r = roll(dice, this.rng);
+      hp = Math.max(1, h.hp - r.total);
+      lines.push(`${r.text} ${type} damage`);
+    }
+    this.lastCheck = {
+      skill: 'athletics',
+      skillName: ability.toUpperCase(),
+      dc,
+      heroName: this.lastRoller,
+      success: save.success,
+      text: lines.join(' · '),
+    };
+    this.game = {
+      ...this.game,
+      party: this.game.party.map((x) => (x.id === h.id ? { ...x, hp } : x)),
+    };
+
+    return save.success;
   }
 
   /** Start (or restart) the conversation at a knot, e.g. "brannoc". */
   start(knot: string): this {
     this.lines = [];
     this.lastCheck = null;
+    this.fight = null;
+    this.travel = null;
     this.story.ChoosePathString(knot);
     this.run();
     return this;
@@ -179,6 +300,7 @@ export class Conversation {
       const as = tags.find((t) => t.startsWith('as:'))?.slice(3);
       const check = tags.find((t) => t.startsWith('check:'));
       const view: ChoiceView = { index, text: c.text.trim() };
+      if (tags.includes('fight')) view.fight = true;
       const hero = as ? alive(this.game).find((h) => matches(h, as)) : undefined;
       if (as && hero) view.as = { label: tagLabel(as), heroName: hero.name.split(' ')[0]! };
       if (check) {
@@ -190,7 +312,7 @@ export class Conversation {
           skillName: SKILL_NAMES[skill],
           dc: Number(dc),
           heroName: who.name.split(' ')[0]!,
-          bonus: skillBonus(who, skill),
+          bonus: checkBonus(who, skill),
         };
       }
       return view;
@@ -213,9 +335,13 @@ export class Conversation {
         bestFor(this.game, view.check.skill);
       const ability = SKILLS[view.check.skill];
       const bonus = skillBonus(hero, view.check.skill) - abilityModifier(hero.abilities[ability]);
+      const luck = itemMods(hero).check;
       const r = abilityCheck(hero, ability, view.check.dc, this.rng, {
         label: view.check.skillName,
-        bonuses: bonus ? [{ label: 'skill', value: bonus }] : [],
+        bonuses: [
+          ...(bonus ? [{ label: 'skill', value: bonus }] : []),
+          ...(luck ? [{ label: 'items', value: luck }] : []),
+        ],
       });
       const first = hero.name.split(' ')[0]!;
       this.lastRoller = first;

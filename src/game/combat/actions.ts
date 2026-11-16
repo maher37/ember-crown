@@ -1,5 +1,7 @@
 import { getMonster } from '../creatures';
-import { resourceLeft, slotsLeft, type Hero } from '../hero';
+import { getItem } from '../items';
+import { spiritAttack } from './spells';
+import { resourceLeft, skillBonus, slotsLeft, type Hero } from '../hero';
 import {
   abilityCheck,
   abilityModifier,
@@ -72,7 +74,16 @@ export type FeatureId =
   | 'cunning-disengage'
   | 'cunning-hide'
   | 'font-create-slot'
-  | 'font-make-points';
+  | 'font-make-points'
+  | 'rage-frenzy'
+  | 'frenzy-attack'
+  | 'flurry-prone'
+  | 'flurry-push'
+  | 'flurry-no-reactions'
+  | 'sacred-weapon'
+  | 'turn-the-unholy'
+  | 'horde-breaker'
+  | 'spiritual-weapon';
 
 export type PlayerAction =
   | { type: 'move'; to: Pos }
@@ -85,6 +96,8 @@ export type PlayerAction =
   | { type: 'grapple'; targetId: string }
   | { type: 'feature'; id: FeatureId; targetId?: string }
   | { type: 'end-turn' }
+  | { type: 'use-item'; itemId: string; targetId: string }
+  | { type: 'parley' }
   | { type: 'react'; accept: boolean };
 
 export interface ActResult {
@@ -214,6 +227,10 @@ function perform(ctx: Ctx, c: Combatant, a: PlayerAction): string | null | undef
       return shoveOrGrapple(ctx, c, a);
     case 'feature':
       return feature(ctx, c, a.id, a.targetId);
+    case 'use-item':
+      return applyItem(ctx, c, a.itemId, a.targetId);
+    case 'parley':
+      return parley(ctx, c);
   }
 }
 
@@ -590,6 +607,78 @@ export function featureList(c: Combatant): FeatureInfo[] {
       blocked: bonus(slotsLeft(h).some((n) => n > 0) ? undefined : 'no slots'),
     });
   }
+  // ── Level 3 subclass features ──
+  if (lvl('barbarian') >= 3) {
+    if (!hasEffect(c, 'rage'))
+      out.push({
+        id: 'rage-frenzy',
+        name: 'Rage (Frenzy)',
+        cost: 'bonus',
+        detail: 'rage, and attack as a bonus action each turn; 1 exhaustion afterwards',
+        blocked:
+          h.equipment.armor && /plate|splint|chain-mail|ring/.test(h.equipment.armor)
+            ? 'not in heavy armor'
+            : bonus(res('rage')),
+      });
+    if (hasEffect(c, 'frenzy'))
+      out.push({
+        id: 'frenzy-attack',
+        name: 'Frenzy attack',
+        cost: 'bonus',
+        detail: 'one melee weapon attack',
+        target: 'enemy',
+        blocked: bonus(),
+      });
+  }
+  if (lvl('monk') >= 3) {
+    const flurry = (id: FeatureId, name: string, detail: string) =>
+      out.push({
+        id,
+        name,
+        cost: 'bonus',
+        detail: `${detail} · 1 ki`,
+        target: 'enemy',
+        blocked: bonus(t.attacked ? res('ki') : 'attack first'),
+      });
+    flurry('flurry-prone', 'Flurry: knock prone', 'two strikes; each hit: Dex save or prone');
+    flurry('flurry-push', 'Flurry: push 15 ft', 'two strikes; each hit: Str save or pushed');
+    flurry('flurry-no-reactions', 'Flurry: no reactions', 'two strikes; each hit stops reactions');
+  }
+  if (lvl('paladin') >= 3) {
+    out.push({
+      id: 'sacred-weapon',
+      name: 'Sacred Weapon',
+      cost: 'action',
+      detail: `+${Math.max(1, abilityModifier(h.abilities.cha))} to weapon attacks for 1 minute · Channel Divinity`,
+      blocked: action(hasEffect(c, 'sacred-weapon') ? 'already active' : res('channel-divinity')),
+    });
+    out.push({
+      id: 'turn-the-unholy',
+      name: 'Turn the Unholy',
+      cost: 'action',
+      detail: 'fiends and undead within 30 ft flee',
+      blocked: action(res('channel-divinity')),
+    });
+  }
+  if (lvl('ranger') >= 3 && h.choices['hunters-prey']?.includes('horde-breaker'))
+    out.push({
+      id: 'horde-breaker',
+      name: 'Horde Breaker',
+      cost: 'free',
+      detail: 'one more attack on a creature next to your last target',
+      target: 'enemy',
+      blocked:
+        t.attacked && !t.hordeUsed ? undefined : t.hordeUsed ? 'once per turn' : 'attack first',
+    });
+  if (hasEffect(c, 'spiritual-weapon'))
+    out.push({
+      id: 'spiritual-weapon',
+      name: 'Spiritual Weapon attack',
+      cost: 'bonus',
+      detail: 'the floating weapon strikes (melee spell attack)',
+      target: 'enemy',
+      blocked: bonus(),
+    });
   return out;
 }
 
@@ -791,7 +880,189 @@ function feature(
       me(`${c.name} turns a level-${lvlIdx + 1} slot into ${lvlIdx + 1} sorcery point(s)`);
       return null;
     }
+    case 'rage-frenzy':
+      spendResource(c, 'rage');
+      addEffect(c, {
+        id: 'rage',
+        name: 'Rage',
+        sourceId: c.id,
+        tag: 'rage',
+        expires: { turnOf: c.id, when: 'start', round: s.round + 10 },
+      });
+      // PHB: Berserker, Frenzy. A bonus-action melee attack each turn while raging; 1 exhaustion when it ends.
+      addEffect(c, {
+        id: 'frenzy',
+        name: 'Frenzy',
+        sourceId: c.id,
+        tag: 'frenzy',
+        expires: { turnOf: c.id, when: 'start', round: s.round + 10 },
+      });
+      s.flags = { ...s.flags, [`frenzied:${c.id}`]: true };
+      me(`${c.name} flies into a frenzied rage!`);
+      return null;
+    case 'frenzy-attack': {
+      const opt = attackOptions(c).find(
+        (o) => o.kind === 'melee' && !o.unarmed && target && !attackBlocked(ctx, c, target, o),
+      );
+      if (!target || !opt) return 'No melee target in reach.';
+      makeAttack(ctx, c, target, opt);
+      return null;
+    }
+    case 'flurry-prone':
+    case 'flurry-push':
+    case 'flurry-no-reactions': {
+      if (!target || target.side === c.side) return 'Choose an enemy.';
+      const unarmed = attackOptions(c).find((o) => o.unarmed)!;
+      const blocked = attackBlocked(ctx, c, target, unarmed);
+      if (blocked) return blocked;
+      spendResource(c, 'ki');
+      // PHB: Way of the Open Hand, Open Hand Technique (save DC 8 + proficiency + Wis).
+      const dc = 8 + h.proficiencyBonus + abilityModifier(h.abilities.wis);
+      for (let i = 0; i < 2 && conscious(target); i++) {
+        const r = makeAttack(ctx, c, target, unarmed);
+        if (!r.hit || !conscious(target)) continue;
+        if (id === 'flurry-no-reactions') {
+          target.reactionUsed = true;
+          me(`${target.name} can't take reactions until the end of ${c.name}'s next turn`);
+        } else if (id === 'flurry-prone') {
+          if (!combatSave(ctx, target, 'dex', dc).success) {
+            target.creature = addCondition(target.creature, { id: 'prone' });
+            me(`${target.name} is knocked prone`);
+          }
+        } else if (!combatSave(ctx, target, 'str', dc).success) {
+          const n = {
+            x: target.pos.x + Math.sign(target.pos.x - c.pos.x) * 3,
+            y: target.pos.y + Math.sign(target.pos.y - c.pos.y) * 3,
+          };
+          for (let k = 3; k > 0; k--) {
+            const p = {
+              x: target.pos.x + Math.sign(n.x - target.pos.x),
+              y: target.pos.y + Math.sign(n.y - target.pos.y),
+            };
+            if (!reachable(s, target, 5).has(posKey(p))) break;
+            target.pos = p;
+          }
+          me(`${target.name} is pushed away`);
+        }
+      }
+      return null;
+    }
+    case 'sacred-weapon': {
+      spendResource(c, 'channel-divinity');
+      const cha = Math.max(1, abilityModifier(h.abilities.cha));
+      addEffect(c, {
+        id: 'sacred-weapon',
+        name: 'Sacred Weapon',
+        sourceId: c.id,
+        tag: 'sacred-weapon',
+        mod: { attack: cha },
+        expires: { turnOf: c.id, when: 'start', round: s.round + 10 },
+      });
+      me(`${c.name}'s weapon blazes with holy light (+${cha} to attack)`);
+      return null;
+    }
+    case 'turn-the-unholy': {
+      spendResource(c, 'channel-divinity');
+      const dc = 8 + h.proficiencyBonus + abilityModifier(h.abilities.cha);
+      me(`${c.name} raises a holy symbol: Turn the Unholy (DC ${dc})`);
+      for (const u of hostiles(s, c).filter(
+        (x) =>
+          x.monsterId &&
+          ['undead', 'fiend'].includes(getMonster(x.monsterId).type) &&
+          distanceFeet(x.pos, c.pos) <= 30,
+      )) {
+        if (!combatSave(ctx, u, 'wis', dc, { against: 'frightened', magic: true }).success)
+          addEffect(u, {
+            id: 'turned',
+            name: 'Turned',
+            sourceId: c.id,
+            tag: 'turned',
+            expires: { turnOf: c.id, when: 'start', round: s.round + 10 },
+          });
+      }
+      return null;
+    }
+    case 'horde-breaker': {
+      // PHB: Hunter, Horde Breaker. Once per turn, attack another creature within 5 ft of the first target.
+      const opt = attackOptions(c).find(
+        (o) => !o.unarmed && target && !attackBlocked(ctx, c, target, o),
+      );
+      if (!target || !opt) return 'No target in range.';
+      c.turn.hordeUsed = true;
+      makeAttack(ctx, c, target, opt);
+      return null;
+    }
+    case 'spiritual-weapon': {
+      if (!target || target.side === c.side) return 'Choose an enemy.';
+      if (distanceFeet(c.pos, target.pos) > 60) return 'Too far for the spiritual weapon (60 ft).';
+      spiritAttack(ctx, c, target);
+      return null;
+    }
   }
+}
+
+/** PHB: Use an Object. Drink a potion, or pour it down an adjacent ally's throat. */
+function applyItem(ctx: Ctx, c: Combatant, itemId: string, targetId: string): string | null {
+  const { s, rng } = ctx;
+  if ((s.inventory[itemId] ?? 0) < 1) return 'None left.';
+  const item = getItem(itemId);
+  if (!item.consumable) return `${item.name} isn't something you can use in a fight.`;
+  const target = s.combatants[targetId];
+  if (!target || target.side !== c.side) return 'Choose yourself or an ally.';
+  if (target.id !== c.id && distanceFeet(c.pos, target.pos) > 5) return 'You must be next to them.';
+  // PHB: Thief, Fast Hands. Use an object with Cunning Action (a bonus action).
+  const fast = classLevel(c, 'rogue') >= 3 && !c.turn.bonusUsed;
+  if (fast) c.turn.bonusUsed = true;
+  else if (!spendAction(c)) return 'No action left.';
+  s.inventory = { ...s.inventory, [itemId]: s.inventory[itemId]! - 1 };
+  say(
+    s,
+    'you',
+    `${c.name} uses ${item.name}${target.id !== c.id ? ` on ${target.name}` : ''}${fast ? ' (Fast Hands)' : ''}`,
+  );
+  for (const e of item.effects) {
+    if (e.type === 'heal') {
+      const r = roll(e.dice, rng);
+      say(s, 'you', `${item.name}: ${r.text}`);
+      healCombatant(ctx, target, r.total, item.name, c);
+    } else if (e.type === 'special' && e.id === 'resistance-for-1-hour') {
+      addEffect(target, {
+        id: `resist-${e.note}`,
+        name: `${item.name}`,
+        sourceId: c.id,
+        tag: 'resistance',
+        data: { type: String(e.note) },
+      });
+      say(s, 'you', `${target.name} resists ${e.note} damage`);
+    }
+  }
+  return null;
+}
+
+/** Talk the enemy down mid-fight (Story_Bible: Ulric). The speaker's own check, once per hero. */
+function parley(ctx: Ctx, c: Combatant): string | null {
+  const { s, rng } = ctx;
+  const p = s.parley;
+  if (!p) return 'There is no one here to talk down.';
+  if (s.parleyTried.includes(c.id)) return `${c.name} has already tried.`;
+  if (!spendAction(c)) return 'No action left.';
+  s.parleyTried = [...s.parleyTried, c.id];
+  const h = heroOf(c)!;
+  const skills = p.skills.map((sk) => sk as Skill);
+  const skill = skills.reduce((best, sk) => (skillBonus(h, sk) > skillBonus(h, best) ? sk : best));
+  const dc = p.easierFlag && s.flags[p.easierFlag] ? (p.easierDc ?? p.dc) : p.dc;
+  const ability = SKILLS[skill];
+  const bonus = skillBonus(h, skill) - abilityModifier(h.abilities[ability]);
+  const r = abilityCheck(h, ability, dc, rng, {
+    label: skill[0]!.toUpperCase() + skill.slice(1),
+    bonuses: bonus ? [{ label: 'skill', value: bonus }] : [],
+  });
+  say(s, 'you', `${c.name} tries to talk the fight down: ${r.log.text.replace(`${h.name} `, '')}`);
+  if (r.success) {
+    say(s, 'head', p.text);
+    s.outcome = 'parley';
+  } else say(s, 'info', 'The words don\u2019t land. The fight goes on.');
+  return null;
 }
 
 /** Everyone the active hero could attack with each option right now. */

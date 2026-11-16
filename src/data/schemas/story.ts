@@ -50,7 +50,9 @@ export const Npc = z
         beard: z.boolean(),
         scar: z.boolean(),
       })
-      .strict(),
+      .strict()
+      /** No portrait: a place speaking (the narrator of a scene). */
+      .optional(),
     ...Verify,
   })
   .strict();

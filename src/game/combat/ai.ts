@@ -1,11 +1,13 @@
 import { getMonster } from '../creatures';
-import { slotsLeft } from '../hero';
-import { hasCondition, isIncapacitated } from '../../rules';
+import { resourceLeft, slotsLeft } from '../hero';
+import { hasCondition, isIncapacitated, roll } from '../../rules';
 import { applyHit, attackBlocked, attackOptions, makeAttack } from './attacks';
 import {
   active,
   addEffect,
   canAct,
+  classLevel,
+  spendResource,
   combatSave,
   currentAc,
   get,
@@ -17,6 +19,7 @@ import {
   type Ctx,
 } from './core';
 import {
+  coneCells,
   conscious,
   coverBetween,
   distanceFeet,
@@ -25,8 +28,8 @@ import {
   reachable,
   terrainAt,
 } from './grid';
-import { nextTurnRound } from './leaves';
-import { castSpell } from './spells';
+import { applyLeaf, nextTurnRound } from './leaves';
+import { castSpell, spiritAttack } from './spells';
 import { meleeOption, moveAlong, nextTurn, settle, speedNow } from './turn';
 import type { CombatState, Combatant, EnemyPlan, PlanStep, Pos } from './types';
 
@@ -60,7 +63,8 @@ const HEALERS = new Set(['cleric', 'druid', 'bard', 'wizard', 'sorcerer']);
 function targetScore(s: CombatState, me: Combatant, t: Combatant, cost: number): number {
   const h = heroOf(t);
   if (s.difficulty === 'easy') return cost;
-  if (s.difficulty === 'medium') return cost * 10 + t.creature.hp;
+  // A breath-weapon monster wades into the nearest heroes on Hard too, so the cone matters [inferred].
+  if (s.difficulty === 'medium' || me.recharge) return cost * 10 + t.creature.hp;
   // Hard: focus fire, go after healers and casters, gang up for Pack Tactics.
   const healer = h && HEALERS.has(h.classId) ? 8 : 0;
   const wounded = t.creature.hp < t.creature.maxHp ? 4 : 0;
@@ -72,8 +76,144 @@ function targetScore(s: CombatState, me: Combatant, t: Combatant, cost: number):
   return t.creature.hp + cost * 0.3 - healer - wounded - ganged;
 }
 
-/** Build this enemy's whole turn. */
+/** Build this enemy's whole turn: spells first (monsters with Spellcasting), then the rest. */
 export function planTurn(ctx: Ctx, me: Combatant): PlanStep[] {
+  const breath = breathPlan(ctx, me);
+  if (breath) return [breath];
+  const spell = casterPlan(ctx, me);
+  if (spell.action) return spell.steps;
+  return [...spell.steps, ...basePlan(ctx, me)];
+}
+
+/**
+ * Spellcasting monsters (the cult fanatic Brother Ulric): Hold Person on a dangerous hero (Hard only),
+ * Spiritual Weapon from round 2, Inflict Wounds up close, Sacred Flame at range [inferred tactics].
+ */
+function casterPlan(ctx: Ctx, me: Combatant): { steps: PlanStep[]; action: boolean } {
+  const { s } = ctx;
+  const none = { steps: [] as PlanStep[], action: false };
+  const sc = me.monsterId ? getMonster(me.monsterId).spellcasting : undefined;
+  const slots = me.monsterSlots;
+  if (!sc || !canAct(me) || hasEffect(me, 'turned')) return none;
+  const known = Object.values(sc.spells).flat();
+  const has = (id: string) => known.includes(id);
+  const slot = (n: number) => (slots?.[n] ?? 0) > 0;
+  const inRange = Object.values(s.combatants)
+    .filter(
+      (c) =>
+        c.side !== me.side &&
+        isTargetable(c) &&
+        distanceFeet(me.pos, c.pos) <= 60 &&
+        hasLineOfSight(s.map, me.pos, c.pos),
+    )
+    .sort(
+      (a, b) =>
+        targetScore(s, me, a, distanceFeet(me.pos, a.pos) / 5) -
+        targetScore(s, me, b, distanceFeet(me.pos, b.pos) / 5),
+    );
+  if (!inRange.length) return none;
+  const steps: PlanStep[] = [];
+  let bonusSpell = false;
+  if (hasEffect(me, 'spiritual-weapon'))
+    steps.push({ type: 'spirit-attack', targetId: inRange[0]!.id });
+  else if (has('spiritual-weapon') && slot(2) && s.round >= 2) {
+    steps.push({
+      type: 'cast',
+      spellId: 'spiritual-weapon',
+      slotLevel: 2,
+      targetIds: [inRange[0]!.id],
+    });
+    bonusSpell = true;
+  }
+  const adjacent = inRange.find((c) => isAdjacent(c.pos, me.pos));
+  // PHB: Bonus Action casting. After a bonus-action spell, only a cantrip as the action.
+  const holdTarget = inRange.find((c) => !hasCondition(c.creature, 'paralyzed') && heroOf(c));
+  if (
+    !bonusSpell &&
+    s.difficulty === 'hard' &&
+    has('hold-person') &&
+    slot(2) &&
+    !me.creature.concentration &&
+    holdTarget
+  ) {
+    steps.push({ type: 'cast', spellId: 'hold-person', slotLevel: 2, targetIds: [holdTarget.id] });
+    return { steps, action: true };
+  }
+  if (!bonusSpell && adjacent && has('inflict-wounds') && slot(1)) {
+    steps.push({ type: 'cast', spellId: 'inflict-wounds', slotLevel: 1, targetIds: [adjacent.id] });
+    return { steps, action: true };
+  }
+  if (!adjacent && has('sacred-flame')) {
+    steps.push({
+      type: 'cast',
+      spellId: 'sacred-flame',
+      slotLevel: 0,
+      targetIds: [inRange[0]!.id],
+    });
+    return { steps, action: true };
+  }
+  return { steps, action: false };
+}
+
+/** A ready area action (Fire Breath) that catches at least two heroes, or one on Easy [inferred]. */
+function breathPlan(ctx: Ctx, me: Combatant): PlanStep | null {
+  const { s } = ctx;
+  if (!me.monsterId || !me.recharge || !canAct(me) || hasEffect(me, 'turned')) return null;
+  const m = getMonster(me.monsterId);
+  for (const a of m.actions) {
+    if (!a.area || !me.recharge[a.id]) continue;
+    let best: { point: Pos; n: number } | null = null;
+    for (const h of Object.values(s.combatants)) {
+      if (h.side === me.side || !isTargetable(h)) continue;
+      const cells = coneCells(s.map, me.pos, h.pos, a.area.size);
+      const caught = Object.values(s.combatants).filter(
+        (c) => !c.gone && !c.creature.dead && cells.some((p) => p.x === c.pos.x && p.y === c.pos.y),
+      );
+      // Only heroes still standing count: breathing on the fallen would be cruel [inferred].
+      const n =
+        caught.filter((c) => c.side !== me.side && isTargetable(c)).length -
+        caught.filter((c) => c.side === me.side).length;
+      if (!best || n > best.n) best = { point: h.pos, n };
+    }
+    if (best && best.n >= (s.difficulty === 'easy' ? 1 : 2))
+      return { type: 'area-action', actionId: a.id, point: best.point };
+    if (best && best.n >= 1 && s.round >= 3)
+      return { type: 'area-action', actionId: a.id, point: best.point };
+  }
+  return null;
+}
+
+/** MM: a monster's area action (a cone of fire). One damage roll for everyone (PHB: Areas of Effect). */
+function areaAction(ctx: Ctx, me: Combatant, actionId: string, point: Pos): void {
+  const { s, rng } = ctx;
+  const a = getMonster(me.monsterId!).actions.find((x) => x.id === actionId)!;
+  me.turn.actionUsed = true;
+  me.recharge = { ...me.recharge, [a.id]: false };
+  say(s, 'foe', `${me.name} uses ${a.name}!`);
+  const cells = coneCells(s.map, me.pos, point, a.area!.size);
+  const caught = Object.values(s.combatants).filter(
+    (c) =>
+      c.id !== me.id &&
+      !c.gone &&
+      !c.creature.dead &&
+      cells.some((p) => p.x === c.pos.x && p.y === c.pos.y),
+  );
+  for (const e of a.effects) {
+    if (e.type !== 'save') continue;
+    const preRolled = new Map();
+    for (const x of e.onFail) if (x.type === 'damage') preRolled.set(x, roll(x.dice, rng));
+    for (const t of caught) {
+      const r = combatSave(ctx, t, e.ability, e.dc ?? 10);
+      if (!r.success) for (const x of e.onFail) applyLeaf(ctx, me, t, x, { preRolled });
+      else if (e.onSuccess === 'half')
+        for (const x of e.onFail)
+          if (x.type === 'damage') applyLeaf(ctx, me, t, x, { preRolled, half: true });
+    }
+  }
+  if (!caught.length) say(s, 'info', `${a.name} catches no one`);
+}
+
+function basePlan(ctx: Ctx, me: Combatant): PlanStep[] {
   const { s } = ctx;
   const plan = s.plan as EnemyPlan;
   const heroes = Object.values(s.combatants).filter((c) => c.side !== me.side && isTargetable(c));
@@ -163,7 +303,22 @@ export function planTurn(ctx: Ctx, me: Combatant): PlanStep[] {
     if (target) {
       const o = options.find((x) => x.t === target)!;
       const steps: PlanStep[] = o.path.length ? [{ type: 'move', path: o.path }] : [];
-      return [...steps, { type: 'attack', targetId: target.id, optionId: melee.id }];
+      // MM: Multiattack. Every melee attack in the list, at the same target (the next one if it drops).
+      const multi = me.monsterId ? getMonster(me.monsterId).multiattack : undefined;
+      const hits = multi?.length
+        ? multi.flatMap((id) => {
+            const opt = opts.find((x) => x.id === id && x.kind === 'melee');
+            return opt ? [opt] : [];
+          })
+        : [melee];
+      return [
+        ...steps,
+        ...(hits.length ? hits : [melee]).map((opt): PlanStep => ({
+          type: 'attack',
+          targetId: target.id,
+          optionId: opt.id,
+        })),
+      ];
     }
   }
 
@@ -293,6 +448,17 @@ export function continuePlan(ctx: Ctx): void {
     } else if (step.type === 'attack') {
       if (attackStep(ctx, me, step)) return;
       plan.steps.shift();
+    } else if (step.type === 'cast') {
+      const targets = (step.targetIds ?? []).map((id) => s.combatants[id]);
+      if (targets.every((t) => t && isTargetable(t))) castSpell(ctx, me, step);
+      plan.steps.shift();
+    } else if (step.type === 'area-action') {
+      areaAction(ctx, me, step.actionId, step.point);
+      plan.steps.shift();
+    } else if (step.type === 'spirit-attack') {
+      const t = s.combatants[step.targetId];
+      if (t && isTargetable(t) && distanceFeet(me.pos, t.pos) <= 60) spiritAttack(ctx, me, t);
+      plan.steps.shift();
     }
   }
   if (!s.prompt) s.plan = null;
@@ -371,7 +537,33 @@ function attackStep(ctx: Ctx, me: Combatant, step: Extract<PlanStep, { type: 'at
     step.phase = 'rolled';
     if (!r.hit) {
       step.phase = 'done';
+      giantKiller(ctx, me, target);
       return false;
+    }
+    // PHB: Lore bard, Cutting Words. Reaction: subtract a Bardic Inspiration die from the roll.
+    const bard = Object.values(s.combatants).find((p) => {
+      const bh = heroOf(p);
+      return (
+        bh &&
+        p.side !== me.side &&
+        classLevel(p, 'bard') >= 3 &&
+        resourceLeft(bh, 'bardic-inspiration') > 0 &&
+        !p.reactionUsed &&
+        canAct(p) &&
+        distanceFeet(p.pos, me.pos) <= 60 &&
+        r.natural !== 20 &&
+        r.total - (bh.level >= 5 ? 8 : 6) < currentAc(target!)
+      );
+    });
+    if (bard) {
+      s.prompt = {
+        kind: 'cutting-words',
+        reactorId: bard.id,
+        attackerId: me.id,
+        targetId: target.id,
+        total: r.total,
+      };
+      return true;
     }
     // Shield: a caster who knows it may raise their AC by 5 against this hit.
     const h = heroOf(target);
@@ -391,20 +583,20 @@ function attackStep(ctx: Ctx, me: Combatant, step: Extract<PlanStep, { type: 'at
   if (step.phase === 'rolled') {
     const r = step.roll!;
     step.phase = 'done';
-    if (
-      target.effects.some((e) => e.name === 'Shield') &&
-      r.natural !== 20 &&
-      r.total < currentAc(target)
-    ) {
+    if (r.natural !== 20 && r.total < currentAc(target)) {
       say(
         s,
         'you',
-        `The attack glances off ${target.name}'s Shield (${r.total} vs AC ${currentAc(target)}) → MISS`,
+        target.effects.some((e) => e.name === 'Shield')
+          ? `The attack glances off ${target.name}'s Shield (${r.total} vs AC ${currentAc(target)}) → MISS`
+          : `The attack falls short of ${target.name} (${r.total} vs AC ${currentAc(target)}) → MISS`,
       );
+      giantKiller(ctx, me, target);
       return false;
     }
     const hpBefore = target.creature.hp + target.creature.tempHp;
     applyHit(ctx, me, target, opt, r.critical);
+    giantKiller(ctx, me, target);
     const damaged = target.creature.hp + target.creature.tempHp < hpBefore;
     // Hellish Rebuke: a warlock who was just damaged may answer with fire.
     const h = heroOf(target);
@@ -424,6 +616,20 @@ function attackStep(ctx: Ctx, me: Combatant, step: Extract<PlanStep, { type: 'at
     }
   }
   return false;
+}
+
+/** PHB: Hunter, Giant Killer. A Large or bigger attacker within 5 ft gets a reaction attack [used automatically]. */
+function giantKiller(ctx: Ctx, me: Combatant, target: Combatant): void {
+  const h = heroOf(target);
+  if (!h?.choices['hunters-prey']?.includes('giant-killer') || !me.monsterId) return;
+  if (!['Large', 'Huge'].includes(getMonster(me.monsterId).size)) return;
+  if (target.reactionUsed || !canAct(target) || !conscious(me) || !isAdjacent(me.pos, target.pos))
+    return;
+  const opt = meleeOption(target);
+  if (!opt) return;
+  target.reactionUsed = true;
+  say(ctx.s, 'you', `${target.name} strikes back (Giant Killer)`);
+  makeAttack(ctx, target, me, opt);
 }
 
 function hideCheck(ctx: Ctx, me: Combatant): string | null {
@@ -489,6 +695,20 @@ export function resolvePrompt(ctx: Ctx, accept: boolean): void {
         expires: { turnOf: reactor.id, when: 'start', round: nextTurnRound(s, reactor.id) },
       });
       say(s, 'you', `${reactor.name} casts Shield (+5 AC)`);
+    }
+  } else if (p.kind === 'cutting-words') {
+    if (accept && step?.type === 'attack' && step.roll) {
+      const h = heroOf(reactor)!;
+      spendResource(reactor, 'bardic-inspiration');
+      reactor.reactionUsed = true;
+      const sides = h.level >= 5 ? 8 : 6;
+      const d = ctx.rng.die(sides);
+      step.roll = { ...step.roll, total: step.roll.total - d };
+      say(
+        s,
+        'you',
+        `${reactor.name} heckles with Cutting Words: d${sides} (${d}) → the attack is now ${step.roll.total}`,
+      );
     }
   } else if (p.kind === 'hellish-rebuke') {
     if (accept) {

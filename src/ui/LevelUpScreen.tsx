@@ -36,7 +36,7 @@ const signed = (n: number) => (n >= 0 ? `+${n}` : `${n}`);
 
 /** Level-up with hover previews (rebuilt from docs/mockups/LevelUp.dc.html). */
 export function LevelUpScreen() {
-  const { game, levelUpId, confirmLevelUp, goto, rngState } = useGame();
+  const { game, levelUpId, confirmLevelUp, goHome, rngState } = useGame();
   const hero = game!.party.find((h) => h.id === levelUpId)!;
   const opts = useMemo(() => levelUpOptions(hero), [hero]);
   const [plan, setPlan] = useState<LevelUpPlan>(() => defaultPlan(hero));
@@ -381,11 +381,7 @@ export function LevelUpScreen() {
           >
             Confirm level {opts.newLevel}
           </button>
-          <button
-            type="button"
-            className="menu-secondary small-btn"
-            onClick={() => goto('explore')}
-          >
+          <button type="button" className="menu-secondary small-btn" onClick={goHome}>
             Not now
           </button>
         </aside>

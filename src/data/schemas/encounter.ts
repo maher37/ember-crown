@@ -33,6 +33,21 @@ export const Encounter = z
         'terrain must match width × height',
       ),
     partyStart: z.array(Cell).length(4),
+    /** A brawl: knockouts instead of deaths (PHB: Knocking a Creature Out). */
+    nonlethal: z.boolean().optional(),
+    /** Losing doesn't end the game: the story carries on (the tavern brawl). */
+    defeatContinues: z.boolean().optional(),
+    /** Talk the enemy down mid-fight (Story_Bible: Ulric, Persuasion or Insight, easier with Brannoc's name). */
+    parley: z
+      .object({
+        skills: z.array(z.string().min(1)).min(1),
+        dc: z.number().int().positive(),
+        easierFlag: z.string().min(1).optional(),
+        easierDc: z.number().int().positive().optional(),
+        text: z.string().min(1),
+      })
+      .strict()
+      .optional(),
     /** Talk-or-fight: a party-best skill check that avoids the fight for the same XP (D16). */
     talk: z
       .object({
