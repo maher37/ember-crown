@@ -2,9 +2,11 @@ import { z } from 'zod';
 import { AbilityId, ConditionIdSchema, DamageTypeId, SkillId } from '../data/schemas/common';
 import { defaultInvocations, defaultSpells, type Hero } from './hero';
 import type { QuestState } from './journal';
+import type { LetterState } from './letters';
+import { GAME_START } from './calendar';
 
 /** Bump when the save format changes, and add a migration below. Never break old saves. */
-export const SAVE_VERSION = 3;
+export const SAVE_VERSION = 4;
 
 export interface GameState {
   id: string;
@@ -25,6 +27,12 @@ export interface GameState {
   notes: { text: string; at: string }[];
   /** Saved Ink story state per dialogue file (visit counts and variables). */
   ink: Record<string, string>;
+  /** Game clock: hours since midnight, 1 Hammer 1492 DR (see calendar.ts). */
+  clock: number;
+  /** Clock hour when the last long rest started (once per 24 hours), or null. */
+  lastLongRest: number | null;
+  /** Maelis's letters that have arrived. */
+  letters: LetterState[];
 }
 
 export interface SaveFile {
@@ -129,6 +137,9 @@ export const GameStateSchema = z.object({
   ),
   notes: z.array(z.object({ text: z.string(), at: z.string() })),
   ink: z.record(z.string(), z.string()),
+  clock: z.number().int().min(0),
+  lastLongRest: z.number().int().nullable(),
+  letters: z.array(z.object({ id: z.string(), read: z.boolean(), reply: z.string().optional() })),
 }) satisfies z.ZodType<GameState>;
 
 export const SaveFileSchema = z.object({
@@ -171,6 +182,20 @@ export const MIGRATIONS: Record<number, (old: Record<string, unknown>) => Record
           }
         : { 'lantern-night': { status: 'active', steps: [] } };
       return { ...old, game: { notes: [], ink: {}, ...game, party, quests } };
+    },
+    // v3 → v4 (M6): the game clock, long-rest timing and Maelis's letters.
+    3: (old) => {
+      const game = old.game as { party: { origin?: string }[]; location?: string };
+      const corin = game.party.some((h) => h.origin === 'corin');
+      return {
+        ...old,
+        game: {
+          clock: GAME_START,
+          lastLongRest: null,
+          letters: corin ? [{ id: 'letter-0', read: false }] : [],
+          ...game,
+        },
+      };
     },
   };
 

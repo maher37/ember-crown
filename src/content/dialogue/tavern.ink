@@ -242,9 +242,13 @@ Something scratches under the trapdoor, steady as a heartbeat.
     {flag("edric_tended") && not (flag("has_letter") || flag("letter_lost")): Rain hammers the shutters. Whatever this letter business is, it isn't finished yet.}
     -> END
 }
-The Ashford road runs north along the Grayflow toward the old mine. Goblins have been seen on it, coming down from the mountains.
-+ [Set out along the road (F2: Road ambush).]
-    ~ travel("f2-road-ambush")
+{ not flag("road_done"):
+    The Ashford road runs north along the Grayflow toward the old mine. Goblins have been seen on it, coming down from the mountains.
+- else:
+    The door opens on the Grayflow valley and the dark line of the Greypeaks beyond.
+}
++ [Set out (open the map).]
+    ~ travel("map")
     -> END
 + [Not yet.]
     -> END

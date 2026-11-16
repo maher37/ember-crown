@@ -1,0 +1,190 @@
+/* Camp animations from docs/mockups/Camp.dc.html. */
+@keyframes flick {
+  0%,
+  100% {
+    transform: scale(1, 1);
+  }
+  25% {
+    transform: scale(1.07, 1.12);
+  }
+  50% {
+    transform: scale(0.94, 1.03);
+  }
+  75% {
+    transform: scale(1.04, 0.95);
+  }
+}
+.camp-scene .flame {
+  transform-box: fill-box;
+  transform-origin: 50% 100%;
+  animation: flick 0.9s ease-in-out infinite;
+}
+.camp-scene .flame.f2 {
+  animation-duration: 1.2s;
+  animation-delay: -0.4s;
+}
+.camp-scene .flame.f3 {
+  animation-duration: 0.7s;
+  animation-delay: -0.2s;
+}
+@keyframes glow {
+  0%,
+  100% {
+    opacity: 0.28;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+.camp-scene .glow {
+  animation: glow 2.6s ease-in-out infinite;
+}
+@keyframes rise {
+  0% {
+    transform: translate(0, 0);
+    opacity: 0;
+  }
+  15% {
+    opacity: 1;
+  }
+  100% {
+    transform: translate(14px, -130px);
+    opacity: 0;
+  }
+}
+.camp-scene .ember {
+  transform-box: fill-box;
+  animation: rise 3s linear infinite;
+}
+.camp-scene .ember.e2 {
+  animation-duration: 3.7s;
+  animation-delay: -1.2s;
+}
+.camp-scene .ember.e3 {
+  animation-duration: 3.3s;
+  animation-delay: -2.1s;
+}
+@keyframes twinkle {
+  0%,
+  100% {
+    opacity: 0.25;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+.camp-scene .star {
+  animation: twinkle 3.2s ease-in-out infinite;
+}
+@keyframes zzz {
+  0% {
+    transform: translate(0, 0);
+    opacity: 0;
+  }
+  20% {
+    opacity: 1;
+  }
+  100% {
+    transform: translate(20px, -50px);
+    opacity: 0;
+  }
+}
+.camp-scene .zzz {
+  transform-box: fill-box;
+  animation: zzz 2.8s ease-out infinite;
+}
+.camp-scene .zzz.z2 {
+  animation-delay: -1.4s;
+}
+@keyframes bob {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-3px);
+  }
+}
+.camp-scene .wix {
+  transform-box: fill-box;
+  animation: bob 2.2s ease-in-out infinite;
+}
+@keyframes snow {
+  0% {
+    transform: translateY(-10px);
+    opacity: 0;
+  }
+  10% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(80px);
+    opacity: 0;
+  }
+}
+.camp-scene .snow {
+  transform-box: fill-box;
+  animation: snow 5s linear infinite;
+}
+@keyframes mothIn {
+  0% {
+    transform: translate(-560px, -300px) rotate(-25deg);
+    opacity: 0;
+  }
+  10% {
+    opacity: 1;
+  }
+  35% {
+    transform: translate(-340px, -120px) rotate(12deg);
+  }
+  65% {
+    transform: translate(-140px, -150px) rotate(-10deg);
+  }
+  100% {
+    transform: translate(0, 0) rotate(0);
+  }
+}
+.camp-scene .moth {
+  animation: mothIn 3.4s ease-out forwards;
+}
+@keyframes flutter {
+  0%,
+  100% {
+    transform: scaleY(1);
+  }
+  50% {
+    transform: scaleY(0.45);
+  }
+}
+.camp-scene .wing {
+  transform-box: fill-box;
+  transform-origin: 50% 100%;
+  animation: flutter 0.22s ease-in-out infinite;
+}
+@keyframes pop {
+  0% {
+    transform: scale(0.85);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+.camp-scene .pop {
+  animation: pop 0.25s ease-out;
+}
+@media (prefers-reduced-motion: reduce) {
+  .camp-scene .flame,
+  .camp-scene .glow,
+  .camp-scene .ember,
+  .camp-scene .star,
+  .camp-scene .zzz,
+  .camp-scene .wix,
+  .camp-scene .snow,
+  .camp-scene .moth,
+  .camp-scene .wing,
+  .camp-scene .pop {
+    animation: none;
+  }
+}

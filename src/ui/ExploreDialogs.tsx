@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import { quests, spells } from '../data';
 import { getClass, slotsLeft, maxSlots } from '../game/hero';
 import { SLOT_NAMES, type SlotId } from '../game/save';
+import { getLetter, trust } from '../game/letters';
 import { useGame } from '../game/store';
 import { downloadSave } from './saveFiles';
 
@@ -75,6 +76,24 @@ export function JournalDialog({ onClose }: { onClose: () => void }) {
               ))}
           </section>
         ))}
+        <section>
+          <h3 className="eyebrow">Letters</h3>
+          {g.letters.length ? (
+            <ul>
+              {g.letters.map((l) => (
+                <li key={l.id}>
+                  “{getLetter(l.id).title}”{l.read ? '' : ' (unread: read it at camp)'}
+                  {l.reply
+                    ? ` · you sent ${l.reply === 'hard' ? 'a hard' : `an ${l.reply}`.replace('an kind', 'a kind')} reply`
+                    : ''}
+                </li>
+              ))}
+            </ul>
+          ) : (
+            <p className="small muted">No letters yet.</p>
+          )}
+          <p className="small muted">Trust with M.V.: {trust(g)}</p>
+        </section>
         <section>
           <h3 className="eyebrow">Notes</h3>
           {g.notes.length ? (

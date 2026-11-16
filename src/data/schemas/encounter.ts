@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { fileOf, Id, Verify } from './common';
+import { Id, Verify } from './common';
 
 const Cell = z.tuple([z.number().int().min(0), z.number().int().min(0)]);
 
@@ -33,6 +33,18 @@ export const Encounter = z
         'terrain must match width × height',
       ),
     partyStart: z.array(Cell).length(4),
+    /** Talk-or-fight: a party-best skill check that avoids the fight for the same XP (D16). */
+    talk: z
+      .object({
+        skill: z.string().min(1),
+        dc: z.number().int().positive(),
+        prompt: z.string().min(1),
+        success: z.string().min(1),
+        failure: z.string().min(1),
+        note: z.string().min(1).optional(),
+      })
+      .strict()
+      .optional(),
     enemies: z
       .array(
         z
@@ -51,7 +63,21 @@ export const Encounter = z
   })
   .strict();
 export type Encounter = z.infer<typeof Encounter>;
-export const EncounterFile = fileOf('encounters', Encounter);
+export const EncounterFile = z
+  .object({
+    ...Verify,
+    encounters: z.array(Encounter).min(1),
+    /** Encounters_and_XP.md §5b: d8 tables per region (null = a no-fight event, see roadEvents). */
+    roadTables: z.record(z.string(), z.array(Id.nullable()).length(8)),
+    roadEvents: z.record(
+      z.string(),
+      z.record(
+        z.string(),
+        z.object({ text: z.string().min(1), note: z.string().min(1).optional() }).strict(),
+      ),
+    ),
+  })
+  .strict();
 
 export const LoadoutFile = z
   .object({

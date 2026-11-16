@@ -56,3 +56,55 @@ export const Npc = z
   .strict();
 export type Npc = z.infer<typeof Npc>;
 export const NpcFile = fileOf('npcs', Npc);
+
+export const Place = z
+  .object({
+    id: Id,
+    name: z.string().min(1),
+    x: z.number(),
+    y: z.number(),
+    kind: z.enum(['town', 'main', 'side', 'elite']),
+    tag: z.string().min(1),
+    act: z.union([z.literal(1), z.literal(2), z.literal(3)]),
+    /** Road-encounter table for legs to this place ("none" in town). */
+    region: z.enum(['none', 'road', 'marsh', 'heights']),
+    desc: z.string().min(1),
+    ...Verify,
+  })
+  .strict();
+export type Place = z.infer<typeof Place>;
+export const PlaceFile = fileOf('places', Place);
+
+export const WixFile = z
+  .object({ jokes: z.array(z.string().min(1)).min(1), greeting: z.string().min(1) })
+  .strict();
+
+export const Letter = z
+  .object({
+    id: Id,
+    number: z.number().int().min(0),
+    title: z.string().min(1),
+    /** Story flag that makes this letter arrive at the next long rest (null: in Corin's pack from the start). */
+    trigger: z.string().min(1).nullable(),
+    when: z.string().min(1),
+    /** Verbatim text (docs/Maelis_Letters.md). `if` is a story flag, "!flag", or "corin". */
+    paragraphs: z
+      .array(z.object({ text: z.string().min(1), if: z.string().min(1).optional() }).strict())
+      .min(1),
+    originOnly: z.boolean(),
+  })
+  .strict();
+export type Letter = z.infer<typeof Letter>;
+export const LetterFile = z
+  .object({
+    replies: z
+      .array(
+        z.object({ id: Id, label: z.string().min(1), trust: z.number().int().min(0) }).strict(),
+      )
+      .min(1),
+    trustDcBonus: z
+      .object({ threshold: z.number().int().positive(), dcReduction: z.number().int().positive() })
+      .strict(),
+    letters: z.array(Letter).min(1),
+  })
+  .strict();

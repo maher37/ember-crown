@@ -1,4 +1,5 @@
 import { useGame } from '../game/store';
+import { CampScreen } from './CampScreen';
 import { CombatScreen } from './CombatScreen';
 import { Creator } from './Creator';
 import { DialogueScreen } from './DialogueScreen';
@@ -8,6 +9,7 @@ import './Creator.css';
 import './LoadDialog.css';
 import { PartyScreen } from './PartyScreen';
 import { PrepareScreen } from './PrepareScreen';
+import { WorldMapScreen } from './WorldMapScreen';
 import { Stage } from './Stage';
 import { TitleScreen } from './TitleScreen';
 
@@ -23,6 +25,8 @@ export function App() {
       {screen === 'levelup' && <LevelUpScreen />}
       {screen === 'prepare' && <PrepareScreen />}
       {screen === 'combat' && <CombatScreen />}
+      {screen === 'map' && <WorldMapScreen />}
+      {screen === 'camp' && <CampScreen />}
     </Stage>
   );
 }

@@ -14,6 +14,7 @@ import {
   type GameState,
 } from '../../src/game/save';
 import { useGame } from '../../src/game/store';
+import { GAME_START } from '../../src/game/calendar';
 
 const hero = (i: number) =>
   buildHero(
@@ -38,6 +39,9 @@ const game = (): GameState => ({
   quests: { 'lantern-night': { status: 'active', steps: [] } },
   notes: [],
   ink: {},
+  clock: 7972,
+  lastLongRest: null,
+  letters: [],
 });
 
 describe('save files', () => {
@@ -211,14 +215,22 @@ describe('save version 1 → 2 (M4: spells, slots and resources)', () => {
       resourcesUsed: {},
       invocations: [],
     });
-    expect(r.ok && r.save.saveVersion).toBe(3);
+    expect(r.ok && r.save.saveVersion).toBe(4);
   });
 });
 
 describe('save version 2 → 3 (M5: quests, notes, Ink state)', () => {
   it('starts Lantern Night for a fresh party, and marks it done for a level-2 party', () => {
-    const { quests: _q, notes: _n, ink: _k, ...g } = game();
-    void [_q, _n, _k];
+    const {
+      quests: _q,
+      notes: _n,
+      ink: _k,
+      clock: _c,
+      lastLongRest: _l,
+      letters: _t,
+      ...g
+    } = game();
+    void [_q, _n, _k, _c, _l, _t];
     const party = g.party.map(({ choices: _c, ...h }) => (void _c, h));
     const fresh = parseSave(
       JSON.stringify({ saveVersion: 2, savedAt: 'x', game: { ...g, party } }),
@@ -235,5 +247,22 @@ describe('save version 2 → 3 (M5: quests, notes, Ink state)', () => {
     );
     expect(veteran.ok && veteran.save.game.quests['lantern-night']!.status).toBe('done');
     expect(veteran.ok && veteran.save.game.party[0]!.choices).toEqual({});
+  });
+});
+
+describe('save version 3 → 4 (M6: clock, long rests, letters)', () => {
+  it('starts the clock at the Feast of the Moon and gives Corin his letter', () => {
+    const { clock: _c, lastLongRest: _l, letters: _t, ...g } = game();
+    void [_c, _l, _t];
+    const r = parseSave(
+      JSON.stringify({
+        saveVersion: 3,
+        savedAt: 'x',
+        game: { ...g, party: g.party.map((h, i) => (i === 0 ? { ...h, origin: 'corin' } : h)) },
+      }),
+    );
+    expect(r.ok && r.save.game.clock).toBe(GAME_START);
+    expect(r.ok && r.save.game.letters).toEqual([{ id: 'letter-0', read: false }]);
+    expect(r.ok && r.save.game.lastLongRest).toBeNull();
   });
 });
