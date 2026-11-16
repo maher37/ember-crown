@@ -370,6 +370,92 @@
       "id": "bog",
       "name": "The wisp-lit bog",
       "title": "Lights that aren't lanterns"
+    },
+    {
+      "id": "ida",
+      "name": "Ser Ida Marrow",
+      "title": "Captain of the Honor Guard",
+      "portrait": {
+        "skin": "#aab4bf",
+        "hair": "#d8dde6",
+        "eyes": "#7fb3e6",
+        "hairStyle": "long",
+        "beard": false,
+        "scar": true,
+        "cloth": "#4a5568"
+      }
+    },
+    {
+      "id": "vorrag",
+      "name": "Vorrag the Kiln-Smith",
+      "title": "A fire giant",
+      "portrait": {
+        "skin": "#5a2a1f",
+        "hair": "#e8833a",
+        "eyes": "#e8c27a",
+        "hairStyle": "long",
+        "beard": true,
+        "scar": true,
+        "cloth": "#3a2a22"
+      }
+    },
+    {
+      "id": "cindrath",
+      "name": "Cindrath",
+      "title": "The voice in the crown",
+      "portrait": {
+        "skin": "#7a1f17",
+        "hair": "#2b1a12",
+        "eyes": "#e8c27a",
+        "hairStyle": "bald",
+        "beard": false,
+        "scar": false,
+        "cloth": "#e06a3b"
+      }
+    },
+    {
+      "id": "chief",
+      "name": "Chief Mog",
+      "title": "Wix's clan chief",
+      "portrait": {
+        "skin": "#8a9a4a",
+        "hair": "#2b2418",
+        "eyes": "#d9a03a",
+        "hairStyle": "bald",
+        "beard": true,
+        "scar": true,
+        "cloth": "#6b5a3a"
+      }
+    },
+    {
+      "id": "pass",
+      "name": "Ashfall Pass",
+      "title": "The road into the high Greypeaks"
+    },
+    {
+      "id": "kiln",
+      "name": "The King's Kiln",
+      "title": "King Varrow's tomb"
+    },
+    {
+      "id": "forge",
+      "name": "Ammarindar's Great Forge",
+      "title": "Hammering for miles"
+    },
+    {
+      "id": "caves",
+      "name": "Wix's clan caves",
+      "title": "The upper caves"
+    },
+    {
+      "id": "ashford",
+      "name": "Ashford",
+      "title": "Under falling ash"
+    },
+    {
+      "id": "epilogue",
+      "name": "Afterwards",
+      "title": "The end of the story"
     }
   ]
 }

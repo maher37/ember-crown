@@ -127,6 +127,64 @@ function casterPlan(ctx: Ctx, me: Combatant): { steps: PlanStep[]; action: boole
     bonusSpell = true;
   }
   const adjacent = inRange.find((c) => isAdjacent(c.pos, me.pos));
+  // Mages (Maelis): Misty Step away from a melee hero (bonus action) [inferred tactics].
+  if (adjacent && !bonusSpell && has('misty-step') && slot(2) && !me.turn.bonusUsed) {
+    const away = [...reachable(s, { ...me, effects: [] }, 30).values()]
+      .map((v) => v.path.at(-1))
+      .filter(
+        (p): p is Pos =>
+          !!p &&
+          !Object.values(s.combatants).some(
+            (h) => h.side !== me.side && isTargetable(h) && distanceFeet(h.pos, p) <= 10,
+          ),
+      )
+      .sort((a, b) => nearestHero(s, me, b) - nearestHero(s, me, a))[0];
+    if (away) {
+      steps.push({ type: 'cast', spellId: 'misty-step', slotLevel: 2, point: away });
+      bonusSpell = true;
+    }
+  }
+  // Fireball where it catches at least two heroes and no friends (one on Easy: never) [inferred].
+  // Fireballs per fight: one on Medium, two on Hard, none on Easy [inferred tuning, M9].
+  const fireballs = me.effects.filter((e) => e.tag === 'cast-fireball').length;
+  const fireballCap = s.difficulty === 'hard' ? 2 : s.difficulty === 'medium' ? 1 : 0;
+  if (has('fireball') && slot(3) && fireballs < fireballCap && !bonusSpell) {
+    let best: { p: Pos; n: number } | null = null;
+    for (const h of inRange) {
+      const caught = Object.values(s.combatants).filter(
+        (c) => !c.gone && !c.creature.dead && distanceFeet(c.pos, h.pos) <= 20,
+      );
+      if (caught.some((c) => c.side === me.side)) continue;
+      const n = caught.filter((c) => isTargetable(c)).length;
+      if (!best || n > best.n) best = { p: h.pos, n };
+    }
+    if (best && best.n >= 2) {
+      me.effects.push({
+        id: `cast-fireball-${fireballs}`,
+        name: 'Fireball cast',
+        sourceId: me.id,
+        tag: 'cast-fireball',
+      });
+      steps.push({ type: 'cast', spellId: 'fireball', slotLevel: 3, point: best.p });
+      return { steps, action: true };
+    }
+  }
+  if (!bonusSpell && has('magic-missile') && slot(1)) {
+    const weak = [...inRange].sort((a, b) => a.creature.hp - b.creature.hp)[0]!;
+    if (weak.creature.hp <= 12) {
+      steps.push({
+        type: 'cast',
+        spellId: 'magic-missile',
+        slotLevel: 1,
+        targetIds: [weak.id, weak.id, weak.id],
+      });
+      return { steps, action: true };
+    }
+  }
+  if (has('fire-bolt') && (!adjacent || bonusSpell)) {
+    steps.push({ type: 'cast', spellId: 'fire-bolt', slotLevel: 0, targetIds: [inRange[0]!.id] });
+    return { steps, action: true };
+  }
   // Priests (Sister Venna): Spirit Guardians once heroes close in (not on Easy [inferred]).
   if (
     !bonusSpell &&
@@ -809,4 +867,12 @@ export function resolvePrompt(ctx: Ctx, accept: boolean): void {
     }
   }
   if (s.plan) finishOrPause(ctx);
+}
+
+function nearestHero(s: CombatState, me: Combatant, p: Pos): number {
+  return Math.min(
+    ...Object.values(s.combatants)
+      .filter((c) => c.side !== me.side && isTargetable(c))
+      .map((c) => distanceFeet(c.pos, p)),
+  );
 }

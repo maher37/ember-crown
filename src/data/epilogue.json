@@ -1,0 +1,205 @@
+{
+  "verify": true,
+  "verifyNote": "Endings from docs/Story_Bible.md §8–9 in our own words; epilogue letters verbatim from docs/Maelis_Letters.md. Slide wording is mine [inferred].",
+  "endings": [
+    {
+      "id": "lamp-lit",
+      "title": "The Lamp Lit",
+      "letter": "thirty-one",
+      "text": [
+        "Maelis lifted the crown from her own head and broke it across the anvil of her ancestors. Cindrath died screaming in the stone, and the mountain let out a long, slow breath.",
+        "By spring the Kiln had cooled into hot springs, all the way down to the Grayflow."
+      ]
+    },
+    {
+      "id": "last-varrow",
+      "title": "The Last Varrow",
+      "letter": "thirty-one",
+      "text": [
+        "Corin put the crown on just long enough to break it from the inside. Cindrath went out like a snuffed wick, and so did the ember in his blood: he never cast another spell.",
+        "Varrow's Mill turns again. Two Varrows run it now, and they argue about the price of flour every single day."
+      ]
+    },
+    {
+      "id": "lamp-snuffed",
+      "title": "The Lamp Snuffed",
+      "letter": "if-reading",
+      "text": [
+        "You struck Maelis down, then the thing that had waited inside her crown. The mountain quieted. Ashford survived.",
+        "Nobody in town ever learned the whole truth about the Varrows, unless you told them."
+      ]
+    },
+    {
+      "id": "ember-queen",
+      "title": "The Ember Queen",
+      "letter": "unsent",
+      "text": [
+        "The crown closed on Maelis's head and Cindrath wore her like a coat. You killed what she became.",
+        "It was a victory. It didn't feel like one. The mountain cooled, and nobody floated a lantern for her."
+      ]
+    },
+    {
+      "id": "ember-heir",
+      "title": "The Ember Heir",
+      "letter": "unsent",
+      "text": [
+        "Cindrath found the ember in Corin's blood and climbed in. Nobody reached him in time.",
+        "You put out the fire, and the boy it was burning in. Maelis was not there to see it. Perhaps that was a mercy."
+      ]
+    },
+    {
+      "id": "ember-crown",
+      "title": "The Ember Crown",
+      "text": [
+        "You set the crown on your own head. The mountain obeys you now; the forges burn at your word, and Ashford pays its tithe in coal and quiet.",
+        "You don't remember your name. The voice remembers it for you."
+      ]
+    },
+    {
+      "id": "guild-prize",
+      "title": "The Guild's Prize",
+      "text": [
+        "You handed the shards to Captain Kell, and Kell handed them to the Coinwright Guild, because that was the contract.",
+        "In Waterdeep, a counting-house keeps a crown in a lead-lined vault. The moneylenders have a weapon now. Somewhere, it is warm."
+      ]
+    }
+  ],
+  "letters": [
+    {
+      "id": "thirty-one",
+      "title": "Thirty-One",
+      "note": "Arrives a season later.",
+      "paragraphs": [
+        "They floated thirty-one this year.",
+        "The springs are warm all the way down to the river now. Brannoc charges outsiders a silver to sit in them and calls it \"a cure.\" It cures nothing. They pay anyway. I've started keeping his ledger.",
+        "Come back for Lantern Night. Bring the goblin. Bring your lanterns. I'll bake the bread, and I'll burn the bottoms.",
+        "— Mae"
+      ]
+    },
+    {
+      "id": "if-reading",
+      "title": "If You're Reading This",
+      "note": "Found unfinished on her body.",
+      "paragraphs": [
+        "If you're reading this, then you were right, and I'm glad it was you.",
+        "Float one for me if they'll let you. If they won't, float one anyway. The river doesn't ask whose they are."
+      ]
+    },
+    {
+      "id": "unsent",
+      "title": "Unsent",
+      "note": "Found in the Kiln after the fight, the last thing she wrote before the crown took her.",
+      "paragraphs": ["It is not my father. It was never my father. It is so warm, and it is so"]
+    }
+  ],
+  "slides": [
+    {
+      "title": "Ashford",
+      "if": ["tarrow_confessed"],
+      "except": ["ember-crown", "guild-prize"],
+      "text": "Hadric Varrow's name was read out in the square again, this time with an apology. On Lantern Night the town floated thirty-one lanterns, not thirty."
+    },
+    {
+      "title": "Ashford",
+      "if": ["!tarrow_confessed", "brannoc_will_testify"],
+      "except": ["ember-crown", "guild-prize"],
+      "text": "Brannoc stood in the square and said what he had signed, and why. The town floated thirty-one lanterns that winter."
+    },
+    {
+      "title": "Ashford",
+      "if": ["!tarrow_confessed", "!brannoc_will_testify"],
+      "except": ["ember-crown", "guild-prize"],
+      "text": "Ashford rebuilt, and floated thirty lanterns again, as it always had. Nobody said Hadric Varrow's name."
+    },
+    {
+      "title": "The Drowned Lantern",
+      "if": ["brannoc_stays"],
+      "except": ["ember-crown"],
+      "text": "Brannoc never left his inn. When the hot springs came, the Drowned Lantern was suddenly the most fashionable house in the valley. He hates it. He has raised his prices twice."
+    },
+    {
+      "title": "The Drowned Lantern",
+      "if": ["brannoc_leaves"],
+      "except": ["ember-crown"],
+      "text": "Brannoc went downriver with the boats and came back in the spring to find his inn still standing, full of ash and one very smug cat. He reopened it in a week."
+    },
+    {
+      "title": "Edric",
+      "if": ["edric_errand_done"],
+      "except": ["ember-crown"],
+      "text": "Edric runs the Hall's messages now, in a very fine pair of boots. He tells the ledger story every market day, and it gets longer every time."
+    },
+    {
+      "title": "Brother Ulric",
+      "if": ["ulric_spared"],
+      "except": ["ember-crown"],
+      "text": "Ulric spent the rest of his days getting the Collapse widows their pensions, one Guild clerk at a time. He and Brannoc drink together on Lantern Night and don't talk about the mine."
+    },
+    {
+      "title": "Brother Ulric",
+      "if": ["ulric_killed"],
+      "except": ["ember-crown"],
+      "text": "Every Lantern Night, Brannoc floats an extra lantern for Ulric Dunmore and doesn't say who it's for."
+    },
+    {
+      "title": "Tamsin",
+      "if": ["tamsin_home"],
+      "except": ["ember-crown"],
+      "text": "Tamsin went back to her grandmother's herbs and turned out to have a better hand for them than Old Wynn, which Wynn will never admit."
+    },
+    {
+      "title": "Tamsin",
+      "if": ["tamsin_informant"],
+      "except": ["ember-crown"],
+      "text": "Tamsin's notes from inside the Hollow Star are how the town found the Star's widows and paid them what they were owed."
+    },
+    {
+      "title": "Captain Kell",
+      "if": ["kell_owes"],
+      "except": ["guild-prize", "ember-crown"],
+      "text": "Kell brought every one of his soldiers home, which he says is the only contract that matters. He sends a crate of Waterdeep wine to the Lantern every Midwinter."
+    },
+    {
+      "title": "Captain Kell",
+      "if": ["kell_respect", "!kell_owes"],
+      "except": ["guild-prize", "ember-crown"],
+      "text": "Kell told the Guild the shards were destroyed, which was true by the time he said it. He took a smaller fee and a longer road home."
+    },
+    {
+      "title": "Captain Kell",
+      "if": ["kell_hostile"],
+      "except": ["guild-prize", "ember-crown"],
+      "text": "Kell counted his dead, filed his report, and never came back to the Grayflow."
+    },
+    {
+      "title": "Mayor Tarrow",
+      "if": ["tarrow_confessed"],
+      "except": ["ember-crown"],
+      "text": "Tarrow lives in two rooms over the cooper's yard and keeps the town's books for free. Some mornings someone leaves bread on his step. Some mornings they don't."
+    },
+    {
+      "title": "Mayor Tarrow",
+      "if": ["tarrow_silent"],
+      "except": ["ember-crown"],
+      "text": "They say Oswin Tarrow keeps a clerk's desk in Waterdeep now, and is very sorry in a comfortable room."
+    },
+    {
+      "title": "Mayor Tarrow",
+      "if": ["tarrow_killed"],
+      "except": ["ember-crown"],
+      "text": "Ashford buried its mayor quietly. The town council still argues about whose fault that was."
+    },
+    {
+      "title": "Wix",
+      "if": ["wix_companion"],
+      "except": ["ember-crown"],
+      "text": "Wix opened a pie stall by the new springs. It is very popular. Nobody asks where the pies come from, and Wix offers no proverbs on the subject."
+    },
+    {
+      "title": "Corin",
+      "if": ["corin"],
+      "endings": ["lamp-lit"],
+      "text": "Corin stayed for Lantern Night, and the one after that. He and Maelis still don't agree about anything, loudly, over burnt honey-bread."
+    }
+  ]
+}

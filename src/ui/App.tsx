@@ -1,5 +1,6 @@
 import { useGame } from '../game/store';
 import { CampScreen } from './CampScreen';
+import { EpilogueScreen } from './EpilogueScreen';
 import { CombatScreen } from './CombatScreen';
 import { Creator } from './Creator';
 import { DialogueScreen } from './DialogueScreen';
@@ -27,6 +28,7 @@ export function App() {
       {screen === 'combat' && <CombatScreen />}
       {screen === 'map' && <WorldMapScreen />}
       {screen === 'camp' && <CampScreen />}
+      {screen === 'epilogue' && <EpilogueScreen />}
     </Stage>
   );
 }

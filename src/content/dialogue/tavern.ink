@@ -28,6 +28,10 @@ EXTERNAL set_act(n)
 EXTERNAL trap(ability, dc, dice, type)
 EXTERNAL give_gold(n)
 EXTERNAL gold()
+EXTERNAL truths()
+EXTERNAL speech()
+EXTERNAL regain_slot()
+EXTERNAL ember()
 
 VAR passed = false
 
@@ -62,6 +66,9 @@ Three strangers in grey came in behind him, asking quietly after "a lost letter.
 // ── Brannoc Hale, the innkeeper ──
 === brannoc ===
 #speaker:brannoc
+{ flag("act2_complete") && not flag("act3_evacuation"):
+    -> ash
+}
 { flag("tarrow_fate_decided") && not flag("brannoc_confessed"):
     -> confession
 }
@@ -121,7 +128,10 @@ Three strangers in grey came in behind him, asking quietly after "a lost letter.
     -> menu
 * {quest_done("lantern-night") && not flag("act1_complete")} [Who's the old woman crying by the window?]
     -> wynn
-* {flag("act1_complete")} [Anything on the Lantern Board?]
++ {flag("act3_evacuation") && not quest_done("last-boats")} [The convoy. Let's get people to the boats.]
+    ~ travel("scene:ashford.convoy")
+    -> END
+* {flag("act1_complete") && not flag("act2_complete")} [Anything on the Lantern Board?]
     "One bounty worth the ink." He taps a nailed-up notice. "Four bandits at the edge of the Forgotten Forest. Captain Kell's paying three hundred gold, dead or alive." He frowns. "Bandits who don't rob anyone. Odd sort of bandit."
     ~ set_flag("bounty_known", true)
     ~ note("Lantern Board: Captain Kell pays 300 gp for four 'bandits' at the edge of the Forgotten Forest. The Deserters' camp is on the map.")
@@ -351,6 +361,18 @@ At the tunnel's end, a dead miner sits against the rock with his lamp in his lap
 ~ note("A dead miner's journal: Hadric Varrow warned the Guild the seam was unsafe. The clerk who wrote the report blaming him was Oswin Tarrow, now Ashford's mayor.")
 ~ quest_step("cellar", "tunnel")
 -> END
+
+// ── Act III: ash on Ashford ──
+=== ash ===
+#speaker:ashford
+Ash is falling on Ashford like grey snow. A crack runs right up the front of the Hall, and the river is crowded with boats: the town is leaving.
+#speaker:brannoc
+"They're calling it the end of the world," Brannoc says, polishing the same mug. "I'm calling it a slow night." He doesn't look at the door. "I'm not going anywhere."
+~ set_flag("act3_evacuation", true)
+~ quest_step("kings-kiln", "ash")
+~ award("q-ash")
+~ note("Ashford is evacuating by river. Brannoc refuses to leave his inn. Maelis has gone to the King's Kiln, up through Ashfall Pass.")
+-> brannoc.menu
 
 // ── Brannoc's confession (after Tarrow's fate, Act II) ──
 === confession ===

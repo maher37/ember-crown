@@ -209,7 +209,8 @@
           "text": "Read the abbey archives"
         }
       ],
-      "completeWhen": ["archives"]
+      "completeWhen": ["archives"],
+      "next": "kings-kiln"
     },
     {
       "id": "sallow",
@@ -294,6 +295,137 @@
         }
       ],
       "completeWhen": ["ambush"]
+    },
+    {
+      "id": "kings-kiln",
+      "title": "The King's Kiln",
+      "kind": "main",
+      "act": 3,
+      "summary": "Maelis has gone to the King's Kiln with the last shard. She means to put the crown on.",
+      "xp": 0,
+      "steps": [
+        {
+          "id": "ash",
+          "text": "Ash is falling on Ashford"
+        },
+        {
+          "id": "pass",
+          "text": "Get through Ashfall Pass (F15)"
+        },
+        {
+          "id": "gate",
+          "text": "Break through the Kiln Gate (F16)"
+        },
+        {
+          "id": "puzzle",
+          "text": "Open the gate's lock"
+        },
+        {
+          "id": "halls",
+          "text": "Cross the Furnace Halls (F17)"
+        },
+        {
+          "id": "seal",
+          "text": "Break the Kiln's first seal"
+        },
+        {
+          "id": "honor-guard",
+          "text": "Pass Ser Ida and the Honor Guard (F18)"
+        },
+        {
+          "id": "galleries",
+          "text": "Cross the Ember Galleries (F19)"
+        },
+        {
+          "id": "last-stand",
+          "text": "Break the Hollow Star's last stand (F20)"
+        },
+        {
+          "id": "crowning",
+          "text": "Stop the Crowning"
+        }
+      ],
+      "completeWhen": ["crowning"]
+    },
+    {
+      "id": "cold-forge",
+      "title": "The Cold Forge",
+      "kind": "side",
+      "act": 3,
+      "summary": "King Varrow's own forge lies cold beyond the lava tubes. A shard could relight it, if you can stand its whisper.",
+      "xp": 950,
+      "steps": [
+        {
+          "id": "tubes",
+          "text": "Find the forge through the lava tubes"
+        },
+        {
+          "id": "relight",
+          "text": "Relight the forge and quench a weapon"
+        }
+      ],
+      "completeWhen": ["relight"]
+    },
+    {
+      "id": "ida-oath",
+      "title": "Ser Ida's Unfinished Oath",
+      "kind": "side",
+      "act": 3,
+      "summary": "Ser Ida Marrow swore to see King Varrow buried. She never did.",
+      "xp": 1000,
+      "steps": [
+        {
+          "id": "oath",
+          "text": "Hear Ser Ida's oath"
+        },
+        {
+          "id": "ossuary",
+          "text": "Search the ossuary"
+        },
+        {
+          "id": "rest",
+          "text": "Lay King Varrow's remains to rest"
+        }
+      ],
+      "completeWhen": ["rest"]
+    },
+    {
+      "id": "last-boats",
+      "title": "Last Boats from Ashford",
+      "kind": "side",
+      "act": 3,
+      "summary": "Ashford is leaving by river. Brannoc is not.",
+      "xp": 1000,
+      "steps": [
+        {
+          "id": "convoy",
+          "text": "Escort the evacuation convoy"
+        },
+        {
+          "id": "choice",
+          "text": "Brannoc's choice: leave the inn, or defend it"
+        }
+      ],
+      "completeWhen": ["choice"]
+    },
+    {
+      "id": "wix-home",
+      "title": "Wix's Homecoming",
+      "kind": "side",
+      "act": 3,
+      "summary": "Wix's clan lives in the upper caves. Something big is sitting on their doorstep.",
+      "xp": 1000,
+      "steps": [
+        {
+          "id": "clan",
+          "text": "Meet Wix's clan"
+        },
+        {
+          "id": "giant",
+          "text": "Deal with the giant at their door"
+        }
+      ],
+      "completeWhen": ["giant"]
     }
   ],
   "awards": [
@@ -426,6 +558,61 @@
       "id": "discover-ledger",
       "xp": 22,
       "reason": "Discovery: the ledger's code"
+    },
+    {
+      "id": "q-ash",
+      "xp": 300,
+      "reason": "Ash on Ashford: the evacuation begins"
+    },
+    {
+      "id": "q-puzzle",
+      "xp": 300,
+      "reason": "Solved the Kiln Gate's lock"
+    },
+    {
+      "id": "q-seal",
+      "xp": 600,
+      "reason": "Broke the Kiln's first seal"
+    },
+    {
+      "id": "f15-pay",
+      "xp": 225,
+      "reason": "Paid the ogres' toll at Ashfall Pass (F15, D16)"
+    },
+    {
+      "id": "f18-aside",
+      "xp": 287,
+      "reason": "Ser Ida stood aside (F18, D16)"
+    },
+    {
+      "id": "e3-contest",
+      "xp": 1250,
+      "reason": "Beat Vorrag the Kiln-Smith in a contest instead of a fight (D16)"
+    },
+    {
+      "id": "discover-ash",
+      "xp": 42,
+      "reason": "Discovery: the ash is the mountain's breath"
+    },
+    {
+      "id": "discover-gate",
+      "xp": 43,
+      "reason": "Discovery: the Kiln Gate was made to keep something in"
+    },
+    {
+      "id": "discover-ida",
+      "xp": 42,
+      "reason": "Discovery: Ser Ida's true account of King Varrow"
+    },
+    {
+      "id": "discover-forge",
+      "xp": 43,
+      "reason": "Discovery: Varrow's forge-marks"
+    },
+    {
+      "id": "discover-circle",
+      "xp": 43,
+      "reason": "Discovery: the ritual circle's weak points"
     }
   ]
 }

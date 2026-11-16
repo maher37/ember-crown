@@ -14,6 +14,10 @@ import desertersInk from '../content/dialogue/deserters.ink';
 import marshInk from '../content/dialogue/marsh.ink';
 import marrowmereInk from '../content/dialogue/marrowmere.ink';
 import sallowInk from '../content/dialogue/sallow.ink';
+import cavesInk from '../content/dialogue/caves.ink';
+import forgeInk from '../content/dialogue/forge.ink';
+import kilnInk from '../content/dialogue/kiln.ink';
+import passInk from '../content/dialogue/pass.ink';
 import { backgrounds, classes, npcs, species } from '../data';
 import {
   abilityCheck,
@@ -30,6 +34,7 @@ import { getItem, hasItem, hasSpecial, itemMods } from './items';
 import { savingThrow } from '../rules';
 
 import { addNote, completeStep, giveAward, questDone } from './journal';
+import { finaleDcReduction } from './letters';
 import type { GameState } from './save';
 
 /** Every compiled Ink story, by id. Add new dialogue files here. */
@@ -49,6 +54,10 @@ export const STORIES: Record<string, string> = {
   sallow: sallowInk,
   deserters: desertersInk,
   camp: campInk,
+  pass: passInk,
+  forge: forgeInk,
+  caves: cavesInk,
+  kiln: kilnInk,
 };
 
 /** The scene that opens when the party arrives at a map location (Ashford is the tavern). */
@@ -64,6 +73,10 @@ export const PLACE_SCENES: Record<string, { story: string; knot: string }> = {
   abbey: { story: 'abbey', knot: 'arrive' },
   sallow: { story: 'sallow', knot: 'arrive' },
   'deserters-camp': { story: 'deserters', knot: 'arrive' },
+  'ashfall-pass': { story: 'pass', knot: 'arrive' },
+  'great-forge': { story: 'forge', knot: 'arrive' },
+  'kings-kiln': { story: 'kiln', knot: 'arrive' },
+  'wix-caves': { story: 'caves', knot: 'arrive' },
 };
 
 /** The Truths (Story_Bible §6) by id. */
@@ -142,6 +155,22 @@ export function giveItem(
   return {
     game: { ...g, inventory: { ...g.inventory, [id]: (g.inventory[id] ?? 0) + qty } },
     messages: [`Received: ${item.name}${qty > 1 ? ` ×${qty}` : ''}`],
+  };
+}
+
+export const truthCount = (g: GameState) =>
+  Object.keys(TRUTHS).filter((id) => g.flags[`truth_${id}`]).length;
+
+/** Story_Bible §9: Corin's ember bargain "a free casting": his highest spent slot comes back. */
+export function regainCorinSlot(g: GameState): { game: GameState; messages: string[] } {
+  const corin = g.party.find((h) => h.origin === 'corin');
+  if (!corin) return { game: g, messages: [] };
+  const lvl = [3, 2, 1].find((l) => (corin.slotsUsed[l - 1] ?? 0) > 0);
+  if (!lvl) return { game: g, messages: ['Corin has no spent spell slot to get back.'] };
+  const slotsUsed = corin.slotsUsed.map((n, i) => (i === lvl - 1 ? n - 1 : n));
+  return {
+    game: { ...g, party: g.party.map((h) => (h.id === corin.id ? { ...h, slotsUsed } : h)) },
+    messages: [`Corin regains a level-${lvl} spell slot.`],
   };
 }
 
@@ -251,6 +280,14 @@ export class Conversation {
       this.messages.push(n >= 0 ? `Received ${n} gp` : `Paid ${-n} gp`);
     });
     s.BindExternalFunction('gold', () => this.game.gold ?? 0, true);
+    s.BindExternalFunction('truths', () => truthCount(this.game), true);
+    s.BindExternalFunction('ember', () => Number(this.game.flags['ember'] ?? 0), true);
+    s.BindExternalFunction('speech', () => this.speech());
+    s.BindExternalFunction('regain_slot', () => {
+      const r = regainCorinSlot(this.game);
+      this.game = r.game;
+      this.messages.push(...r.messages);
+    });
     s.BindExternalFunction('has_item', (id: string) => partyHasItem(this.game, id), true);
     s.BindExternalFunction('truth', (id: string) => apply(learnTruth(this.game, id)));
     s.BindExternalFunction('set_act', (n: number) => {
@@ -294,6 +331,58 @@ export class Conversation {
     };
 
     return save.success;
+  }
+
+  /**
+   * Story_Bible §6 and §8: the finale speech. 3 Truths always work; 2 make it a Persuasion check
+   * with advantage (DC 15, −2 at 3+ Trust from the letters); fewer can't reach her. Corin plus one
+   * Truth counts as two (Brother and Sister).
+   */
+  private speech(): boolean {
+    const g = this.game;
+    const truths = truthCount(g);
+    const corin = alive(g).some((h) => h.origin === 'corin') && Number(g.flags['ember'] ?? 0) < 5;
+    const effective = truths + (corin && truths >= 1 ? 1 : 0);
+    const roller = bestFor(g, 'persuasion');
+    this.lastRoller = roller.name.split(' ')[0]!;
+    if (effective >= 3) {
+      this.lastCheck = {
+        skill: 'persuasion',
+        skillName: 'Persuasion',
+        dc: 0,
+        heroName: this.lastRoller,
+        success: true,
+        text: `${effective >= truths ? truths : effective} Truths: no roll needed → SUCCESS`,
+      };
+      return true;
+    }
+    if (effective < 2) {
+      this.lastCheck = {
+        skill: 'persuasion',
+        skillName: 'Persuasion',
+        dc: 0,
+        heroName: this.lastRoller,
+        success: false,
+        text: `${truths} Truth${truths === 1 ? '' : 's'}: not enough to reach her → FAILURE`,
+      };
+      return false;
+    }
+    const dc = 15 - finaleDcReduction(g);
+    const bonus = skillBonus(roller, 'persuasion') - abilityModifier(roller.abilities.cha);
+    const r = abilityCheck(roller, 'cha', dc, this.rng, {
+      label: 'Persuasion',
+      advantage: ['two Truths'],
+      bonuses: bonus ? [{ label: 'skill', value: bonus }] : [],
+    });
+    this.lastCheck = {
+      skill: 'persuasion',
+      skillName: 'Persuasion',
+      dc,
+      heroName: this.lastRoller,
+      success: r.success,
+      text: r.log.text,
+    };
+    return r.success;
   }
 
   /** Start (or restart) the conversation at a knot, e.g. "brannoc". */

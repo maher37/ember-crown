@@ -146,7 +146,7 @@ export function attackOptions(c: Combatant): AttackOption[] {
   // Magic weapons (Deepdelver: +1 warhammer). DMG: +1 Weapon.
   for (const id of h.equipment.magic ?? []) {
     const item = getItem(id);
-    const w = magicWeaponBase(item);
+    const w = magicWeaponBase(item, h);
     if (!w) continue;
     const bonus = item.effects.reduce(
       (n, e) =>
@@ -227,6 +227,8 @@ export function attackOptions(c: Combatant): AttackOption[] {
     ability: monk && dex > str ? 'dex' : 'str',
     monk,
     unarmed: true,
+    // PHB: Monk, Ki-Empowered Strikes (level 6). Unarmed strikes count as magical.
+    magical: monk && h.level >= 6,
   });
   return opts;
 }
@@ -420,6 +422,33 @@ export function makeAttack(
     } else sayAll(s, [r.log], attacker);
   } else sayAll(s, [r.log], attacker);
   const natural = r.roll?.natural ?? 0;
+  // A spellcasting monster that knows Shield (Maelis, mages) raises it against a hit (PHB: Shield)
+  // [used automatically].
+  if (hit && !r.critical && target.monsterId && !target.reactionUsed && conscious(target)) {
+    const sc = getMonster(target.monsterId).spellcasting;
+    if (
+      sc &&
+      Object.values(sc.spells).flat().includes('shield') &&
+      (target.monsterSlots?.['1'] ?? 0) > 0 &&
+      total < currentAc(target) + 5
+    ) {
+      target.reactionUsed = true;
+      spendSlot(target, 1);
+      target.effects.push({
+        id: 'shield',
+        name: 'Shield',
+        sourceId: target.id,
+        mod: { ac: 5 },
+        expires: { turnOf: target.id, when: 'start', round: nextTurnRound(s, target.id) },
+      });
+      say(
+        s,
+        'foe',
+        `${target.name} casts Shield (+5 AC): ${total} vs AC ${currentAc(target)} → MISS`,
+      );
+      return { hit: false, critical: false, total, natural };
+    }
+  }
   // MM: Parry (bandit captain). Reaction: +2 AC against one melee hit it can see.
   if (
     hit &&
@@ -498,6 +527,9 @@ export function applyHit(
   const disruption =
     opt.id === 'mace-of-disruption' && !!tm && (tm.type === 'undead' || tm.type === 'fiend');
   if (disruption) parts.push({ dice: '2d6', type: 'radiant' });
+  // DMG: Dragon Slayer. +3d6 against dragons (the ember-wraith counts).
+  if (opt.id === 'dragon-slayer' && tm?.type === 'dragon')
+    parts.push({ dice: '3d6', type: parts[0]!.type });
   // Branding Smite and similar: the next weapon hit deals extra damage.
   const nextHit = effectsWith(attacker, 'next-hit')[0];
   if (nextHit && opt.weaponId) {

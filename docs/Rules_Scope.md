@@ -251,6 +251,16 @@ Warlock (pact magic; recharges on a short rest): L1: one 1st-level slot; L2: two
 - [ ] (Proposed, M8) Map gates: the marsh places open once you cross the toll bridge, the abbey once Ashford Hall is settled, and the deserters' camp once you read the Lantern Board.
 - [ ] (Proposed, M8) Not in yet: a wraith's Create Specter, specters moving through walls, the green hag's invisibility, the priest's Divine Eminence, and Edric being captured if you ignore him.
 
+- [ ] (Proposed, M9) The finale's ember-wraith (homebrew): it can't leave its circle (speed 0), has a ranged "molten spit" (+8, 3d8 fire, 60/120 ft) so it can't be shot safely from afar, and three crown shards (AC 15, 20 HP, no turns): every point of damage to a shard is also dealt to the wraith. The Cindrath fight happens in the Lamp Lit ending too, with Maelis fighting beside you.
+- [ ] (Proposed, M9) Maelis (mage) casts Fireball at most once a fight on Medium, twice on Hard, never on Easy.
+- [ ] (Proposed, M9) The speech: three Truths always work; two make it a Persuasion check with advantage at DC 15 (13 at 3+ Trust); fewer can't reach her. Corin plus one Truth counts as two (Brother and Sister).
+- [ ] (Proposed, M9) Corin's Ember meter: after Act I, every long rest offers a dream bargain with three boons (+2 to his fire spell damage, fire resistance in fights, or a spell slot back). At Ember 5, Cindrath takes him at the Crowning unless the party holds two Truths (then Ember drops to 4).
+- [ ] (Proposed, M9) The Kiln-Quenched Weapon is a +1 version of its owner's first weapon; Dragon Slayer is a longsword or greatsword, whichever its owner carries.
+- [ ] (Proposed, M9) Vorrag's contest: Athletics DC 18, or a smithing contest (History DC 16) for a hill dwarf or rock gnome; winning gives Dragon Slayer and the full elite XP.
+- [ ] (Proposed, M9) Kell holds the Kiln Gate if he respects you or owes you (the gate fight drops to one gargoyle); he can claim the crown at the end if he's at the gate or hostile. Ulric's passage or Wix's back way halves the Star's last stand.
+- [ ] (Proposed, M9) Dark One's Own Luck (warlock 6) is used automatically when it can turn a failed save into a success. Land's Stride lets a level-6 druid ignore brush. Countercharm and the Wix's Clan Gift bag have no combat use yet.
+- [ ] (Proposed, M9) Last Boats from Ashford: whichever Brannoc chooses, he gives you the Drowned Lantern.
+
 ## CONFIRM LOCALLY
 - [ ] Spell details for anything not marked ✅. They're summarized from memory of the 2014 PHB, so verify damage dice and saves when entering data (the PHB text extracts cleanly enough to check each spell).
 - [ ] Class resource counts (rages per level, ki, sorcery points, invocations known, spells known for bard, sorcerer, ranger and warlock). Copy them from the PHB class tables during data entry.

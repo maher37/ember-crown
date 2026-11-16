@@ -87,7 +87,11 @@ export function moveCost(
   p: Pos,
   slows: (s: CombatState, m: Combatant, p: Pos) => boolean = () => false,
 ): number {
-  const flying = mover.effects.some((e) => e.tag === 'flying');
+  // Fly ignores difficult terrain; PHB: Druid, Land's Stride (level 6) ignores nonmagical brush.
+  const creature = mover.creature as { classId?: string; level?: number };
+  const flying =
+    mover.effects.some((e) => e.tag === 'flying') ||
+    (creature.classId === 'druid' && (creature.level ?? 0) >= 6 && !mover.wildShape);
   const difficult = (!flying && isDifficult(terrainAt(s.map, p))) || slows(s, mover, p);
   return (difficult ? 2 : 1) * CELL_FEET;
 }

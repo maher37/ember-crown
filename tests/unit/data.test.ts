@@ -243,6 +243,7 @@ describe('monsters, foes and items', () => {
       [
         'bandit',
         'grey-bruiser',
+        'crown-shard',
         'bandit-captain',
         'thug',
         'scout',

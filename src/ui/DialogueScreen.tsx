@@ -70,13 +70,17 @@ export function DialogueScreen() {
             <span>
               {c.fight
                 ? 'To battle (prepare)'
-                : c.travel
-                  ? 'Set out'
-                  : afterDialogue === 'place'
+                : c.travel === 'epilogue'
+                  ? 'Afterwards…'
+                  : c.travel?.startsWith('scene:')
                     ? 'Go on'
-                    : game!.location === 'drowned-lantern'
-                      ? 'Back to the tavern'
-                      : 'Back to the map'}
+                    : c.travel
+                      ? 'Set out'
+                      : afterDialogue === 'place'
+                        ? 'Go on'
+                        : game!.location === 'drowned-lantern'
+                          ? 'Back to the tavern'
+                          : 'Back to the map'}
             </span>
           </button>
         ) : (

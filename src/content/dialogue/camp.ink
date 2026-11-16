@@ -18,6 +18,8 @@ EXTERNAL set_act(n)
 EXTERNAL trap(ability, dc, dice, type)
 EXTERNAL give_gold(n)
 EXTERNAL gold()
+EXTERNAL regain_slot()
+EXTERNAL ember()
 
 VAR passed = false
 
@@ -54,3 +56,25 @@ Late in the watch, a red light comes through the trees, steady and unhurried. Ma
     She stands and picks up her lantern. "Good night. Keep warm." At the edge of the firelight she turns. "If you're right about the voice, I'd rather hear it from you than from a hag."
     ~ note("Maelis came to the camp in person. It was an honest conversation.")
     -> END
+
+// ── Corin's dream bargain (Story_Bible §9: the Ember meter) ──
+=== bargain ===
+#speaker:cindrath
+Corin dreams of a red room that is warm all the way through. A voice like a banked fire speaks to him, kindly. "Little ember. You're tired. Let me help."
+~ set_flag("ember_rest", true)
++ [Accept: make my fire burn hotter. (+Ember)]
+    ~ set_flag("ember_fire", true)
+    -> took
++ [Accept: let the fire not burn me. (+Ember)]
+    ~ set_flag("ember_resist", true)
+    -> took
++ [Accept: give me back my strength. (+Ember, a spell slot)]
+    ~ regain_slot()
+    -> took
++ [Refuse.]
+    "Another night, then," the voice says, not at all offended. Corin wakes cold.
+    -> END
+= took
+~ set_flag("ember", ember() + 1)
+Corin wakes warm, and his eyes are a little more gold than they were. (Ember {ember()} of 5.)
+-> END

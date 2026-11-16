@@ -1,5 +1,5 @@
 import { getMonster } from '../creatures';
-import { getClass, type Hero } from '../hero';
+import { getClass, resourceLeft, type Hero } from '../hero';
 import { itemMods } from '../items';
 import {
   abilityModifier,
@@ -21,7 +21,7 @@ import {
   type RandomSource,
   type TestResult,
 } from '../../rules';
-import { conscious } from './grid';
+import { conscious, distanceFeet } from './grid';
 import type { ActiveEffect, CombatState, Combatant, LogLine } from './types';
 
 /**
@@ -187,6 +187,19 @@ export function dealDamage(
   });
   // Keep the real defenses (Rage resistance is not permanent).
   target.creature = { ...out.creature, defenses: before.defenses };
+  // Finale (homebrew): Shard-Bound. Damage to a crown shard is also dealt to the ember-wraith.
+  if (
+    out.damageTaken > 0 &&
+    target.monsterId &&
+    getMonster(target.monsterId).traits.some((t) => t.id === 'shard')
+  ) {
+    for (const w of Object.values(s.combatants)) {
+      if (w.creature.dead || !w.monsterId) continue;
+      if (!getMonster(w.monsterId).traits.some((t) => t.id === 'shard-bound')) continue;
+      say(s, 'dmg', `The shard cracks, and ${w.name} shudders`);
+      dealDamage(ctx, w, [{ amount: out.damageTaken, type: 'force' }], { attacker: opts.attacker });
+    }
+  }
   // MM: Zombie, Undead Fortitude. Dropped to 0 by anything but radiant damage or a critical hit:
   // a Con save (DC 5 + the damage taken) leaves it at 1 HP instead.
   if (
@@ -343,6 +356,18 @@ export function combatSave(
   const bonuses = opts.cover === 'half' && ability === 'dex' ? [{ label: 'cover', value: 2 }] : [];
   const itemSave = h ? itemMods(h).save : 0;
   if (itemSave) bonuses.push({ label: 'items', value: itemSave });
+  // PHB: Paladin, Aura of Protection (level 6). Allies within 10 ft add the paladin's Cha (min +1).
+  const aura = Object.values(ctx.s.combatants)
+    .filter(
+      (p) =>
+        p.side === target.side &&
+        classLevel(p, 'paladin') >= 6 &&
+        conscious(p) &&
+        distanceFeet(p.pos, target.pos) <= 10,
+    )
+    .map((p) => Math.max(1, abilityModifier(p.creature.abilities.cha)))
+    .sort((a, b) => b - a)[0];
+  if (aura) bonuses.push({ label: 'Aura of Protection', value: aura });
   const r = savingThrow(target.creature, ability, dc, ctx.rng, {
     advantage: adv,
     disadvantage: dis,
@@ -361,6 +386,25 @@ export function combatSave(
     }
   }
   sayAll(ctx.s, [r.log], target);
+  // PHB: Fiend warlock, Dark One's Own Luck (level 6). Add a d10 to a failed save, once per rest
+  // [used automatically when it can turn the failure into a success].
+  if (
+    !result.success &&
+    !result.autoFail &&
+    h &&
+    resourceLeft(h, 'dark-ones-own-luck') > 0 &&
+    result.total + 10 >= dc
+  ) {
+    const die = roll('1d10', ctx.rng);
+    spendResource(target, 'dark-ones-own-luck');
+    const total = result.total + die.total;
+    say(
+      ctx.s,
+      'you',
+      `${target.name} calls on the Dark One's luck: ${die.text} → ${total} ${total >= dc ? '(saved)' : '(still fails)'}`,
+    );
+    if (total >= dc) result = { ...result, total, success: true };
+  }
   return result;
 }
 

@@ -115,3 +115,44 @@ export const LetterFile = z
     letters: z.array(Letter).min(1),
   })
   .strict();
+
+/** Endings and epilogue slides (docs/Story_Bible.md §8–9, Maelis_Letters.md epilogue letters). */
+export const EpilogueFile = z
+  .object({
+    ...Verify,
+    endings: z.array(
+      z
+        .object({
+          id: Id,
+          title: z.string().min(1),
+          text: z.array(z.string().min(1)).min(1),
+          /** Maelis's epilogue letter for this ending (verbatim). */
+          letter: Id.optional(),
+        })
+        .strict(),
+    ),
+    letters: z.array(
+      z
+        .object({
+          id: Id,
+          title: z.string().min(1),
+          note: z.string().min(1),
+          paragraphs: z.array(z.string().min(1)).min(1),
+        })
+        .strict(),
+    ),
+    /** Epilogue slides. `if`: all must hold (flag, "!flag", "corin"); `endings` / `except`: ending ids. */
+    slides: z.array(
+      z
+        .object({
+          title: z.string().min(1),
+          text: z.string().min(1),
+          if: z.array(z.string().min(1)).optional(),
+          endings: z.array(Id).optional(),
+          except: z.array(Id).optional(),
+        })
+        .strict(),
+    ),
+  })
+  .strict();
+export type EpilogueData = z.infer<typeof EpilogueFile>;

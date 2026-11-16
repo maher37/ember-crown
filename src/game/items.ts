@@ -54,10 +54,17 @@ export const attunedCount = (hero: Pick<Hero, 'equipment'>) =>
   (hero.equipment.magic ?? []).filter((id) => getItem(id).attunement).length;
 
 /** The weapon a magic weapon is based on (Deepdelver → warhammer). */
-export function magicWeaponBase(item: MagicItem) {
-  if (item.kind !== 'weapon' || typeof item.baseWeapon !== 'string' || item.baseWeapon === 'any')
-    return null;
-  return weapons.find((w) => w.id === item.baseWeapon) ?? null;
+export function magicWeaponBase(item: MagicItem, hero?: Pick<Hero, 'equipment'>) {
+  if (item.kind !== 'weapon' || !item.baseWeapon) return null;
+  const carried = hero?.equipment.weapons ?? [];
+  let id: string | undefined;
+  // Kiln-Quenched Weapon: "+1 weapon of the player's choice" = the hero's own first weapon [inferred].
+  if (item.baseWeapon === 'any') id = carried[0];
+  // Dragon Slayer: a longsword or a greatsword, whichever the hero is used to (else the first).
+  else if (Array.isArray(item.baseWeapon))
+    id = item.baseWeapon.find((w) => carried.includes(w)) ?? item.baseWeapon[0];
+  else id = item.baseWeapon;
+  return weapons.find((w) => w.id === id) ?? null;
 }
 
 /** Can this item be worn or wielded (as opposed to drunk)? */

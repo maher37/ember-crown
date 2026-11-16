@@ -1773,6 +1773,1149 @@
       "verifyNote": "Items.md Elites: wraith + 1 specter (500 XP/PC bonus). Same on every difficulty [inferred]."
     },
     {
+      "id": "f15-ashfall-pass",
+      "code": "F15",
+      "name": "Ashfall Pass",
+      "act": 3,
+      "xpPerPc": 225,
+      "briefing": "Two ogres, singed and starving, have rolled boulders across the pass. They want food. All of it.",
+      "surprise": false,
+      "map": {
+        "width": 16,
+        "height": 9,
+        "style": "heights",
+        "terrain": [
+          "TTTTbb....bbTTTT",
+          "TTb..........bTT",
+          "Tb....r.........",
+          "................",
+          "====............",
+          "....====........",
+          "..........======",
+          "T.....r.......bT",
+          "TTTbb.......bTTT"
+        ]
+      },
+      "partyStart": [
+        [0, 3],
+        [1, 4],
+        [0, 5],
+        [2, 3]
+      ],
+      "enemies": [
+        {
+          "id": "ogre-a",
+          "monster": "ogre",
+          "name": "Ogre A",
+          "pos": [11, 3],
+          "difficulties": ["easy", "medium", "hard"],
+          "tactic": "melee"
+        },
+        {
+          "id": "ogre-b",
+          "monster": "ogre",
+          "name": "Ogre B",
+          "pos": [12, 5],
+          "difficulties": ["medium", "hard"],
+          "tactic": "melee"
+        },
+        {
+          "id": "orc",
+          "monster": "orc",
+          "name": "Orc hanger-on",
+          "pos": [13, 4],
+          "difficulties": ["hard"],
+          "tactic": "melee"
+        }
+      ],
+      "verify": true,
+      "verifyNote": "Encounters_and_XP F15: 2 ogres (Medium at L4). [inferred] Easy/Hard changes and the map are my pick."
+    },
+    {
+      "id": "f16-kiln-gate",
+      "code": "F16",
+      "name": "The Kiln Gate",
+      "act": 3,
+      "xpPerPc": 225,
+      "briefing": "Two gargoyles peel themselves off the gate's pillars. Ordinary weapons barely scratch them.",
+      "surprise": false,
+      "map": {
+        "width": 16,
+        "height": 9,
+        "style": "kiln",
+        "terrain": [
+          "TTTTTTTTTTTTTTTT",
+          "T..r...TT...r..T",
+          "T......TT......T",
+          "==..............",
+          "==....bb....r...",
+          "==..............",
+          "T......TT......T",
+          "T..r...TT...r..T",
+          "TTTTTTTTTTTTTTTT"
+        ]
+      },
+      "partyStart": [
+        [1, 3],
+        [1, 5],
+        [2, 4],
+        [0, 4]
+      ],
+      "enemies": [
+        {
+          "id": "garg-a",
+          "monster": "gargoyle",
+          "name": "Gargoyle A",
+          "pos": [11, 3],
+          "difficulties": ["easy", "medium", "hard"],
+          "tactic": "melee"
+        },
+        {
+          "id": "garg-b",
+          "monster": "gargoyle",
+          "name": "Gargoyle B",
+          "pos": [11, 5],
+          "difficulties": ["medium", "hard"],
+          "tactic": "melee"
+        },
+        {
+          "id": "garg-c",
+          "monster": "gargoyle",
+          "name": "Gargoyle C",
+          "pos": [13, 4],
+          "difficulties": ["hard"],
+          "tactic": "melee"
+        }
+      ],
+      "verify": true,
+      "verifyNote": "Encounters_and_XP F16: 2 gargoyles (Medium at L4). [inferred] Easy/Hard changes and the map are my pick."
+    },
+    {
+      "id": "f16-kiln-gate-kell",
+      "code": "F16",
+      "name": "The Kiln Gate (Kell holds the rear)",
+      "act": 3,
+      "xpPerPc": 225,
+      "briefing": "Kell's company holds the cult's rearguard off your backs. Only one gargoyle stirs on the gate.",
+      "surprise": false,
+      "map": {
+        "width": 16,
+        "height": 9,
+        "style": "kiln",
+        "terrain": [
+          "TTTTTTTTTTTTTTTT",
+          "T..r...TT...r..T",
+          "T......TT......T",
+          "==..............",
+          "==....bb....r...",
+          "==..............",
+          "T......TT......T",
+          "T..r...TT...r..T",
+          "TTTTTTTTTTTTTTTT"
+        ]
+      },
+      "partyStart": [
+        [1, 3],
+        [1, 5],
+        [2, 4],
+        [0, 4]
+      ],
+      "enemies": [
+        {
+          "id": "garg-a",
+          "monster": "gargoyle",
+          "name": "Gargoyle A",
+          "pos": [11, 3],
+          "difficulties": ["easy", "medium", "hard"],
+          "tactic": "melee"
+        },
+        {
+          "id": "garg-b",
+          "monster": "gargoyle",
+          "name": "Gargoyle B",
+          "pos": [11, 5],
+          "difficulties": ["hard"],
+          "tactic": "melee"
+        }
+      ],
+      "verify": true,
+      "verifyNote": "Story_Bible Act III: if Kell respects you the gate fight gets smaller [inferred: one gargoyle]."
+    },
+    {
+      "id": "f17-furnace-halls",
+      "code": "F17",
+      "name": "The Furnace Halls",
+      "act": 3,
+      "xpPerPc": 150,
+      "briefing": "Three suits of Varrow's forge-guard armor clank to life between the cold furnaces.",
+      "surprise": false,
+      "map": {
+        "width": 16,
+        "height": 9,
+        "style": "kiln",
+        "terrain": [
+          "TTTTTTTTTTTTTTTT",
+          "T..r...TT...r..T",
+          "T......TT......T",
+          "==..............",
+          "==....bb....r...",
+          "==..............",
+          "T......TT......T",
+          "T..r...TT...r..T",
+          "TTTTTTTTTTTTTTTT"
+        ]
+      },
+      "partyStart": [
+        [1, 3],
+        [1, 5],
+        [2, 4],
+        [0, 4]
+      ],
+      "enemies": [
+        {
+          "id": "armor-a",
+          "monster": "animated-armor",
+          "name": "Forge-guard A",
+          "pos": [10, 3],
+          "difficulties": ["easy", "medium", "hard"],
+          "tactic": "melee"
+        },
+        {
+          "id": "armor-b",
+          "monster": "animated-armor",
+          "name": "Forge-guard B",
+          "pos": [10, 5],
+          "difficulties": ["easy", "medium", "hard"],
+          "tactic": "melee"
+        },
+        {
+          "id": "armor-c",
+          "monster": "animated-armor",
+          "name": "Forge-guard C",
+          "pos": [13, 4],
+          "difficulties": ["medium", "hard"],
+          "tactic": "melee"
+        },
+        {
+          "id": "armor-d",
+          "monster": "animated-armor",
+          "name": "Forge-guard D",
+          "pos": [13, 2],
+          "difficulties": ["hard"],
+          "tactic": "melee"
+        }
+      ],
+      "verify": true,
+      "verifyNote": "Encounters_and_XP F17: 3 animated armor (Medium at L4). [inferred] Easy/Hard changes and the map are my pick."
+    },
+    {
+      "id": "f18-honor-guard",
+      "code": "F18",
+      "name": "Hall of the Honor Guard",
+      "act": 3,
+      "xpPerPc": 287,
+      "briefing": "Ser Ida Marrow, dead two hundred years, draws her sword. Two suits of guard-armor and a skeletal squire close ranks with her.",
+      "surprise": false,
+      "map": {
+        "width": 16,
+        "height": 9,
+        "style": "kiln",
+        "terrain": [
+          "TTTTTTTTTTTTTTTT",
+          "T.r.r.r..r.r.r.T",
+          "T..............T",
+          "==.============T",
+          "==.============T",
+          "==.============T",
+          "T..............T",
+          "T.r.r.r..r.r.r.T",
+          "TTTTTTTTTTTTTTTT"
+        ]
+      },
+      "partyStart": [
+        [1, 3],
+        [1, 5],
+        [2, 4],
+        [0, 4]
+      ],
+      "enemies": [
+        {
+          "id": "ida",
+          "monster": "wight",
+          "name": "Ser Ida Marrow",
+          "pos": [13, 4],
+          "difficulties": ["easy", "medium", "hard"],
+          "tactic": "melee"
+        },
+        {
+          "id": "armor-a",
+          "monster": "animated-armor",
+          "name": "Guard-armor A",
+          "pos": [11, 3],
+          "difficulties": ["easy", "medium", "hard"],
+          "tactic": "melee"
+        },
+        {
+          "id": "armor-b",
+          "monster": "animated-armor",
+          "name": "Guard-armor B",
+          "pos": [11, 5],
+          "difficulties": ["medium", "hard"],
+          "tactic": "melee"
+        },
+        {
+          "id": "squire",
+          "monster": "skeleton",
+          "name": "Skeletal squire",
+          "pos": [12, 6],
+          "difficulties": ["easy", "medium", "hard"],
+          "tactic": "ranged"
+        },
+        {
+          "id": "armor-c",
+          "monster": "animated-armor",
+          "name": "Guard-armor C",
+          "pos": [12, 2],
+          "difficulties": ["hard"],
+          "tactic": "melee"
+        }
+      ],
+      "verify": true,
+      "verifyNote": "Encounters_and_XP F18: Ida (wight) + 2 animated armor + 1 skeleton (Medium at L5). [inferred] Easy/Hard changes and the map are my pick."
+    },
+    {
+      "id": "f19-ember-galleries",
+      "code": "F19",
+      "name": "The Ember Galleries",
+      "act": 3,
+      "xpPerPc": 475,
+      "briefing": "A wall of Ammarindar stone with a dwarf's face carved in it pulls itself free. A magma mephit cackles in the lava light.",
+      "surprise": false,
+      "map": {
+        "width": 16,
+        "height": 9,
+        "style": "kiln",
+        "terrain": [
+          "TTTTTTTTTTTTTTTT",
+          "T....bb...TTT..T",
+          "T..r......TTT..T",
+          "==..............",
+          "==.....bb.......",
+          "==..............",
+          "T..r......TTT..T",
+          "T....bb...TTT..T",
+          "TTTTTTTTTTTTTTTT"
+        ]
+      },
+      "partyStart": [
+        [1, 3],
+        [1, 5],
+        [2, 4],
+        [0, 4]
+      ],
+      "enemies": [
+        {
+          "id": "wall",
+          "monster": "earth-elemental",
+          "name": "Living wall",
+          "pos": [11, 4],
+          "difficulties": ["easy", "medium", "hard"],
+          "tactic": "melee"
+        },
+        {
+          "id": "mephit",
+          "monster": "magma-mephit",
+          "name": "Magma mephit",
+          "pos": [13, 3],
+          "difficulties": ["easy", "medium", "hard"],
+          "tactic": "ranged"
+        },
+        {
+          "id": "mephit-b",
+          "monster": "magma-mephit",
+          "name": "Magma mephit B",
+          "pos": [13, 5],
+          "difficulties": ["hard"],
+          "tactic": "ranged"
+        }
+      ],
+      "verify": true,
+      "verifyNote": "Encounters_and_XP F19: earth elemental + magma mephit (Medium at L5). [inferred] Easy/Hard changes and the map are my pick."
+    },
+    {
+      "id": "f20-last-stand",
+      "code": "F20",
+      "name": "The Star's last stand",
+      "act": 3,
+      "xpPerPc": 250,
+      "briefing": "The last of Venna's zealots hold the stair to the Crowning: two fanatics and four cultists, with nothing left to lose.",
+      "surprise": false,
+      "map": {
+        "width": 16,
+        "height": 9,
+        "style": "kiln",
+        "terrain": [
+          "TTTTTTTTTTTTTTTT",
+          "T..r...TT...r..T",
+          "T......TT......T",
+          "==..............",
+          "==....bb....r...",
+          "==..............",
+          "T......TT......T",
+          "T..r...TT...r..T",
+          "TTTTTTTTTTTTTTTT"
+        ]
+      },
+      "partyStart": [
+        [1, 3],
+        [1, 5],
+        [2, 4],
+        [0, 4]
+      ],
+      "enemies": [
+        {
+          "id": "fan-a",
+          "monster": "cult-fanatic",
+          "name": "Zealot A",
+          "pos": [11, 3],
+          "difficulties": ["easy", "medium", "hard"],
+          "tactic": "melee"
+        },
+        {
+          "id": "fan-b",
+          "monster": "cult-fanatic",
+          "name": "Zealot B",
+          "pos": [12, 5],
+          "difficulties": ["easy", "medium", "hard"],
+          "tactic": "melee"
+        },
+        {
+          "id": "c-a",
+          "monster": "cultist",
+          "name": "Cultist A",
+          "pos": [9, 2],
+          "difficulties": ["easy", "medium", "hard"],
+          "tactic": "melee"
+        },
+        {
+          "id": "c-b",
+          "monster": "cultist",
+          "name": "Cultist B",
+          "pos": [9, 6],
+          "difficulties": ["easy", "medium", "hard"],
+          "tactic": "melee"
+        },
+        {
+          "id": "c-c",
+          "monster": "cultist",
+          "name": "Cultist C",
+          "pos": [10, 4],
+          "difficulties": ["easy", "medium", "hard"],
+          "tactic": "melee"
+        },
+        {
+          "id": "c-d",
+          "monster": "cultist",
+          "name": "Cultist D",
+          "pos": [13, 4],
+          "difficulties": ["medium", "hard"],
+          "tactic": "melee"
+        },
+        {
+          "id": "c-e",
+          "monster": "cultist",
+          "name": "Cultist E",
+          "pos": [13, 2],
+          "difficulties": ["hard"],
+          "tactic": "melee"
+        }
+      ],
+      "verify": true,
+      "verifyNote": "Encounters_and_XP F20: 2 cult fanatics + 4 cultists (Medium at L5). [inferred] Easy/Hard changes and the map are my pick."
+    },
+    {
+      "id": "f20-last-stand-half",
+      "code": "F20",
+      "name": "The Star's last stand (the back way)",
+      "act": 3,
+      "xpPerPc": 250,
+      "briefing": "You come in behind them through the back way. Only half the zealots are where they can reach you.",
+      "surprise": false,
+      "map": {
+        "width": 16,
+        "height": 9,
+        "style": "kiln",
+        "terrain": [
+          "TTTTTTTTTTTTTTTT",
+          "T..r...TT...r..T",
+          "T......TT......T",
+          "==..............",
+          "==....bb....r...",
+          "==..............",
+          "T......TT......T",
+          "T..r...TT...r..T",
+          "TTTTTTTTTTTTTTTT"
+        ]
+      },
+      "partyStart": [
+        [1, 3],
+        [1, 5],
+        [2, 4],
+        [0, 4]
+      ],
+      "enemies": [
+        {
+          "id": "fan-a",
+          "monster": "cult-fanatic",
+          "name": "Zealot A",
+          "pos": [11, 3],
+          "difficulties": ["easy", "medium", "hard"],
+          "tactic": "melee"
+        },
+        {
+          "id": "c-a",
+          "monster": "cultist",
+          "name": "Cultist A",
+          "pos": [9, 2],
+          "difficulties": ["easy", "medium", "hard"],
+          "tactic": "melee"
+        },
+        {
+          "id": "c-b",
+          "monster": "cultist",
+          "name": "Cultist B",
+          "pos": [9, 6],
+          "difficulties": ["easy", "medium", "hard"],
+          "tactic": "melee"
+        },
+        {
+          "id": "c-d",
+          "monster": "cultist",
+          "name": "Cultist C",
+          "pos": [12, 5],
+          "difficulties": ["hard"],
+          "tactic": "melee"
+        }
+      ],
+      "verify": true,
+      "verifyNote": "Story_Bible Act III: Ulric's passage (or Wix's back way) skips half of this fight [inferred: 1 fanatic + 2 cultists]."
+    },
+    {
+      "id": "f21-crowning-maelis",
+      "code": "F21",
+      "name": "The Crowning: Maelis",
+      "act": 3,
+      "xpPerPc": 575,
+      "briefing": "Maelis stands in the burning heart of the mountain with the half-forged crown. She won't be talked down now. She is a trained mage: spread out against her fire.",
+      "surprise": false,
+      "map": {
+        "width": 16,
+        "height": 9,
+        "style": "kiln",
+        "terrain": [
+          "TTTTTTTTTTTTTTTT",
+          "TT....b..b....TT",
+          "T..r........r..T",
+          "==..............",
+          "==..............",
+          "==..............",
+          "T..r........r..T",
+          "TT....b..b....TT",
+          "TTTTTTTTTTTTTTTT"
+        ]
+      },
+      "partyStart": [
+        [1, 3],
+        [1, 5],
+        [2, 4],
+        [0, 4]
+      ],
+      "enemies": [
+        {
+          "id": "maelis",
+          "monster": "mage",
+          "name": "Maelis Varrow",
+          "pos": [13, 4],
+          "difficulties": ["easy", "medium", "hard"],
+          "tactic": "ranged"
+        },
+        {
+          "id": "zealot",
+          "monster": "cultist",
+          "name": "Last zealot",
+          "pos": [11, 4],
+          "difficulties": ["hard"],
+          "tactic": "melee"
+        }
+      ],
+      "allies": [
+        {
+          "id": "ida-ally",
+          "monster": "wight",
+          "name": "Ser Ida Marrow",
+          "pos": [2, 6],
+          "ifFlag": "ida_ally"
+        }
+      ],
+      "verify": true,
+      "verifyNote": "Encounters_and_XP F21 phase 1: Maelis (mage). Hard adds a zealot [inferred]."
+    },
+    {
+      "id": "f21-crowning-wraith",
+      "code": "F21",
+      "name": "The Crowning: Cindrath",
+      "act": 3,
+      "xpPerPc": 725,
+      "briefing": "Cindrath tears herself half out of the stone: an ember-wraith of smoke and molten gold, bound to the ritual circle. She can't leave it, but her breath fills a 30-ft cone. Strike the three crown shards: every blow on a shard wounds her too.",
+      "surprise": false,
+      "map": {
+        "width": 16,
+        "height": 9,
+        "style": "kiln",
+        "terrain": [
+          "TTTTTTTTTTTTTTTT",
+          "TT....b..b....TT",
+          "T..r........r..T",
+          "==..............",
+          "==..............",
+          "==..............",
+          "T..r........r..T",
+          "TT....b..b....TT",
+          "TTTTTTTTTTTTTTTT"
+        ]
+      },
+      "partyStart": [
+        [1, 3],
+        [1, 5],
+        [2, 4],
+        [0, 4]
+      ],
+      "enemies": [
+        {
+          "id": "cindrath",
+          "monster": "ember-wraith",
+          "name": "Cindrath",
+          "pos": [12, 4],
+          "difficulties": ["easy", "medium", "hard"],
+          "tactic": "melee"
+        },
+        {
+          "id": "shard-a",
+          "monster": "crown-shard",
+          "name": "Crown shard (left)",
+          "pos": [11, 2],
+          "difficulties": ["easy", "medium", "hard"],
+          "tactic": "melee"
+        },
+        {
+          "id": "shard-b",
+          "monster": "crown-shard",
+          "name": "Crown shard (right)",
+          "pos": [11, 6],
+          "difficulties": ["easy", "medium", "hard"],
+          "tactic": "melee"
+        },
+        {
+          "id": "shard-c",
+          "monster": "crown-shard",
+          "name": "Crown shard (heart)",
+          "pos": [14, 4],
+          "difficulties": ["easy", "medium", "hard"],
+          "tactic": "melee"
+        }
+      ],
+      "allies": [
+        {
+          "id": "ida-ally",
+          "monster": "wight",
+          "name": "Ser Ida Marrow",
+          "pos": [2, 6],
+          "ifFlag": "ida_ally"
+        },
+        {
+          "id": "maelis-ally",
+          "monster": "mage",
+          "name": "Maelis",
+          "pos": [4, 2],
+          "ifFlag": "maelis_redeemed"
+        }
+      ],
+      "verify": true,
+      "verifyNote": "Encounters_and_XP F21 phase 2: the ember-wraith (homebrew; CR 6–7 budget). Shards and their HP are my design [inferred]."
+    },
+    {
+      "id": "f21-ember-queen",
+      "code": "F21",
+      "name": "The Ember Queen",
+      "act": 3,
+      "xpPerPc": 725,
+      "briefing": "The crown closes on Maelis's head, and Cindrath wears her. The Ember Queen rises in the circle, burning. Strike the shards.",
+      "surprise": false,
+      "map": {
+        "width": 16,
+        "height": 9,
+        "style": "kiln",
+        "terrain": [
+          "TTTTTTTTTTTTTTTT",
+          "TT....b..b....TT",
+          "T..r........r..T",
+          "==..............",
+          "==..............",
+          "==..............",
+          "T..r........r..T",
+          "TT....b..b....TT",
+          "TTTTTTTTTTTTTTTT"
+        ]
+      },
+      "partyStart": [
+        [1, 3],
+        [1, 5],
+        [2, 4],
+        [0, 4]
+      ],
+      "enemies": [
+        {
+          "id": "queen",
+          "monster": "ember-wraith",
+          "name": "The Ember Queen",
+          "pos": [12, 4],
+          "difficulties": ["easy", "medium", "hard"],
+          "tactic": "melee"
+        },
+        {
+          "id": "shard-a",
+          "monster": "crown-shard",
+          "name": "Crown shard (left)",
+          "pos": [11, 2],
+          "difficulties": ["easy", "medium", "hard"],
+          "tactic": "melee"
+        },
+        {
+          "id": "shard-b",
+          "monster": "crown-shard",
+          "name": "Crown shard (right)",
+          "pos": [11, 6],
+          "difficulties": ["easy", "medium", "hard"],
+          "tactic": "melee"
+        },
+        {
+          "id": "shard-c",
+          "monster": "crown-shard",
+          "name": "Crown shard (heart)",
+          "pos": [14, 4],
+          "difficulties": ["easy", "medium", "hard"],
+          "tactic": "melee"
+        }
+      ],
+      "allies": [
+        {
+          "id": "ida-ally",
+          "monster": "wight",
+          "name": "Ser Ida Marrow",
+          "pos": [2, 6],
+          "ifFlag": "ida_ally"
+        }
+      ],
+      "verify": true,
+      "verifyNote": "Story_Bible §8: The Ember Queen. Same ember-wraith block [inferred]."
+    },
+    {
+      "id": "f21-ember-heir",
+      "code": "F21",
+      "name": "The Ember Heir",
+      "act": 3,
+      "xpPerPc": 725,
+      "briefing": "Corin's eyes go molten gold. Cindrath has found a new host, and it is your friend. Strike the shards to cut her out of him.",
+      "surprise": false,
+      "map": {
+        "width": 16,
+        "height": 9,
+        "style": "kiln",
+        "terrain": [
+          "TTTTTTTTTTTTTTTT",
+          "TT....b..b....TT",
+          "T..r........r..T",
+          "==..............",
+          "==..............",
+          "==..............",
+          "T..r........r..T",
+          "TT....b..b....TT",
+          "TTTTTTTTTTTTTTTT"
+        ]
+      },
+      "partyStart": [
+        [1, 3],
+        [1, 5],
+        [2, 4],
+        [0, 4]
+      ],
+      "enemies": [
+        {
+          "id": "heir",
+          "monster": "ember-wraith",
+          "name": "Corin, the Ember Heir",
+          "pos": [12, 4],
+          "difficulties": ["easy", "medium", "hard"],
+          "tactic": "melee"
+        },
+        {
+          "id": "shard-a",
+          "monster": "crown-shard",
+          "name": "Crown shard (left)",
+          "pos": [11, 2],
+          "difficulties": ["easy", "medium", "hard"],
+          "tactic": "melee"
+        },
+        {
+          "id": "shard-b",
+          "monster": "crown-shard",
+          "name": "Crown shard (right)",
+          "pos": [11, 6],
+          "difficulties": ["easy", "medium", "hard"],
+          "tactic": "melee"
+        },
+        {
+          "id": "shard-c",
+          "monster": "crown-shard",
+          "name": "Crown shard (heart)",
+          "pos": [14, 4],
+          "difficulties": ["easy", "medium", "hard"],
+          "tactic": "melee"
+        }
+      ],
+      "allies": [
+        {
+          "id": "ida-ally",
+          "monster": "wight",
+          "name": "Ser Ida Marrow",
+          "pos": [2, 6],
+          "ifFlag": "ida_ally"
+        }
+      ],
+      "excludeOrigin": "corin",
+      "verify": true,
+      "verifyNote": "Story_Bible §9: The Ember Heir. Corin sits this fight out; ember-wraith block [inferred]."
+    },
+    {
+      "id": "s9-cold-forge",
+      "code": "S9",
+      "name": "The Cold Forge",
+      "act": 3,
+      "xpPerPc": 500,
+      "briefing": "The forge's guardian wakes in the lava tubes: a fire elemental, and two magma mephits riding the heat.",
+      "surprise": false,
+      "map": {
+        "width": 16,
+        "height": 9,
+        "style": "kiln",
+        "terrain": [
+          "TTTTTTTTTTTTTTTT",
+          "T....bb...TTT..T",
+          "T..r......TTT..T",
+          "==..............",
+          "==.....bb.......",
+          "==..............",
+          "T..r......TTT..T",
+          "T....bb...TTT..T",
+          "TTTTTTTTTTTTTTTT"
+        ]
+      },
+      "partyStart": [
+        [1, 3],
+        [1, 5],
+        [2, 4],
+        [0, 4]
+      ],
+      "enemies": [
+        {
+          "id": "elemental",
+          "monster": "fire-elemental",
+          "name": "Fire elemental",
+          "pos": [11, 4],
+          "difficulties": ["easy", "medium", "hard"],
+          "tactic": "melee"
+        },
+        {
+          "id": "mephit-a",
+          "monster": "magma-mephit",
+          "name": "Magma mephit A",
+          "pos": [13, 3],
+          "difficulties": ["easy", "medium", "hard"],
+          "tactic": "ranged"
+        },
+        {
+          "id": "mephit-b",
+          "monster": "magma-mephit",
+          "name": "Magma mephit B",
+          "pos": [13, 5],
+          "difficulties": ["medium", "hard"],
+          "tactic": "ranged"
+        },
+        {
+          "id": "mephit-c",
+          "monster": "magma-mephit",
+          "name": "Magma mephit C",
+          "pos": [14, 6],
+          "difficulties": ["hard"],
+          "tactic": "ranged"
+        }
+      ],
+      "verify": true,
+      "verifyNote": "Encounters_and_XP side quests: fire elemental + 2 magma mephits (Hard at L5). [inferred] Easy/Hard changes and the map are my pick."
+    },
+    {
+      "id": "s10-ossuary",
+      "code": "S10",
+      "name": "The ossuary",
+      "act": 3,
+      "xpPerPc": 425,
+      "briefing": "Two ghasts and four ghouls have been feeding in the ossuary for two hundred years. The stench alone is a weapon.",
+      "surprise": false,
+      "map": {
+        "width": 16,
+        "height": 9,
+        "style": "abbey",
+        "terrain": [
+          "TTTTTTTTTTTTTTTT",
+          "T.r.r.r..r.r.r.T",
+          "T..............T",
+          "==.============T",
+          "==.============T",
+          "==.============T",
+          "T..............T",
+          "T.r.r.r..r.r.r.T",
+          "TTTTTTTTTTTTTTTT"
+        ]
+      },
+      "partyStart": [
+        [1, 3],
+        [1, 5],
+        [2, 4],
+        [0, 4]
+      ],
+      "enemies": [
+        {
+          "id": "ghast-a",
+          "monster": "ghast",
+          "name": "Ghast A",
+          "pos": [12, 3],
+          "difficulties": ["easy", "medium", "hard"],
+          "tactic": "melee"
+        },
+        {
+          "id": "ghast-b",
+          "monster": "ghast",
+          "name": "Ghast B",
+          "pos": [12, 5],
+          "difficulties": ["easy", "medium", "hard"],
+          "tactic": "melee"
+        },
+        {
+          "id": "g-a",
+          "monster": "ghoul",
+          "name": "Ghoul A",
+          "pos": [9, 2],
+          "difficulties": ["easy", "medium", "hard"],
+          "tactic": "melee"
+        },
+        {
+          "id": "g-b",
+          "monster": "ghoul",
+          "name": "Ghoul B",
+          "pos": [9, 6],
+          "difficulties": ["easy", "medium", "hard"],
+          "tactic": "melee"
+        },
+        {
+          "id": "g-c",
+          "monster": "ghoul",
+          "name": "Ghoul C",
+          "pos": [10, 3],
+          "difficulties": ["medium", "hard"],
+          "tactic": "melee"
+        },
+        {
+          "id": "g-d",
+          "monster": "ghoul",
+          "name": "Ghoul D",
+          "pos": [10, 5],
+          "difficulties": ["easy", "medium", "hard"],
+          "tactic": "melee"
+        },
+        {
+          "id": "g-e",
+          "monster": "ghoul",
+          "name": "Ghoul E",
+          "pos": [13, 4],
+          "difficulties": ["hard"],
+          "tactic": "melee"
+        }
+      ],
+      "verify": true,
+      "verifyNote": "Encounters_and_XP side quests: 2 ghasts + 4 ghouls (Hard at L5). [inferred] Easy/Hard changes and the map are my pick."
+    },
+    {
+      "id": "s11-convoy",
+      "code": "S11",
+      "name": "The evacuation convoy",
+      "act": 3,
+      "xpPerPc": 350,
+      "briefing": "Two hell hounds, born of the mountain's heat, come baying down the river road at the carts.",
+      "surprise": false,
+      "map": {
+        "width": 16,
+        "height": 9,
+        "style": "road",
+        "terrain": [
+          "TTb....r....bTTT",
+          "b...........b..T",
+          "................",
+          "================",
+          "================",
+          "================",
+          "................",
+          "Tb....r.......bT",
+          "TTT.........bTTT"
+        ]
+      },
+      "partyStart": [
+        [3, 3],
+        [4, 4],
+        [3, 5],
+        [2, 4]
+      ],
+      "enemies": [
+        {
+          "id": "hound-a",
+          "monster": "hell-hound",
+          "name": "Hell hound A",
+          "pos": [12, 3],
+          "difficulties": ["easy", "medium", "hard"],
+          "tactic": "melee"
+        },
+        {
+          "id": "hound-b",
+          "monster": "hell-hound",
+          "name": "Hell hound B",
+          "pos": [12, 5],
+          "difficulties": ["easy", "medium", "hard"],
+          "tactic": "melee"
+        },
+        {
+          "id": "hound-c",
+          "monster": "hell-hound",
+          "name": "Hell hound C",
+          "pos": [14, 4],
+          "difficulties": ["hard"],
+          "tactic": "melee"
+        }
+      ],
+      "verify": true,
+      "verifyNote": "Encounters_and_XP side quests: 2 hell hounds (Medium at L5). [inferred] Easy/Hard changes and the map are my pick."
+    },
+    {
+      "id": "s12-wix-giant",
+      "code": "S12",
+      "name": "The giant at the door",
+      "act": 3,
+      "xpPerPc": 562,
+      "briefing": "A hill giant has wedged itself into the clan's front door, with an ogre to fetch and carry.",
+      "surprise": false,
+      "map": {
+        "width": 16,
+        "height": 9,
+        "style": "cave",
+        "terrain": [
+          "TTTTTTTTTTTTTTTT",
+          "TTTT....r...TTTT",
+          "TT...........bTT",
+          "==......r.......",
+          "==..............",
+          "==...b..........",
+          "TT...........rTT",
+          "TTTT....r...TTTT",
+          "TTTTTTTTTTTTTTTT"
+        ]
+      },
+      "partyStart": [
+        [1, 3],
+        [1, 5],
+        [2, 4],
+        [0, 4]
+      ],
+      "enemies": [
+        {
+          "id": "giant",
+          "monster": "hill-giant",
+          "name": "Hill giant",
+          "pos": [12, 4],
+          "difficulties": ["easy", "medium", "hard"],
+          "tactic": "melee"
+        },
+        {
+          "id": "ogre",
+          "monster": "ogre",
+          "name": "Ogre",
+          "pos": [10, 3],
+          "difficulties": ["easy", "medium", "hard"],
+          "tactic": "melee"
+        },
+        {
+          "id": "ogre-b",
+          "monster": "ogre",
+          "name": "Ogre B",
+          "pos": [10, 5],
+          "difficulties": ["hard"],
+          "tactic": "melee"
+        }
+      ],
+      "verify": true,
+      "verifyNote": "Encounters_and_XP side quests: hill giant + ogre (Hard at L5). [inferred] Easy/Hard changes and the map are my pick."
+    },
+    {
+      "id": "e3-vorrag",
+      "code": "E3",
+      "name": "Vorrag the Kiln-Smith",
+      "act": 3,
+      "xpPerPc": 1250,
+      "briefing": "Vorrag the Kiln-Smith hefts a greatsword longer than you are tall. ☠ Deadly at level 5, Hard at level 6. Two huge sword blows a turn, and he throws rocks: spread out and use cover.",
+      "surprise": false,
+      "map": {
+        "width": 16,
+        "height": 9,
+        "style": "kiln",
+        "terrain": [
+          "TTTTTTTTTTTTTTTT",
+          "T....bb...TTT..T",
+          "T..r......TTT..T",
+          "==..............",
+          "==.....bb.......",
+          "==..............",
+          "T..r......TTT..T",
+          "T....bb...TTT..T",
+          "TTTTTTTTTTTTTTTT"
+        ]
+      },
+      "partyStart": [
+        [1, 3],
+        [1, 5],
+        [2, 4],
+        [0, 4]
+      ],
+      "enemies": [
+        {
+          "id": "vorrag",
+          "monster": "fire-giant",
+          "name": "Vorrag the Kiln-Smith",
+          "pos": [12, 4],
+          "difficulties": ["easy", "medium", "hard"],
+          "tactic": "melee"
+        }
+      ],
+      "verify": true,
+      "verifyNote": "Items.md Elites: fire giant (1,250 XP/PC bonus). Same on every difficulty [inferred]."
+    },
+    {
       "id": "road-wolves",
       "code": "R1",
       "name": "Starving wolves",
@@ -2708,6 +3851,418 @@
       ],
       "verify": true,
       "verifyNote": "Encounters_and_XP §5b marsh table; XP = raw ÷ 4. Easy/Hard changes are my pick [inferred]."
+    },
+    {
+      "id": "heights-orcs",
+      "code": "H1",
+      "name": "Fleeing war band",
+      "act": 3,
+      "xpPerPc": 100,
+      "briefing": "Four orcs from a war band fleeing the heat.",
+      "surprise": true,
+      "map": {
+        "width": 16,
+        "height": 9,
+        "style": "heights",
+        "terrain": [
+          "TTTTbb....bbTTTT",
+          "TTb..........bTT",
+          "Tb....r.........",
+          "................",
+          "====............",
+          "....====........",
+          "..........======",
+          "T.....r.......bT",
+          "TTTbb.......bTTT"
+        ]
+      },
+      "partyStart": [
+        [0, 3],
+        [1, 4],
+        [0, 5],
+        [2, 3]
+      ],
+      "enemies": [
+        {
+          "id": "o-a",
+          "monster": "orc",
+          "name": "Orc A",
+          "pos": [11, 3],
+          "difficulties": ["easy", "medium", "hard"],
+          "tactic": "melee"
+        },
+        {
+          "id": "o-b",
+          "monster": "orc",
+          "name": "Orc B",
+          "pos": [11, 5],
+          "difficulties": ["easy", "medium", "hard"],
+          "tactic": "melee"
+        },
+        {
+          "id": "o-c",
+          "monster": "orc",
+          "name": "Orc C",
+          "pos": [12, 4],
+          "difficulties": ["easy", "medium", "hard"],
+          "tactic": "melee"
+        },
+        {
+          "id": "o-d",
+          "monster": "orc",
+          "name": "Orc D",
+          "pos": [13, 3],
+          "difficulties": ["medium", "hard"],
+          "tactic": "melee"
+        },
+        {
+          "id": "o-e",
+          "monster": "orc",
+          "name": "Orc E",
+          "pos": [13, 5],
+          "difficulties": ["hard"],
+          "tactic": "melee"
+        }
+      ],
+      "verify": true,
+      "verifyNote": "Encounters_and_XP §5b high Greypeaks table; XP = raw ÷ 4. [inferred] Easy/Hard changes and the map are my pick.",
+      "talk": {
+        "skill": "intimidation",
+        "dc": 14,
+        "prompt": "Tell them the mountain is worse behind you",
+        "success": "The orcs look at the smoke behind you and decide to be somewhere else.",
+        "failure": "They laugh, and raise their axes."
+      }
+    },
+    {
+      "id": "heights-owlbear",
+      "code": "H2",
+      "name": "Owlbear",
+      "act": 3,
+      "xpPerPc": 175,
+      "briefing": "An owlbear, half-mad with heat, crashes out of the scree.",
+      "surprise": true,
+      "map": {
+        "width": 16,
+        "height": 9,
+        "style": "heights",
+        "terrain": [
+          "TTTTbb....bbTTTT",
+          "TTb..........bTT",
+          "Tb....r.........",
+          "................",
+          "====............",
+          "....====........",
+          "..........======",
+          "T.....r.......bT",
+          "TTTbb.......bTTT"
+        ]
+      },
+      "partyStart": [
+        [0, 3],
+        [1, 4],
+        [0, 5],
+        [2, 3]
+      ],
+      "enemies": [
+        {
+          "id": "owlbear",
+          "monster": "owlbear",
+          "name": "Owlbear",
+          "pos": [12, 4],
+          "difficulties": ["easy", "medium", "hard"],
+          "tactic": "melee"
+        }
+      ],
+      "verify": true,
+      "verifyNote": "Encounters_and_XP §5b high Greypeaks table; XP = raw ÷ 4. [inferred] Easy/Hard changes and the map are my pick."
+    },
+    {
+      "id": "heights-griffons",
+      "code": "H3",
+      "name": "Griffons",
+      "act": 3,
+      "xpPerPc": 225,
+      "briefing": "Two griffons stoop out of the ash-cloud.",
+      "surprise": true,
+      "map": {
+        "width": 16,
+        "height": 9,
+        "style": "heights",
+        "terrain": [
+          "TTTTbb....bbTTTT",
+          "TTb..........bTT",
+          "Tb....r.........",
+          "................",
+          "====............",
+          "....====........",
+          "..........======",
+          "T.....r.......bT",
+          "TTTbb.......bTTT"
+        ]
+      },
+      "partyStart": [
+        [0, 3],
+        [1, 4],
+        [0, 5],
+        [2, 3]
+      ],
+      "enemies": [
+        {
+          "id": "g-a",
+          "monster": "griffon",
+          "name": "Griffon A",
+          "pos": [11, 3],
+          "difficulties": ["easy", "medium", "hard"],
+          "tactic": "melee"
+        },
+        {
+          "id": "g-b",
+          "monster": "griffon",
+          "name": "Griffon B",
+          "pos": [12, 5],
+          "difficulties": ["medium", "hard"],
+          "tactic": "melee"
+        },
+        {
+          "id": "g-c",
+          "monster": "griffon",
+          "name": "Griffon C",
+          "pos": [13, 4],
+          "difficulties": ["hard"],
+          "tactic": "melee"
+        }
+      ],
+      "verify": true,
+      "verifyNote": "Encounters_and_XP §5b high Greypeaks table; XP = raw ÷ 4. [inferred] Easy/Hard changes and the map are my pick."
+    },
+    {
+      "id": "heights-dire-wolves",
+      "code": "H4",
+      "name": "Dire wolves",
+      "act": 3,
+      "xpPerPc": 150,
+      "briefing": "Three dire wolves pace you along the ridge.",
+      "surprise": true,
+      "map": {
+        "width": 16,
+        "height": 9,
+        "style": "heights",
+        "terrain": [
+          "TTTTbb....bbTTTT",
+          "TTb..........bTT",
+          "Tb....r.........",
+          "................",
+          "====............",
+          "....====........",
+          "..........======",
+          "T.....r.......bT",
+          "TTTbb.......bTTT"
+        ]
+      },
+      "partyStart": [
+        [0, 3],
+        [1, 4],
+        [0, 5],
+        [2, 3]
+      ],
+      "enemies": [
+        {
+          "id": "w-a",
+          "monster": "dire-wolf",
+          "name": "Dire wolf A",
+          "pos": [11, 3],
+          "difficulties": ["easy", "medium", "hard"],
+          "tactic": "melee"
+        },
+        {
+          "id": "w-b",
+          "monster": "dire-wolf",
+          "name": "Dire wolf B",
+          "pos": [12, 5],
+          "difficulties": ["easy", "medium", "hard"],
+          "tactic": "melee"
+        },
+        {
+          "id": "w-c",
+          "monster": "dire-wolf",
+          "name": "Dire wolf C",
+          "pos": [13, 4],
+          "difficulties": ["medium", "hard"],
+          "tactic": "melee"
+        },
+        {
+          "id": "w-d",
+          "monster": "dire-wolf",
+          "name": "Dire wolf D",
+          "pos": [13, 2],
+          "difficulties": ["hard"],
+          "tactic": "melee"
+        }
+      ],
+      "verify": true,
+      "verifyNote": "Encounters_and_XP §5b high Greypeaks table; XP = raw ÷ 4. [inferred] Easy/Hard changes and the map are my pick."
+    },
+    {
+      "id": "heights-mephits",
+      "code": "H5",
+      "name": "Magma mephits",
+      "act": 3,
+      "xpPerPc": 75,
+      "briefing": "Three magma mephits bubble out of a cracked slope.",
+      "surprise": true,
+      "map": {
+        "width": 16,
+        "height": 9,
+        "style": "heights",
+        "terrain": [
+          "TTTTbb....bbTTTT",
+          "TTb..........bTT",
+          "Tb....r.........",
+          "................",
+          "====............",
+          "....====........",
+          "..........======",
+          "T.....r.......bT",
+          "TTTbb.......bTTT"
+        ]
+      },
+      "partyStart": [
+        [0, 3],
+        [1, 4],
+        [0, 5],
+        [2, 3]
+      ],
+      "enemies": [
+        {
+          "id": "m-a",
+          "monster": "magma-mephit",
+          "name": "Mephit A",
+          "pos": [11, 3],
+          "difficulties": ["easy", "medium", "hard"],
+          "tactic": "melee"
+        },
+        {
+          "id": "m-b",
+          "monster": "magma-mephit",
+          "name": "Mephit B",
+          "pos": [12, 5],
+          "difficulties": ["easy", "medium", "hard"],
+          "tactic": "melee"
+        },
+        {
+          "id": "m-c",
+          "monster": "magma-mephit",
+          "name": "Mephit C",
+          "pos": [13, 4],
+          "difficulties": ["medium", "hard"],
+          "tactic": "melee"
+        },
+        {
+          "id": "m-d",
+          "monster": "magma-mephit",
+          "name": "Mephit D",
+          "pos": [13, 2],
+          "difficulties": ["hard"],
+          "tactic": "melee"
+        }
+      ],
+      "verify": true,
+      "verifyNote": "Encounters_and_XP §5b high Greypeaks table; XP = raw ÷ 4. [inferred] Easy/Hard changes and the map are my pick."
+    },
+    {
+      "id": "heights-hell-hound",
+      "code": "H6",
+      "name": "Hell hound",
+      "act": 3,
+      "xpPerPc": 175,
+      "briefing": "A hell hound, loose from the Kiln, picks up your scent.",
+      "surprise": true,
+      "map": {
+        "width": 16,
+        "height": 9,
+        "style": "heights",
+        "terrain": [
+          "TTTTbb....bbTTTT",
+          "TTb..........bTT",
+          "Tb....r.........",
+          "................",
+          "====............",
+          "....====........",
+          "..........======",
+          "T.....r.......bT",
+          "TTTbb.......bTTT"
+        ]
+      },
+      "partyStart": [
+        [0, 3],
+        [1, 4],
+        [0, 5],
+        [2, 3]
+      ],
+      "enemies": [
+        {
+          "id": "h-a",
+          "monster": "hell-hound",
+          "name": "Hell hound",
+          "pos": [12, 4],
+          "difficulties": ["easy", "medium", "hard"],
+          "tactic": "melee"
+        },
+        {
+          "id": "h-b",
+          "monster": "hell-hound",
+          "name": "Hell hound B",
+          "pos": [13, 6],
+          "difficulties": ["hard"],
+          "tactic": "melee"
+        }
+      ],
+      "verify": true,
+      "verifyNote": "Encounters_and_XP §5b high Greypeaks table; XP = raw ÷ 4. [inferred] Easy/Hard changes and the map are my pick."
+    },
+    {
+      "id": "heights-troll",
+      "code": "H7",
+      "name": "Troll under the bridge",
+      "act": 3,
+      "xpPerPc": 450,
+      "briefing": "A troll lives under the rope bridge. It is hungry. It is always hungry. (Hard at level 4: fire and acid stop its regeneration.)",
+      "surprise": true,
+      "map": {
+        "width": 16,
+        "height": 9,
+        "style": "heights",
+        "terrain": [
+          "TTTTbb....bbTTTT",
+          "TTb..........bTT",
+          "Tb....r.........",
+          "................",
+          "====............",
+          "....====........",
+          "..........======",
+          "T.....r.......bT",
+          "TTTbb.......bTTT"
+        ]
+      },
+      "partyStart": [
+        [0, 3],
+        [1, 4],
+        [0, 5],
+        [2, 3]
+      ],
+      "enemies": [
+        {
+          "id": "troll",
+          "monster": "troll",
+          "name": "Troll",
+          "pos": [12, 4],
+          "difficulties": ["easy", "medium", "hard"],
+          "tactic": "melee"
+        }
+      ],
+      "verify": true,
+      "verifyNote": "Encounters_and_XP §5b high Greypeaks table; XP = raw ÷ 4. [inferred] Easy/Hard changes and the map are my pick."
     }
   ],
   "roadTables": {
@@ -2730,6 +4285,16 @@
       "marsh-centipedes",
       "marsh-ghouls",
       null
+    ],
+    "heights": [
+      "heights-orcs",
+      "heights-owlbear",
+      "heights-griffons",
+      "heights-dire-wolves",
+      "heights-mephits",
+      "heights-hell-hound",
+      "heights-troll",
+      null
     ]
   },
   "roadEvents": {
@@ -2743,6 +4308,12 @@
       "8": {
         "text": "No fight: a lost novice from the abbey, Brother Tam, shares what he knows: the abbot's crypt was sealed with the sun of Lathander, and someone has scratched it out.",
         "note": "A lost novice says the drowned abbot's crypt was sealed with Lathander's sun, now scratched out."
+      }
+    },
+    "heights": {
+      "8": {
+        "text": "No fight: a stone giant sits on a ridge, watching the Kiln smoke. It says one thing, slowly: \"The burning crown wakes the old one. Do not let it close.\"",
+        "note": "A stone giant watcher warned: 'The burning crown wakes the old one. Do not let it close.'"
       }
     }
   }

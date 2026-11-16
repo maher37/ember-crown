@@ -135,8 +135,11 @@ export function startCombat(o: StartOptions): CombatState {
         { x: en.pos[0], y: en.pos[1] },
         monsterToCreature(m, en.id, en.name),
         // Creatures that only fly or hover (wraiths, specters) use their flying speed [inferred:
-        // the grid has no height, so flying is walking that ignores nothing].
-        m.speed.walk || m.speed.fly || 0,
+        // the grid has no height, so flying is walking that ignores nothing]. Objects and the
+        // ember-wraith (Bound to the Circle) don't move.
+        m.traits.some((t) => t.id === 'object' || t.id === 'bound-to-the-circle')
+          ? 0
+          : m.speed.walk || m.speed.fly || 0,
       );
       c.monsterId = m.id;
       if (m.spellcasting?.slots) c.monsterSlots = { ...m.spellcasting.slots };
@@ -146,9 +149,34 @@ export function startCombat(o: StartOptions): CombatState {
       c.tactic = en.tactic;
       s.combatants[en.id] = c;
     }
-    // Shield of the Morninglord: resistance to fire while you hold it.
+    // Allies who join the fight (Ser Ida at the Crowning), controlled by the player.
+    for (const al of e.allies ?? []) {
+      if (al.ifFlag && !o.flags?.[al.ifFlag]) continue;
+      const m = getMonster(al.monster);
+      const c = makeCombatant(
+        al.id,
+        al.name,
+        enemyShort(al.name),
+        'party',
+        { x: al.pos[0], y: al.pos[1] },
+        monsterToCreature(m, al.id, al.name),
+        m.speed.walk || m.speed.fly || 0,
+      );
+      c.monsterId = m.id;
+      s.combatants[al.id] = c;
+    }
+    // Shield of the Morninglord: resistance to fire while you hold it. Story_Bible §9: Corin's
+    // ember bargain can also make him resist fire.
     for (const c of Object.values(s.combatants)) {
       const h = heroOf(c);
+      if (h && h.origin === 'corin' && o.flags?.['ember_resist'])
+        c.effects.push({
+          id: 'resist-fire-ember',
+          name: 'Ember bargain',
+          sourceId: c.id,
+          tag: 'resistance',
+          data: { type: 'fire' },
+        });
       if (h && hasSpecial(h, 'resistance-while-held'))
         c.effects.push({
           id: 'resist-fire-shield',
@@ -206,7 +234,7 @@ export function makeCombatant(
 function rollInitiative(ctx: Ctx): void {
   const { s, rng } = ctx;
   const parts: string[] = [];
-  for (const c of Object.values(s.combatants)) {
+  for (const c of Object.values(s.combatants).filter((x) => !isObject(x))) {
     let mod = abilityModifier(c.creature.abilities.dex);
     const h = heroOf(c);
     // PHB: Bard, Jack of All Trades (half proficiency on ability checks, initiative included).
@@ -217,6 +245,7 @@ function rollInitiative(ctx: Ctx): void {
     parts.push(`${c.name} ${describeTotal(r, mod)}`);
   }
   s.order = Object.values(s.combatants)
+    .filter((c) => !isObject(c))
     .sort((a, b) => b.initiative - a.initiative || b.dex - a.dex || (a.side === 'party' ? -1 : 1))
     .map((c) => c.id);
   say(s, 'info', `Initiative: ${parts.join('; ')}`);
@@ -433,7 +462,8 @@ export function checkOutcome(s: CombatState): CombatState['outcome'] {
   if (s.outcome === 'parley') return 'parley';
   const up = (side: string) =>
     Object.values(s.combatants).some(
-      (c) => c.side === side && conscious(c) && !hasCondition(c.creature, 'unconscious'),
+      (c) =>
+        c.side === side && !isObject(c) && conscious(c) && !hasCondition(c.creature, 'unconscious'),
     );
   if (!up('enemy')) return 'victory';
   if (!up('party')) return 'defeat';
@@ -566,3 +596,7 @@ export function usesExtraAttack(c: Combatant): number {
 
 export { classLevel, hasEffect };
 export type { RandomSource };
+
+/** Objects (the finale's crown shards) don't take turns or count as enemies left standing. */
+export const isObject = (c: Combatant) =>
+  !!c.monsterId && getMonster(c.monsterId).traits.some((t) => t.id === 'object');

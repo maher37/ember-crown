@@ -15,6 +15,7 @@ import {
   heroOf,
   say,
   sayAll,
+  healCombatant,
   spendResource,
   spendSlot,
   type Ctx,
@@ -335,8 +336,19 @@ export function castSpell(ctx: Ctx, caster: Combatant, req: CastRequest): void {
   // PHB: Life Domain, Disciple of Life (+2 + the spell's level to healing spells of 1st level or higher).
   const healBonus = heals && lvl > 0 && h?.classId === 'cleric' ? 2 + lvl : 0;
   // PHB: Eldritch Invocations, Agonizing Blast (+Cha to Eldritch Blast damage).
+  const firesFire = (sp.effects as Effect[]).some((e) =>
+    e.type === 'save'
+      ? e.onFail.some((x) => x.type === 'damage' && x.damageType === 'fire')
+      : e.type === 'attack'
+        ? e.onHit.some((x) => x.type === 'damage' && x.damageType === 'fire')
+        : e.type === 'damage' && e.damageType === 'fire',
+  );
   const damageBonus =
-    sp.id === 'eldritch-blast' && h?.invocations.includes('agonizing-blast') ? nums.mod : 0;
+    (sp.id === 'eldritch-blast' && h?.invocations.includes('agonizing-blast') ? nums.mod : 0) +
+    // PHB: Draconic Bloodline, Elemental Affinity (level 6, red: fire). +Cha to one damage roll.
+    (firesFire && h && classLevel(caster, 'sorcerer') >= 6 ? nums.mod : 0) +
+    // Story_Bible §9: Corin's ember bargain "stronger fire spells" [inferred: +2].
+    (firesFire && h?.origin === 'corin' && s.flags['ember_fire'] ? 2 : 0);
   const effects = scaleCantrip(sp, h?.level ?? 1);
   const opts: LeafOpts = {
     dc: nums.dc,
@@ -460,12 +472,27 @@ export function castSpell(ctx: Ctx, caster: Combatant, req: CastRequest): void {
             });
         const leafOpts = { ...opts, preRolled };
         if (!res.success) for (const x of e.onFail) applyLeaf(ctx, caster, target, x, leafOpts);
-        else if (e.onSuccess === 'half')
+        else if (e.onSuccess === 'half') {
           for (const x of e.onFail)
             if (x.type === 'damage') applyLeaf(ctx, caster, target, x, { ...leafOpts, half: true });
-        // Potent Cantrip (wizard 6) would go here.
+        }
+        // PHB: Evocation, Potent Cantrip (level 6). A cantrip save still deals half damage.
+        else if (sp.level === 0 && classLevel(caster, 'wizard') >= 6) {
+          for (const x of e.onFail)
+            if (x.type === 'damage') applyLeaf(ctx, caster, target, x, { ...leafOpts, half: true });
+        }
       } else applyLeaf(ctx, caster, target, e, { ...opts, preRolled });
     }
+  }
+  // PHB: Life Domain, Blessed Healer (level 6). Healing someone else with a slot heals you 2 + level.
+  if (
+    heals &&
+    lvl > 0 &&
+    classLevel(caster, 'cleric') >= 6 &&
+    targets.some((t) => t.id !== caster.id)
+  ) {
+    say(s, 'you', `Blessed Healer: ${caster.name} also regains ${2 + lvl} HP`);
+    healCombatant(ctx, caster, 2 + lvl, 'Blessed Healer', caster);
   }
 }
 

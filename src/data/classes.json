@@ -796,6 +796,14 @@
           "perLevel": [0, 2, 3, 4, 5, 6],
           "verify": true,
           "verifyNote": "Ki = monk level from L2 (Rules_Scope §4)."
+        },
+        {
+          "id": "wholeness-of-body",
+          "name": "Wholeness of Body",
+          "recharge": "long-rest",
+          "perLevel": [0, 0, 0, 0, 0, 1],
+          "verify": true,
+          "verifyNote": "PHB Open Hand 6: once per long rest, heal 3 × monk level (from memory)."
         }
       ],
       "levels": [

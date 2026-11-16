@@ -55,6 +55,22 @@ export const STYLE_FILL: Record<string, Record<string, string>> = {
     trees: '#2c2622',
     boulder: '#5a6470',
   },
+  // High Greypeaks: ash-covered rock, the path, scree, cliffs, boulders.
+  heights: {
+    open: '#5a5650',
+    road: '#6e6658',
+    brush: '#4a4640',
+    trees: '#2a2826',
+    boulder: '#77716a',
+  },
+  // The King's Kiln: black forge-stone, the processional, cinders, lava channels, anvils.
+  kiln: {
+    open: '#3a302c',
+    road: '#5a3a2c',
+    brush: '#4a3428',
+    trees: '#a8401c',
+    boulder: '#5a5a62',
+  },
   // Mill: floorboards, flour drifts, broken crates, walls, the millstone.
   mill: {
     open: '#4f4233',
@@ -113,6 +129,14 @@ export function terrainName(style: string | undefined, t: string): string {
       brush: 'crates',
       trees: 'house',
       boulder: 'well',
+    },
+    heights: { open: 'ash', road: 'path', brush: 'scree', trees: 'cliff', boulder: 'boulder' },
+    kiln: {
+      open: 'forge-stone',
+      road: 'processional',
+      brush: 'cinders',
+      trees: 'lava',
+      boulder: 'anvil',
     },
   };
   return names[style ?? '']?.[t] ?? t;
