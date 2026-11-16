@@ -4,6 +4,7 @@ import { lanternNight, leave, makeParty, pick } from './helpers';
 test('Lantern Night: dialogue checks, character options, journal, XP and a level-up', async ({
   page,
 }) => {
+  test.setTimeout(180_000); // Lantern Night may include the tavern brawl now
   await makeParty(page);
   // The front door stays shut until the quest is done.
   await page.getByRole('button', { name: /Front door/ }).click();
