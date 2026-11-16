@@ -53,8 +53,11 @@ test('F2 Road ambush: prepare, fight to the end, and come back with XP', async (
   await lanternNight(page);
   await levelUpAll(page);
   await page.getByRole('button', { name: /Front door/ }).click();
-  await pick(page, /Set out along the road/);
+  await pick(page, /Set out \(open the map\)/);
   await page.getByRole('button', { name: 'Set out' }).click();
+  await expect(page.getByRole('heading', { name: 'The Southern Greypeaks' })).toBeVisible();
+  await page.getByRole('button', { name: /^The Old Mine/ }).click();
+  await page.getByRole('button', { name: /^Travel \(/ }).click();
   await expect(
     page.getByRole('heading', { name: /Prepare: Ambush on the Ashford road/ }),
   ).toBeVisible();
@@ -82,9 +85,11 @@ test('F2 Road ambush: prepare, fight to the end, and come back with XP', async (
 
   if (await page.getByRole('heading', { name: 'Victory!' }).isVisible()) {
     await page.getByRole('button', { name: 'Continue' }).click();
-    await expect(page.getByText(/Victory! \+50 XP each/)).toBeVisible();
-    await expect(page.getByText(/Journal updated: Take the Ashford road/)).toBeVisible();
-    await expect(page.getByText('350 / 900 XP')).toBeVisible();
+    // The party arrives where it was going, and the map's travel log has the news.
+    await expect(page.getByRole('heading', { name: 'The Southern Greypeaks' })).toBeVisible();
+    await expect(page.getByRole('log')).toContainText('Victory! +50 XP each.');
+    await expect(page.getByRole('log')).toContainText('Journal updated: Take the Ashford road');
+    await expect(page.getByRole('button', { name: /The Old Mine.*you are here/ })).toBeVisible();
   } else {
     await page.getByRole('button', { name: 'Load the autosave from before the fight' }).click();
     await expect(page.getByRole('heading', { name: 'The Drowned Lantern' })).toBeVisible();

@@ -1,0 +1,6 @@
+<svg width="36" height="30" viewBox="0 0 36 30">
+        <circle cx="18" cy="16" r="14" fill="#f6c76a" opacity="0.35"></circle>
+        <path class="wing" d="M18 16 C8 2 0 8 4 18 C8 22 14 20 18 16 Z" fill="#f3e3c0" stroke="#b08a4a" stroke-width="1"></path>
+        <path class="wing" d="M18 16 C28 2 36 8 32 18 C28 22 22 20 18 16 Z" fill="#f3e3c0" stroke="#b08a4a" stroke-width="1"></path>
+        <ellipse cx="18" cy="18" rx="2.2" ry="6" fill="#6b4a2a"></ellipse>
+      </svg>

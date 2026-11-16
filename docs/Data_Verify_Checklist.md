@@ -4,7 +4,7 @@
 
 Each line was entered from memory or is marked ⚠ in the design docs. Check it against your PDFs. When a line is right (or fixed), remove its `verify` and `verifyNote` from the JSON and run `npm run verify-list` again.
 
-**244 items to check.**
+**252 items to check.**
 
 ## species.json
 
@@ -277,6 +277,13 @@ Each line was entered from memory or is marked ⚠ in the design docs. Check it 
 ## encounters.json
 
 - [ ] **(whole file)**: Map layout, positions and the per-difficulty enemy lists come from docs/mockups/Combat.dc.html; terrain types (trees block, brush is difficult terrain and a hiding spot, boulders give half cover) are my design [inferred].
+- [ ] **encounters › Starving wolves**: Monsters and raw XP from Encounters_and_XP.md §5b; XP per character = raw ÷ 4 (§3). Easy removes one enemy and Hard adds one [inferred, D9 says Easy/Hard add or remove enemies]; map and positions are mine [inferred].
+- [ ] **encounters › Goblin foragers**: Monsters and raw XP from Encounters_and_XP.md §5b; XP per character = raw ÷ 4 (§3). Easy removes one enemy and Hard adds one [inferred, D9 says Easy/Hard add or remove enemies]; map and positions are mine [inferred].
+- [ ] **encounters › River-road bandits**: Monsters and raw XP from Encounters_and_XP.md §5b; XP per character = raw ÷ 4 (§3). Easy removes one enemy and Hard adds one [inferred, D9 says Easy/Hard add or remove enemies]; map and positions are mine [inferred].
+- [ ] **encounters › Stirges at dusk**: Monsters and raw XP from Encounters_and_XP.md §5b; XP per character = raw ÷ 4 (§3). Easy removes one enemy and Hard adds one [inferred, D9 says Easy/Hard add or remove enemies]; map and positions are mine [inferred].
+- [ ] **encounters › A brown bear**: Monsters and raw XP from Encounters_and_XP.md §5b; XP per character = raw ÷ 4 (§3). Easy removes one enemy and Hard adds one [inferred, D9 says Easy/Hard add or remove enemies]; map and positions are mine [inferred].
+- [ ] **encounters › A hunting griffon**: Monsters and raw XP from Encounters_and_XP.md §5b; XP per character = raw ÷ 4 (§3). Easy removes one enemy and Hard adds one [inferred, D9 says Easy/Hard add or remove enemies]; map and positions are mine [inferred].
+- [ ] **encounters › Cult recruiters**: Monsters and raw XP from Encounters_and_XP.md §5b; XP per character = raw ÷ 4 (§3). Easy removes one enemy and Hard adds one [inferred, D9 says Easy/Hard add or remove enemies]; map and positions are mine [inferred].
 
 ## loadouts.json
 
@@ -285,3 +292,7 @@ Each line was entered from memory or is marked ⚠ in the design docs. Check it 
 ## npcs.json
 
 - [ ] **(whole file)**: Portraits for Brannoc come from docs/mockups/Dialogue.dc.html; the others are my own picks [inferred].
+
+## places.json
+
+- [ ] **(whole file)**: Positions, text and the travel-time formula (distance ÷ 32 hours) come from docs/mockups/WorldMap.dc.html; the formula itself is a mockup choice, not a rule.

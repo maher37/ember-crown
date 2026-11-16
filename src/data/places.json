@@ -1,0 +1,149 @@
+{
+  "verify": true,
+  "verifyNote": "Positions, text and the travel-time formula (distance ÷ 32 hours) come from docs/mockups/WorldMap.dc.html; the formula itself is a mockup choice, not a rule.",
+  "places": [
+    {
+      "id": "ashford",
+      "name": "Ashford",
+      "x": 310,
+      "y": 344,
+      "kind": "town",
+      "tag": "Town · home base",
+      "act": 1,
+      "region": "none",
+      "desc": "The Drowned Lantern, Brannoc, the Lantern Board of side quests, and the road out of town."
+    },
+    {
+      "id": "old-mine",
+      "name": "The Old Mine",
+      "x": 392,
+      "y": 226,
+      "kind": "main",
+      "tag": "Act I · main story",
+      "act": 1,
+      "region": "road",
+      "desc": "Where Edric said \"they’re digging for it.\" Cult diggers at the mouth, and Ammarindar halls below."
+    },
+    {
+      "id": "warren",
+      "name": "Goblin Warren",
+      "x": 470,
+      "y": 282,
+      "kind": "main",
+      "tag": "Act I · main story",
+      "act": 1,
+      "region": "road",
+      "desc": "Grisk Two-Teeth holds the missing miners. Fight, sneak, or trade food."
+    },
+    {
+      "id": "mill",
+      "name": "Varrow’s Mill",
+      "x": 252,
+      "y": 386,
+      "kind": "side",
+      "tag": "Act I · side quest",
+      "act": 1,
+      "region": "road",
+      "desc": "Abandoned since the Varrows were driven out. Shadows move like a family at a dinner table."
+    },
+    {
+      "id": "steaming-cave",
+      "name": "Steaming Cave",
+      "x": 440,
+      "y": 152,
+      "kind": "elite",
+      "tag": "Act I · elite (optional)",
+      "act": 1,
+      "region": "road",
+      "desc": "Scorched goats and melted snow. Wix refuses to go any closer. Something small and red has hatched here."
+    },
+    {
+      "id": "abbey",
+      "name": "Abbey of the Morninglord",
+      "x": 580,
+      "y": 416,
+      "kind": "main",
+      "tag": "Act II · main story",
+      "act": 2,
+      "region": "marsh",
+      "desc": "A ruined abbey of Lathander on the marsh edge. The second shard lies in its undercroft."
+    },
+    {
+      "id": "marrowmere",
+      "name": "Drowned Marrowmere",
+      "x": 660,
+      "y": 480,
+      "kind": "main",
+      "tag": "Act II · main story",
+      "act": 2,
+      "region": "marsh",
+      "desc": "A bog village where the warm water has woken the dead. Don’t go in at night."
+    },
+    {
+      "id": "lizardfolk-grounds",
+      "name": "Lizardfolk grounds",
+      "x": 770,
+      "y": 540,
+      "kind": "main",
+      "tag": "Act II · main story",
+      "act": 2,
+      "region": "marsh",
+      "desc": "Territorial hunters. They respect gifts and plain speaking."
+    },
+    {
+      "id": "sallow",
+      "name": "Mother Sallow’s hut",
+      "x": 522,
+      "y": 522,
+      "kind": "side",
+      "tag": "Act II · side quest",
+      "act": 2,
+      "region": "marsh",
+      "desc": "A kindly old woman lives here, they say. Her reflection disagrees."
+    },
+    {
+      "id": "ashfall-pass",
+      "name": "Ashfall Pass",
+      "x": 575,
+      "y": 190,
+      "kind": "main",
+      "tag": "Act III · main story",
+      "act": 3,
+      "region": "heights",
+      "desc": "The road into the high Greypeaks."
+    },
+    {
+      "id": "great-forge",
+      "name": "Ammarindar’s Great Forge",
+      "x": 650,
+      "y": 126,
+      "kind": "elite",
+      "tag": "Act III · elite (optional)",
+      "act": 3,
+      "region": "heights",
+      "desc": "Hammering echoes for miles."
+    },
+    {
+      "id": "kings-kiln",
+      "name": "The King’s Kiln",
+      "x": 730,
+      "y": 84,
+      "kind": "main",
+      "tag": "Act III · finale",
+      "act": 3,
+      "region": "heights",
+      "desc": "King Varrow’s tomb in an old dwarven forge-hall."
+    },
+    {
+      "id": "wix-caves",
+      "name": "Wix’s clan caves",
+      "x": 792,
+      "y": 172,
+      "kind": "side",
+      "tag": "Act III · side quest",
+      "act": 3,
+      "region": "heights",
+      "desc": "Wix’s family, and a hill giant problem."
+    }
+  ]
+}

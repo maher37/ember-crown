@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import { SeededRng, type RandomSource } from '../rules';
+import { abilityCheck, abilityModifier, SeededRng, SKILLS, type RandomSource } from '../rules';
 import type { DifficultyId } from '../data/schemas/difficulty';
 import {
   act,
@@ -14,12 +14,35 @@ import {
 } from './combat';
 import { Conversation } from './dialogue';
 import type { Hero } from './hero';
-import { completeStep } from './journal';
+import { GAME_START } from './calendar';
+import { formatDate } from './calendar';
+import { bestFor, parseSkill } from './dialogue';
+import { skillBonus } from './hero';
+import { addNote, completeStep, partyXp } from './journal';
+import { deliverLetters, readLetter } from './letters';
+import { canLongRest, finishShortRest, spendDie, startShortRest, takeLongRest } from './rest';
+import { currentPlace, getPlace, roadCheck, travelHours, travelLeg } from './travel';
 import { applyLevelUp, type LevelUpPlan } from './levelup';
 import { makeSave, writeSlot, type GameState, type SaveFile, type SlotId } from './save';
 
+/** Put the party at a place (Ashford means the tavern). */
+const arrive = (g: GameState, placeId: string): GameState => ({
+  ...g,
+  location: placeId === 'ashford' ? 'drowned-lantern' : placeId,
+});
+
 export type Screen =
-  'title' | 'creator' | 'party' | 'explore' | 'dialogue' | 'levelup' | 'prepare' | 'combat';
+  | 'title'
+  | 'creator'
+  | 'party'
+  | 'explore'
+  | 'dialogue'
+  | 'levelup'
+  | 'prepare'
+  | 'combat'
+  | 'map'
+  | 'camp';
+export type CampScene = 'wild' | 'inn' | 'cave';
 export const PARTY_SIZE = 4;
 
 interface GameStore {
@@ -46,6 +69,17 @@ interface GameStore {
   levelUpId: string | null;
   /** Short messages for the player ("Journal updated", "+275 XP each"). */
   toasts: string[];
+  /** Travel log on the world map, newest first. */
+  travelLog: string[];
+  /** Where the party was heading when an encounter interrupted the road. */
+  pendingArrival: string | null;
+  /** The fight interrupted a long rest in the wild: go back to camp afterwards. */
+  backToCamp: boolean;
+  campScene: CampScene;
+  /** Camp messages (rest results), oldest first. */
+  campLog: string[];
+  /** Heroes who spent Hit Dice during the current short rest (null: no short rest running). */
+  shortRest: string[] | null;
 
   goto: (screen: Screen) => void;
   startNewGame: (seed?: number) => void;
@@ -75,6 +109,17 @@ interface GameStore {
   confirmLevelUp: (heroId: string, plan: LevelUpPlan) => void;
   toast: (messages: string[]) => void;
   clearToasts: () => void;
+  openMap: () => void;
+  travelTo: (placeId: string) => void;
+  openCamp: (scene?: CampScene) => void;
+  setCampScene: (scene: CampScene) => void;
+  beginShortRest: () => void;
+  spendHitDie: (heroId: string) => void;
+  endShortRest: () => void;
+  longRest: () => void;
+  answerLetter: (id: string, replyId?: string) => void;
+  /** Talk past a talk-or-fight encounter (D16: same XP). Returns the check text. */
+  talkPast: () => { success: boolean; text: string } | null;
 }
 
 const newSeed = () => Math.floor(Math.random() * 2 ** 32);
@@ -93,6 +138,12 @@ export const useGame = create<GameStore>()((set, get) => ({
   dialogueTick: 0,
   levelUpId: null,
   toasts: [],
+  travelLog: [],
+  pendingArrival: null,
+  backToCamp: false,
+  campScene: 'wild',
+  campLog: [],
+  shortRest: null,
 
   goto: (screen) => set({ screen }),
 
@@ -139,6 +190,11 @@ export const useGame = create<GameStore>()((set, get) => ({
       quests: { 'lantern-night': { status: 'active', steps: [] } },
       notes: [],
       ink: {},
+      clock: GAME_START,
+      lastLongRest: null,
+      letters: pendingParty.some((h) => h.origin === 'corin')
+        ? [{ id: 'letter-0', read: false }]
+        : [],
     };
     set({ game, pendingParty: [], screen: 'explore', sessionStart: Date.now(), toasts: [] });
     // Autosave at the start of the adventure (and later before every fight, M4).
@@ -206,17 +262,33 @@ export const useGame = create<GameStore>()((set, get) => ({
     let next = { ...game, party: result.party, rngState: combat.rngState };
     const messages = [`Victory! +${result.xpEach} XP each.`, ...result.notes];
     if (combat.encounterId === 'f2-road-ambush') {
-      const r = completeStep(next, 'old-mine', 'road');
+      const r = completeStep(
+        { ...next, flags: { ...next.flags, road_done: true } },
+        'old-mine',
+        'road',
+      );
       next = r.game;
       messages.push(...r.messages);
     }
+    const { pendingArrival, backToCamp } = get();
+    if (pendingArrival) next = arrive(next, pendingArrival);
     set({
       game: next,
       combat: null,
       lastResult: result,
-      screen: 'explore',
+      screen: backToCamp
+        ? 'camp'
+        : pendingArrival && pendingArrival !== 'ashford'
+          ? 'map'
+          : 'explore',
       rngState: combat.rngState,
       toasts: messages,
+      travelLog: [...messages, ...get().travelLog].slice(0, 30),
+      campLog: backToCamp
+        ? [...get().campLog, ...messages, 'The fight is over. You can try to rest again.']
+        : get().campLog,
+      pendingArrival: null,
+      backToCamp: false,
     });
     get().saveTo('autosave');
   },
@@ -253,7 +325,8 @@ export const useGame = create<GameStore>()((set, get) => ({
     set({ conversation: null, screen: 'explore' });
     // Autosave after every conversation, so story progress is never lost [inferred].
     get().saveTo('autosave');
-    if (travel) get().openPrepare(travel);
+    if (travel === 'map') get().openMap();
+    else if (travel) get().openPrepare(travel);
   },
 
   openLevelUp: (heroId) => set({ levelUpId: heroId, screen: 'levelup' }),
@@ -266,6 +339,184 @@ export const useGame = create<GameStore>()((set, get) => ({
     set({ game: { ...game, party }, levelUpId: null, screen: 'explore' });
     get().toast([`${h.name} reaches level ${h.level}!`]);
     get().saveTo('autosave');
+  },
+
+  openMap: () => set({ screen: 'map' }),
+
+  travelTo: (placeId) => {
+    const { game, rngState } = get();
+    if (!game) return;
+    const rng = SeededRng.fromState(rngState);
+    const from = currentPlace(game);
+    const to = getPlace(placeId);
+    const out = travelLeg(game, placeId, rng);
+    let next: GameState = { ...game, clock: game.clock + travelHours(from, to) };
+    if (out.kind === 'arrive' && out.note) next = addNote(next, out.note).game;
+    const log = [...out.log];
+    if (out.kind === 'arrive') {
+      next = arrive(next, placeId);
+      log.push(`Arrived at ${to.name}. ${formatDate(next.clock)}.`);
+    }
+    set({
+      game: next,
+      rngState: rng.state,
+      travelLog: [...log.reverse(), ...get().travelLog].slice(0, 30),
+    });
+    if (out.kind === 'encounter') {
+      set({ pendingArrival: placeId, backToCamp: false });
+      get().openPrepare(out.encounterId);
+      return;
+    }
+    get().saveTo('autosave');
+    if (placeId === 'ashford') set({ screen: 'explore' });
+  },
+
+  openCamp: (scene) => {
+    const g = get().game;
+    const inTown = !g || g.location === 'drowned-lantern' || g.location === 'ashford';
+    set({
+      screen: 'camp',
+      campScene: scene ?? (inTown ? 'inn' : 'wild'),
+      campLog: [
+        inTown
+          ? 'A private room at the Drowned Lantern. Brannoc has left a candle and a jug of water.'
+          : 'The party makes camp. The fire is warm; the mountain, lately, is warmer.',
+      ],
+      shortRest: null,
+    });
+  },
+
+  setCampScene: (campScene) => set({ campScene }),
+
+  beginShortRest: () => {
+    const { game, rngState } = get();
+    if (!game) return;
+    const rng = SeededRng.fromState(rngState);
+    const r = startShortRest(game, rng);
+    set({
+      game: r.game,
+      rngState: rng.state,
+      shortRest: [],
+      campLog: [...get().campLog, ...r.log, 'Spend Hit Dice to heal, then finish the rest.'],
+    });
+  },
+
+  spendHitDie: (heroId) => {
+    const { game, rngState, shortRest } = get();
+    if (!game || !shortRest) return;
+    const rng = SeededRng.fromState(rngState);
+    try {
+      const r = spendDie(game, heroId, rng);
+      set({
+        game: r.game,
+        rngState: rng.state,
+        shortRest: [...new Set([...shortRest, heroId])],
+        campLog: [...get().campLog, ...r.log],
+      });
+    } catch (e) {
+      set({ campLog: [...get().campLog, e instanceof Error ? e.message : String(e)] });
+    }
+  },
+
+  endShortRest: () => {
+    const { game, rngState, shortRest } = get();
+    if (!game || !shortRest) return;
+    const rng = SeededRng.fromState(rngState);
+    const r = finishShortRest(game, shortRest, rng);
+    set({
+      game: r.game,
+      rngState: rng.state,
+      shortRest: null,
+      campLog: [...get().campLog, ...r.log, 'The short rest is over.'],
+    });
+    get().saveTo('autosave');
+  },
+
+  longRest: () => {
+    const { game, rngState } = get();
+    if (!game) return;
+    if (!canLongRest(game)) {
+      set({
+        campLog: [
+          ...get().campLog,
+          "You can't benefit from another long rest yet: once per 24 hours (PHB).",
+        ],
+      });
+      return;
+    }
+    const rng = SeededRng.fromState(rngState);
+    // Encounters_and_XP.md §5b: one road check per long rest taken in the wild.
+    const place = currentPlace(game);
+    if (get().campScene !== 'inn' && place.region !== 'none') {
+      const check = roadCheck(place.region, 'during the night', [], rng);
+      if (check.kind === 'encounter') {
+        set({
+          rngState: rng.state,
+          campLog: [...get().campLog, ...check.log, 'The rest is interrupted!'],
+          backToCamp: true,
+          pendingArrival: null,
+        });
+        get().openPrepare(check.encounterId);
+        return;
+      }
+      set({ campLog: [...get().campLog, ...check.log] });
+    }
+    const r = takeLongRest(game, rng);
+    const d = deliverLetters(r.game);
+    const lines = [...r.log, `${formatDate(d.game.clock)}.`];
+    if (d.delivered.length) lines.push('In the night, a lantern moth lands on your lantern…');
+    set({ game: d.game, rngState: rng.state, campLog: [...get().campLog, ...lines] });
+    get().saveTo('autosave');
+  },
+
+  answerLetter: (id, replyId) => {
+    const { game } = get();
+    if (!game) return;
+    set({ game: readLetter(game, id, replyId) });
+    get().saveTo('autosave');
+  },
+
+  talkPast: () => {
+    const { game, encounterId, rngState, pendingArrival, backToCamp } = get();
+    if (!game || !encounterId) return null;
+    const enc = getEncounter(encounterId);
+    if (!enc.talk) return null;
+    const rng = SeededRng.fromState(rngState);
+    const skill = parseSkill(enc.talk.skill);
+    const hero = bestFor(game, skill);
+    const ability = SKILLS[skill];
+    const bonus = skillBonus(hero, skill) - abilityModifier(hero.abilities[ability]);
+    const label = enc.talk.skill[0]!.toUpperCase() + enc.talk.skill.slice(1);
+    const r = abilityCheck(hero, ability, enc.talk.dc, rng, {
+      label,
+      bonuses: bonus ? [{ label: 'skill', value: bonus }] : [],
+    });
+    set({ rngState: rng.state });
+    if (!r.success) return { success: false, text: `${r.log.text}. ${enc.talk.failure}` };
+    // D16: talking past a fight is worth the same XP.
+    let next = partyXp(game, enc.xpPerPc, enc.name).game;
+    if (enc.talk.note) next = addNote(next, enc.talk.note).game;
+    if (pendingArrival) next = arrive(next, pendingArrival);
+    const messages = [
+      r.log.text,
+      enc.talk.success,
+      `+${enc.xpPerPc} XP each: ${enc.name} (talked past)`,
+    ];
+    set({
+      game: next,
+      screen: backToCamp
+        ? 'camp'
+        : pendingArrival && pendingArrival !== 'ashford'
+          ? 'map'
+          : 'explore',
+      pendingArrival: null,
+      backToCamp: false,
+      toasts: messages,
+      travelLog: [...messages, ...get().travelLog].slice(0, 30),
+      campLog: backToCamp ? [...get().campLog, ...messages] : get().campLog,
+    });
+    get().saveTo('autosave');
+    return { success: true, text: r.log.text };
   },
 
   toast: (messages) => set({ toasts: [...get().toasts, ...messages].slice(-6) }),

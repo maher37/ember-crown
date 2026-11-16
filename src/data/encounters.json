@@ -82,6 +82,495 @@
           "tactic": "melee"
         }
       ]
+    },
+    {
+      "id": "road-wolves",
+      "code": "R1",
+      "name": "Starving wolves",
+      "act": 1,
+      "xpPerPc": 37,
+      "briefing": "Three wolves, ribs showing, have followed the goblin exodus down the mountain.",
+      "surprise": true,
+      "map": {
+        "width": 16,
+        "height": 9,
+        "style": "road",
+        "terrain": [
+          "TTb....r....bTTT",
+          "b...........b..T",
+          "................",
+          "================",
+          "================",
+          "================",
+          "................",
+          "Tb....r.......bT",
+          "TTT.........bTTT"
+        ]
+      },
+      "partyStart": [
+        [2, 4],
+        [2, 3],
+        [1, 4],
+        [1, 5]
+      ],
+      "enemies": [
+        {
+          "id": "wolf-1",
+          "monster": "wolf",
+          "name": "Wolf 1",
+          "pos": [12, 3],
+          "difficulties": ["easy", "medium", "hard"],
+          "tactic": "melee"
+        },
+        {
+          "id": "wolf-2",
+          "monster": "wolf",
+          "name": "Wolf 2",
+          "pos": [12, 5],
+          "difficulties": ["easy", "medium", "hard"],
+          "tactic": "melee"
+        },
+        {
+          "id": "wolf-3",
+          "monster": "wolf",
+          "name": "Wolf 3",
+          "pos": [13, 4],
+          "difficulties": ["medium", "hard"],
+          "tactic": "melee"
+        },
+        {
+          "id": "wolf-4",
+          "monster": "wolf",
+          "name": "Wolf 4",
+          "pos": [11, 4],
+          "difficulties": ["hard"],
+          "tactic": "melee"
+        }
+      ],
+      "verify": true,
+      "verifyNote": "Monsters and raw XP from Encounters_and_XP.md §5b; XP per character = raw ÷ 4 (§3). Easy removes one enemy and Hard adds one [inferred, D9 says Easy/Hard add or remove enemies]; map and positions are mine [inferred]."
+    },
+    {
+      "id": "road-goblin-foragers",
+      "code": "R2",
+      "name": "Goblin foragers",
+      "act": 1,
+      "xpPerPc": 37,
+      "briefing": "Three goblins with sacks and cooking pots. They look more hungry than hostile.",
+      "surprise": true,
+      "map": {
+        "width": 16,
+        "height": 9,
+        "style": "road",
+        "terrain": [
+          "TTb....r....bTTT",
+          "b...........b..T",
+          "................",
+          "================",
+          "================",
+          "================",
+          "................",
+          "Tb....r.......bT",
+          "TTT.........bTTT"
+        ]
+      },
+      "partyStart": [
+        [2, 4],
+        [2, 3],
+        [1, 4],
+        [1, 5]
+      ],
+      "enemies": [
+        {
+          "id": "goblin-1",
+          "monster": "goblin",
+          "name": "Goblin 1",
+          "pos": [12, 3],
+          "difficulties": ["easy", "medium", "hard"],
+          "tactic": "melee"
+        },
+        {
+          "id": "goblin-2",
+          "monster": "goblin",
+          "name": "Goblin 2",
+          "pos": [12, 5],
+          "difficulties": ["easy", "medium", "hard"],
+          "tactic": "melee"
+        },
+        {
+          "id": "goblin-3",
+          "monster": "goblin",
+          "name": "Goblin 3",
+          "pos": [13, 4],
+          "difficulties": ["medium", "hard"],
+          "tactic": "melee"
+        },
+        {
+          "id": "goblin-4",
+          "monster": "goblin",
+          "name": "Goblin 4",
+          "pos": [11, 4],
+          "difficulties": ["hard"],
+          "tactic": "melee"
+        }
+      ],
+      "verify": true,
+      "verifyNote": "Monsters and raw XP from Encounters_and_XP.md §5b; XP per character = raw ÷ 4 (§3). Easy removes one enemy and Hard adds one [inferred, D9 says Easy/Hard add or remove enemies]; map and positions are mine [inferred].",
+      "talk": {
+        "skill": "persuasion",
+        "dc": 12,
+        "prompt": "Offer them food for news",
+        "success": "The goblins wolf down your rations and chatter about the mountain \"breathing\" at night. They scurry off happy.",
+        "note": "Goblin foragers say the mountain \"breathes\" at night, and that’s why the goblins are fleeing.",
+        "failure": "They snatch the food and attack anyway!"
+      }
+    },
+    {
+      "id": "road-bandits",
+      "code": "R3",
+      "name": "River-road bandits",
+      "act": 1,
+      "xpPerPc": 31,
+      "briefing": "Five bandits working the river road step out from behind the reeds.",
+      "surprise": true,
+      "map": {
+        "width": 16,
+        "height": 9,
+        "style": "road",
+        "terrain": [
+          "TTb....r....bTTT",
+          "b...........b..T",
+          "................",
+          "================",
+          "================",
+          "================",
+          "................",
+          "Tb....r.......bT",
+          "TTT.........bTTT"
+        ]
+      },
+      "partyStart": [
+        [2, 4],
+        [2, 3],
+        [1, 4],
+        [1, 5]
+      ],
+      "enemies": [
+        {
+          "id": "bandit-1",
+          "monster": "bandit",
+          "name": "Bandit 1",
+          "pos": [12, 3],
+          "difficulties": ["easy", "medium", "hard"],
+          "tactic": "melee"
+        },
+        {
+          "id": "bandit-2",
+          "monster": "bandit",
+          "name": "Bandit 2",
+          "pos": [12, 5],
+          "difficulties": ["easy", "medium", "hard"],
+          "tactic": "melee"
+        },
+        {
+          "id": "bandit-3",
+          "monster": "bandit",
+          "name": "Bandit 3",
+          "pos": [13, 4],
+          "difficulties": ["easy", "medium", "hard"],
+          "tactic": "melee"
+        },
+        {
+          "id": "bandit-4",
+          "monster": "bandit",
+          "name": "Bandit 4",
+          "pos": [11, 4],
+          "difficulties": ["easy", "medium", "hard"],
+          "tactic": "melee"
+        },
+        {
+          "id": "bandit-5",
+          "monster": "bandit",
+          "name": "Bandit 5",
+          "pos": [14, 3],
+          "difficulties": ["medium", "hard"],
+          "tactic": "melee"
+        },
+        {
+          "id": "bandit-6",
+          "monster": "bandit",
+          "name": "Bandit 6",
+          "pos": [14, 5],
+          "difficulties": ["hard"],
+          "tactic": "melee"
+        }
+      ],
+      "verify": true,
+      "verifyNote": "Monsters and raw XP from Encounters_and_XP.md §5b; XP per character = raw ÷ 4 (§3). Easy removes one enemy and Hard adds one [inferred, D9 says Easy/Hard add or remove enemies]; map and positions are mine [inferred]."
+    },
+    {
+      "id": "road-stirges",
+      "code": "R4",
+      "name": "Stirges at dusk",
+      "act": 1,
+      "xpPerPc": 25,
+      "briefing": "A whine of wings over the water: stirges, hungry for blood.",
+      "surprise": true,
+      "map": {
+        "width": 16,
+        "height": 9,
+        "style": "road",
+        "terrain": [
+          "TTb....r....bTTT",
+          "b...........b..T",
+          "................",
+          "================",
+          "================",
+          "================",
+          "................",
+          "Tb....r.......bT",
+          "TTT.........bTTT"
+        ]
+      },
+      "partyStart": [
+        [2, 4],
+        [2, 3],
+        [1, 4],
+        [1, 5]
+      ],
+      "enemies": [
+        {
+          "id": "stirge-1",
+          "monster": "stirge",
+          "name": "Stirge 1",
+          "pos": [12, 3],
+          "difficulties": ["easy", "medium", "hard"],
+          "tactic": "melee"
+        },
+        {
+          "id": "stirge-2",
+          "monster": "stirge",
+          "name": "Stirge 2",
+          "pos": [12, 5],
+          "difficulties": ["easy", "medium", "hard"],
+          "tactic": "melee"
+        },
+        {
+          "id": "stirge-3",
+          "monster": "stirge",
+          "name": "Stirge 3",
+          "pos": [13, 4],
+          "difficulties": ["easy", "medium", "hard"],
+          "tactic": "melee"
+        },
+        {
+          "id": "stirge-4",
+          "monster": "stirge",
+          "name": "Stirge 4",
+          "pos": [11, 4],
+          "difficulties": ["medium", "hard"],
+          "tactic": "melee"
+        },
+        {
+          "id": "stirge-5",
+          "monster": "stirge",
+          "name": "Stirge 5",
+          "pos": [14, 3],
+          "difficulties": ["hard"],
+          "tactic": "melee"
+        }
+      ],
+      "verify": true,
+      "verifyNote": "Monsters and raw XP from Encounters_and_XP.md §5b; XP per character = raw ÷ 4 (§3). Easy removes one enemy and Hard adds one [inferred, D9 says Easy/Hard add or remove enemies]; map and positions are mine [inferred]."
+    },
+    {
+      "id": "road-bear",
+      "code": "R5",
+      "name": "A brown bear",
+      "act": 1,
+      "xpPerPc": 50,
+      "briefing": "A brown bear, driven down by the warm mountain, blocks the road.",
+      "surprise": true,
+      "map": {
+        "width": 16,
+        "height": 9,
+        "style": "road",
+        "terrain": [
+          "TTb....r....bTTT",
+          "b...........b..T",
+          "................",
+          "================",
+          "================",
+          "================",
+          "................",
+          "Tb....r.......bT",
+          "TTT.........bTTT"
+        ]
+      },
+      "partyStart": [
+        [2, 4],
+        [2, 3],
+        [1, 4],
+        [1, 5]
+      ],
+      "enemies": [
+        {
+          "id": "brown-bear-1",
+          "monster": "brown-bear",
+          "name": "Brown Bear 1",
+          "pos": [12, 3],
+          "difficulties": ["easy", "medium", "hard"],
+          "tactic": "melee"
+        }
+      ],
+      "verify": true,
+      "verifyNote": "Monsters and raw XP from Encounters_and_XP.md §5b; XP per character = raw ÷ 4 (§3). Easy removes one enemy and Hard adds one [inferred, D9 says Easy/Hard add or remove enemies]; map and positions are mine [inferred]."
+    },
+    {
+      "id": "road-griffon",
+      "code": "R6",
+      "name": "A hunting griffon",
+      "act": 1,
+      "xpPerPc": 112,
+      "briefing": "A griffon circles once, then dives for your packs.",
+      "surprise": true,
+      "map": {
+        "width": 16,
+        "height": 9,
+        "style": "road",
+        "terrain": [
+          "TTb....r....bTTT",
+          "b...........b..T",
+          "................",
+          "================",
+          "================",
+          "================",
+          "................",
+          "Tb....r.......bT",
+          "TTT.........bTTT"
+        ]
+      },
+      "partyStart": [
+        [2, 4],
+        [2, 3],
+        [1, 4],
+        [1, 5]
+      ],
+      "enemies": [
+        {
+          "id": "griffon-1",
+          "monster": "griffon",
+          "name": "Griffon 1",
+          "pos": [12, 3],
+          "difficulties": ["easy", "medium", "hard"],
+          "tactic": "melee"
+        }
+      ],
+      "verify": true,
+      "verifyNote": "Monsters and raw XP from Encounters_and_XP.md §5b; XP per character = raw ÷ 4 (§3). Easy removes one enemy and Hard adds one [inferred, D9 says Easy/Hard add or remove enemies]; map and positions are mine [inferred]."
+    },
+    {
+      "id": "road-recruiters",
+      "code": "R7",
+      "name": "Cult recruiters",
+      "act": 1,
+      "xpPerPc": 43,
+      "briefing": "Three cultists and a thug with a hollow-star banner, recruiting on the road.",
+      "surprise": true,
+      "map": {
+        "width": 16,
+        "height": 9,
+        "style": "road",
+        "terrain": [
+          "TTb....r....bTTT",
+          "b...........b..T",
+          "................",
+          "================",
+          "================",
+          "================",
+          "................",
+          "Tb....r.......bT",
+          "TTT.........bTTT"
+        ]
+      },
+      "partyStart": [
+        [2, 4],
+        [2, 3],
+        [1, 4],
+        [1, 5]
+      ],
+      "enemies": [
+        {
+          "id": "cultist-1",
+          "monster": "cultist",
+          "name": "Cultist 1",
+          "pos": [12, 3],
+          "difficulties": ["easy", "medium", "hard"],
+          "tactic": "melee"
+        },
+        {
+          "id": "cultist-2",
+          "monster": "cultist",
+          "name": "Cultist 2",
+          "pos": [12, 5],
+          "difficulties": ["easy", "medium", "hard"],
+          "tactic": "melee"
+        },
+        {
+          "id": "cultist-3",
+          "monster": "cultist",
+          "name": "Cultist 3",
+          "pos": [13, 4],
+          "difficulties": ["medium", "hard"],
+          "tactic": "melee"
+        },
+        {
+          "id": "cultist-4",
+          "monster": "cultist",
+          "name": "Cultist 4",
+          "pos": [11, 4],
+          "difficulties": ["hard"],
+          "tactic": "melee"
+        },
+        {
+          "id": "thug-5",
+          "monster": "thug",
+          "name": "Thug 5",
+          "pos": [14, 3],
+          "difficulties": ["easy", "medium", "hard"],
+          "tactic": "melee"
+        }
+      ],
+      "verify": true,
+      "verifyNote": "Monsters and raw XP from Encounters_and_XP.md §5b; XP per character = raw ÷ 4 (§3). Easy removes one enemy and Hard adds one [inferred, D9 says Easy/Hard add or remove enemies]; map and positions are mine [inferred].",
+      "talk": {
+        "skill": "persuasion",
+        "dc": 13,
+        "prompt": "Talk your way past them",
+        "success": "You trade a few careful words about wages and widows. The recruiters let you pass, and one even looks ashamed.",
+        "note": "The Hollow Star recruits on the road with promises of wages for out-of-work miners.",
+        "failure": "\"Unbelievers!\" The thug draws his mace."
+      }
     }
-  ]
+  ],
+  "roadTables": {
+    "road": [
+      "road-wolves",
+      "road-goblin-foragers",
+      "road-bandits",
+      "road-stirges",
+      "road-bear",
+      "road-griffon",
+      "road-recruiters",
+      null
+    ]
+  },
+  "roadEvents": {
+    "road": {
+      "8": {
+        "text": "No fight: a dwarven pilgrim bound for the Ammarindar ruins shares a rumor: the old dwarf-roads under the mountain are warm to the touch.",
+        "note": "A dwarven pilgrim says the old dwarf-roads under the mountain are warm to the touch."
+      }
+    }
+  }
 }

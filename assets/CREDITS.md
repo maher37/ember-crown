@@ -14,3 +14,4 @@ This work includes material taken from the System Reference Document 5.1 ("SRD 5
 
 - Title emblem and favicon: original SVG made for this project.
 - Character portraits: original layered SVG (from the Portrait mockup) made for this project.
+- World map and camp scenes (wilderness, inn room, cave, lantern moth): original SVG art from the project's design mockups (`docs/mockups/WorldMap.dc.html`, `Camp.dc.html`).

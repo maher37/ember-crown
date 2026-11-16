@@ -54,6 +54,9 @@ function game(withCorin = false, soldier = false): GameState {
     quests: { 'lantern-night': { status: 'active', steps: [] } },
     notes: [],
     ink: {},
+    clock: 7972,
+    lastLongRest: null,
+    letters: [],
   };
 }
 
@@ -181,8 +184,8 @@ describe('the tavern dialogue (Ink)', () => {
     expect(shut.ended).toBe(true);
     const done = { ...game(), quests: { 'lantern-night': { status: 'done' as const, steps: [] } } };
     const open = new Conversation('tavern', done, roll(10)).start('front_door');
-    choose(open, /Set out along the road/);
-    expect(open.travel).toBe('f2-road-ambush');
+    choose(open, /Set out/);
+    expect(open.travel).toBe('map');
   });
 
   it('remembers visits across conversations through the saved Ink state', () => {

@@ -160,6 +160,12 @@ export function crossCheck(d: GameData): { errors: string[]; warnings: string[] 
     }
   }
 
+  // Road tables name real encounters.
+  const encIds = ids(d.encounters);
+  for (const [region, table] of Object.entries(d.roadTables))
+    for (const id of table)
+      if (id && !encIds.has(id)) errors.push(`road table ${region}: unknown encounter "${id}"`);
+
   // Quests chain to real quests.
   const questIds = ids(d.quests);
   for (const q of d.quests)

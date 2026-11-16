@@ -6,7 +6,10 @@ import encountersJson from './encounters.json';
 import loadoutsJson from './loadouts.json';
 import npcsJson from './npcs.json';
 import questsJson from './quests.json';
-import { NpcFile, QuestFile } from './schemas/story';
+import { LetterFile, NpcFile, PlaceFile, QuestFile, WixFile } from './schemas/story';
+import placesJson from './places.json';
+import wixJson from './wix.json';
+import lettersJson from './letters.json';
 import { EncounterFile, LoadoutFile } from './schemas/encounter';
 import foesJson from './foes.json';
 import magicItemsJson from './magicItems.json';
@@ -37,7 +40,10 @@ export const foes = NamedFoeFile.parse(foesJson).foes;
 export const weapons = WeaponFile.parse(weaponsJson).weapons;
 export const armor = ArmorFile.parse(armorJson).armor;
 export const magicItems = MagicItemFile.parse(magicItemsJson).items;
-export const encounters = EncounterFile.parse(encountersJson).encounters;
+const encounterFile = EncounterFile.parse(encountersJson);
+export const encounters = encounterFile.encounters;
+export const roadTables = encounterFile.roadTables;
+export const roadEvents = encounterFile.roadEvents;
 const loadoutFile = LoadoutFile.parse(loadoutsJson);
 export const loadouts = loadoutFile.loadouts;
 export const defaultChoices = loadoutFile.defaultChoices;
@@ -45,6 +51,12 @@ const questFile = QuestFile.parse(questsJson);
 export const quests = questFile.quests;
 export const awards = questFile.awards;
 export const npcs = NpcFile.parse(npcsJson).npcs;
+export const places = PlaceFile.parse(placesJson).places;
+export const wix = WixFile.parse(wixJson);
+const letterFile = LetterFile.parse(lettersJson);
+export const letters = letterFile.letters;
+export const letterReplies = letterFile.replies;
+export const trustDcBonus = letterFile.trustDcBonus;
 
 export const gameData = {
   difficulties,
@@ -63,5 +75,8 @@ export const gameData = {
   quests,
   awards,
   npcs,
+  places,
+  letters,
+  roadTables,
 };
 export type GameData = typeof gameData;

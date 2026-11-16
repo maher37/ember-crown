@@ -13,7 +13,9 @@ const multiplier = (n: number) => (n <= 1 ? 1 : n === 2 ? 1.5 : n <= 6 ? 2 : 2.5
 
 /** The pre-combat "Prepare" step: what you face, difficulty, formation, then fight. */
 export function PrepareScreen() {
-  const { game, encounterId, startFight, goto } = useGame();
+  const { game, encounterId, startFight, goto, pendingArrival, backToCamp, talkPast } = useGame();
+  const [talkResult, setTalkResult] = useState<{ success: boolean; text: string } | null>(null);
+  const onRoad = !!pendingArrival || backToCamp;
   const settings = useSettings();
   const [difficulty, setDifficulty] = useState<DifficultyId>(settings.difficulty);
   const enc = getEncounter(encounterId!);
@@ -52,9 +54,21 @@ export function PrepareScreen() {
     <div className="prepare">
       <header className="combat-header">
         <h1>Prepare: {enc.name}</h1>
-        <button type="button" className="menu-secondary small-btn" onClick={() => goto('explore')}>
-          Back to the tavern
-        </button>
+        {onRoad ? (
+          <span className="muted small">
+            {enc.surprise
+              ? 'They came out of nowhere. Passive Perception decides who is caught by surprise.'
+              : ''}
+          </span>
+        ) : (
+          <button
+            type="button"
+            className="menu-secondary small-btn"
+            onClick={() => goto('explore')}
+          >
+            Back to the tavern
+          </button>
+        )}
       </header>
       <div className="prepare-body">
         <section className="prepare-col" aria-label="Briefing">
@@ -224,6 +238,28 @@ export function PrepareScreen() {
                 </label>
               ))}
             </>
+          )}
+          {enc.talk && (
+            <div className="talk">
+              <h2 className="eyebrow">Talk or fight</h2>
+              <button
+                type="button"
+                className="menu-secondary small-btn"
+                disabled={!!talkResult}
+                onClick={() => setTalkResult(talkPast())}
+              >
+                {enc.talk.prompt} ({enc.talk.skill[0]!.toUpperCase() + enc.talk.skill.slice(1)} DC{' '}
+                {enc.talk.dc})
+              </button>
+              {talkResult && !talkResult.success && (
+                <p className="small" role="status">
+                  {talkResult.text}
+                </p>
+              )}
+              <p className="muted small">
+                Talking your way past is worth the same XP as winning (D16).
+              </p>
+            </div>
           )}
           <p className="muted small">The game autosaves before the fight starts.</p>
           <button type="button" className="primary fight-btn" onClick={fight}>

@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { quests } from '../data';
 import { getClass, getSpecies } from '../game/hero';
+import { formatDate } from '../game/calendar';
 import { partyLevel } from '../game/journal';
 import { useGame } from '../game/store';
 import { canLevelUp, XP_THRESHOLDS } from '../rules';
@@ -26,7 +27,7 @@ interface Hotspot {
 
 /** The Drowned Lantern on Lantern Night (rebuilt from docs/mockups/Exploration.dc.html). */
 export function ExploreScreen() {
-  const { game, talk, openLevelUp, toasts, clearToasts, goto, saveTo } = useGame();
+  const { game, talk, openLevelUp, toasts, clearToasts, goto, saveTo, openCamp } = useGame();
   const [dialog, setDialog] = useState<null | 'journal' | 'spells' | 'save'>(null);
   const g = game!;
   const f = (k: string) => !!g.flags[k];
@@ -122,7 +123,7 @@ export function ExploreScreen() {
         <div className="row baseline">
           <h1>The Drowned Lantern</h1>
           <span className="muted">
-            Ashford · Act {['I', 'II', 'III'][g.act - 1]} · Lantern Night, 1492 DR
+            Ashford · Act {['I', 'II', 'III'][g.act - 1]} · {formatDate(g.clock)}
           </span>
         </div>
         <button
@@ -174,12 +175,8 @@ export function ExploreScreen() {
             type="button"
             className="hotspot object"
             style={{ left: 96 - 22, top: 417 - 22 }}
-            aria-label="Stairs to the rooms"
-            onClick={() =>
-              useGame
-                .getState()
-                .toast(['The rooms upstairs: short and long rests arrive in Milestone M6.'])
-            }
+            aria-label="Stairs to the rooms (rest)"
+            onClick={() => openCamp('inn')}
           >
             <span aria-hidden="true">≡</span>
             <span className="spot-label" aria-hidden="true">
@@ -304,19 +301,23 @@ export function ExploreScreen() {
           ))}
         </div>
         <nav aria-label="Actions" className="explore-actions">
-          <button type="button" disabled title="Inventory arrives in Milestone M6">
+          <button
+            type="button"
+            disabled
+            title="Inventory arrives with Act I's items (Milestone M7)"
+          >
             Inventory
           </button>
           <button type="button" onClick={() => setDialog('spells')}>
             Spells
           </button>
-          <button type="button" disabled title="Rests arrive in Milestone M6">
+          <button type="button" onClick={() => openCamp('inn')}>
             Short rest
           </button>
           <button type="button" onClick={() => setDialog('journal')}>
             Journal
           </button>
-          <button type="button" disabled title="Rests arrive in Milestone M6">
+          <button type="button" onClick={() => openCamp('inn')}>
             Long rest
           </button>
           <button type="button" onClick={() => setDialog('save')}>
