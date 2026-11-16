@@ -1,0 +1,57 @@
+{
+  "verify": true,
+  "verifyNote": "[inferred] Default spells per class so heroes can fight before the spell-choice screen exists (M5). Not from the docs; change freely.",
+  "loadouts": [
+    {
+      "classId": "bard",
+      "cantrips": ["vicious-mockery", "minor-illusion"],
+      "spells": ["healing-word", "dissonant-whispers", "sleep", "faerie-fire", "thunderwave"]
+    },
+    {
+      "classId": "cleric",
+      "cantrips": ["sacred-flame", "guidance", "spare-the-dying"],
+      "spells": [
+        "bless",
+        "cure-wounds",
+        "healing-word",
+        "guiding-bolt",
+        "shield-of-faith",
+        "command",
+        "inflict-wounds"
+      ]
+    },
+    {
+      "classId": "druid",
+      "cantrips": ["produce-flame", "thorn-whip"],
+      "spells": ["entangle", "healing-word", "cure-wounds", "thunderwave", "faerie-fire"]
+    },
+    {
+      "classId": "paladin",
+      "cantrips": [],
+      "spells": ["bless", "cure-wounds", "shield-of-faith", "divine-favor"]
+    },
+    {
+      "classId": "ranger",
+      "cantrips": [],
+      "spells": ["hunters-mark", "cure-wounds"]
+    },
+    {
+      "classId": "sorcerer",
+      "cantrips": ["fire-bolt", "ray-of-frost", "shocking-grasp", "light"],
+      "spells": ["magic-missile", "shield", "burning-hands"]
+    },
+    {
+      "classId": "warlock",
+      "cantrips": ["eldritch-blast", "chill-touch"],
+      "spells": ["hex", "hellish-rebuke", "armor-of-agathys"]
+    },
+    {
+      "classId": "wizard",
+      "cantrips": ["fire-bolt", "ray-of-frost", "mage-hand"],
+      "spells": ["magic-missile", "shield", "sleep", "burning-hands", "thunderwave", "mage-armor"]
+    }
+  ],
+  "defaultChoices": {
+    "warlockInvocations": ["agonizing-blast", "armor-of-shadows"]
+  }
+}

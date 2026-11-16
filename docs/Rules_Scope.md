@@ -209,6 +209,16 @@ Warlock (pact magic; recharges on a short rest): L1: one 1st-level slot; L2: two
 - [ ] (Proposed) Party-best roll for dialogue checks (decided D11), with Inspiration awarded for background-flavored choices.
 - [ ] Named villains are knocked out, not killed, when the story needs them.
 - [ ] Easy difficulty: downed heroes stand up at 1 HP after a won fight.
+- [ ] (Proposed, M4) On Easy, enemies don't take opportunity attacks; on Medium and Hard they do.
+- [ ] (Proposed, M4) Enemies never attack a hero who is already down, on any difficulty.
+- [ ] (Proposed, M4) The last enemy standing flees when below half HP (from round 2).
+- [ ] (Proposed, M4) After a won fight, dying heroes are stabilized at 0 HP (Medium/Hard).
+- [ ] (Proposed, M4) Hiding on the grid: you need brush or at least half cover from every enemy.
+- [ ] (Proposed, M4) Bardic Inspiration is spent automatically when it turns a miss or failed save into a success.
+- [ ] (Proposed, M4) Command is simplified to "Halt!" (the target loses its next turn).
+- [ ] (Proposed, M4) Wild Shape offers the wolf only (like Conjure Animals); more beasts later.
+- [ ] (Proposed, M4) Magic Missile darts share one damage roll (Sage Advice reading).
+- [ ] (Proposed, M4) A versatile weapon is used two-handed when the hero has no shield and no other melee weapon.
 
 ## CONFIRM LOCALLY
 - [ ] Spell details for anything not marked ✅. They're summarized from memory of the 2014 PHB, so verify damage dice and saves when entering data (the PHB text extracts cleanly enough to check each spell).

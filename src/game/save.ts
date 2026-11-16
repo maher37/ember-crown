@@ -1,9 +1,9 @@
 import { z } from 'zod';
 import { AbilityId, ConditionIdSchema, DamageTypeId, SkillId } from '../data/schemas/common';
-import type { Hero } from './hero';
+import { defaultInvocations, defaultSpells, type Hero } from './hero';
 
 /** Bump when the save format changes, and add a migration below. Never break old saves. */
-export const SAVE_VERSION = 1;
+export const SAVE_VERSION = 2;
 
 export interface GameState {
   id: string;
@@ -98,6 +98,11 @@ export const HeroSchema = z.object({
     shield: z.boolean(),
     weapons: z.array(z.string()),
   }),
+  cantrips: z.array(z.string()),
+  spells: z.array(z.string()),
+  invocations: z.array(z.string()),
+  slotsUsed: z.array(z.number().int().min(0)),
+  resourcesUsed: z.record(z.string(), z.number().int().min(0)),
 }) satisfies z.ZodType<Hero>;
 
 export const GameStateSchema = z.object({
@@ -123,7 +128,20 @@ export const SaveFileSchema = z.object({
  * SAVE_VERSION goes up, with a test that loads an old save.
  */
 export const MIGRATIONS: Record<number, (old: Record<string, unknown>) => Record<string, unknown>> =
-  {};
+  {
+    // v1 → v2 (M4): heroes gain spells, spell slots, class resources and invocations.
+    1: (old) => {
+      const game = old.game as { party: Record<string, unknown>[] };
+      const party = game.party.map((h) => ({
+        ...defaultSpells(String(h.classId)),
+        invocations: defaultInvocations(String(h.classId), Number(h.level)),
+        slotsUsed: [],
+        resourcesUsed: {},
+        ...h,
+      }));
+      return { ...old, game: { ...game, party } };
+    },
+  };
 
 export type LoadResult = { ok: true; save: SaveFile } | { ok: false; error: string };
 

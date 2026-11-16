@@ -1,0 +1,87 @@
+{
+  "verify": true,
+  "verifyNote": "Map layout, positions and the per-difficulty enemy lists come from docs/mockups/Combat.dc.html; terrain types (trees block, brush is difficult terrain and a hiding spot, boulders give half cover) are my design [inferred].",
+  "encounters": [
+    {
+      "id": "f2-road-ambush",
+      "code": "F2",
+      "name": "Ambush on the Ashford road",
+      "act": 1,
+      "xpPerPc": 50,
+      "briefing": "Smoke-smudged goblins have been raiding the river road. Tracks and a snapped bowstring warn you before they burst from the treeline.",
+      "surprise": false,
+      "map": {
+        "width": 16,
+        "height": 9,
+        "style": "forest-road",
+        "terrain": [
+          "TTTbb..r....bTTT",
+          "TTb....r....bbTT",
+          "b...........b..b",
+          "================",
+          "================",
+          "================",
+          "b.............b.",
+          "Tb......r.....bT",
+          "TTT.....r...bTTT"
+        ]
+      },
+      "partyStart": [
+        [6, 4],
+        [5, 5],
+        [4, 3],
+        [3, 4]
+      ],
+      "enemies": [
+        {
+          "id": "goblin-a",
+          "monster": "goblin",
+          "name": "Goblin A",
+          "pos": [7, 3],
+          "difficulties": ["easy", "medium", "hard"],
+          "tactic": "melee"
+        },
+        {
+          "id": "goblin-b",
+          "monster": "goblin",
+          "name": "Goblin B",
+          "pos": [11, 2],
+          "difficulties": ["easy", "medium", "hard"],
+          "tactic": "ranged"
+        },
+        {
+          "id": "goblin-c",
+          "monster": "goblin",
+          "name": "Goblin C",
+          "pos": [11, 5],
+          "difficulties": ["easy", "medium", "hard"],
+          "tactic": "melee"
+        },
+        {
+          "id": "goblin-d",
+          "monster": "goblin",
+          "name": "Goblin D",
+          "pos": [13, 4],
+          "difficulties": ["medium", "hard"],
+          "tactic": "ranged"
+        },
+        {
+          "id": "goblin-e",
+          "monster": "goblin",
+          "name": "Goblin E",
+          "pos": [14, 6],
+          "difficulties": ["hard"],
+          "tactic": "ranged"
+        },
+        {
+          "id": "wolf",
+          "monster": "wolf",
+          "name": "Wolf",
+          "pos": [10, 7],
+          "difficulties": ["hard"],
+          "tactic": "melee"
+        }
+      ]
+    }
+  ]
+}

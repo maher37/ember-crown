@@ -1,0 +1,146 @@
+import type { DifficultyId } from '../../data/schemas/difficulty';
+import type { Creature, DamageType, Skill } from '../../rules';
+import type { Hero } from '../hero';
+
+export interface Pos {
+  x: number;
+  y: number;
+}
+
+export type Side = 'party' | 'enemy';
+export type TerrainKind = 'open' | 'road' | 'brush' | 'trees' | 'boulder';
+
+export interface CombatMap {
+  width: number;
+  height: number;
+  terrain: TerrainKind[][]; // [y][x]
+}
+
+/** A timed effect on a combatant (Bless, Shield, Dodge, Rage...). */
+export interface ActiveEffect {
+  id: string;
+  name: string;
+  /** Who created it (for concentration and "until the end of X's next turn"). */
+  sourceId: string;
+  /** Ends when the source's concentration on this spell ends. */
+  concentration?: string;
+  /** Ends at the start or end of this combatant's turn in this round (or later). */
+  expires?: { turnOf: string; when: 'start' | 'end'; round: number };
+  mod?: { attack?: string | number; save?: string | number; ac?: number; damage?: string | number };
+  /** Named behaviors the engine checks for: 'dodge', 'rage', 'reckless', 'outlined', 'hex-target', 'hunters-mark-target', 'mage-armor', 'help', 'disadvantage-next-attack', 'advantage-next-attack-against', 'no-reactions', 'no-healing', 'sanctuary', 'agathys', 'hidden' */
+  tag?: string;
+  /** Extra data for the tag, e.g. the damage type of Hex. */
+  data?: Record<string, string | number>;
+}
+
+export interface TurnState {
+  actionUsed: boolean;
+  bonusUsed: boolean;
+  /** Movement left this turn, in feet. */
+  movement: number;
+  disengaged: boolean;
+  /** An Attack action was taken this turn (for Flurry of Blows, Martial Arts, two-weapon fighting). */
+  attacked: boolean;
+  /** A light melee weapon was used in the Attack action (two-weapon fighting). */
+  lightWeaponUsed: string | null;
+  sneakAttackUsed: boolean;
+  /** Extra actions from Action Surge. */
+  extraActions: number;
+  /** A leveled spell (not a cantrip) was cast with the bonus action this turn. */
+  bonusSpellCast: boolean;
+  /** Attacks left in the current Attack action (Extra Attack gives 2 from level 5). */
+  attacksLeft: number;
+}
+
+export interface Combatant {
+  id: string;
+  name: string;
+  /** Short label for the token, e.g. "GA" or "M". */
+  short: string;
+  side: Side;
+  pos: Pos;
+  initiative: number;
+  dex: number;
+  /** The rules-engine creature (a Hero for party members). */
+  creature: Creature | Hero;
+  /** Monster id for enemies. */
+  monsterId?: string;
+  tactic?: 'melee' | 'ranged';
+  speed: number;
+  reactionUsed: boolean;
+  surprised: boolean;
+  /** Fled or removed from the fight. */
+  gone: boolean;
+  effects: ActiveEffect[];
+  turn: TurnState;
+  /** Druid Wild Shape: the beast's HP pool sits on top of the druid's own. */
+  wildShape?: { monsterId: string; hp: number; maxHp: number };
+  /** Bardic Inspiration die held by this creature. */
+  inspiration?: number;
+}
+
+export interface LogLine {
+  kind: 'head' | 'you' | 'foe' | 'dmg' | 'crit' | 'info';
+  text: string;
+}
+
+/** A question the player must answer before the fight goes on. */
+export type Prompt =
+  | {
+      kind: 'opportunity-attack';
+      reactorId: string;
+      targetId: string;
+    }
+  | {
+      kind: 'shield';
+      reactorId: string;
+      attackerId: string;
+      /** The attack's total, to show "the hit would miss with Shield". */
+      total: number;
+    }
+  | { kind: 'protection'; reactorId: string; attackerId: string; targetId: string }
+  | { kind: 'hellish-rebuke'; reactorId: string; attackerId: string };
+
+/** Enemy turn in progress (so it can pause for a reaction prompt and resume). */
+export interface EnemyPlan {
+  actorId: string;
+  steps: PlanStep[];
+  /** Party members who already declined an opportunity attack during this move. */
+  declined: string[];
+  /** Leave the map at the end of the move (a fleeing enemy). */
+  flee?: boolean;
+}
+
+export type PlanStep =
+  | { type: 'bonus'; what: 'disengage' | 'hide' | 'dash' }
+  | { type: 'action'; what: 'dash' | 'dodge' }
+  | { type: 'move'; path: Pos[] }
+  | {
+      type: 'attack';
+      targetId: string;
+      optionId: string;
+      /** Where this attack got to before pausing for a reaction prompt. */
+      phase?: 'protected' | 'rolled' | 'done';
+      disadvantage?: boolean;
+      roll?: { hit: boolean; critical: boolean; total: number; natural: number };
+    };
+
+export interface CombatState {
+  encounterId: string;
+  name: string;
+  difficulty: DifficultyId;
+  map: CombatMap;
+  round: number;
+  /** Combatant ids in initiative order. */
+  order: string[];
+  turnIndex: number;
+  combatants: Record<string, Combatant>;
+  log: LogLine[];
+  rngState: number;
+  outcome: null | 'victory' | 'defeat';
+  xpPerPc: number;
+  prompt: Prompt | null;
+  plan: EnemyPlan | null;
+}
+
+export type { DamageType, Skill };

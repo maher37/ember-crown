@@ -3,6 +3,9 @@ import armorJson from './armor.json';
 import backgroundsJson from './backgrounds.json';
 import classesJson from './classes.json';
 import difficultiesJson from './difficulties.json';
+import encountersJson from './encounters.json';
+import loadoutsJson from './loadouts.json';
+import { EncounterFile, LoadoutFile } from './schemas/encounter';
 import foesJson from './foes.json';
 import magicItemsJson from './magicItems.json';
 import monstersJson from './monsters.json';
@@ -32,4 +35,6 @@ export const dataFiles = [
   { name: 'weapons.json', schema: WeaponFile, raw: weaponsJson },
   { name: 'armor.json', schema: ArmorFile, raw: armorJson },
   { name: 'magicItems.json', schema: MagicItemFile, raw: magicItemsJson },
+  { name: 'encounters.json', schema: EncounterFile, raw: encountersJson },
+  { name: 'loadouts.json', schema: LoadoutFile, raw: loadoutsJson },
 ] as const satisfies readonly { name: string; schema: z.ZodType; raw: unknown }[];
