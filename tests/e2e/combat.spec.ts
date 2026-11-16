@@ -1,5 +1,5 @@
 import { expect, test, type Page } from '@playwright/test';
-import { makeParty } from './helpers';
+import { lanternNight, levelUpAll, makeParty, pick } from './helpers';
 
 /** One party turn, played like a simple player would: hit something, or walk toward the enemy. */
 async function playTurn(page: Page): Promise<void> {
@@ -50,7 +50,11 @@ async function playTurn(page: Page): Promise<void> {
 test('F2 Road ambush: prepare, fight to the end, and come back with XP', async ({ page }) => {
   test.setTimeout(180_000);
   await makeParty(page);
-  await page.getByRole('button', { name: 'Road ambush (F2)' }).click();
+  await lanternNight(page);
+  await levelUpAll(page);
+  await page.getByRole('button', { name: /Front door/ }).click();
+  await pick(page, /Set out along the road/);
+  await page.getByRole('button', { name: 'Set out' }).click();
   await expect(
     page.getByRole('heading', { name: /Prepare: Ambush on the Ashford road/ }),
   ).toBeVisible();
@@ -79,9 +83,10 @@ test('F2 Road ambush: prepare, fight to the end, and come back with XP', async (
   if (await page.getByRole('heading', { name: 'Victory!' }).isVisible()) {
     await page.getByRole('button', { name: 'Continue' }).click();
     await expect(page.getByText(/Victory! \+50 XP each/)).toBeVisible();
-    await expect(page.getByRole('article', { name: 'Mira Ashgrove' })).toContainText('350');
+    await expect(page.getByText(/Journal updated: Take the Ashford road/)).toBeVisible();
+    await expect(page.getByText('350 / 900 XP')).toBeVisible();
   } else {
     await page.getByRole('button', { name: 'Load the autosave from before the fight' }).click();
-    await expect(page.getByRole('heading', { name: 'Your party' })).toBeVisible();
+    await expect(page.getByRole('heading', { name: 'The Drowned Lantern' })).toBeVisible();
   }
 });

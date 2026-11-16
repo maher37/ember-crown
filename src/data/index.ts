@@ -4,6 +4,9 @@ import classesJson from './classes.json';
 import difficultiesJson from './difficulties.json';
 import encountersJson from './encounters.json';
 import loadoutsJson from './loadouts.json';
+import npcsJson from './npcs.json';
+import questsJson from './quests.json';
+import { NpcFile, QuestFile } from './schemas/story';
 import { EncounterFile, LoadoutFile } from './schemas/encounter';
 import foesJson from './foes.json';
 import magicItemsJson from './magicItems.json';
@@ -38,6 +41,10 @@ export const encounters = EncounterFile.parse(encountersJson).encounters;
 const loadoutFile = LoadoutFile.parse(loadoutsJson);
 export const loadouts = loadoutFile.loadouts;
 export const defaultChoices = loadoutFile.defaultChoices;
+const questFile = QuestFile.parse(questsJson);
+export const quests = questFile.quests;
+export const awards = questFile.awards;
+export const npcs = NpcFile.parse(npcsJson).npcs;
 
 export const gameData = {
   difficulties,
@@ -53,5 +60,8 @@ export const gameData = {
   magicItems,
   encounters,
   loadouts,
+  quests,
+  awards,
+  npcs,
 };
 export type GameData = typeof gameData;

@@ -6,17 +6,20 @@ import {
   advance,
   finishCombat,
   getEncounter,
-  readyParty,
   startCombat,
   type CombatResult,
   type CombatState,
   type PlayerAction,
   type Pos,
 } from './combat';
+import { Conversation } from './dialogue';
 import type { Hero } from './hero';
+import { completeStep } from './journal';
+import { applyLevelUp, type LevelUpPlan } from './levelup';
 import { makeSave, writeSlot, type GameState, type SaveFile, type SlotId } from './save';
 
-export type Screen = 'title' | 'creator' | 'party' | 'prepare' | 'combat';
+export type Screen =
+  'title' | 'creator' | 'party' | 'explore' | 'dialogue' | 'levelup' | 'prepare' | 'combat';
 export const PARTY_SIZE = 4;
 
 interface GameStore {
@@ -35,6 +38,14 @@ interface GameStore {
   combat: CombatState | null;
   /** Filled in when a won fight is wrapped up. */
   lastResult: CombatResult | null;
+  /** The conversation in progress (not saved; its Ink state is, in game.ink). */
+  conversation: Conversation | null;
+  /** Bumped after each dialogue step so screens re-render. */
+  dialogueTick: number;
+  /** Hero being levelled up. */
+  levelUpId: string | null;
+  /** Short messages for the player ("Journal updated", "+275 XP each"). */
+  toasts: string[];
 
   goto: (screen: Screen) => void;
   startNewGame: (seed?: number) => void;
@@ -57,6 +68,13 @@ interface GameStore {
   setCombatDifficulty: (d: DifficultyId) => void;
   /** After a victory: keep HP and spent resources, award XP, autosave, back to the party. */
   endFight: () => void;
+  talk: (knot: string) => void;
+  choose: (index: number) => void;
+  leaveDialogue: () => void;
+  openLevelUp: (heroId: string) => void;
+  confirmLevelUp: (heroId: string, plan: LevelUpPlan) => void;
+  toast: (messages: string[]) => void;
+  clearToasts: () => void;
 }
 
 const newSeed = () => Math.floor(Math.random() * 2 ** 32);
@@ -71,6 +89,10 @@ export const useGame = create<GameStore>()((set, get) => ({
   encounterId: null,
   combat: null,
   lastResult: null,
+  conversation: null,
+  dialogueTick: 0,
+  levelUpId: null,
+  toasts: [],
 
   goto: (screen) => set({ screen }),
 
@@ -114,8 +136,11 @@ export const useGame = create<GameStore>()((set, get) => ({
       location: 'drowned-lantern',
       playSeconds: 0,
       flags: pendingParty.some((h) => h.origin === 'corin') ? { corinInParty: true, ember: 0 } : {},
+      quests: { 'lantern-night': { status: 'active', steps: [] } },
+      notes: [],
+      ink: {},
     };
-    set({ game, pendingParty: [], screen: 'party', sessionStart: Date.now() });
+    set({ game, pendingParty: [], screen: 'explore', sessionStart: Date.now(), toasts: [] });
     // Autosave at the start of the adventure (and later before every fight, M4).
     return get().saveTo('autosave');
   },
@@ -140,9 +165,7 @@ export const useGame = create<GameStore>()((set, get) => ({
   startFight: ({ difficulty, formation, mageArmor }) => {
     const { game, encounterId } = get();
     if (!game || !encounterId) throw new Error('No game or encounter');
-    // F2 expects a level-2 party (Lantern Night XP) until story XP exists (M5) [inferred].
-    const party = readyParty(game.party, 2);
-    set({ game: { ...game, party } });
+    const party = game.party;
     // Autosave before every fight (docs/BUILD_ROADMAP.md, M4).
     get().saveTo('autosave');
     const combat = startCombat({
@@ -180,15 +203,73 @@ export const useGame = create<GameStore>()((set, get) => ({
     const { combat, game } = get();
     if (!combat || !game || combat.outcome !== 'victory') return;
     const result = finishCombat(combat, game.party);
+    let next = { ...game, party: result.party, rngState: combat.rngState };
+    const messages = [`Victory! +${result.xpEach} XP each.`, ...result.notes];
+    if (combat.encounterId === 'f2-road-ambush') {
+      const r = completeStep(next, 'old-mine', 'road');
+      next = r.game;
+      messages.push(...r.messages);
+    }
     set({
-      game: { ...game, party: result.party, rngState: combat.rngState },
+      game: next,
       combat: null,
       lastResult: result,
-      screen: 'party',
+      screen: 'explore',
       rngState: combat.rngState,
+      toasts: messages,
     });
     get().saveTo('autosave');
   },
+
+  talk: (knot) => {
+    const { game, rngState } = get();
+    if (!game) return;
+    const rng = SeededRng.fromState(rngState);
+    const conversation = new Conversation('tavern', game, rng).start(knot);
+    set({
+      conversation,
+      game: conversation.game,
+      rngState: rng.state,
+      screen: 'dialogue',
+      dialogueTick: get().dialogueTick + 1,
+    });
+    if (conversation.messages.length) get().toast(conversation.messages);
+  },
+
+  choose: (index) => {
+    const { conversation, rngState } = get();
+    if (!conversation) return;
+    const rng = SeededRng.fromState(rngState);
+    // The conversation keeps the dice it was made with; give it the current position.
+    conversation.rng = rng;
+    conversation.choose(index);
+    set({ game: conversation.game, rngState: rng.state, dialogueTick: get().dialogueTick + 1 });
+    if (conversation.messages.length) get().toast(conversation.messages);
+  },
+
+  leaveDialogue: () => {
+    const { conversation } = get();
+    const travel = conversation?.travel;
+    set({ conversation: null, screen: 'explore' });
+    // Autosave after every conversation, so story progress is never lost [inferred].
+    get().saveTo('autosave');
+    if (travel) get().openPrepare(travel);
+  },
+
+  openLevelUp: (heroId) => set({ levelUpId: heroId, screen: 'levelup' }),
+
+  confirmLevelUp: (heroId, plan) => {
+    const { game } = get();
+    if (!game) return;
+    const party = game.party.map((h) => (h.id === heroId ? applyLevelUp(h, plan) : h));
+    const h = party.find((x) => x.id === heroId)!;
+    set({ game: { ...game, party }, levelUpId: null, screen: 'explore' });
+    get().toast([`${h.name} reaches level ${h.level}!`]);
+    get().saveTo('autosave');
+  },
+
+  toast: (messages) => set({ toasts: [...get().toasts, ...messages].slice(-6) }),
+  clearToasts: () => set({ toasts: [] }),
 
   loadGame: (save) =>
     set({
@@ -196,9 +277,11 @@ export const useGame = create<GameStore>()((set, get) => ({
       seed: save.game.seed,
       rngState: save.game.rngState,
       pendingParty: [],
-      screen: 'party',
+      screen: 'explore',
       sessionStart: Date.now(),
       combat: null,
       lastResult: null,
+      conversation: null,
+      toasts: [],
     }),
 }));

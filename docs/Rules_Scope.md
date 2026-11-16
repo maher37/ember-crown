@@ -219,6 +219,8 @@ Warlock (pact magic; recharges on a short rest): L1: one 1st-level slot; L2: two
 - [ ] (Proposed, M4) Wild Shape offers the wolf only (like Conjure Animals); more beasts later.
 - [ ] (Proposed, M4) Magic Missile darts share one damage roll (Sage Advice reading).
 - [ ] (Proposed, M4) A versatile weapon is used two-handed when the hero has no shield and no other melee weapon.
+- [ ] (Proposed, M5) Spells and cantrips can be re-picked freely at each level-up (the creator doesn't ask for them yet). RAW only lets known casters swap one spell per level.
+- [ ] (Proposed, M5) Until the tavern brawl exists (M7), a failed check with the Grey Company ends with Brannoc firing a crossbow into the ceiling; the F1 XP (25) is still awarded so the level curve holds.
 
 ## CONFIRM LOCALLY
 - [ ] Spell details for anything not marked ✅. They're summarized from memory of the 2014 PHB, so verify damage dice and saves when entering data (the PHB text extracts cleanly enough to check each spell).

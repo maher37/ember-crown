@@ -54,7 +54,48 @@ export async function makeParty(page: Page) {
   await expertise.getByRole('button', { name: 'Insight' }).click();
   await page.getByRole('button', { name: /Add to party and begin/ }).click();
 
-  await expect(page.getByRole('heading', { name: 'Your party' })).toBeVisible();
-  for (const n of ['Corin Varrow', 'Mira Ashgrove', 'Thorn', 'Edda Quill'])
-    await expect(page.getByRole('article', { name: n })).toBeVisible();
+  // New games open on the Lantern Night scene card, then the tavern.
+  await expect(page.getByText(/Every lantern on the Grayflow flared red/)).toBeVisible();
+  await page.getByRole('button', { name: 'Back to the tavern' }).click();
+  await expect(page.getByRole('heading', { name: 'The Drowned Lantern' })).toBeVisible();
+}
+
+/** Pick a dialogue choice by its text (choices are numbered buttons). */
+export async function pick(page: Page, text: RegExp) {
+  await page.getByRole('button', { name: text }).click();
+}
+
+export async function leave(page: Page) {
+  await page.getByRole('button', { name: /^(↵ )?Back to the tavern$/ }).click();
+}
+
+/**
+ * Play Lantern Night to the end. Every check fails forward, so this works whatever the dice do.
+ */
+export async function lanternNight(page: Page) {
+  await page.getByRole('button', { name: /Brannoc/ }).click();
+  await expect(page.getByText(/He came in off the river road/)).toBeVisible();
+  await pick(page, /Let me see to his wounds/);
+  await expect(page.getByText(/Medicine check \(\w+\): d20 \(\d+\)/)).toBeVisible();
+  await pick(page, /\d\. Back to the tavern\./);
+  await leave(page);
+  await page.getByRole('button', { name: /Strangers by the hearth/ }).click();
+  await pick(page, /Leave this house/);
+  await leave(page);
+  await page.getByRole('button', { name: /Brannoc/ }).click();
+  await pick(page, /Will you trust us with the letter now|You know me, Brannoc/);
+  await expect(page.getByText('Quest complete: Lantern Night')).toBeVisible();
+  await pick(page, /\d\. Back to the tavern\./);
+  await leave(page);
+}
+
+/** Level up everyone who can, keeping the suggested choices. */
+export async function levelUpAll(page: Page) {
+  for (let i = 0; i < 4; i++) {
+    const btn = page.getByRole('button', { name: 'Level up!' }).first();
+    if (!(await btn.count())) break;
+    await btn.click();
+    await page.getByRole('button', { name: /^Confirm level/ }).click();
+  }
+  await expect(page.getByRole('button', { name: 'Level up!' })).toHaveCount(0);
 }

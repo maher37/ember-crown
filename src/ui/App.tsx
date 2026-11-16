@@ -1,6 +1,10 @@
 import { useGame } from '../game/store';
 import { CombatScreen } from './CombatScreen';
 import { Creator } from './Creator';
+import { DialogueScreen } from './DialogueScreen';
+import { ExploreScreen } from './ExploreScreen';
+import { LevelUpScreen } from './LevelUpScreen';
+import './Creator.css';
 import './LoadDialog.css';
 import { PartyScreen } from './PartyScreen';
 import { PrepareScreen } from './PrepareScreen';
@@ -14,6 +18,9 @@ export function App() {
       {screen === 'title' && <TitleScreen />}
       {screen === 'creator' && <Creator />}
       {screen === 'party' && <PartyScreen />}
+      {screen === 'explore' && <ExploreScreen />}
+      {screen === 'dialogue' && <DialogueScreen />}
+      {screen === 'levelup' && <LevelUpScreen />}
       {screen === 'prepare' && <PrepareScreen />}
       {screen === 'combat' && <CombatScreen />}
     </Stage>
