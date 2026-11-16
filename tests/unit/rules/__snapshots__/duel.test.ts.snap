@@ -1,0 +1,40 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`scripted duel > prints a readable combat log (seed 73) 1`] = `
+"Sellsword initiative: d20 (15) + 1 = 16
+Orc initiative: d20 (18) + 1 = 19
+Orc acts first.
+— Round 1 —
+Orc attacks Sellsword with greataxe: d20 (20) + 5 = 25 vs AC 16 → CRITICAL HIT
+greataxe (critical: dice doubled): 2d12+3 (3, 11) + 3 = 17 slashing
+Sellsword takes 17 damage
+Sellsword falls unconscious and is dying
+  Sellsword: 0/12 HP
+Sellsword death save: d20 (2) vs DC 10 → FAIL (0 success, 1 failure)
+— Round 2 —
+Orc attacks Sellsword with greataxe: d20 adv (5, 3) + 5 = 10 vs AC 16 → MISS (advantage: target unconscious, target prone)
+Sellsword death save: d20 (20) → NATURAL 20, back on their feet with 1 HP
+Sellsword regains consciousness (still prone)
+Sellsword stands up.
+Sellsword attacks Orc with longsword: d20 (7) + 5 = 12 vs AC 13 → MISS
+— Round 3 —
+Orc attacks Sellsword with greataxe: d20 (3) + 5 = 8 vs AC 16 → MISS
+Sellsword attacks Orc with longsword: d20 (11) + 5 = 16 vs AC 13 → HIT
+longsword: 1d8+3 (4) + 3 = 7 slashing
+Orc takes 7 damage
+  Orc: 8/15 HP
+— Round 4 —
+Orc attacks Sellsword with greataxe: d20 (9) + 5 = 14 vs AC 16 → MISS
+Sellsword attacks Orc with longsword: d20 (13) + 5 = 18 vs AC 13 → HIT
+longsword: 1d8+3 (4) + 3 = 7 slashing
+Orc takes 7 damage
+  Orc: 1/15 HP
+— Round 5 —
+Orc attacks Sellsword with greataxe: d20 (2) + 5 = 7 vs AC 16 → MISS
+Sellsword attacks Orc with longsword: d20 (8) + 5 = 13 vs AC 13 → HIT
+longsword: 1d8+3 (1) + 3 = 4 slashing
+Orc takes 4 damage
+Orc dies (reduced to 0 HP)
+  Orc: 0/15 HP
+Sellsword wins the duel."
+`;
