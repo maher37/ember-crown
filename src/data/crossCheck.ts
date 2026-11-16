@@ -69,6 +69,14 @@ export function crossCheck(d: GameData): { errors: string[]; warnings: string[] 
     if (!list.some((s) => s.level === 1))
       errors.push(`class ${c.id}: no 1st-level spells on its list`);
   }
+  const armorIds = ids(d.armor);
+  for (const c of d.classes) {
+    const kit = c.startingKit;
+    if (kit.armor && !armorIds.has(kit.armor))
+      errors.push(`class ${c.id}: unknown kit armor "${kit.armor}"`);
+    for (const w of kit.weapons)
+      if (!weaponIds.has(w)) errors.push(`class ${c.id}: unknown kit weapon "${w}"`);
+  }
   for (const c of d.classes) {
     const res = ids(c.resources);
     for (const l of c.levels)

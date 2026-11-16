@@ -75,6 +75,15 @@ export const ClassDef = z
       .strict(),
     spellcasting: Spellcasting.optional(),
     resources: z.array(Resource).default([]),
+    /** What a new level-1 hero of this class starts with. */
+    startingKit: z
+      .object({
+        armor: Id.optional(),
+        shield: z.boolean().default(false),
+        weapons: z.array(Id).min(1),
+        ...Verify,
+      })
+      .strict(),
     /** Features gained at each level, 1-6. Subclass features are marked by `subclass: true`. */
     levels: z
       .array(

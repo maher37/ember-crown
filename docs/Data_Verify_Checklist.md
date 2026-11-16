@@ -4,7 +4,7 @@
 
 Each line was entered from memory or is marked ⚠ in the design docs. Check it against your PDFs. When a line is right (or fixed), remove its `verify` and `verifyNote` from the JSON and run `npm run verify-list` again.
 
-**229 items to check.**
+**241 items to check.**
 
 ## species.json
 
@@ -33,13 +33,16 @@ Each line was entered from memory or is marked ⚠ in the design docs. Check it 
 
 - [ ] **classes › Barbarian**: Proficiencies and skill list from memory of the PHB. Hit die, saves and subclass level checked (✅).
 - [ ] **classes › Barbarian › Rage**: Rages 2/2/3/3/3/4 (Rules_Scope §4 gives L1, L3 and L6; L2, L4, L5 from memory).
+- [ ] **classes › Barbarian**: One of the PHB starting-equipment options, from memory and simplified (no packs or gold yet).
 - [ ] **classes › Bard**: Proficiencies and skill list from memory of the PHB. Hit die, saves and subclass level checked (✅).
 - [ ] **classes › Bard**: Cantrips/spells known counts from memory of the PHB class table.
 - [ ] **classes › Bard › Bardic Inspiration**: Uses = Cha modifier (min 1). Recharges on a short rest from level 5 (Font of Inspiration).
+- [ ] **classes › Bard**: One of the PHB starting-equipment options, from memory and simplified (no packs or gold yet).
 - [ ] **classes › Cleric**: Proficiencies and skill list from memory of the PHB. Hit die, saves and subclass level checked (✅).
 - [ ] **classes › Cleric**: Cantrips/spells known counts from memory of the PHB class table.
 - [ ] **classes › Cleric › Channel Divinity**: 1 use at L2-5, 2 at L6 (Rules_Scope §4 ✅ names; counts from memory).
 - [ ] **classes › Cleric › features › Domain Spells**: Life Domain spell list from memory.
+- [ ] **classes › Cleric**: One of the PHB starting-equipment options, from memory and simplified (no packs or gold yet).
 - [ ] **classes › Druid**: Proficiencies and skill list from memory of the PHB. Hit die, saves and subclass level checked (✅).
 - [ ] **classes › Druid**: Cantrips/spells known counts from memory of the PHB class table.
 - [ ] **classes › Druid › Wild Shape**: Use counts from memory of the PHB class table (Rules_Scope CONFIRM LOCALLY).
@@ -47,31 +50,40 @@ Each line was entered from memory or is marked ⚠ in the design docs. Check it 
 - [ ] **classes › Druid › features › Wild Shape**: Wild Shape limits (Rules_Scope CONFIRM LOCALLY).
 - [ ] **classes › Druid › features › Circle Spells**: Mountain circle list (Rules_Scope CONFIRM LOCALLY).
 - [ ] **classes › Druid › features › Circle Spells**: Mountain circle list.
+- [ ] **classes › Druid**: One of the PHB starting-equipment options, from memory and simplified (no packs or gold yet).
 - [ ] **classes › Fighter**: Proficiencies and skill list from memory of the PHB. Hit die, saves and subclass level checked (✅).
 - [ ] **classes › Fighter › Second Wind**: Rules_Scope §4.
 - [ ] **classes › Fighter › Action Surge**: Rules_Scope §4.
+- [ ] **classes › Fighter**: One of the PHB starting-equipment options, from memory and simplified (no packs or gold yet).
 - [ ] **classes › Monk**: Proficiencies and skill list from memory of the PHB. Hit die, saves and subclass level checked (✅).
 - [ ] **classes › Monk › Ki**: Ki = monk level from L2 (Rules_Scope §4).
+- [ ] **classes › Monk**: One of the PHB starting-equipment options, from memory and simplified (no packs or gold yet).
 - [ ] **classes › Paladin**: Proficiencies and skill list from memory of the PHB. Hit die, saves and subclass level checked (✅).
 - [ ] **classes › Paladin**: Cantrips/spells known counts from memory of the PHB class table.
 - [ ] **classes › Paladin › Divine Sense**: Use counts from memory of the PHB class table (Rules_Scope CONFIRM LOCALLY).
 - [ ] **classes › Paladin › Lay on Hands pool**: Pool of 5 × level HP (Rules_Scope §4).
 - [ ] **classes › Paladin › Channel Divinity**: Use counts from memory of the PHB class table (Rules_Scope CONFIRM LOCALLY).
 - [ ] **classes › Paladin › features › Oath Spells**: Devotion oath spell list from memory.
+- [ ] **classes › Paladin**: One of the PHB starting-equipment options, from memory and simplified (no packs or gold yet).
 - [ ] **classes › Ranger**: Proficiencies and skill list from memory of the PHB. Hit die, saves and subclass level checked (✅).
 - [ ] **classes › Ranger**: Cantrips/spells known counts from memory of the PHB class table.
+- [ ] **classes › Ranger**: One of the PHB starting-equipment options, from memory and simplified (no packs or gold yet).
 - [ ] **classes › Rogue**: Proficiencies and skill list from memory of the PHB. Hit die, saves and subclass level checked (✅).
+- [ ] **classes › Rogue**: One of the PHB starting-equipment options, from memory and simplified (no packs or gold yet).
 - [ ] **classes › Sorcerer**: Proficiencies and skill list from memory of the PHB. Hit die, saves and subclass level checked (✅).
 - [ ] **classes › Sorcerer**: Cantrips/spells known counts from memory of the PHB class table.
 - [ ] **classes › Sorcerer › Sorcery Points**: Sorcery points = level from L2 (Rules_Scope §4).
+- [ ] **classes › Sorcerer**: One of the PHB starting-equipment options, from memory and simplified (no packs or gold yet).
 - [ ] **classes › Warlock**: Proficiencies and skill list from memory of the PHB. Hit die, saves and subclass level checked (✅).
 - [ ] **classes › Warlock**: Cantrips/spells known counts from memory of the PHB class table.
 - [ ] **classes › Warlock › Dark One's Own Luck**: Use counts from memory of the PHB class table (Rules_Scope CONFIRM LOCALLY).
 - [ ] **classes › Warlock › features › Expanded Spell List**: Fiend expanded list from memory.
 - [ ] **classes › Warlock › features › Eldritch Invocations**: Curated invocation list; prerequisites from memory.
+- [ ] **classes › Warlock**: One of the PHB starting-equipment options, from memory and simplified (no packs or gold yet).
 - [ ] **classes › Wizard**: Proficiencies and skill list from memory of the PHB. Hit die, saves and subclass level checked (✅).
 - [ ] **classes › Wizard**: Cantrips/spells known counts from memory of the PHB class table.
 - [ ] **classes › Wizard › Arcane Recovery**: Use counts from memory of the PHB class table (Rules_Scope CONFIRM LOCALLY).
+- [ ] **classes › Wizard**: One of the PHB starting-equipment options, from memory and simplified (no packs or gold yet).
 
 ## spells.json
 

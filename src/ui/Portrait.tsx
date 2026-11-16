@@ -1,0 +1,152 @@
+import type { Portrait as PortraitData } from '../game/hero';
+
+interface Props extends PortraitData {
+  ears: 'human' | 'elf';
+  cloth: string;
+  bg?: string;
+  label: string;
+}
+
+/** Layered SVG portrait, rebuilt from docs/mockups/Portrait.dc.html (original art). */
+export function Portrait({
+  skin,
+  hair,
+  eyes,
+  cloth,
+  hairStyle,
+  ears,
+  beard,
+  scar,
+  bg = '#3a4558',
+  label,
+}: Props) {
+  const hooded = hairStyle === 'hood';
+  return (
+    <svg
+      viewBox="0 0 160 200"
+      width="100%"
+      height="100%"
+      preserveAspectRatio="xMidYMid slice"
+      role="img"
+      aria-label={label}
+    >
+      <rect x="0" y="0" width="160" height="200" fill={bg} />
+      <circle cx="80" cy="92" r="72" fill="#ffffff" opacity="0.05" />
+      {hooded && (
+        <>
+          <path
+            d="M22 200 L26 104 C26 52 50 26 80 26 C110 26 134 52 134 104 L138 200 Z"
+            fill={cloth}
+          />
+          <path
+            d="M22 200 L26 104 C26 52 50 26 80 26 C110 26 134 52 134 104 L138 200 Z"
+            fill="#000000"
+            opacity="0.3"
+          />
+        </>
+      )}
+      {hairStyle === 'long' && (
+        <path
+          d="M40 86 C36 52 56 38 80 38 C104 38 124 52 120 86 L127 160 C113 168 101 162 96 150 L64 150 C59 162 47 168 33 160 Z"
+          fill={hair}
+        />
+      )}
+      <path d="M12 200 C16 166 48 150 80 150 C112 150 144 166 148 200 Z" fill={cloth} />
+      <path
+        d="M58 152 L80 178 L102 152"
+        fill="none"
+        stroke="#000000"
+        strokeOpacity="0.3"
+        strokeWidth="3"
+      />
+      <path d="M66 122 L66 152 C72 158 88 158 94 152 L94 122 Z" fill={skin} />
+      <path d="M66 134 C74 142 86 142 94 134 L94 122 L66 122 Z" fill="#000000" opacity="0.15" />
+      {!hooded && ears === 'human' && (
+        <g>
+          <ellipse cx="45" cy="98" rx="7" ry="11" fill={skin} />
+          <ellipse cx="115" cy="98" rx="7" ry="11" fill={skin} />
+        </g>
+      )}
+      {!hooded && ears === 'elf' && (
+        <g>
+          <path d="M49 90 L20 66 L45 112 Z" fill={skin} />
+          <path d="M111 90 L140 66 L115 112 Z" fill={skin} />
+        </g>
+      )}
+      <path
+        d="M46 88 C46 60 60 46 80 46 C100 46 114 60 114 88 C114 116 102 138 80 138 C58 138 46 116 46 88 Z"
+        fill={skin}
+      />
+      <path d="M46 92 C48 116 60 136 80 138 C66 130 56 116 52 96 Z" fill="#000000" opacity="0.1" />
+      <ellipse cx="66" cy="94" rx="6.5" ry="3.8" fill="#f4efe6" />
+      <ellipse cx="94" cy="94" rx="6.5" ry="3.8" fill="#f4efe6" />
+      <circle cx="66" cy="94" r="3" fill={eyes} />
+      <circle cx="94" cy="94" r="3" fill={eyes} />
+      <circle cx="66" cy="94" r="1.3" fill="#111111" />
+      <circle cx="94" cy="94" r="1.3" fill="#111111" />
+      <path
+        d="M58 86 C62 83 68 83 73 85"
+        fill="none"
+        stroke={hair}
+        strokeWidth="3"
+        strokeLinecap="round"
+      />
+      <path
+        d="M87 85 C92 83 98 83 102 86"
+        fill="none"
+        stroke={hair}
+        strokeWidth="3"
+        strokeLinecap="round"
+      />
+      <path
+        d="M80 96 C79 104 76 110 78 113 C80 115 84 114 85 112"
+        fill="none"
+        stroke="#000000"
+        strokeOpacity="0.3"
+        strokeWidth="2"
+        strokeLinecap="round"
+      />
+      {scar && (
+        <path
+          d="M98 80 L106 104"
+          fill="none"
+          stroke="#8a3b2e"
+          strokeWidth="2"
+          strokeLinecap="round"
+          opacity="0.8"
+        />
+      )}
+      {beard && (
+        <g>
+          <path
+            d="M47 100 C50 128 62 152 80 154 C98 152 110 128 113 100 C108 114 98 120 90 118 C86 116 74 116 70 118 C62 120 52 114 47 100 Z"
+            fill={hair}
+          />
+          <path
+            d="M63 119 C69 112 78 113 80 116 C82 113 91 112 97 119 C91 118 85 119 80 120 C75 119 69 118 63 119 Z"
+            fill={hair}
+          />
+        </g>
+      )}
+      <path
+        d="M71 123 C76 126 84 126 89 123"
+        fill="none"
+        stroke="#6b3328"
+        strokeWidth="2.5"
+        strokeLinecap="round"
+      />
+      {(hairStyle === 'short' || hairStyle === 'long') && (
+        <path
+          d="M44 90 C40 56 58 40 80 40 C104 40 122 56 116 92 C112 76 106 66 96 62 C86 70 66 72 54 64 C48 72 46 80 44 90 Z"
+          fill={hair}
+        />
+      )}
+      {hooded && (
+        <path
+          d="M36 124 C32 70 54 42 80 42 C106 42 128 70 124 124 C120 82 104 58 80 58 C56 58 40 82 36 124 Z"
+          fill={cloth}
+        />
+      )}
+    </svg>
+  );
+}

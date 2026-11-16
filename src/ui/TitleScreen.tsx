@@ -1,7 +1,10 @@
 import { useRef, useState, type KeyboardEvent } from 'react';
 import { difficulties } from '../data';
 import type { DifficultyId } from '../data/schemas/difficulty';
+import { describeSave, latestSave, listSlots, SLOT_NAMES } from '../game/save';
 import { useSettings, type ToggleKey } from '../game/settings';
+import { useGame } from '../game/store';
+import { LoadDialog } from './LoadDialog';
 import { TitleArt } from './TitleArt';
 import './TitleScreen.css';
 
@@ -11,15 +14,16 @@ const TOGGLES: { key: ToggleKey; label: string }[] = [
   { key: 'allowCombatSave', label: 'Allow saving during combat' },
 ];
 
-// Save slots arrive in Milestone M3; until then all three show as empty.
-const SLOTS = ['Autosave', 'Slot 1', 'Slot 2'];
-
 /** Title screen, rebuilt from docs/mockups/Main.dc.html. */
 export function TitleScreen() {
   const settings = useSettings();
   const levels = difficulties.levels;
   const current = levels.find((l) => l.id === settings.difficulty) ?? levels[1]!;
   const [notice, setNotice] = useState('');
+  const [loading, setLoading] = useState(false);
+  const { startNewGame, loadGame } = useGame();
+  const slots = listSlots();
+  const latest = latestSave();
   const radioRefs = useRef<(HTMLButtonElement | null)[]>([]);
 
   const pick = (id: DifficultyId) => settings.setDifficulty(id);
@@ -44,18 +48,20 @@ export function TitleScreen() {
         </div>
 
         <nav aria-label="Main menu" className="title-menu">
-          <button
-            type="button"
-            className="menu-primary"
-            onClick={() => setNotice('Character creation arrives in Milestone M3.')}
-          >
+          <button type="button" className="menu-primary" onClick={() => startNewGame()}>
             New Game<span>{current.name}</span>
           </button>
-          <button type="button" className="menu-secondary" disabled title="No saved games yet">
+          <button
+            type="button"
+            className="menu-secondary"
+            disabled={!latest}
+            title={latest ? `Continue from ${SLOT_NAMES[latest.slot]}` : 'No saved games yet'}
+            onClick={() => latest?.save && loadGame(latest.save)}
+          >
             Continue
           </button>
           <div className="menu-row">
-            <button type="button" className="menu-secondary" disabled title="No saved games yet">
+            <button type="button" className="menu-secondary" onClick={() => setLoading(true)}>
               Load Game
             </button>
             <button
@@ -152,15 +158,24 @@ export function TitleScreen() {
         <div className="stack">
           <div className="eyebrow">Saved games</div>
           <ul className="slots">
-            {SLOTS.map((slot) => (
-              <li key={slot} className="slot-empty">
-                <span className="slot-name">{slot}</span>
-                <span>Empty</span>
-              </li>
-            ))}
+            {slots.map(({ slot, save, error }) =>
+              save ? (
+                <li key={slot} className="slot-full">
+                  <span className="slot-name">{SLOT_NAMES[slot]}</span>
+                  <span>{describeSave(save).party}</span>
+                  <span>{describeSave(save).detail}</span>
+                </li>
+              ) : (
+                <li key={slot} className="slot-empty">
+                  <span className="slot-name">{SLOT_NAMES[slot]}</span>
+                  <span>{error ? 'Unreadable save' : 'Empty'}</span>
+                </li>
+              ),
+            )}
           </ul>
         </div>
       </section>
+      {loading && <LoadDialog onClose={() => setLoading(false)} />}
     </div>
   );
 }

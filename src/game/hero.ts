@@ -1,0 +1,352 @@
+import { armor as armorList, backgrounds, classes, species as speciesList } from '../data';
+import type { ClassDef } from '../data/schemas/class';
+import type { Species } from '../data/schemas/species';
+import {
+  ABILITIES,
+  abilityModifier,
+  applyBonuses,
+  firstLevelHp,
+  isValidPointBuy,
+  noDefenses,
+  placeByPriority,
+  proficiencyBonus,
+  SKILLS,
+  STANDARD_ARRAY,
+  type Ability,
+  type AbilityScores,
+  type Creature,
+  type DamageType,
+  type DieSize,
+  type Skill,
+} from '../rules';
+
+export type HairStyle = 'short' | 'long' | 'bald' | 'hood';
+export interface Portrait {
+  skin: string;
+  hair: string;
+  eyes: string;
+  hairStyle: HairStyle;
+  beard: boolean;
+  scar: boolean;
+}
+
+export type AbilityMethod = 'array' | 'point' | 'roll';
+
+/** A party member: a rules-engine creature plus everything the character sheet needs. */
+export interface Hero extends Creature {
+  origin: 'custom' | 'corin';
+  speciesId: string;
+  classId: string;
+  backgroundId: string;
+  baseAbilities: AbilityScores;
+  abilityMethod: AbilityMethod;
+  skills: Skill[];
+  expertise: Skill[];
+  fightingStyle: string | null;
+  speed: number;
+  portrait: Portrait;
+  equipment: { armor: string | null; shield: boolean; weapons: string[] };
+}
+
+/** What the player has picked so far in the creator. */
+export interface HeroDraft {
+  origin: 'custom' | 'corin';
+  name: string;
+  speciesId: string;
+  classId: string;
+  backgroundId: string;
+  method: AbilityMethod;
+  /** Scores before species bonuses. */
+  baseAbilities: AbilityScores;
+  /** The six rolled totals (Roll method), highest first; null until rolled. */
+  rolled: number[] | null;
+  rollLog: string[];
+  /** Half-elf: the two abilities that get +1. */
+  halfElfBonus: Ability[];
+  classSkills: Skill[];
+  /** Half-elf Skill Versatility picks. */
+  bonusSkills: Skill[];
+  expertise: Skill[];
+  fightingStyle: string | null;
+  portrait: Portrait;
+}
+
+/**
+ * Which abilities get the best scores for each class (from docs/mockups/CharacterCreator.dc.html).
+ * Used to place the standard array and rolls automatically; the player can swap afterwards.
+ */
+export const CLASS_PRIORITY: Record<string, Ability[]> = {
+  barbarian: ['str', 'con', 'dex', 'wis', 'cha', 'int'],
+  bard: ['cha', 'dex', 'con', 'wis', 'int', 'str'],
+  cleric: ['wis', 'con', 'str', 'dex', 'cha', 'int'],
+  druid: ['wis', 'con', 'dex', 'int', 'str', 'cha'],
+  fighter: ['str', 'con', 'dex', 'wis', 'cha', 'int'],
+  monk: ['dex', 'wis', 'con', 'str', 'int', 'cha'],
+  paladin: ['str', 'cha', 'con', 'wis', 'dex', 'int'],
+  ranger: ['dex', 'wis', 'con', 'str', 'int', 'cha'],
+  rogue: ['dex', 'con', 'int', 'wis', 'cha', 'str'],
+  sorcerer: ['cha', 'con', 'dex', 'wis', 'int', 'str'],
+  warlock: ['cha', 'con', 'dex', 'wis', 'int', 'str'],
+  wizard: ['int', 'con', 'dex', 'wis', 'cha', 'str'],
+};
+
+export const getClass = (id: string): ClassDef => {
+  const c = classes.find((x) => x.id === id);
+  if (!c) throw new Error(`Unknown class "${id}"`);
+  return c;
+};
+export const getSpecies = (id: string): Species => {
+  const s = speciesList.find((x) => x.id === id);
+  if (!s) throw new Error(`Unknown species "${id}"`);
+  return s;
+};
+export const getBackground = (id: string) => {
+  const b = backgrounds.find((x) => x.id === id);
+  if (!b) throw new Error(`Unknown background "${id}"`);
+  return b;
+};
+
+/** The values the current method places (array, rolls or point-buy starting point). */
+export function methodPool(method: AbilityMethod, rolled: number[] | null): number[] {
+  if (method === 'roll' && rolled) return rolled;
+  return [...STANDARD_ARRAY];
+}
+
+export function defaultHalfElfBonus(classId: string): Ability[] {
+  return CLASS_PRIORITY[classId]!.filter((a) => a !== 'cha').slice(0, 2);
+}
+
+export function speciesBonuses(
+  draft: Pick<HeroDraft, 'speciesId' | 'halfElfBonus'>,
+): Partial<AbilityScores> {
+  const sp = getSpecies(draft.speciesId);
+  const out: Partial<AbilityScores> = { ...sp.abilityBonuses };
+  if (sp.abilityChoice)
+    for (const a of draft.halfElfBonus) out[a] = (out[a] ?? 0) + sp.abilityChoice.amount;
+  return out;
+}
+
+export function finalAbilities(draft: HeroDraft): AbilityScores {
+  return applyBonuses(draft.baseAbilities, speciesBonuses(draft));
+}
+
+export const DEFAULT_PORTRAIT: Portrait = {
+  skin: '#c99a74',
+  hair: '#3b2a20',
+  eyes: '#4a7a5a',
+  hairStyle: 'long',
+  beard: false,
+  scar: true,
+};
+
+export function newDraft(classId = 'fighter', speciesId = 'human'): HeroDraft {
+  return {
+    origin: 'custom',
+    name: '',
+    speciesId,
+    classId,
+    backgroundId: 'folk-hero',
+    method: 'array',
+    baseAbilities: placeByPriority(STANDARD_ARRAY, CLASS_PRIORITY[classId]!),
+    rolled: null,
+    rollLog: [],
+    halfElfBonus: defaultHalfElfBonus(classId),
+    classSkills: [],
+    bonusSkills: [],
+    expertise: [],
+    fightingStyle: null,
+    portrait: { ...DEFAULT_PORTRAIT },
+  };
+}
+
+/**
+ * Corin Varrow, the origin character (docs/Story_Bible.md §9): human sorcerer, Draconic
+ * Bloodline (red), amber eyes. Name, species, class and look are fixed; abilities and
+ * background can be chosen. Urchin is the default background [inferred: he grew up a street
+ * mage downriver].
+ */
+export function corinDraft(): HeroDraft {
+  return {
+    ...newDraft('sorcerer', 'human'),
+    origin: 'corin',
+    name: 'Corin Varrow',
+    backgroundId: 'urchin',
+    portrait: {
+      skin: '#d9a982',
+      hair: '#1e1712',
+      eyes: '#9a8a3a',
+      hairStyle: 'short',
+      beard: false,
+      scar: false,
+    },
+  };
+}
+
+/** Skills the hero gets without choosing: background and species traits. */
+export function grantedSkills(draft: Pick<HeroDraft, 'speciesId' | 'backgroundId'>): Skill[] {
+  const out = new Set<Skill>(getBackground(draft.backgroundId).skills);
+  for (const t of getSpecies(draft.speciesId).traits)
+    for (const m of t.mechanics) if (m.type === 'skill') out.add(m.skill);
+  return [...out];
+}
+
+export function classSkillChoices(classId: string): { choose: number; from: Skill[] } {
+  const s = getClass(classId).skills;
+  return { choose: s.choose, from: s.from === 'any' ? (Object.keys(SKILLS) as Skill[]) : s.from };
+}
+
+export const bonusSkillCount = (speciesId: string): number =>
+  getSpecies(speciesId).traits.reduce(
+    (n, t) => n + t.mechanics.reduce((k, m) => k + (m.type === 'skillChoice' ? m.count : 0), 0),
+    0,
+  );
+
+export function allSkills(draft: HeroDraft): Skill[] {
+  return [...new Set([...grantedSkills(draft), ...draft.classSkills, ...draft.bonusSkills])];
+}
+
+/** Level-1 feature choices the creator asks for. */
+export function levelOneChoices(classId: string) {
+  const features = getClass(classId).levels[0]!.features;
+  const style = features.find((f) => f.id === 'fighting-style');
+  const expertise = features.find((f) => f.id === 'expertise');
+  return { fightingStyles: style?.options ?? null, expertise: expertise?.choose ?? 0 };
+}
+
+/** Everything still missing or wrong. Empty = ready to add to the party. */
+export function draftProblems(draft: HeroDraft): string[] {
+  const p: string[] = [];
+  if (!draft.name.trim()) p.push('Give your hero a name.');
+  if (draft.method === 'point' && !isValidPointBuy(draft.baseAbilities))
+    p.push('Point buy must spend at most 27 points on scores of 8 to 15.');
+  if (draft.method === 'roll' && !draft.rolled) p.push('Roll your ability scores.');
+  const sp = getSpecies(draft.speciesId);
+  if (sp.abilityChoice) {
+    const ok =
+      draft.halfElfBonus.length === sp.abilityChoice.count &&
+      new Set(draft.halfElfBonus).size === sp.abilityChoice.count;
+    if (!ok || draft.halfElfBonus.some((a) => sp.abilityChoice!.exclude.includes(a)))
+      p.push(
+        `Pick ${sp.abilityChoice.count} different abilities for the half-elf +1s (not Charisma).`,
+      );
+  }
+  const { choose, from } = classSkillChoices(draft.classId);
+  const granted = grantedSkills(draft);
+  if (draft.classSkills.length !== choose) p.push(`Choose ${choose} class skills.`);
+  if (draft.classSkills.some((s) => !from.includes(s) || granted.includes(s)))
+    p.push('A class skill is not on the list, or you already have it.');
+  const bonus = bonusSkillCount(draft.speciesId);
+  if (draft.bonusSkills.length !== bonus) p.push(`Choose ${bonus} skills from Skill Versatility.`);
+  const choices = levelOneChoices(draft.classId);
+  if (choices.fightingStyles && !choices.fightingStyles.some((o) => o.id === draft.fightingStyle))
+    p.push('Choose a fighting style.');
+  if (choices.expertise) {
+    const skills = allSkills(draft);
+    if (
+      draft.expertise.length !== choices.expertise ||
+      draft.expertise.some((s) => !skills.includes(s))
+    )
+      p.push(`Choose ${choices.expertise} of your skills for Expertise.`);
+  }
+  return p;
+}
+
+/**
+ * Armor Class. PHB: Armor and Shields (light = base + Dex; medium = base + Dex up to 2;
+ * heavy = base). Unarmored: 10 + Dex, or Barbarian 10 + Dex + Con, Monk 10 + Dex + Wis
+ * (no shield), Draconic sorcerer 13 + Dex. A shield adds 2. Fighting style Defense: +1 in armor.
+ */
+export function computeAc(
+  classId: string,
+  abilities: AbilityScores,
+  equipment: Hero['equipment'],
+  fightingStyle: string | null,
+): number {
+  const dex = abilityModifier(abilities.dex);
+  const worn = equipment.armor ? armorList.find((a) => a.id === equipment.armor) : undefined;
+  let ac: number;
+  if (worn) {
+    const capped = worn.dexCap === null ? dex : Math.min(dex, worn.dexCap);
+    ac = worn.ac + capped;
+    if (fightingStyle === 'defense') ac += 1;
+  } else if (classId === 'barbarian') ac = 10 + dex + abilityModifier(abilities.con);
+  else if (classId === 'monk' && !equipment.shield) ac = 10 + dex + abilityModifier(abilities.wis);
+  else if (classId === 'sorcerer') ac = 13 + dex;
+  else ac = 10 + dex;
+  if (equipment.shield) ac += 2;
+  return ac;
+}
+
+/** Level-1 HP: hit die maximum + Con, plus Dwarven Toughness / Draconic Resilience. */
+export function levelOneHp(draft: HeroDraft): number {
+  const cls = getClass(draft.classId);
+  const sp = getSpecies(draft.speciesId);
+  const conMod = abilityModifier(finalAbilities(draft).con);
+  const mechanics = [
+    ...sp.traits.flatMap((t) => t.mechanics),
+    ...cls.levels[0]!.features.flatMap((f) => f.mechanics),
+  ];
+  const extra = mechanics.reduce((n, m) => n + (m.type === 'hpPerLevel' ? m.amount : 0), 0);
+  return firstLevelHp(cls.hitDie as DieSize, conMod) + extra;
+}
+
+/** Turn a finished draft into a level-1 hero. */
+export function buildHero(draft: HeroDraft, id: string): Hero {
+  const problems = draftProblems(draft);
+  if (problems.length) throw new Error(`Hero not ready: ${problems.join(' ')}`);
+  const cls = getClass(draft.classId);
+  const sp = getSpecies(draft.speciesId);
+  const abilities = finalAbilities(draft);
+  const maxHp = levelOneHp(draft);
+  const kit = cls.startingKit;
+  const equipment = { armor: kit.armor ?? null, shield: kit.shield, weapons: [...kit.weapons] };
+  const resistances = sp.traits.flatMap((t) =>
+    t.mechanics.flatMap((m) => (m.type === 'resistance' ? [m.damageType as DamageType] : [])),
+  );
+  return {
+    id,
+    name: draft.name.trim(),
+    kind: 'pc',
+    level: 1,
+    xp: 0,
+    proficiencyBonus: proficiencyBonus(1),
+    abilities,
+    saveProficiencies: [...cls.saves],
+    ac: computeAc(cls.id, abilities, equipment, draft.fightingStyle),
+    maxHp,
+    hp: maxHp,
+    tempHp: 0,
+    hitDice: { die: cls.hitDie as DieSize, total: 1, remaining: 1 },
+    conditions: [],
+    exhaustion: 0,
+    deathSaves: { successes: 0, failures: 0 },
+    stable: false,
+    dead: false,
+    defenses: { ...noDefenses(), resistances },
+    concentration: null,
+    origin: draft.origin,
+    speciesId: sp.id,
+    classId: cls.id,
+    backgroundId: draft.backgroundId,
+    baseAbilities: { ...draft.baseAbilities },
+    abilityMethod: draft.method,
+    skills: allSkills(draft),
+    expertise: [...draft.expertise],
+    fightingStyle: draft.fightingStyle,
+    speed: sp.speed,
+    portrait: { ...draft.portrait },
+    equipment,
+  };
+}
+
+/** Skill bonus for the character sheet (proficiency doubled with Expertise). */
+export function skillBonus(
+  hero: Pick<Hero, 'abilities' | 'skills' | 'expertise' | 'proficiencyBonus'>,
+  skill: Skill,
+): number {
+  const base = abilityModifier(hero.abilities[SKILLS[skill]]);
+  if (hero.expertise.includes(skill)) return base + hero.proficiencyBonus * 2;
+  return base + (hero.skills.includes(skill) ? hero.proficiencyBonus : 0);
+}
+
+export { ABILITIES };
