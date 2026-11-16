@@ -38,4 +38,5 @@ export {
   isAdjacent,
 } from './grid';
 export { currentAc, heroOf, active } from './core';
+export { zoneCells } from './zones';
 export { finishCombat, readyParty, getEncounter, type CombatResult } from './finish';

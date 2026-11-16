@@ -71,6 +71,19 @@
       "desc": "Scorched goats and melted snow. Wix refuses to go any closer. Something small and red has hatched here."
     },
     {
+      "id": "toll-bridge",
+      "name": "The toll bridge",
+      "x": 352,
+      "y": 318,
+      "kind": "main",
+      "tag": "Act II · main story",
+      "act": 2,
+      "region": "road",
+      "desc": "The only bridge over the Grayflow for twenty miles. The Grey Company has put a chain across it.",
+      "verify": true,
+      "verifyNote": "Added in M8 for F8 (Encounters_and_XP §4); placed at the mockup's 'toll bridge' label [inferred]."
+    },
+    {
       "id": "abbey",
       "name": "Abbey of the Morninglord",
       "x": 580,
@@ -79,7 +92,11 @@
       "tag": "Act II · main story",
       "act": 2,
       "region": "marsh",
-      "desc": "A ruined abbey of Lathander on the marsh edge. The second shard lies in its undercroft."
+      "desc": "A ruined abbey of Lathander on the marsh edge. The second shard lies in its undercroft.",
+      "requires": {
+        "flag": "hall_resolved",
+        "hint": "Marrowmere's dead pointed back to Ashford Hall. Settle things with the mayor first."
+      }
     },
     {
       "id": "marrowmere",
@@ -90,7 +107,11 @@
       "tag": "Act II · main story",
       "act": 2,
       "region": "marsh",
-      "desc": "A bog village where the warm water has woken the dead. Don’t go in at night."
+      "desc": "A bog village where the warm water has woken the dead. Don’t go in at night.",
+      "requires": {
+        "flag": "bridge_crossed",
+        "hint": "The Grey Company holds the only bridge. Cross the Grayflow at the toll bridge first."
+      }
     },
     {
       "id": "lizardfolk-grounds",
@@ -101,7 +122,11 @@
       "tag": "Act II · main story",
       "act": 2,
       "region": "marsh",
-      "desc": "Territorial hunters. They respect gifts and plain speaking."
+      "desc": "Territorial hunters. They respect gifts and plain speaking.",
+      "requires": {
+        "flag": "bridge_crossed",
+        "hint": "The Grey Company holds the only bridge. Cross the Grayflow at the toll bridge first."
+      }
     },
     {
       "id": "sallow",
@@ -112,7 +137,28 @@
       "tag": "Act II · side quest",
       "act": 2,
       "region": "marsh",
-      "desc": "A kindly old woman lives here, they say. Her reflection disagrees."
+      "desc": "A kindly old woman lives here, they say. Her reflection disagrees.",
+      "requires": {
+        "flag": "bridge_crossed",
+        "hint": "The Grey Company holds the only bridge. Cross the Grayflow at the toll bridge first."
+      }
+    },
+    {
+      "id": "deserters-camp",
+      "name": "Deserters' camp",
+      "x": 430,
+      "y": 548,
+      "kind": "side",
+      "tag": "Act II · side quest",
+      "act": 2,
+      "region": "marsh",
+      "desc": "Smoke from a hidden fire at the edge of the Forgotten Forest. The bounty says 'bandits'.",
+      "requires": {
+        "flag": "bounty_known",
+        "hint": "Nobody has told you about any bandits yet. Ask at the Drowned Lantern."
+      },
+      "verify": true,
+      "verifyNote": "Added in M8 for Deserters' Bounty; position is my pick [inferred]."
     },
     {
       "id": "ashfall-pass",

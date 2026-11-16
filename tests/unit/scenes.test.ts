@@ -34,6 +34,7 @@ function game(withCorin = false, flags: GameState['flags'] = {}): GameState {
     lastLongRest: null,
     letters: [],
     inventory: {},
+    gold: 0,
   };
 }
 const hi = () => new ScriptedRng(Array(40).fill(20));

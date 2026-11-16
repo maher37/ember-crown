@@ -21,7 +21,8 @@ export function travelHours(from: Place, to: Place): number {
 }
 
 /** Places of a later act stay locked until the story gets there. */
-export const isUnlocked = (game: GameState, p: Place) => p.act <= game.act;
+export const isUnlocked = (game: GameState, p: Place) =>
+  p.act <= game.act && (!p.requires || !!game.flags[p.requires.flag]);
 
 export type TravelOutcome =
   | { kind: 'arrive'; log: string[]; note?: string }

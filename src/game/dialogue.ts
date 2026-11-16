@@ -6,6 +6,14 @@ import mineInk from '../content/dialogue/mine.ink';
 import roadInk from '../content/dialogue/road.ink';
 import tavernInk from '../content/dialogue/tavern.ink';
 import warrenInk from '../content/dialogue/warren.ink';
+import abbeyInk from '../content/dialogue/abbey.ink';
+import ashfordInk from '../content/dialogue/ashford.ink';
+import bridgeInk from '../content/dialogue/bridge.ink';
+import campInk from '../content/dialogue/camp.ink';
+import desertersInk from '../content/dialogue/deserters.ink';
+import marshInk from '../content/dialogue/marsh.ink';
+import marrowmereInk from '../content/dialogue/marrowmere.ink';
+import sallowInk from '../content/dialogue/sallow.ink';
 import { backgrounds, classes, npcs, species } from '../data';
 import {
   abilityCheck,
@@ -18,7 +26,7 @@ import {
   type Skill,
 } from '../rules';
 import { skillBonus, type Hero } from './hero';
-import { getItem, hasItem, itemMods } from './items';
+import { getItem, hasItem, hasSpecial, itemMods } from './items';
 import { savingThrow } from '../rules';
 
 import { addNote, completeStep, giveAward, questDone } from './journal';
@@ -33,6 +41,14 @@ export const STORIES: Record<string, string> = {
   mill: millInk,
   ashwood: ashwoodInk,
   cave: caveInk,
+  bridge: bridgeInk,
+  marsh: marshInk,
+  marrowmere: marrowmereInk,
+  ashford: ashfordInk,
+  abbey: abbeyInk,
+  sallow: sallowInk,
+  deserters: desertersInk,
+  camp: campInk,
 };
 
 /** The scene that opens when the party arrives at a map location (Ashford is the tavern). */
@@ -42,6 +58,12 @@ export const PLACE_SCENES: Record<string, { story: string; knot: string }> = {
   mill: { story: 'mill', knot: 'arrive' },
   ashwood: { story: 'ashwood', knot: 'arrive' },
   'steaming-cave': { story: 'cave', knot: 'arrive' },
+  'toll-bridge': { story: 'bridge', knot: 'arrive' },
+  'lizardfolk-grounds': { story: 'marsh', knot: 'arrive' },
+  marrowmere: { story: 'marrowmere', knot: 'arrive' },
+  abbey: { story: 'abbey', knot: 'arrive' },
+  sallow: { story: 'sallow', knot: 'arrive' },
+  'deserters-camp': { story: 'deserters', knot: 'arrive' },
 };
 
 /** The Truths (Story_Bible §6) by id. */
@@ -224,6 +246,11 @@ export class Conversation {
     s.BindExternalFunction('give_item', (id: string, qty: number) =>
       apply(giveItem(this.game, id, qty)),
     );
+    s.BindExternalFunction('give_gold', (n: number) => {
+      this.game = { ...this.game, gold: Math.max(0, (this.game.gold ?? 0) + n) };
+      this.messages.push(n >= 0 ? `Received ${n} gp` : `Paid ${-n} gp`);
+    });
+    s.BindExternalFunction('gold', () => this.game.gold ?? 0, true);
     s.BindExternalFunction('has_item', (id: string) => partyHasItem(this.game, id), true);
     s.BindExternalFunction('truth', (id: string) => apply(learnTruth(this.game, id)));
     s.BindExternalFunction('set_act', (n: number) => {
@@ -336,7 +363,12 @@ export class Conversation {
       const ability = SKILLS[view.check.skill];
       const bonus = skillBonus(hero, view.check.skill) - abilityModifier(hero.abilities[ability]);
       const luck = itemMods(hero).check;
+      // DMG: Boots of Elvenkind (Stealth) and Sentinel Shield (Perception): advantage.
+      const edge =
+        (view.check.skill === 'stealth' && hasSpecial(hero, 'stealth-advantage-quiet')) ||
+        (view.check.skill === 'perception' && hasSpecial(hero, 'perception-advantage'));
       const r = abilityCheck(hero, ability, view.check.dc, this.rng, {
+        advantage: edge ? ['magic item'] : [],
         label: view.check.skillName,
         bonuses: [
           ...(bonus ? [{ label: 'skill', value: bonus }] : []),

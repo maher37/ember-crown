@@ -71,6 +71,11 @@ export const Place = z
     /** Road-encounter table for legs to this place ("none" in town). */
     region: z.enum(['none', 'road', 'marsh', 'heights']),
     desc: z.string().min(1),
+    /** Locked until a story flag is set, with a hint for the map. */
+    requires: z
+      .object({ flag: z.string().min(1), hint: z.string().min(1) })
+      .strict()
+      .optional(),
     ...Verify,
   })
   .strict();

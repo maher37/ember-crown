@@ -29,7 +29,8 @@ import {
   terrainAt,
 } from './grid';
 import { applyLeaf, nextTurnRound } from './leaves';
-import { castSpell, spiritAttack } from './spells';
+import { castSpell, getSpell, spiritAttack } from './spells';
+import { silenced } from './zones';
 import { meleeOption, moveAlong, nextTurn, settle, speedNow } from './turn';
 import type { CombatState, Combatant, EnemyPlan, PlanStep, Pos } from './types';
 
@@ -94,7 +95,7 @@ function casterPlan(ctx: Ctx, me: Combatant): { steps: PlanStep[]; action: boole
   const none = { steps: [] as PlanStep[], action: false };
   const sc = me.monsterId ? getMonster(me.monsterId).spellcasting : undefined;
   const slots = me.monsterSlots;
-  if (!sc || !canAct(me) || hasEffect(me, 'turned')) return none;
+  if (!sc || !canAct(me) || hasEffect(me, 'turned') || silenced(s, me)) return none;
   const known = Object.values(sc.spells).flat();
   const has = (id: string) => known.includes(id);
   const slot = (n: number) => (slots?.[n] ?? 0) > 0;
@@ -126,6 +127,48 @@ function casterPlan(ctx: Ctx, me: Combatant): { steps: PlanStep[]; action: boole
     bonusSpell = true;
   }
   const adjacent = inRange.find((c) => isAdjacent(c.pos, me.pos));
+  // Priests (Sister Venna): Spirit Guardians once heroes close in (not on Easy [inferred]).
+  if (
+    !bonusSpell &&
+    s.difficulty !== 'easy' &&
+    has('spirit-guardians') &&
+    slot(3) &&
+    !me.creature.concentration &&
+    inRange.some((c) => distanceFeet(c.pos, me.pos) <= 15)
+  ) {
+    steps.push({ type: 'cast', spellId: 'spirit-guardians', slotLevel: 3 });
+    return { steps, action: true };
+  }
+  // Heal a badly hurt friend next to it (or itself).
+  const hurt = Object.values(s.combatants).find(
+    (c) =>
+      c.side === me.side &&
+      conscious(c) &&
+      c.creature.hp <= c.creature.maxHp / 2 &&
+      distanceFeet(c.pos, me.pos) <= 5,
+  );
+  if (!bonusSpell && hurt && has('cure-wounds') && slot(1)) {
+    steps.push({ type: 'cast', spellId: 'cure-wounds', slotLevel: 1, targetIds: [hurt.id] });
+    return { steps, action: true };
+  }
+  if (!bonusSpell && !adjacent && s.difficulty !== 'easy' && has('guiding-bolt') && slot(1)) {
+    steps.push({
+      type: 'cast',
+      spellId: 'guiding-bolt',
+      slotLevel: 1,
+      targetIds: [inRange[0]!.id],
+    });
+    return { steps, action: true };
+  }
+  if (!adjacent && has('vicious-mockery')) {
+    steps.push({
+      type: 'cast',
+      spellId: 'vicious-mockery',
+      slotLevel: 0,
+      targetIds: [inRange[0]!.id],
+    });
+    return { steps, action: true };
+  }
   // PHB: Bonus Action casting. After a bonus-action spell, only a cantrip as the action.
   const holdTarget = inRange.find((c) => !hasCondition(c.creature, 'paralyzed') && heroOf(c));
   if (
@@ -450,7 +493,41 @@ export function continuePlan(ctx: Ctx): void {
       plan.steps.shift();
     } else if (step.type === 'cast') {
       const targets = (step.targetIds ?? []).map((id) => s.combatants[id]);
-      if (targets.every((t) => t && isTargetable(t))) castSpell(ctx, me, step);
+      const healing = step.spellId === 'cure-wounds';
+      const ok = targets.every((t) => t && (healing ? conscious(t) : isTargetable(t)));
+      // PHB: Counterspell. A party caster within 60 ft may stop the spell.
+      if (ok && !step.asked && !step.countered) {
+        step.asked = true;
+        const reactor = Object.values(s.combatants).find((p) => {
+          const h = heroOf(p);
+          return (
+            h &&
+            p.side !== me.side &&
+            h.spells.includes('counterspell') &&
+            slotsLeft(h).some((n, i) => i >= 2 && n > 0) &&
+            !p.reactionUsed &&
+            canAct(p) &&
+            distanceFeet(p.pos, me.pos) <= 60 &&
+            hasLineOfSight(s.map, p.pos, me.pos)
+          );
+        });
+        if (reactor) {
+          s.prompt = {
+            kind: 'counterspell',
+            reactorId: reactor.id,
+            casterId: me.id,
+            spellId: step.spellId,
+          };
+          return;
+        }
+      }
+      if (step.countered) {
+        const sp = getSpell(step.spellId);
+        if (sp.castingTime === 'bonus') me.turn.bonusUsed = true;
+        else me.turn.actionUsed = true;
+        if (step.slotLevel > 0) spendSlot(me, step.slotLevel);
+        say(s, 'foe', `${me.name}'s ${sp.name} fizzles (countered)`);
+      } else if (ok) castSpell(ctx, me, step);
       plan.steps.shift();
     } else if (step.type === 'area-action') {
       areaAction(ctx, me, step.actionId, step.point);
@@ -695,6 +772,15 @@ export function resolvePrompt(ctx: Ctx, accept: boolean): void {
         expires: { turnOf: reactor.id, when: 'start', round: nextTurnRound(s, reactor.id) },
       });
       say(s, 'you', `${reactor.name} casts Shield (+5 AC)`);
+    }
+  } else if (p.kind === 'counterspell') {
+    if (accept && step?.type === 'cast') {
+      const h = heroOf(reactor)!;
+      const lvl = slotsLeft(h).findIndex((n, i) => i >= 2 && n > 0) + 1;
+      spendSlot(reactor, lvl);
+      reactor.reactionUsed = true;
+      step.countered = true;
+      say(s, 'you', `${reactor.name} casts Counterspell (level ${lvl} slot)!`);
     }
   } else if (p.kind === 'cutting-words') {
     if (accept && step?.type === 'attack' && step.roll) {

@@ -43,6 +43,7 @@ const game = (): GameState => ({
   lastLongRest: null,
   letters: [],
   inventory: {},
+  gold: 0,
 });
 
 describe('save files', () => {
@@ -216,7 +217,7 @@ describe('save version 1 → 2 (M4: spells, slots and resources)', () => {
       resourcesUsed: {},
       invocations: [],
     });
-    expect(r.ok && r.save.saveVersion).toBe(5);
+    expect(r.ok && r.save.saveVersion).toBe(SAVE_VERSION);
   });
 });
 
@@ -265,5 +266,15 @@ describe('save version 3 → 4 (M6: clock, long rests, letters)', () => {
     expect(r.ok && r.save.game.clock).toBe(GAME_START);
     expect(r.ok && r.save.game.letters).toEqual([{ id: 'letter-0', read: false }]);
     expect(r.ok && r.save.game.lastLongRest).toBeNull();
+  });
+});
+
+describe('save version 5 → 6 (M8: gold)', () => {
+  it('gives an old party an empty purse', () => {
+    const g = game() as Partial<GameState>;
+    delete g.gold;
+    const r = parseSave(JSON.stringify({ saveVersion: 5, savedAt: 'x', game: g }));
+    expect(r.ok && r.save.game.gold).toBe(0);
+    expect(r.ok && r.save.saveVersion).toBe(6);
   });
 });

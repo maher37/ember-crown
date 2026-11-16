@@ -23,8 +23,7 @@ VAR passed = false
 #speaker:ashwood
 { quest_done("herbalist"):
     Charcoal smoke, birdsong, nobody following you. The Ashwood has gone back to being only a wood.
-    + [Leave (to the map).]
-        -> END
+    -> leave_only
 }
 { flag("won:s2-ashwood-wolves"):
     -> camp
@@ -39,6 +38,11 @@ Old charcoal-burners' woods, black stumps and new birch. {flag("knows_tamsin_tra
     -> track
 + [Leave (to the map).]
     -> END
+
+= leave_only
++ [Leave (to the map).]
+    -> END
+
 = track
 ~ set_flag("knows_tamsin_trail", true)
 ~ quest_step("herbalist", "track")

@@ -26,6 +26,8 @@ EXTERNAL has_item(id)
 EXTERNAL truth(id)
 EXTERNAL set_act(n)
 EXTERNAL trap(ability, dc, dice, type)
+EXTERNAL give_gold(n)
+EXTERNAL gold()
 
 VAR passed = false
 
@@ -60,6 +62,9 @@ Three strangers in grey came in behind him, asking quietly after "a lost letter.
 // ── Brannoc Hale, the innkeeper ──
 === brannoc ===
 #speaker:brannoc
+{ flag("tarrow_fate_decided") && not flag("brannoc_confessed"):
+    -> confession
+}
 { flag("wix_spared") && not flag("pies_settled"):
     "You." Brannoc points the mug at {leader()}. "A goblin's been in my kitchen. Three pies gone, and it keeps telling the cook you're its 'friends.'"
     -> pies
@@ -114,8 +119,13 @@ Three strangers in grey came in behind him, asking quietly after "a lost letter.
     He sets four stoppered flasks on the bar, one in front of each of you. "Healing draughts. On the house, once. After that you're paying like everyone else."
     ~ give_item("potion-of-healing", 4)
     -> menu
-* {quest_done("lantern-night")} [Who's the old woman crying by the window?]
+* {quest_done("lantern-night") && not flag("act1_complete")} [Who's the old woman crying by the window?]
     -> wynn
+* {flag("act1_complete")} [Anything on the Lantern Board?]
+    "One bounty worth the ink." He taps a nailed-up notice. "Four bandits at the edge of the Forgotten Forest. Captain Kell's paying three hundred gold, dead or alive." He frowns. "Bandits who don't rob anyone. Odd sort of bandit."
+    ~ set_flag("bounty_known", true)
+    ~ note("Lantern Board: Captain Kell pays 300 gp for four 'bandits' at the edge of the Forgotten Forest. The Deserters' camp is on the map.")
+    -> menu
 + [Back to the tavern.]
     "Mind the strangers," Brannoc mutters.
     -> END
@@ -142,6 +152,9 @@ Pressed into the wax is a hollow, eight-pointed star. It's addressed to "our fri
 
 === edric ===
 #speaker:edric
+{ flag("act1_complete") && not quest_done("edric-errand"):
+    -> offer
+}
 { not flag("edric_tended"):
     The courier lies across two benches, grey-faced. Blood has soaked through his sleeve and into the satchel strap.
     + [Let me see to his wounds. #check:medicine:10]
@@ -167,6 +180,13 @@ Pressed into the wax is a hollow, eight-pointed star. It's addressed to "our fri
 }
 = after
 -> END
+= offer
+Edric is up and about, pacing by the hearth with a bandage on his arm. "There you are. I want to help. I know things about the Hall."
++ [Tell us.]
+    ~ travel("scene:ashford.errand")
+    -> END
++ [Later, Edric.]
+    -> END
 
 // ── The strangers by the hearth (the Grey Company; F1) ──
 === strangers ===
@@ -332,6 +352,18 @@ At the tunnel's end, a dead miner sits against the rock with his lamp in his lap
 ~ quest_step("cellar", "tunnel")
 -> END
 
+// ── Brannoc's confession (after Tarrow's fate, Act II) ──
+=== confession ===
+#speaker:brannoc
+Brannoc puts down the mug he's been wiping and doesn't pick up another. "Tarrow's report. I signed it too. Me and eleven others, the crew bosses." He looks at his hands. "The mayor promised our widows a pension if we put our names to it. They never got a copper."
+~ set_flag("brannoc_confessed", true)
+* [Why tell us now?]
+    "Because Hadric Varrow was my friend, and I let them bury him twice." He breathes out. "If anyone ever asks me to say it in the square, I will."
+    ~ set_flag("brannoc_will_testify", true)
+    ~ truth("collapse")
+    ~ note("Brannoc confessed: he and the other crew bosses signed the false Collapse report for a pension that never came. He'll testify if asked.")
+    -> END
+
 // ── Old Wynn, the herbalist (side quest: The Herbalist's Granddaughter) ──
 === wynn ===
 #speaker:wynn
@@ -394,6 +426,9 @@ Wix is sitting on the kitchen table with pastry on both ears. "Friends! Tell the
 - else:
     The door opens on the Grayflow valley and the dark line of the Greypeaks beyond.
 }
++ {flag("marrowmere_done") && not flag("hall_resolved")} [Go to Ashford Hall and see the mayor.]
+    ~ travel("scene:ashford.hall")
+    -> END
 + [Set out (open the map).]
     ~ travel("map")
     -> END

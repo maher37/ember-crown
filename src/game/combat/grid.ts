@@ -69,7 +69,27 @@ export function lineCells(a: Pos, b: Pos): Pos[] {
 }
 
 export function hasLineOfSight(m: CombatMap, a: Pos, b: Pos): boolean {
+  // PHB: Darkness. Nobody sees into, out of or through it.
+  if (m.dark?.length) {
+    const dark = new Set(m.dark);
+    if ([a, b, ...lineCells(a, b)].some((p) => dark.has(posKey(p)))) return false;
+  }
   return lineCells(a, b).every((p) => !blocksSight(terrainAt(m, p)));
+}
+
+/**
+ * Feet to step into a cell for this mover: difficult terrain doubles it (flying ignores it),
+ * and so do Spike Growth and Spirit Guardians for those they slow.
+ */
+export function moveCost(
+  s: CombatState,
+  mover: Combatant,
+  p: Pos,
+  slows: (s: CombatState, m: Combatant, p: Pos) => boolean = () => false,
+): number {
+  const flying = mover.effects.some((e) => e.tag === 'flying');
+  const difficult = (!flying && isDifficult(terrainAt(s.map, p))) || slows(s, mover, p);
+  return (difficult ? 2 : 1) * CELL_FEET;
 }
 
 /**
@@ -110,6 +130,7 @@ export function reachable(
   s: CombatState,
   mover: Combatant,
   maxFeet: number,
+  slows?: (s: CombatState, m: Combatant, p: Pos) => boolean,
 ): Map<string, { cost: number; path: Pos[] }> {
   const key = (p: Pos) => `${p.x},${p.y}`;
   const best = new Map<string, { cost: number; path: Pos[] }>([
@@ -124,7 +145,7 @@ export function reachable(
       if (!inBounds(s.map, n) || blocksMovement(terrainAt(s.map, n))) continue;
       const o = occupant(s, n);
       if (o && o.side !== mover.side && conscious(o)) continue;
-      const cost = cur.cost + stepCost(s.map, n);
+      const cost = cur.cost + moveCost(s, mover, n, slows ?? zoneSlowsHook);
       if (cost > maxFeet) continue;
       const k = key(n);
       if (best.has(k) && best.get(k)!.cost <= cost) continue;
@@ -187,4 +208,10 @@ export function cubeCells(m: CombatMap, origin: Pos, toward: Pos, sizeFeet: numb
   for (let y = y0; y < y0 + n; y++)
     for (let x = x0; x < x0 + n; x++) if (inBounds(m, { x, y })) out.push({ x, y });
   return out;
+}
+
+/** Set by zones.ts so reachable() knows about Spike Growth without an import cycle. */
+let zoneSlowsHook: (s: CombatState, m: Combatant, p: Pos) => boolean = () => false;
+export function setZoneSlows(f: typeof zoneSlowsHook): void {
+  zoneSlowsHook = f;
 }

@@ -123,14 +123,29 @@ export const canLongRest = (game: GameState) => rulesCanLongRest(game.clock, gam
 export function takeLongRest(game: GameState, rng: RandomSource): RestResult {
   if (!canLongRest(game)) throw new Error('Only one long rest every 24 hours.');
   const log = ['Long rest (8 hours).'];
-  const party = game.party.map((h) => {
-    if (h.dead) return h;
+  const party = game.party.map((orig) => {
+    if (orig.dead) return orig;
+    // MM: Life Drain lasts until a long rest.
+    let h = orig;
+    if (h.maxHpDrain) {
+      log.push(`${h.name}'s drained life returns (+${h.maxHpDrain} maximum HP).`);
+      h = { ...h, maxHp: h.maxHp + h.maxHpDrain, maxHpDrain: 0 };
+    }
     if (h.hp < 1) return stableWakes(h, 8, rng, log);
     const r = rulesLongRest(h);
     return recharge(r.creature as Hero, 'long-rest');
   });
   log.push('Hit points, spell slots and class abilities are restored. Half your Hit Dice return.');
-  return { game: { ...game, party, clock: game.clock + 8, lastLongRest: game.clock }, log };
+  // DMG: Pearl of Power (once per day) and Staff of Healing (1d6 + 4 charges at dawn, max 10).
+  const flags: GameState['flags'] = { ...game.flags, pearl_used: false };
+  if (game.flags['staff_charges'] !== undefined) {
+    const back = roll('1d6+4', rng).total;
+    flags['staff_charges'] = Math.min(10, Number(game.flags['staff_charges']) + back);
+  }
+  return {
+    game: { ...game, party, flags, clock: game.clock + 8, lastLongRest: game.clock },
+    log,
+  };
 }
 
 export { maxSlots };

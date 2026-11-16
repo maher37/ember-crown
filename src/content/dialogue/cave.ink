@@ -23,8 +23,7 @@ VAR passed = false
 #speaker:cave
 { flag("won:e1-scald"):
     The cave still steams, but nothing breathes in it now except the springs.
-    + [Leave (to the map).]
-        -> END
+    -> leave_only
 }
 Melted snow, scorched goats, a smell of hot copper. Something in the cave is snoring, and every snore makes the steam glow orange. (☠ Deadly at level 2, Hard at level 3.)
 { flag("wix_companion"):
@@ -43,6 +42,11 @@ Melted snow, scorched goats, a smell of hot copper. Something in the cave is sno
     -> END
 + [Leave it sleeping (to the map).]
     -> END
+
+= leave_only
++ [Leave (to the map).]
+    -> END
+
 = hoard
 #speaker:cave
 Scald lies still on its hoard of stolen pots. Under the copper is a fine grey cloak that doesn't burn, and two flasks of something that glows like embers.

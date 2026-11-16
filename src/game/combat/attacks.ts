@@ -2,8 +2,11 @@ import { weapons } from '../../data';
 import type { Effect, LeafEffect } from '../../data/schemas/common';
 import { getMonster } from '../creatures';
 import { getItem, magicWeaponBase } from '../items';
+import { resourceLeft } from '../hero';
+import { nextTurnRound } from './leaves';
 import {
   abilityModifier,
+  addCondition,
   attackRoll,
   hasCondition,
   isIncapacitated,
@@ -14,6 +17,7 @@ import {
 } from '../../rules';
 import {
   classLevel,
+  combatSave,
   currentAc,
   dealDamage,
   diceBonuses,
@@ -23,6 +27,7 @@ import {
   removeEffect,
   say,
   sayAll,
+  spendResource,
   spendSlot,
   type Ctx,
 } from './core';
@@ -83,13 +88,19 @@ export function attackOptions(c: Combatant): AttackOption[] {
           !w.properties.includes('two-handed') &&
           !w.properties.includes('heavy')));
     const useDex = w.kind === 'ranged' || ((finesse || isMonkWeapon) && dex > str);
-    const mod = useDex ? dex : str;
+    // PHB: Shillelagh. A club or quarterstaff uses Wisdom and a d8, and counts as magical.
+    const shillelagh =
+      (w.id === 'club' || w.id === 'quarterstaff') &&
+      !!c.effects?.some((e) => e.tag === 'shillelagh');
+    const wis = abilityModifier(h.abilities.wis);
+    const mod = shillelagh ? Math.max(wis, useDex ? dex : str) : useDex ? dex : str;
     // Versatile weapons are used two-handed when there is no shield and only one melee weapon [inferred].
     const twoHands =
       w.properties.includes('two-handed') ||
       (!!w.versatile && !h.equipment.shield && meleeCount === 1);
     let die = twoHands && w.versatile ? w.versatile : w.damage.dice;
     if (isMonkWeapon && parseDice(die).sides < martialDie) die = `1d${martialDie}`;
+    if (shillelagh && parseDice(die).sides < 8) die = '1d8';
     // Fighting styles: Archery +2 to hit with ranged weapons; Dueling +2 damage one-handed.
     const archery = style === 'archery' && w.kind === 'ranged' ? 2 : 0;
     const dueling = style === 'dueling' && w.kind === 'melee' && !twoHands ? 2 : 0;
@@ -114,6 +125,7 @@ export function attackOptions(c: Combatant): AttackOption[] {
       weaponId: w.id,
       monk: isMonkWeapon,
       unarmed: false,
+      ...(shillelagh ? { magical: true, name: `${w.name} (Shillelagh)` } : {}),
     };
     opts.push(base);
     if (w.kind === 'melee' && w.properties.includes('thrown') && w.range) {
@@ -276,6 +288,8 @@ export interface AttackExtras {
   rollOnly?: boolean;
   /** Extra reasons for disadvantage (e.g. the Protection fighting style). */
   disadvantage?: string[];
+  /** Monk: Stunning Strike on a melee hit (1 ki). */
+  stun?: boolean;
 }
 
 /** One attack, start to finish: roll, then damage and on-hit effects. Returns whether it hit. */
@@ -406,6 +420,26 @@ export function makeAttack(
     } else sayAll(s, [r.log], attacker);
   } else sayAll(s, [r.log], attacker);
   const natural = r.roll?.natural ?? 0;
+  // MM: Parry (bandit captain). Reaction: +2 AC against one melee hit it can see.
+  if (
+    hit &&
+    !r.critical &&
+    opt.kind === 'melee' &&
+    target.monsterId &&
+    !target.reactionUsed &&
+    conscious(target)
+  ) {
+    const parry = getMonster(target.monsterId).actions.find((a) => a.id === 'parry');
+    if (parry && total < currentAc(target) + 2) {
+      target.reactionUsed = true;
+      say(
+        s,
+        'foe',
+        `${target.name} parries (+2 AC): ${total} vs AC ${currentAc(target) + 2} → MISS`,
+      );
+      return { hit: false, critical: false, total, natural };
+    }
+  }
   if (!hit || extras.rollOnly) return { hit, critical: r.critical && hit, total, natural };
   return { ...applyHit(ctx, attacker, target, opt, r.critical, extras), total, natural };
 }
@@ -459,6 +493,11 @@ export function applyHit(
   }
   if (hasEffect(attacker, 'divine-favor') && opt.weaponId)
     parts.push({ dice: '1d4', type: 'radiant' });
+  // DMG: Mace of Disruption. +2d6 radiant against fiends and undead.
+  const tm = target.monsterId ? getMonster(target.monsterId) : undefined;
+  const disruption =
+    opt.id === 'mace-of-disruption' && !!tm && (tm.type === 'undead' || tm.type === 'fiend');
+  if (disruption) parts.push({ dice: '2d6', type: 'radiant' });
   // Branding Smite and similar: the next weapon hit deals extra damage.
   const nextHit = effectsWith(attacker, 'next-hit')[0];
   if (nextHit && opt.weaponId) {
@@ -533,7 +572,59 @@ export function applyHit(
       left -= take;
     }
   }
-  dealDamage(ctx, target, dmg.instances, { critical, melee: opt.kind === 'melee', attacker });
+  // PHB: Rogue, Uncanny Dodge (level 5). Reaction: halve the damage of a hit [used automatically].
+  if (
+    classLevel(target, 'rogue') >= 5 &&
+    !target.reactionUsed &&
+    conscious(target) &&
+    !isIncapacitated(target.creature)
+  ) {
+    target.reactionUsed = true;
+    for (const inst of dmg.instances) inst.amount = Math.floor(inst.amount / 2);
+    say(s, 'you', `${target.name} rolls with the blow (Uncanny Dodge): half damage`);
+  }
+  ctx.lastDamage = dealDamage(ctx, target, dmg.instances, {
+    critical,
+    melee: opt.kind === 'melee',
+    attacker,
+  });
+  // DMG: Mace of Disruption. A fiend or undead left with 25 HP or fewer: DC 15 Wis save or destroyed.
+  if (disruption && conscious(target) && target.creature.hp <= 25) {
+    const save = combatSave(ctx, target, 'wis', 15, { label: 'Wis (Mace of Disruption)' });
+    if (!save.success) {
+      target.creature = { ...target.creature, hp: 0, dead: true };
+      say(s, 'crit', `${target.name} is destroyed by the Mace of Disruption`);
+    }
+  }
+  // PHB: Monk, Stunning Strike (level 5). 1 ki: Con save or stunned until the end of your next turn.
+  const sh = heroOf(attacker);
+  if (
+    extras.stun &&
+    sh &&
+    opt.kind === 'melee' &&
+    classLevel(attacker, 'monk') >= 5 &&
+    resourceLeft(sh, 'ki') > 0 &&
+    conscious(target)
+  ) {
+    spendResource(attacker, 'ki');
+    const dc = 8 + sh.proficiencyBonus + abilityModifier(sh.abilities.wis);
+    const save = combatSave(ctx, target, 'con', dc, {
+      against: 'stunned',
+      label: 'Con (Stunning Strike)',
+    });
+    if (!save.success) {
+      target.creature = addCondition(target.creature, { id: 'stunned', source: attacker.id });
+      target.effects.push({
+        id: `cond-stunned-${attacker.id}`,
+        name: 'stunned',
+        sourceId: attacker.id,
+        tag: 'condition',
+        data: { condition: 'stunned' },
+        expires: { turnOf: attacker.id, when: 'end', round: nextTurnRound(s, attacker.id) },
+      });
+      say(s, 'dmg', `${target.name} is stunned`);
+    }
+  }
 
   // Armor of Agathys: a melee attacker takes cold damage while the temporary HP last.
   const agathys = effectsWith(target, 'agathys')[0];

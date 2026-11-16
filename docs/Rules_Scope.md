@@ -237,6 +237,20 @@ Warlock (pact magic; recharges on a short rest): L1: one 1st-level slot; L2: two
 - [x] (Approved by the owner, M7) Magic items that don't need attunement can be equipped any time; attuning (Items.md) happens during a short rest.
 - [x] (Approved by the owner, M7) Brannoc gives four Potions of Healing once (one each), after Lantern Night (there's no shop or money yet).
 
+- [ ] (Proposed, M8) Lasting spell areas on the grid: Spirit Guardians, Moonbeam, Flaming Sphere, Hunger of Hadar, Spike Growth and Silence. Flaming Sphere and Hunger of Hadar hit at the start of a turn (RAW: end of turn for some parts); Moonbeam and Flaming Sphere can't be moved yet; Spirit Guardians' "half speed" counts as difficult terrain.
+- [ ] (Proposed, M8) Haste's extra action allows one weapon attack, Dash, Disengage, Hide or Use an Object; its advantage on Dex saves isn't in yet. Slow's −2 to Dex saves and spell delay aren't in yet.
+- [ ] (Proposed, M8) Fear: the frightened creature flees and repeats the Wis save at the end of each of its turns (RAW: only once it can't see you).
+- [ ] (Proposed, M8) Conjure Animals always brings two wolves, which act right after the caster and are controlled by you. Fly gives a 60-ft speed that ignores difficult terrain. Suggestion is "stop fighting until hurt".
+- [ ] (Proposed, M8) Revivify works on anyone who died during the current fight. Dispel Magic ends every spell on the target (ours are all 3rd level or lower, so no check is needed).
+- [ ] (Proposed, M8) Uncanny Dodge (rogue 5) is used automatically on the first hit each round; Counterspell asks first.
+- [ ] (Proposed, M8) Monsters that only fly or hover (wraiths, specters) move at their flying speed on the grid.
+- [ ] (Proposed, M8) Sister Venna (priest) casts Spirit Guardians and Guiding Bolt only on Medium and Hard.
+- [ ] (Proposed, M8) A magic shield (Kell's Shield, the Shield of the Morninglord) counts as a normal +2 shield, replacing a plain one.
+- [ ] (Proposed, M8) The Staff of Healing casts Cure Wounds outside fights only (1 charge, 10 charges, 1d6 + 4 back each long rest). The Bog Pearl is used from the Inventory, once per long rest.
+- [ ] (Proposed, M8) Gold: Kell's bounty pays 300 gp; the toll-bridge bribe costs 50 gp. There's no shop yet.
+- [ ] (Proposed, M8) Map gates: the marsh places open once you cross the toll bridge, the abbey once Ashford Hall is settled, and the deserters' camp once you read the Lantern Board.
+- [ ] (Proposed, M8) Not in yet: a wraith's Create Specter, specters moving through walls, the green hag's invisibility, the priest's Divine Eminence, and Edric being captured if you ignore him.
+
 ## CONFIRM LOCALLY
 - [ ] Spell details for anything not marked ✅. They're summarized from memory of the 2014 PHB, so verify damage dice and saves when entering data (the PHB text extracts cleanly enough to check each spell).
 - [ ] Class resource counts (rages per level, ki, sorcery points, invocations known, spells known for bard, sorcerer, ranger and warlock). Copy them from the PHB class tables during data entry.

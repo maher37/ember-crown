@@ -69,7 +69,8 @@
           "text": "Climb back to the mine mouth with the shard"
         }
       ],
-      "completeWhen": ["maelis"]
+      "completeWhen": ["maelis"],
+      "next": "hollow-star"
     },
     {
       "id": "cellar",
@@ -162,6 +163,137 @@
         }
       ],
       "completeWhen": ["luck-stone"]
+    },
+    {
+      "id": "hollow-star",
+      "title": "The Hollow Star",
+      "kind": "main",
+      "act": 2,
+      "summary": "The Marsh of Chelimber is steaming in midwinter. The Grey Company and the Hollow Star are both after the second shard.",
+      "xp": 844,
+      "steps": [
+        {
+          "id": "bridge",
+          "text": "Cross the Grayflow at the Grey Company's toll bridge (F8)"
+        },
+        {
+          "id": "marsh",
+          "text": "Get through the lizardfolk hunting grounds (F9)"
+        },
+        {
+          "id": "marrowmere",
+          "text": "Find out what happened in Drowned Marrowmere (F10)"
+        },
+        {
+          "id": "chapel",
+          "text": "Clear the Marrowmere chapel (F11)"
+        },
+        {
+          "id": "hall",
+          "text": "Find the 'friend in Ashford Hall'"
+        },
+        {
+          "id": "tarrow",
+          "text": "Decide Mayor Tarrow's fate (F12)"
+        },
+        {
+          "id": "cloister",
+          "text": "Break into the abbey cloister (F13)"
+        },
+        {
+          "id": "undercroft",
+          "text": "Face Sister Venna in the abbey undercroft (F14)"
+        },
+        {
+          "id": "archives",
+          "text": "Read the abbey archives"
+        }
+      ],
+      "completeWhen": ["archives"]
+    },
+    {
+      "id": "sallow",
+      "title": "Mother Sallow's Bargain",
+      "kind": "side",
+      "act": 2,
+      "summary": "A kindly old woman in the bog knows what the crown really is. Her price is something precious.",
+      "xp": 575,
+      "steps": [
+        {
+          "id": "find",
+          "text": "Find Mother Sallow's hut through the wisp-lit bog"
+        },
+        {
+          "id": "bargain",
+          "text": "Strike her bargain, or break it"
+        }
+      ],
+      "completeWhen": ["bargain"]
+    },
+    {
+      "id": "deserters",
+      "title": "Deserters' Bounty",
+      "kind": "side",
+      "act": 2,
+      "summary": "The Lantern Board offers a bounty on 'bandits' in the Forgotten Forest. Captain Kell is paying it.",
+      "xp": 469,
+      "steps": [
+        {
+          "id": "track",
+          "text": "Track the 'bandits'"
+        },
+        {
+          "id": "decide",
+          "text": "Free them, or turn them in"
+        }
+      ],
+      "completeWhen": ["decide"]
+    },
+    {
+      "id": "paladin-shield",
+      "title": "The Fallen Paladin's Shield",
+      "kind": "side",
+      "act": 2,
+      "summary": "The abbey's founder carried a shield blessed by the Morninglord. It went down into the flooded crypt with her.",
+      "xp": 500,
+      "steps": [
+        {
+          "id": "clue",
+          "text": "Find the clue in the abbey chapel"
+        },
+        {
+          "id": "crypt",
+          "text": "Search the flooded crypt"
+        },
+        {
+          "id": "restore",
+          "text": "Restore the shield at the shrine"
+        }
+      ],
+      "completeWhen": ["restore"]
+    },
+    {
+      "id": "edric-errand",
+      "title": "Edric's Errand",
+      "kind": "side",
+      "act": 2,
+      "summary": "Edric wants to prove himself: shadow the mayor's runner and steal the Hall ledger.",
+      "xp": 650,
+      "steps": [
+        {
+          "id": "shadow",
+          "text": "Shadow the mayor's runner"
+        },
+        {
+          "id": "ledger",
+          "text": "Steal the Hall ledger"
+        },
+        {
+          "id": "ambush",
+          "text": "Survive Venna's enforcers"
+        }
+      ],
+      "completeWhen": ["ambush"]
     }
   ],
   "awards": [
@@ -219,6 +351,81 @@
       "id": "discover-scald",
       "xp": 10,
       "reason": "Discovery: read the signs of a young red dragon"
+    },
+    {
+      "id": "q-crossing",
+      "xp": 200,
+      "reason": "Crossed the Grayflow"
+    },
+    {
+      "id": "q-marsh",
+      "xp": 300,
+      "reason": "Found the heart of the steaming marsh"
+    },
+    {
+      "id": "q-marrowmere",
+      "xp": 300,
+      "reason": "Learned what raised Marrowmere's dead"
+    },
+    {
+      "id": "q-friend",
+      "xp": 400,
+      "reason": "Found the friend in Ashford Hall"
+    },
+    {
+      "id": "q-tarrow",
+      "xp": 300,
+      "reason": "Decided Mayor Tarrow's fate"
+    },
+    {
+      "id": "f8-talk",
+      "xp": 100,
+      "reason": "Got past Kell's bridge without a fight (F8, D16)"
+    },
+    {
+      "id": "f9-talk",
+      "xp": 75,
+      "reason": "Got through the lizardfolk grounds without a fight (F9, D16)"
+    },
+    {
+      "id": "f12-skip",
+      "xp": 200,
+      "reason": "Exposed Tarrow before his guards could move (F12, D16)"
+    },
+    {
+      "id": "sallow-deal",
+      "xp": 225,
+      "reason": "Struck Mother Sallow's bargain instead of fighting (D16)"
+    },
+    {
+      "id": "deserters-talk",
+      "xp": 131,
+      "reason": "Settled the deserters without a fight (D16)"
+    },
+    {
+      "id": "discover-steam",
+      "xp": 21,
+      "reason": "Discovery: the marsh is heated from below, like a forge"
+    },
+    {
+      "id": "discover-kell",
+      "xp": 21,
+      "reason": "Discovery: Captain Kell's company is paid by the Guild, in arrears"
+    },
+    {
+      "id": "discover-records",
+      "xp": 21,
+      "reason": "Discovery: Marrowmere's parish records"
+    },
+    {
+      "id": "discover-sun",
+      "xp": 22,
+      "reason": "Discovery: the scratched-out sun of Lathander"
+    },
+    {
+      "id": "discover-ledger",
+      "xp": 22,
+      "reason": "Discovery: the ledger's code"
     }
   ]
 }

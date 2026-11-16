@@ -1,9 +1,10 @@
 import { getMonster } from '../creatures';
 import { getItem } from '../items';
-import { spiritAttack } from './spells';
+import { casterNumbers, spiritAttack } from './spells';
 import { resourceLeft, skillBonus, slotsLeft, type Hero } from '../hero';
 import {
   abilityCheck,
+  attackRoll,
   abilityModifier,
   addCondition,
   hasCondition,
@@ -21,6 +22,8 @@ import {
   canAct,
   classLevel,
   combatSave,
+  currentAc,
+  dealDamage,
   get,
   hasEffect,
   healCombatant,
@@ -28,6 +31,7 @@ import {
   hostiles,
   produce,
   say,
+  sayAll,
   spendResource,
   type Ctx,
 } from './core';
@@ -83,11 +87,14 @@ export type FeatureId =
   | 'sacred-weapon'
   | 'turn-the-unholy'
   | 'horde-breaker'
-  | 'spiritual-weapon';
+  | 'spiritual-weapon'
+  | 'call-lightning'
+  | 'heat-metal'
+  | 'vampiric-touch';
 
 export type PlayerAction =
   | { type: 'move'; to: Pos }
-  | { type: 'attack'; targetId: string; optionId: string; smiteLevel?: number }
+  | { type: 'attack'; targetId: string; optionId: string; smiteLevel?: number; stun?: boolean }
   | { type: 'offhand'; targetId: string; optionId: string }
   | ({ type: 'cast' } & CastRequest)
   | { type: 'dash' | 'disengage' | 'dodge' | 'hide' | 'stand' }
@@ -130,13 +137,23 @@ export function act(state: CombatState, a: PlayerAction): ActResult {
 }
 
 /** Uses the action, or an extra one from Action Surge. Returns false if none is left. */
-function spendAction(c: Combatant): boolean {
+/**
+ * Use the action (or an extra one from Action Surge). `limited` actions (one weapon attack,
+ * Dash, Disengage, Hide, Use an Object) can also use Haste's extra action (PHB: Haste).
+ */
+function spendAction(c: Combatant, limited = false): boolean {
+  c.turn.inHasteAction = false;
   if (!c.turn.actionUsed) {
     c.turn.actionUsed = true;
     return true;
   }
   if (c.turn.extraActions > 0) {
     c.turn.extraActions -= 1;
+    return true;
+  }
+  if (limited && c.turn.hasteAction) {
+    c.turn.hasteAction = false;
+    c.turn.inHasteAction = true;
     return true;
   }
   return false;
@@ -176,12 +193,12 @@ function perform(ctx: Ctx, c: Combatant, a: PlayerAction): string | null | undef
       return null;
     }
     case 'dash':
-      if (!spendAction(c)) return 'No action left.';
+      if (!spendAction(c, true)) return 'No action left.';
       c.turn.movement += speedNow(c);
       say(s, 'you', `${c.name} dashes (+${speedNow(c)} ft)`);
       return null;
     case 'disengage':
-      if (!spendAction(c)) return 'No action left.';
+      if (!spendAction(c, true)) return 'No action left.';
       c.turn.disengaged = true;
       say(s, 'you', `${c.name} disengages`);
       return null;
@@ -269,7 +286,10 @@ function doAttack(
   if (!startAttack(c)) return 'No attacks left this turn.';
   c.turn.attacked = true;
   if (opt.light && opt.kind === 'melee') c.turn.lightWeaponUsed = opt.id;
-  makeAttack(ctx, c, target, opt, { smiteLevel: a.smiteLevel });
+  makeAttack(ctx, c, target, opt, {
+    smiteLevel: a.smiteLevel,
+    stun: a.type === 'attack' ? a.stun : undefined,
+  });
   return null;
 }
 
@@ -279,8 +299,9 @@ function startAttack(c: Combatant): boolean {
     c.turn.attacksLeft -= 1;
     return true;
   }
-  if (!spendAction(c)) return false;
-  c.turn.attacksLeft = usesExtraAttack(c) - 1;
+  if (!spendAction(c, true)) return false;
+  // Haste's extra action allows only one weapon attack.
+  c.turn.attacksLeft = c.turn.inHasteAction ? 0 : usesExtraAttack(c) - 1;
   return true;
 }
 
@@ -670,6 +691,34 @@ export function featureList(c: Combatant): FeatureInfo[] {
       blocked:
         t.attacked && !t.hordeUsed ? undefined : t.hordeUsed ? 'once per turn' : 'attack first',
     });
+  const lightning = c.effects.find((e) => e.tag === 'call-lightning');
+  if (lightning)
+    out.push({
+      id: 'call-lightning',
+      name: 'Call Lightning',
+      cost: 'action',
+      detail: `another bolt (${lightning.data?.dice} lightning, Dex save half) on an enemy and anyone within 5 ft`,
+      target: 'enemy',
+      blocked: action(),
+    });
+  if (hasEffect(c, 'heat-metal'))
+    out.push({
+      id: 'heat-metal',
+      name: 'Heat Metal',
+      cost: 'bonus',
+      detail: 'burn the heated creature again (2d8 fire)',
+      target: 'enemy',
+      blocked: bonus(),
+    });
+  if (hasEffect(c, 'vampiric-touch'))
+    out.push({
+      id: 'vampiric-touch',
+      name: 'Vampiric Touch',
+      cost: 'action',
+      detail: 'another draining touch (melee spell attack; heal half)',
+      target: 'enemy',
+      blocked: action(),
+    });
   if (hasEffect(c, 'spiritual-weapon'))
     out.push({
       id: 'spiritual-weapon',
@@ -778,6 +827,16 @@ function feature(
           distanceFeet(x.pos, c.pos) <= 30,
       )) {
         const r = combatSave(ctx, u, 'wis', dc, { against: 'frightened', magic: true });
+        // PHB: Destroy Undead (cleric 5): undead of CR 1/2 or lower that fail are destroyed.
+        const cr = getMonster(u.monsterId!).cr;
+        const crValue = cr.includes('/')
+          ? Number(cr.split('/')[0]) / Number(cr.split('/')[1])
+          : Number(cr);
+        if (!r.success && classLevel(c, 'cleric') >= 5 && crValue <= 0.5) {
+          u.creature = { ...u.creature, hp: 0, dead: true };
+          say(s, 'crit', `${u.name} crumbles to dust (Destroy Undead)`);
+          continue;
+        }
         if (!r.success)
           addEffect(u, {
             id: 'turned',
@@ -992,6 +1051,64 @@ function feature(
       makeAttack(ctx, c, target, opt);
       return null;
     }
+    case 'call-lightning': {
+      // PHB: Call Lightning. A bolt hits a point; everyone within 5 ft makes a Dex save.
+      if (!target) return 'Choose an enemy.';
+      if (distanceFeet(c.pos, target.pos) > 120) return 'Too far (120 ft).';
+      if (!spendAction(c)) return 'No action left.';
+      const eff = c.effects.find((e) => e.tag === 'call-lightning')!;
+      const dmg = roll(String(eff.data?.dice ?? '3d10'), ctx.rng);
+      me(`${c.name} calls down a bolt of lightning: ${dmg.text}`);
+      for (const t of Object.values(s.combatants).filter(
+        (x) => !x.gone && !x.creature.dead && distanceFeet(x.pos, target.pos) <= 5,
+      )) {
+        const r = combatSave(ctx, t, 'dex', Number(eff.data?.dc ?? 10), { magic: true });
+        dealDamage(
+          ctx,
+          t,
+          [{ amount: r.success ? Math.floor(dmg.total / 2) : dmg.total, type: 'lightning' }],
+          { attacker: c },
+        );
+      }
+      return null;
+    }
+    case 'heat-metal': {
+      const eff = c.effects.find((e) => e.tag === 'heat-metal')!;
+      if (!target || target.id !== eff.data?.targetId) return 'Only the creature you heated.';
+      if (distanceFeet(c.pos, target.pos) > 60) return 'Too far (60 ft).';
+      c.turn.bonusUsed = true;
+      const dmg = roll(String(eff.data?.dice ?? '2d8'), ctx.rng);
+      me(`${c.name} makes the metal glow hotter: ${dmg.text} fire`);
+      dealDamage(ctx, target, [{ amount: dmg.total, type: 'fire' }], { attacker: c });
+      return null;
+    }
+    case 'vampiric-touch': {
+      if (!target || target.side === c.side) return 'Choose an enemy.';
+      if (distanceFeet(c.pos, target.pos) > 5) return 'You must be next to it.';
+      if (!spendAction(c)) return 'No action left.';
+      const eff = c.effects.find((e) => e.tag === 'vampiric-touch')!;
+      const nums = casterNumbers(c);
+      const r = attackRoll(c.creature, { ...target.creature, ac: currentAc(target) }, ctx.rng, {
+        attackBonus: nums.attack,
+        melee: true,
+        within5ft: true,
+        label: 'Vampiric Touch',
+      });
+      sayAll(s, [r.log], c);
+      if (r.hit) {
+        const dmg = roll(String(eff.data?.dice ?? '3d6'), ctx.rng);
+        me(`Vampiric Touch: ${dmg.text} necrotic`);
+        const dealt = dealDamage(
+          ctx,
+          target,
+          [{ amount: dmg.total * (r.critical ? 2 : 1), type: 'necrotic' }],
+          { attacker: c, critical: r.critical },
+        );
+        const healed = Math.floor(dealt / 2);
+        if (healed) healCombatant(ctx, c, healed, 'Vampiric Touch', c);
+      }
+      return null;
+    }
     case 'spiritual-weapon': {
       if (!target || target.side === c.side) return 'Choose an enemy.';
       if (distanceFeet(c.pos, target.pos) > 60) return 'Too far for the spiritual weapon (60 ft).';
@@ -1013,7 +1130,7 @@ function applyItem(ctx: Ctx, c: Combatant, itemId: string, targetId: string): st
   // PHB: Thief, Fast Hands. Use an object with Cunning Action (a bonus action).
   const fast = classLevel(c, 'rogue') >= 3 && !c.turn.bonusUsed;
   if (fast) c.turn.bonusUsed = true;
-  else if (!spendAction(c)) return 'No action left.';
+  else if (!spendAction(c, true)) return 'No action left.';
   s.inventory = { ...s.inventory, [itemId]: s.inventory[itemId]! - 1 };
   say(
     s,

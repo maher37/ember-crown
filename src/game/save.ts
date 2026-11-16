@@ -6,7 +6,7 @@ import type { LetterState } from './letters';
 import { GAME_START } from './calendar';
 
 /** Bump when the save format changes, and add a migration below. Never break old saves. */
-export const SAVE_VERSION = 5;
+export const SAVE_VERSION = 6;
 
 export interface GameState {
   id: string;
@@ -35,6 +35,8 @@ export interface GameState {
   letters: LetterState[];
   /** The party's shared pack: item id → how many (potions, unequipped magic items). */
   inventory: Record<string, number>;
+  /** The party's purse, in gold pieces (M8). */
+  gold: number;
 }
 
 export interface SaveFile {
@@ -122,6 +124,7 @@ export const HeroSchema = z.object({
   slotsUsed: z.array(z.number().int().min(0)),
   resourcesUsed: z.record(z.string(), z.number().int().min(0)),
   choices: z.record(z.string(), z.array(z.string())),
+  maxHpDrain: z.number().int().min(0).optional(),
 }) satisfies z.ZodType<Hero>;
 
 export const GameStateSchema = z.object({
@@ -144,6 +147,7 @@ export const GameStateSchema = z.object({
   lastLongRest: z.number().int().nullable(),
   letters: z.array(z.object({ id: z.string(), read: z.boolean(), reply: z.string().optional() })),
   inventory: z.record(z.string(), z.number().int().min(0)),
+  gold: z.number().int().min(0),
 }) satisfies z.ZodType<GameState>;
 
 export const SaveFileSchema = z.object({
@@ -207,6 +211,8 @@ export const MIGRATIONS: Record<number, (old: Record<string, unknown>) => Record
       const party = game.party.map((h) => ({ ...h, equipment: { magic: [], ...h.equipment } }));
       return { ...old, game: { inventory: {}, ...game, party } };
     },
+    // v5 → v6 (M8): the party's gold.
+    5: (old) => ({ ...old, game: { gold: 0, ...(old.game as Record<string, unknown>) } }),
   };
 
 export type LoadResult = { ok: true; save: SaveFile } | { ok: false; error: string };
