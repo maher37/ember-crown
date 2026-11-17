@@ -34,6 +34,7 @@ import { briefLine, hitChance, isDiceLine } from './combatUi';
 import { CLASS_COPY, ELF_EARS } from './creatorCopy';
 import { Portrait } from './Portrait';
 import { terrainFill, terrainName } from './mapStyle';
+import { foeInfo } from './foeInfo';
 import { getItem } from '../game/items';
 
 const CELL = 48;
@@ -68,6 +69,7 @@ export function CombatScreen() {
   const [smite, setSmite] = useState(0);
   const [mm, setMm] = useState<Metamagic | ''>('');
   const [stun, setStun] = useState(false);
+  const [inspect, setInspect] = useState<string | null>(null);
   const s = combat!;
   const me = s.combatants[s.order[s.turnIndex]!]!;
   const myTurn = me.side === 'party' && !s.outcome && !s.prompt;
@@ -113,7 +115,7 @@ export function CombatScreen() {
     (x): x is Metamagic => x in METAMAGIC_NAMES,
   );
   const potions = Object.entries(s.inventory).filter(([id, n]) => n > 0 && getItem(id).consumable);
-  const features = myTurn ? featureList(me) : [];
+  const features = myTurn ? featureList(me, s) : [];
 
   // Which tokens can be clicked in the current mode.
   const validTargets = useMemo(() => {
@@ -264,11 +266,18 @@ export function CombatScreen() {
   const hero = isHero(me) ? me : null;
   const hp = me.wildShape ? me.wildShape.hp : me.creature.hp;
   const maxHp = me.wildShape ? me.wildShape.maxHp : me.creature.maxHp;
-  const hovered = hover
+  const hoveredNow = hover
     ? Object.values(s.combatants).find(
         (c) => !c.gone && !c.creature.dead && c.pos.x === hover.x && c.pos.y === hover.y,
       )
     : undefined;
+  // Clicking an enemy that isn't a target pins its details (playtest feedback).
+  const pinnedFoe = inspect ? s.combatants[inspect] : undefined;
+  const hovered =
+    hoveredNow ??
+    (pinnedFoe && !pinnedFoe.gone && !pinnedFoe.creature.dead ? pinnedFoe : undefined);
+  const info =
+    hovered && hovered.side === 'enemy' ? foeInfo(hovered, isHero(me) ? me : undefined) : null;
   const hoverOpt =
     mode.kind === 'attack' ? options.find((o) => o.id === mode.optionId) : options[0];
   const banner = targetBanner(mode, options, spells);
@@ -523,10 +532,14 @@ export function CombatScreen() {
                   className={`token ${c.side} ${c.id === me.id ? 'active' : ''} ${target ? 'target' : ''} ${dead ? 'dead' : ''} ${down && !dead ? 'downed' : ''}`}
                   style={{ left: c.pos.x * CELL + 4, top: c.pos.y * CELL + 4 }}
                   aria-label={`${c.name}, ${c.side === 'party' ? 'ally' : 'enemy'}, ${dead ? 'dead' : down ? 'down' : `HP ${c.wildShape?.hp ?? c.creature.hp} of ${c.wildShape?.maxHp ?? c.creature.maxHp}`}${target ? ', valid target' : ''}`}
-                  disabled={!target && !(mode.kind === 'spell' && validTargets.size === 0)}
+                  aria-disabled={!target && !(mode.kind === 'spell' && validTargets.size === 0)}
                   onMouseEnter={() => setHover(c.pos)}
                   onFocus={() => setHover(c.pos)}
-                  onClick={() => clickToken(c)}
+                  onClick={() =>
+                    target || (mode.kind === 'spell' && validTargets.size === 0)
+                      ? clickToken(c)
+                      : setInspect(inspect === c.id ? null : c.id)
+                  }
                 >
                   {c.wildShape ? 'Wf' : c.short}
                   {chosen ? <span className="badge">{chosen}</span> : null}
@@ -537,7 +550,7 @@ export function CombatScreen() {
             <div
               className={`tooltip ${hovered.side}`}
               style={{
-                left: Math.min(hovered.pos.x * CELL + 50, s.map.width * CELL - 230),
+                left: Math.min(hovered.pos.x * CELL + 50, s.map.width * CELL - 270),
                 top: Math.max(4, hovered.pos.y * CELL - 70),
               }}
               role="status"
@@ -552,6 +565,24 @@ export function CombatScreen() {
                   {hoverOpt.name}: {hitChance(hoverOpt.toHit, currentAc(hovered))}% to hit ·{' '}
                   {hoverOpt.damage.map((d) => `${d.dice} ${d.type}`).join(' + ')}
                 </span>
+              )}
+              {info && (
+                <>
+                  <span className="foe-kind">{info.kind}</span>
+                  {info.defenses.map((d) => (
+                    <span key={d} className="muted">
+                      {d}
+                    </span>
+                  ))}
+                  {info.traits.length > 0 && (
+                    <span className="muted">Traits: {info.traits.join(', ')}</span>
+                  )}
+                  {info.edges.map((d) => (
+                    <span key={d} className="foe-edge">
+                      ★ {d}
+                    </span>
+                  ))}
+                </>
               )}
               {hovered.creature.conditions.length > 0 && (
                 <span className="muted">
@@ -704,6 +735,8 @@ export function CombatScreen() {
             <span className="pip-row">
               <span className={`pip action ${actionLeft ? '' : 'used'}`} />
               Action
+              {me.turn.extraActions > 0 ? ` +${me.turn.extraActions} extra` : ''}
+              {me.turn.hasteAction ? ' +1 (Haste)' : ''}
             </span>
             <span className="pip-row">
               <span className={`pip bonus ${me.turn.bonusUsed ? 'used' : ''}`} />

@@ -131,3 +131,21 @@
   text-transform: uppercase;
   color: var(--ember-text);
 }
+.marching {
+  margin: 0 24px 12px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+.marching ol {
+  display: flex;
+  gap: 16px;
+  margin: 0;
+  padding-left: 20px;
+}
+.marching li {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+}

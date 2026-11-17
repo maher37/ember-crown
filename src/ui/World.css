@@ -546,3 +546,30 @@
   font-size: 15px;
   opacity: 0.8;
 }
+.rest-progress {
+  position: absolute;
+  top: 80px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(38, 47, 60, 0.92);
+  border: 1px solid #51607a;
+  border-radius: 8px;
+  padding: 10px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 260px;
+  color: #eef2f7;
+  z-index: 5;
+}
+.rest-bar {
+  height: 8px;
+  background: #323d4f;
+  border-radius: 4px;
+  overflow: hidden;
+}
+.rest-bar > div {
+  height: 100%;
+  background: #e8c27a;
+  transition: width 0.5s;
+}

@@ -251,7 +251,7 @@ button.cell {
 }
 .tooltip {
   position: absolute;
-  width: 224px;
+  width: 260px;
   background: var(--header);
   border-radius: 6px;
   padding: 8px 10px;
@@ -694,4 +694,11 @@ button.cell {
 }
 .party-hp-row .hp-bar {
   height: 8px;
+}
+.foe-kind {
+  color: var(--gold);
+  font-weight: 600;
+}
+.foe-edge {
+  color: #a8d68c;
 }

@@ -12,6 +12,8 @@ export default defineConfig({
   use: {
     baseURL: `http://localhost:${PORT}/ember-crown/`,
     trace: 'off',
+    // Animations (the long rest's hours) run fast, as for players who prefer reduced motion.
+    reducedMotion: 'reduce',
   },
   projects: [{ name: 'chromium', use: { ...devices['Desktop Chrome'] } }],
   webServer: {

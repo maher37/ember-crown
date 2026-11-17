@@ -22,6 +22,7 @@ import {
 import { Conversation, PLACE_SCENES } from './dialogue';
 import { equip, getItem, unequip } from './items';
 import { castHealing, layOnHands } from './healing';
+import { withFormation } from './formation';
 import type { Hero } from './hero';
 import { GAME_START } from './calendar';
 import { formatDate } from './calendar';
@@ -106,6 +107,8 @@ interface GameStore {
     how: { spellId: string; slotLevel: number } | 'lay-on-hands',
     targetId: string,
   ) => string | undefined;
+  /** Remember the party's marching order for every fight. */
+  setFormation: (order: string[]) => void;
   /** Drink a potion outside a fight. */
   drinkPotion: (heroId: string, itemId: string) => string | undefined;
   /** DMG: Pearl of Power (the Bog Pearl). Regain one spent slot of 3rd level or lower, once a day. */
@@ -151,6 +154,16 @@ interface GameStore {
   spendHitDie: (heroId: string) => void;
   endShortRest: () => void;
   longRest: () => void;
+  /** Check the night's road encounter for a long rest; null if no rest is allowed now. */
+  planLongRest: () => { interruptAt: number | null; encounterId: string | null } | null;
+  /** The night's encounter strikes after `hours` asleep. */
+  interruptLongRest: (encounterId: string, hours: number) => void;
+  /** Stop sleeping early: time passes, no benefit. */
+  wakeEarly: (hours: number) => void;
+  /** All 8 hours slept: the long rest's benefits, letters and dreams. */
+  completeLongRest: () => void;
+  /** Road-check lines for a night that will be interrupted (shown when it happens). */
+  pendingNight: string[];
   answerLetter: (id: string, replyId?: string) => void;
   /** Talk past a talk-or-fight encounter (D16: same XP). Returns the check text. */
   talkPast: () => { success: boolean; text: string } | null;
@@ -180,6 +193,7 @@ export const useGame = create<GameStore>()((set, get) => ({
   shortRest: null,
   resume: null,
   afterDialogue: null,
+  pendingNight: [],
 
   goto: (screen) => set({ screen }),
   goHome: () => {
@@ -520,6 +534,11 @@ export const useGame = create<GameStore>()((set, get) => ({
     return undefined;
   },
 
+  setFormation: (order) => {
+    const { game } = get();
+    if (game) set({ game: withFormation(game, order) });
+  },
+
   drinkPotion: (heroId, itemId) => {
     const { game, rngState } = get();
     if (!game) return 'No game';
@@ -652,8 +671,15 @@ export const useGame = create<GameStore>()((set, get) => ({
   },
 
   longRest: () => {
+    const plan = get().planLongRest();
+    if (!plan) return;
+    if (plan.encounterId) get().interruptLongRest(plan.encounterId, 0);
+    else get().completeLongRest();
+  },
+
+  planLongRest: () => {
     const { game, rngState } = get();
-    if (!game) return;
+    if (!game) return null;
     if (!canLongRest(game)) {
       set({
         campLog: [
@@ -661,25 +687,59 @@ export const useGame = create<GameStore>()((set, get) => ({
           "You can't benefit from another long rest yet: once per 24 hours (PHB).",
         ],
       });
-      return;
+      return null;
     }
     const rng = SeededRng.fromState(rngState);
-    // Encounters_and_XP.md §5b: one road check per long rest taken in the wild.
+    // Encounters_and_XP.md §5b: one road check per long rest taken in the wild. If it hits, it
+    // strikes at a random hour of the night (1d8) [inferred].
     const place = currentPlace(game);
     if (get().campScene !== 'inn' && place.region !== 'none') {
       const check = roadCheck(place.region, 'during the night', [], rng);
       if (check.kind === 'encounter') {
-        set({
-          rngState: rng.state,
-          campLog: [...get().campLog, ...check.log, 'The rest is interrupted!'],
-          backToCamp: true,
-          pendingArrival: null,
-        });
-        get().openPrepare(check.encounterId);
-        return;
+        const hour = roll('1d7', rng).total;
+        set({ rngState: rng.state, pendingNight: check.log });
+        return { interruptAt: hour, encounterId: check.encounterId };
       }
-      set({ campLog: [...get().campLog, ...check.log] });
+      set({ rngState: rng.state, campLog: [...get().campLog, ...check.log] });
     }
+    return { interruptAt: null, encounterId: null };
+  },
+
+  interruptLongRest: (encounterId, hours) => {
+    const { game } = get();
+    if (!game) return;
+    set({
+      game: { ...game, clock: game.clock + hours },
+      campLog: [
+        ...get().campLog,
+        ...get().pendingNight,
+        `Hour ${hours} of the night: the rest is interrupted!`,
+      ],
+      pendingNight: [],
+      backToCamp: true,
+      pendingArrival: null,
+    });
+    get().openPrepare(encounterId);
+  },
+
+  wakeEarly: (hours) => {
+    const { game } = get();
+    if (!game) return;
+    set({
+      game: { ...game, clock: game.clock + hours },
+      pendingNight: [],
+      campLog: [
+        ...get().campLog,
+        `You wake after ${hours} hour${hours === 1 ? '' : 's'}. A long rest needs the full 8 hours (PHB), so it gives no benefit; a short rest still works.`,
+      ],
+    });
+    get().saveTo('autosave');
+  },
+
+  completeLongRest: () => {
+    const { game, rngState } = get();
+    if (!game) return;
+    const rng = SeededRng.fromState(rngState);
     const r = takeLongRest(game, rng);
     // Maelis_Letters.md: letter 2 comes on the first long rest on the road to the marsh.
     let rested = r.game;
