@@ -15,6 +15,9 @@ Dialogue is written in [Ink](https://github.com/inkle/ink/blob/master/Documentat
 | `~ travel("map")` | Leave the scene and open the world map |
 | `~ travel("scene:ashford.hall")` | Leave this scene for another story's knot (the tavern's front door → Ashford Hall) |
 | `~ give_gold(300)` / `gold()` | Add (or, with a negative number, spend) gold / how much the party has |
+| `truths()` / `speech()` | How many Truths the party holds / roll the finale speech (Story_Bible §6) |
+| `ember()` / `~ regain_slot()` | Corin's Ember (0–5) / give Corin back his highest spent spell slot |
+| `~ set_flag("ending", "lamp-lit")` then `~ travel("epilogue")` | End the game: the epilogue slides (`src/data/epilogue.json`) play |
 | `~ fight("f3-warren-gate", "arrive.after_gate")` | Start a fight (ids in `src/data/encounters.json`); after it, the story picks up at that knot. The fight's result is a flag: `won:<id>`, `lost:<id>` (only for fights you can lose and carry on) or `parley:<id>` |
 | `~ give_item("potion-of-healing", 2)` / `has_item("luck-stone")` | Put items in the party's pack / does anyone have it? (ids in `magicItems.json`) |
 | `~ truth("collapse")` | One of the three Truths (`collapse`, `crown`, `family`) |
@@ -29,7 +32,7 @@ Dialogue is written in [Ink](https://github.com/inkle/ink/blob/master/Documentat
 
 ## Stories and places
 
-Each `.ink` file is one story (`src/game/dialogue.ts` → `STORIES`). Arriving at a map place opens its scene (`PLACE_SCENES`): Act I's `warren`, `mine` (the Old Mine), `mill`, `ashwood` and `cave` (the Steaming Cave), and Act II's `bridge`, `marsh` (lizardfolk), `marrowmere`, `abbey`, `sallow` and `deserters` start at their `arrive` knot; `ashford.ink` holds Ashford Hall and Edric's Errand, and `camp.ink` Maelis's visit to the camp; the tavern's hotspots open knots in `tavern.ink`; `road.ink` holds Wix's scene after the road ambush.
+Each `.ink` file is one story (`src/game/dialogue.ts` → `STORIES`). Arriving at a map place opens its scene (`PLACE_SCENES`): Act I's `warren`, `mine` (the Old Mine), `mill`, `ashwood` and `cave` (the Steaming Cave), Act II's `bridge`, `marsh` (lizardfolk), `marrowmere`, `abbey`, `sallow` and `deserters`, and Act III's `pass`, `forge` (Vorrag), `caves` (Wix's clan) and `kiln` (the King's Kiln and the Crowning) start at their `arrive` knot; `ashford.ink` holds Ashford Hall and Edric's Errand, and `camp.ink` Maelis's visit to the camp and Corin's dream bargains; the tavern's hotspots open knots in `tavern.ink`; `road.ink` holds Wix's scene after the road ambush.
 
 Lines can switch the portrait with `#speaker:edric` (ids in `src/data/npcs.json`). Keep NPC lines to 3 sentences and choices to 5 (Story_Bible §10–11). `tests/unit/dialogue.test.ts` checks that every quest step and award the script names exists.
 

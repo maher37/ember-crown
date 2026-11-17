@@ -18,6 +18,10 @@ EXTERNAL set_act(n)
 EXTERNAL trap(ability, dc, dice, type)
 EXTERNAL give_gold(n)
 EXTERNAL gold()
+EXTERNAL truths()
+EXTERNAL speech()
+EXTERNAL regain_slot()
+EXTERNAL ember()
 
 VAR passed = false
 
@@ -174,5 +178,33 @@ Two nights later Edric doesn't come back from the market. You find him in Cobble
 #speaker:edric
 Edric picks himself up, bleeding from the lip and grinning. "Told you I could help." He holds out the boots. "Mayor's. Never worn. Shame to waste them."
 ~ quest_step("edric-errand", "ambush")
+~ set_flag("edric_errand_done", true)
 ~ note("Edric survived Venna's enforcers. He gave you the mayor's boots (Boots of Elvenkind).")
+-> END
+
+// ── Last Boats from Ashford (Act III side quest) ──
+=== convoy ===
+#speaker:ashford
+The river road is a line of carts, barrows and frightened people under falling ash. The boats are waiting at the ford. Somewhere behind you, something is baying.
++ [Guard the carts. #fight]
+    ~ quest_step("last-boats", "convoy")
+    ~ fight("s11-convoy", "convoy.after_fight")
+    -> END
++ [Not yet.]
+    -> END
+= after_fight
+#speaker:brannoc
+The last boat pushes off. Brannoc stands on the bank with his arms folded, not getting on it. "Forty years I've kept that inn. I'm not leaving it to the mountain."
++ [Come with the boats, Brannoc. The inn will still be there.]
+    He looks at the boats a long time. Then he takes the old lantern down from the inn's sign and puts it in your hands. "Bring it back lit," he says, and gets on the boat.
+    ~ set_flag("brannoc_leaves", true)
+    -> lantern
++ [Then we'll help you hold it.]
+    "Thought you might." He takes the old lantern down from the inn's sign and puts it in your hands anyway. "If I'm wrong about the mountain, it's yours. Bring it to her."
+    ~ set_flag("brannoc_stays", true)
+    -> lantern
+= lantern
+~ give_item("drowned-lantern", 1)
+~ quest_step("last-boats", "choice")
+~ note("Brannoc gave you the Drowned Lantern, the inn's namesake. Maelis's last letter asks you to bring a lantern.")
 -> END

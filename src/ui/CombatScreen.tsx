@@ -646,6 +646,42 @@ export function CombatScreen() {
               )}
             </div>
           </div>
+          <section className="party-hp" aria-label="Party health">
+            {Object.values(s.combatants)
+              .filter((c) => c.side === 'party' && !c.gone)
+              .map((c) => {
+                const now = c.wildShape ? c.wildShape.hp : c.creature.hp;
+                const max = c.wildShape ? c.wildShape.maxHp : c.creature.maxHp;
+                const state = c.creature.dead
+                  ? 'dead'
+                  : c.creature.hp === 0
+                    ? c.creature.stable
+                      ? 'down, stable'
+                      : 'dying'
+                    : '';
+                return (
+                  <div key={c.id} className={`party-hp-row ${c.id === me.id ? 'on' : ''}`}>
+                    <span className="party-hp-name">{c.name.split(' ')[0]}</span>
+                    <div className="hp-bar" aria-hidden="true">
+                      <div
+                        style={{
+                          width: `${Math.round((now / Math.max(1, max)) * 100)}%`,
+                          background: now > max / 2 ? '#5f9a4a' : now > 0 ? '#c9a23a' : '#8a3a2a',
+                        }}
+                      />
+                    </div>
+                    <span className="small">
+                      {now}/{max}
+                      {c.creature.tempHp ? ` +${c.creature.tempHp}` : ''}
+                      {state ? ` · ${state}` : ''}
+                      {c.creature.conditions.length > 0 && !state
+                        ? ` · ${[...new Set(c.creature.conditions.map((x) => x.id))].join(', ')}`
+                        : ''}
+                    </span>
+                  </div>
+                );
+              })}
+          </section>
           <div className="row between baseline">
             <h2 className="eyebrow">Combat log · newest first</h2>
             <span className="faint small">
@@ -775,6 +811,21 @@ export function CombatScreen() {
               {a[0]!.toUpperCase() + a.slice(1)}
             </button>
           ))}
+          {/* PHB: Rogue, Cunning Action: Dash, Disengage or Hide as a bonus action. */}
+          {features
+            .filter((f) => f.id.startsWith('cunning-'))
+            .map((f) => (
+              <button
+                key={f.id}
+                type="button"
+                className="act plain"
+                disabled={!myTurn || !!f.blocked}
+                title={f.blocked ?? 'Cunning Action (bonus action)'}
+                onClick={() => doAct({ type: 'feature', id: f.id })}
+              >
+                {f.name.replace('Cunning Action: ', '')} (bonus)
+              </button>
+            ))}
           <button
             type="button"
             className="act plain"

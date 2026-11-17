@@ -4,7 +4,7 @@
 
 Each line was entered from memory or is marked ⚠ in the design docs. Check it against your PDFs. When a line is right (or fixed), remove its `verify` and `verifyNote` from the JSON and run `npm run verify-list` again.
 
-**287 items to check.**
+**315 items to check.**
 
 ## species.json
 
@@ -57,6 +57,7 @@ Each line was entered from memory or is marked ⚠ in the design docs. Check it 
 - [ ] **classes › Fighter**: One of the PHB starting-equipment options, from memory and simplified (no packs or gold yet).
 - [ ] **classes › Monk**: Proficiencies and skill list from memory of the PHB. Hit die, saves and subclass level checked (✅).
 - [ ] **classes › Monk › Ki**: Ki = monk level from L2 (Rules_Scope §4).
+- [ ] **classes › Monk › Wholeness of Body**: PHB Open Hand 6: once per long rest, heal 3 × monk level (from memory).
 - [ ] **classes › Monk**: One of the PHB starting-equipment options, from memory and simplified (no packs or gold yet).
 - [ ] **classes › Paladin**: Proficiencies and skill list from memory of the PHB. Hit die, saves and subclass level checked (✅).
 - [ ] **classes › Paladin**: Cantrips/spells known counts from memory of the PHB class table.
@@ -244,6 +245,8 @@ Each line was entered from memory or is marked ⚠ in the design docs. Check it 
 - [ ] **monsters › Cindrath's ember-wraith**: Homebrew. AC 17, about 110 HP, fly 60, 30-ft cone of about 8d6 fire and CR budget 6-7 come from the docs; ability scores, attack numbers and save DC are my placeholders [inferred]. Fire immunity from Items.md ("Cindrath is immune to fire").
 - [ ] **monsters › Cindrath's ember-wraith › Bite**: Homebrew placeholder numbers [inferred]; tune with the balance simulator (M10).
 - [ ] **monsters › Cindrath's ember-wraith › Claw**: Homebrew placeholder [inferred].
+- [ ] **monsters › Cindrath's ember-wraith › Molten spit**: Homebrew [inferred, M9]: without a ranged attack, a circle-bound wraith can be shot from a distance in safety.
+- [ ] **monsters › Crown shard**: Homebrew for the finale [inferred]: AC 15, 20 HP; tune in M10.
 
 ## foes.json
 
@@ -302,6 +305,23 @@ Each line was entered from memory or is marked ⚠ in the design docs. Check it 
 - [ ] **encounters › The flooded crypt**: Encounters_and_XP side quests: 2 specters + 1 ghast (Hard at L4) [inferred Easy/Hard].
 - [ ] **encounters › Ambush in Cobbler's Lane**: Encounters_and_XP side quests: cult fanatic + 3 cultists on Medium [inferred Easy/Hard].
 - [ ] **encounters › The Drowned Abbot**: Items.md Elites: wraith + 1 specter (500 XP/PC bonus). Same on every difficulty [inferred].
+- [ ] **encounters › Ashfall Pass**: Encounters_and_XP F15: 2 ogres (Medium at L4). [inferred] Easy/Hard changes and the map are my pick.
+- [ ] **encounters › The Kiln Gate**: Encounters_and_XP F16: 2 gargoyles (Medium at L4). [inferred] Easy/Hard changes and the map are my pick.
+- [ ] **encounters › The Kiln Gate (Kell holds the rear)**: Story_Bible Act III: if Kell respects you the gate fight gets smaller [inferred: one gargoyle].
+- [ ] **encounters › The Furnace Halls**: Encounters_and_XP F17: 3 animated armor (Medium at L4). [inferred] Easy/Hard changes and the map are my pick.
+- [ ] **encounters › Hall of the Honor Guard**: Encounters_and_XP F18: Ida (wight) + 2 animated armor + 1 skeleton (Medium at L5). [inferred] Easy/Hard changes and the map are my pick.
+- [ ] **encounters › The Ember Galleries**: Encounters_and_XP F19: earth elemental + magma mephit (Medium at L5). [inferred] Easy/Hard changes and the map are my pick.
+- [ ] **encounters › The Star's last stand**: Encounters_and_XP F20: 2 cult fanatics + 4 cultists (Medium at L5). [inferred] Easy/Hard changes and the map are my pick.
+- [ ] **encounters › The Star's last stand (the back way)**: Story_Bible Act III: Ulric's passage (or Wix's back way) skips half of this fight [inferred: 1 fanatic + 2 cultists].
+- [ ] **encounters › The Crowning: Maelis**: Encounters_and_XP F21 phase 1: Maelis (mage). Hard adds a zealot [inferred].
+- [ ] **encounters › The Crowning: Cindrath**: Encounters_and_XP F21 phase 2: the ember-wraith (homebrew; CR 6–7 budget). Shards and their HP are my design [inferred].
+- [ ] **encounters › The Ember Queen**: Story_Bible §8: The Ember Queen. Same ember-wraith block [inferred].
+- [ ] **encounters › The Ember Heir**: Story_Bible §9: The Ember Heir. Corin sits this fight out; ember-wraith block [inferred].
+- [ ] **encounters › The Cold Forge**: Encounters_and_XP side quests: fire elemental + 2 magma mephits (Hard at L5). [inferred] Easy/Hard changes and the map are my pick.
+- [ ] **encounters › The ossuary**: Encounters_and_XP side quests: 2 ghasts + 4 ghouls (Hard at L5). [inferred] Easy/Hard changes and the map are my pick.
+- [ ] **encounters › The evacuation convoy**: Encounters_and_XP side quests: 2 hell hounds (Medium at L5). [inferred] Easy/Hard changes and the map are my pick.
+- [ ] **encounters › The giant at the door**: Encounters_and_XP side quests: hill giant + ogre (Hard at L5). [inferred] Easy/Hard changes and the map are my pick.
+- [ ] **encounters › Vorrag the Kiln-Smith**: Items.md Elites: fire giant (1,250 XP/PC bonus). Same on every difficulty [inferred].
 - [ ] **encounters › Starving wolves**: Monsters and raw XP from Encounters_and_XP.md §5b; XP per character = raw ÷ 4 (§3). Easy removes one enemy and Hard adds one [inferred, D9 says Easy/Hard add or remove enemies]; map and positions are mine [inferred].
 - [ ] **encounters › Goblin foragers**: Monsters and raw XP from Encounters_and_XP.md §5b; XP per character = raw ÷ 4 (§3). Easy removes one enemy and Hard adds one [inferred, D9 says Easy/Hard add or remove enemies]; map and positions are mine [inferred].
 - [ ] **encounters › River-road bandits**: Monsters and raw XP from Encounters_and_XP.md §5b; XP per character = raw ÷ 4 (§3). Easy removes one enemy and Hard adds one [inferred, D9 says Easy/Hard add or remove enemies]; map and positions are mine [inferred].
@@ -316,6 +336,13 @@ Each line was entered from memory or is marked ⚠ in the design docs. Check it 
 - [ ] **encounters › Grey Company patrol**: Encounters_and_XP §5b marsh table; XP = raw ÷ 4. Easy/Hard changes are my pick [inferred].
 - [ ] **encounters › Sunken ruin**: Encounters_and_XP §5b marsh table; XP = raw ÷ 4. Easy/Hard changes are my pick [inferred].
 - [ ] **encounters › Ghoul pack**: Encounters_and_XP §5b marsh table; XP = raw ÷ 4. Easy/Hard changes are my pick [inferred].
+- [ ] **encounters › Fleeing war band**: Encounters_and_XP §5b high Greypeaks table; XP = raw ÷ 4. [inferred] Easy/Hard changes and the map are my pick.
+- [ ] **encounters › Owlbear**: Encounters_and_XP §5b high Greypeaks table; XP = raw ÷ 4. [inferred] Easy/Hard changes and the map are my pick.
+- [ ] **encounters › Griffons**: Encounters_and_XP §5b high Greypeaks table; XP = raw ÷ 4. [inferred] Easy/Hard changes and the map are my pick.
+- [ ] **encounters › Dire wolves**: Encounters_and_XP §5b high Greypeaks table; XP = raw ÷ 4. [inferred] Easy/Hard changes and the map are my pick.
+- [ ] **encounters › Magma mephits**: Encounters_and_XP §5b high Greypeaks table; XP = raw ÷ 4. [inferred] Easy/Hard changes and the map are my pick.
+- [ ] **encounters › Hell hound**: Encounters_and_XP §5b high Greypeaks table; XP = raw ÷ 4. [inferred] Easy/Hard changes and the map are my pick.
+- [ ] **encounters › Troll under the bridge**: Encounters_and_XP §5b high Greypeaks table; XP = raw ÷ 4. [inferred] Easy/Hard changes and the map are my pick.
 
 ## loadouts.json
 
@@ -331,3 +358,7 @@ Each line was entered from memory or is marked ⚠ in the design docs. Check it 
 - [ ] **places › The Ashwood**: Added in M7 for The Herbalist's Granddaughter ('track her through the Ashwood'); the map position is my pick [inferred].
 - [ ] **places › The toll bridge**: Added in M8 for F8 (Encounters_and_XP §4); placed at the mockup's 'toll bridge' label [inferred].
 - [ ] **places › Deserters' camp**: Added in M8 for Deserters' Bounty; position is my pick [inferred].
+
+## epilogue.json
+
+- [ ] **(whole file)**: Endings from docs/Story_Bible.md §8–9 in our own words; epilogue letters verbatim from docs/Maelis_Letters.md. Slide wording is mine [inferred].

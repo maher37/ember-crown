@@ -486,3 +486,63 @@
     animation: none;
   }
 }
+
+/* Epilogue slides (M9). */
+.epilogue {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 24px;
+  padding: 32px 16px;
+  background: #262f3c;
+}
+.epilogue-card {
+  max-width: 640px;
+  width: 100%;
+  background: #323d4f;
+  border: 1px solid #51607a;
+  border-radius: 10px;
+  padding: 32px;
+}
+.epilogue-card h1 {
+  font-family: Cinzel, serif;
+  color: #f8f3e8;
+  margin: 8px 0 16px;
+}
+.epilogue-card p {
+  font-family: Spectral, serif;
+  font-size: 18px;
+  line-height: 1.6;
+  color: #eef2f7;
+}
+.epilogue-card.letter {
+  background: #f3ead6;
+  border-color: #c9b98f;
+}
+.epilogue-card.letter h1,
+.epilogue-card.letter p,
+.epilogue-card.letter .eyebrow {
+  color: #3a3226;
+}
+.epilogue-card.ending h1 {
+  color: #e8c27a;
+}
+.epilogue {
+  justify-content: flex-start;
+  padding-top: 40px;
+}
+.epilogue-nav {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+}
+.epilogue-card p {
+  margin: 0 0 12px;
+}
+.epilogue-card .epilogue-note {
+  font-style: italic;
+  font-size: 15px;
+  opacity: 0.8;
+}

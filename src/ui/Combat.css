@@ -671,3 +671,27 @@ button.cell {
   cursor: pointer;
   padding: 0 18px;
 }
+
+/* Party health, always visible (playtest feedback). */
+.party-hp {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  background: var(--card);
+  border: 1px solid var(--ally);
+  border-radius: 6px;
+  padding: 6px 8px;
+}
+.party-hp-row {
+  display: grid;
+  grid-template-columns: 64px 1fr auto;
+  align-items: center;
+  gap: 8px;
+}
+.party-hp-row.on .party-hp-name {
+  color: var(--ally);
+  font-weight: 700;
+}
+.party-hp-row .hp-bar {
+  height: 8px;
+}

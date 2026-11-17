@@ -10,6 +10,7 @@ import {
 } from '../../rules';
 import {
   addEffect,
+  classLevel,
   combatSave,
   dealDamage,
   endConcentrationEffects,
@@ -221,6 +222,15 @@ export function giveCondition(
   dc?: number,
 ): void {
   if (target.creature.dead) return;
+  // PHB: Berserker, Mindless Rage (level 6). Can't be charmed or frightened while raging.
+  if (
+    (id === 'charmed' || id === 'frightened') &&
+    classLevel(target, 'barbarian') >= 6 &&
+    target.effects.some((e) => e.tag === 'rage')
+  ) {
+    say(ctx.s, 'you', `${target.name}'s Mindless Rage shrugs off being ${id}`);
+    return;
+  }
   target.creature = addCondition(target.creature, { id, source: source.id });
   if (id === 'unconscious') target.creature = addCondition(target.creature, { id: 'prone' });
   const timed = duration || concentration || repeatSave;

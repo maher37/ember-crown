@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { quests, spells } from '../data';
-import { getClass, slotsLeft, maxSlots } from '../game/hero';
+import { getClass, resourceLeft, slotsLeft, maxSlots } from '../game/hero';
+import { healingSpells } from '../game/healing';
 import { SLOT_NAMES, type SlotId } from '../game/save';
 import { getLetter, trust } from '../game/letters';
 import { useGame } from '../game/store';
@@ -131,6 +132,10 @@ export function JournalDialog({ onClose }: { onClose: () => void }) {
 
 export function SpellsDialog({ onClose }: { onClose: () => void }) {
   const g = useGame((s) => s.game)!;
+  const healOutside = useGame((s) => s.healOutside);
+  const toasts = useGame((s) => s.toasts);
+  const [target, setTarget] = useState(g.party[0]!.id);
+  const [msg, setMsg] = useState('');
   const name = (id: string) => spells.find((s) => s.id === id)?.name ?? id;
   const casters = g.party.filter((h) => getClass(h.classId).spellcasting);
   return (
@@ -151,11 +156,68 @@ export function SpellsDialog({ onClose }: { onClose: () => void }) {
                 .filter(Boolean)
                 .join(' · ') || 'none yet'}
             </div>
+            {healingSpells(h).map(({ spell, levels, group }) => (
+              <div key={spell.id} className="row small heal-row">
+                <span className="strong">{spell.name}</span>
+                <span className="muted">
+                  {group
+                    ? 'heals the whole party'
+                    : `on ${g.party.find((p) => p.id === target)?.name}`}
+                </span>
+                {levels.length ? (
+                  levels.map((lv) => (
+                    <button
+                      key={lv}
+                      type="button"
+                      className="mini"
+                      onClick={() =>
+                        setMsg(
+                          healOutside(h.id, { spellId: spell.id, slotLevel: lv }, target) ?? '',
+                        )
+                      }
+                    >
+                      Cast (level {lv})
+                    </button>
+                  ))
+                ) : (
+                  <span className="muted">no slots left</span>
+                )}
+              </div>
+            ))}
           </section>
         ))}
+        {g.party.some((h) => h.classId === 'paladin' && h.level >= 1) &&
+          g.party
+            .filter((h) => h.classId === 'paladin')
+            .map((p) => (
+              <div key={p.id} className="row small heal-row">
+                <span className="strong">{p.name}: Lay on Hands</span>
+                <span className="muted">{resourceLeft(p, 'lay-on-hands')} points left</span>
+                <button
+                  type="button"
+                  className="mini"
+                  onClick={() => setMsg(healOutside(p.id, 'lay-on-hands', target) ?? '')}
+                >
+                  Heal {g.party.find((x) => x.id === target)?.name}
+                </button>
+              </div>
+            ))}
+        <label className="small">
+          Heal whom{' '}
+          <select value={target} onChange={(e) => setTarget(e.target.value)} aria-label="Heal whom">
+            {g.party.map((p) => (
+              <option key={p.id} value={p.id}>
+                {p.name} ({p.dead ? 'dead' : `HP ${p.hp}/${p.maxHp}`})
+              </option>
+            ))}
+          </select>
+        </label>
+        <p className="small" role="status">
+          {msg || toasts.at(-1)}
+        </p>
         <p className="small muted">
-          You choose spells when you level up. Preparing spells after a long rest arrives with rests
-          (M6).
+          You choose spells when you level up. Other ways to heal between fights: a short rest
+          (spend Hit Dice), a long rest (everything back), or a potion from the Inventory.
         </p>
       </div>
     </Modal>

@@ -21,6 +21,7 @@ import {
 } from './combat';
 import { Conversation, PLACE_SCENES } from './dialogue';
 import { equip, getItem, unequip } from './items';
+import { castHealing, layOnHands } from './healing';
 import type { Hero } from './hero';
 import { GAME_START } from './calendar';
 import { formatDate } from './calendar';
@@ -49,7 +50,8 @@ export type Screen =
   | 'prepare'
   | 'combat'
   | 'map'
-  | 'camp';
+  | 'camp'
+  | 'epilogue';
 export type CampScene = 'wild' | 'inn' | 'cave';
 export const PARTY_SIZE = 4;
 
@@ -98,6 +100,12 @@ interface GameStore {
   /** Wear or wield an item from the pack. Returns an error, if any. */
   equipItem: (heroId: string, itemId: string) => string | undefined;
   unequipItem: (heroId: string, itemId: string) => void;
+  /** Cast a healing spell, or Lay on Hands, between fights. Returns an error, if any. */
+  healOutside: (
+    casterId: string,
+    how: { spellId: string; slotLevel: number } | 'lay-on-hands',
+    targetId: string,
+  ) => string | undefined;
   /** Drink a potion outside a fight. */
   drinkPotion: (heroId: string, itemId: string) => string | undefined;
   /** DMG: Pearl of Power (the Bog Pearl). Regain one spent slot of 3rd level or lower, once a day. */
@@ -255,7 +263,8 @@ export const useGame = create<GameStore>()((set, get) => ({
   startFight: ({ difficulty, formation, mageArmor }) => {
     const { game, encounterId } = get();
     if (!game || !encounterId) throw new Error('No game or encounter');
-    const party = game.party;
+    const enc = getEncounter(encounterId);
+    const party = game.party.filter((h) => !(enc.excludeOrigin && h.origin === enc.excludeOrigin));
     // Autosave before every fight (docs/BUILD_ROADMAP.md, M4).
     get().saveTo('autosave');
     const combat = startCombat({
@@ -396,7 +405,8 @@ export const useGame = create<GameStore>()((set, get) => ({
     if (fight && conversation) {
       set({ resume: { story: conversation.storyId, knot: fight.resume } });
       get().openPrepare(fight.encounterId);
-    } else if (travel === 'map') get().openMap();
+    } else if (travel === 'epilogue') set({ screen: 'epilogue' });
+    else if (travel === 'map') get().openMap();
     else if (travel?.startsWith('scene:')) {
       // Another story's scene, e.g. "scene:ashford.hall" (the tavern's front door → Ashford Hall).
       const [story, ...rest] = travel.slice(6).split('.');
@@ -493,6 +503,20 @@ export const useGame = create<GameStore>()((set, get) => ({
     get().toast([
       `Staff of Healing (Cure Wounds): ${r.text} + ${mod} → ${t.name} ${hp}/${t.maxHp} HP · ${charges - 1} charges left`,
     ]);
+    return undefined;
+  },
+
+  healOutside: (casterId, how, targetId) => {
+    const { game, rngState } = get();
+    if (!game) return 'No game';
+    const rng = SeededRng.fromState(rngState);
+    const r =
+      how === 'lay-on-hands'
+        ? layOnHands(game, casterId, targetId)
+        : castHealing(game, casterId, how.spellId, how.slotLevel, targetId, rng);
+    if ('error' in r) return r.error;
+    set({ game: r.game, rngState: rng.state });
+    get().toast(r.log);
     return undefined;
   },
 
@@ -670,6 +694,13 @@ export const useGame = create<GameStore>()((set, get) => ({
     const g = get().game!;
     if (g.act === 2 && g.flags['marrowmere_done'] && !g.flags['maelis_parley'])
       get().talk('parley', 'camp');
+    // Story_Bible §9: after the first shard, Cindrath offers Corin a dream bargain every long rest.
+    else if (
+      g.flags['act1_complete'] &&
+      !g.flags['ending'] &&
+      g.party.some((h) => h.origin === 'corin' && !h.dead)
+    )
+      get().talk('bargain', 'camp');
   },
 
   answerLetter: (id, replyId) => {
@@ -732,7 +763,11 @@ export const useGame = create<GameStore>()((set, get) => ({
       seed: save.game.seed,
       rngState: save.game.rngState,
       pendingParty: [],
-      screen: save.game.location === 'drowned-lantern' ? 'explore' : 'map',
+      screen: save.game.flags['ending']
+        ? 'epilogue'
+        : save.game.location === 'drowned-lantern'
+          ? 'explore'
+          : 'map',
       sessionStart: Date.now(),
       combat: null,
       resume: null,

@@ -90,7 +90,8 @@ export type FeatureId =
   | 'spiritual-weapon'
   | 'call-lightning'
   | 'heat-metal'
-  | 'vampiric-touch';
+  | 'vampiric-touch'
+  | 'wholeness-of-body';
 
 export type PlayerAction =
   | { type: 'move'; to: Pos }
@@ -691,6 +692,14 @@ export function featureList(c: Combatant): FeatureInfo[] {
       blocked:
         t.attacked && !t.hordeUsed ? undefined : t.hordeUsed ? 'once per turn' : 'attack first',
     });
+  if (lvl('monk') >= 6)
+    out.push({
+      id: 'wholeness-of-body',
+      name: 'Wholeness of Body',
+      cost: 'action',
+      detail: `heal ${3 * lvl('monk')} HP · once per long rest`,
+      blocked: action(res('wholeness-of-body')),
+    });
   const lightning = c.effects.find((e) => e.tag === 'call-lightning');
   if (lightning)
     out.push({
@@ -1051,11 +1060,16 @@ function feature(
       makeAttack(ctx, c, target, opt);
       return null;
     }
+    case 'wholeness-of-body': {
+      // PHB: Way of the Open Hand, Wholeness of Body (level 6): heal 3 × monk level.
+      spendResource(c, 'wholeness-of-body');
+      healCombatant(ctx, c, 3 * classLevel(c, 'monk'), 'Wholeness of Body', c);
+      return null;
+    }
     case 'call-lightning': {
       // PHB: Call Lightning. A bolt hits a point; everyone within 5 ft makes a Dex save.
       if (!target) return 'Choose an enemy.';
       if (distanceFeet(c.pos, target.pos) > 120) return 'Too far (120 ft).';
-      if (!spendAction(c)) return 'No action left.';
       const eff = c.effects.find((e) => e.tag === 'call-lightning')!;
       const dmg = roll(String(eff.data?.dice ?? '3d10'), ctx.rng);
       me(`${c.name} calls down a bolt of lightning: ${dmg.text}`);
@@ -1085,7 +1099,6 @@ function feature(
     case 'vampiric-touch': {
       if (!target || target.side === c.side) return 'Choose an enemy.';
       if (distanceFeet(c.pos, target.pos) > 5) return 'You must be next to it.';
-      if (!spendAction(c)) return 'No action left.';
       const eff = c.effects.find((e) => e.tag === 'vampiric-touch')!;
       const nums = casterNumbers(c);
       const r = attackRoll(c.creature, { ...target.creature, ac: currentAc(target) }, ctx.rng, {

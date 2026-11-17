@@ -477,3 +477,19 @@ describe('Act II magic items (DMG)', () => {
     expect(finishCombat({ ...s, outcome: 'victory' }, []).xpEach).toBe(75);
   });
 });
+
+describe('repeatable spell actions (M8 fix)', () => {
+  it('Call Lightning: a later bolt uses the action once (PHB)', () => {
+    let s = arrange(F(caster('druid', 'Ivy', ['call-lightning'])), {}, 'ivy');
+    s = act(s, {
+      type: 'cast',
+      spellId: 'call-lightning',
+      slotLevel: 3,
+      point: { x: 9, y: 2 },
+    }).state;
+    s = arrange(s, {}, 'ivy');
+    const r = act(s, { type: 'feature', id: 'call-lightning', targetId: 'cultist-a' });
+    expect(r.error).toBeUndefined();
+    expect(texts(r.state)).toMatch(/calls down a bolt of lightning/);
+  });
+});

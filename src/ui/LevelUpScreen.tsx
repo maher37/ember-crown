@@ -367,11 +367,14 @@ export function LevelUpScreen() {
             </span>
           </div>
           {problems.length > 0 && (
-            <ul className="small problems-list" role="status">
-              {problems.map((p) => (
-                <li key={p}>{p}</li>
-              ))}
-            </ul>
+            <div className="problems-box" role="status">
+              <span className="strong">Before you can confirm:</span>
+              <ul className="small problems-list">
+                {problems.map((p) => (
+                  <li key={p}>{p}</li>
+                ))}
+              </ul>
+            </div>
           )}
           <button
             type="button"

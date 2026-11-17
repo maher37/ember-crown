@@ -180,7 +180,11 @@
       "tag": "Act III · elite (optional)",
       "act": 3,
       "region": "heights",
-      "desc": "Hammering echoes for miles."
+      "desc": "Hammering echoes for miles.",
+      "requires": {
+        "flag": "pass_cleared",
+        "hint": "Ashfall Pass is the only way up. Get through it first."
+      }
     },
     {
       "id": "kings-kiln",
@@ -191,7 +195,11 @@
       "tag": "Act III · finale",
       "act": 3,
       "region": "heights",
-      "desc": "King Varrow’s tomb in an old dwarven forge-hall."
+      "desc": "King Varrow’s tomb in an old dwarven forge-hall.",
+      "requires": {
+        "flag": "pass_cleared",
+        "hint": "Ashfall Pass is the only way up. Get through it first."
+      }
     },
     {
       "id": "wix-caves",
@@ -202,7 +210,11 @@
       "tag": "Act III · side quest",
       "act": 3,
       "region": "heights",
-      "desc": "Wix’s family, and a hill giant problem."
+      "desc": "Wix’s family, and a hill giant problem.",
+      "requires": {
+        "flag": "wix_companion",
+        "hint": "Only Wix knows the way to his clan's caves."
+      }
     }
   ]
 }

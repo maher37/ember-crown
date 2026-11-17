@@ -29,6 +29,23 @@ const FIGHTS: [string, number][] = [
   ['s7-paladin-crypt', 4],
   ['s8-edric-ambush', 4],
   ['e2-drowned-abbot', 5],
+  // Act III (M9)
+  ['f15-ashfall-pass', 4],
+  ['f16-kiln-gate', 4],
+  ['f16-kiln-gate-kell', 4],
+  ['f17-furnace-halls', 4],
+  ['f18-honor-guard', 5],
+  ['f19-ember-galleries', 5],
+  ['f20-last-stand', 5],
+  ['f20-last-stand-half', 5],
+  ['f21-crowning-maelis', 5],
+  ['f21-crowning-wraith', 6],
+  ['f21-ember-queen', 6],
+  ['s9-cold-forge', 5],
+  ['s10-ossuary', 5],
+  ['s11-convoy', 5],
+  ['s12-wix-giant', 5],
+  ['e3-vorrag', 6],
 ];
 const party = (lvl: number) =>
   readyParty(
@@ -41,7 +58,7 @@ const party = (lvl: number) =>
     lvl,
   );
 
-describe('Act I and Act II fights', () => {
+describe('every story fight (Acts I–III)', () => {
   for (const [id, lvl] of FIGHTS)
     it(`${id} always finishes, reproducibly from its seed`, () => {
       for (const d of ['easy', 'medium', 'hard'] as const)

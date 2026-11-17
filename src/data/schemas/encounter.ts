@@ -33,6 +33,22 @@ export const Encounter = z
         'terrain must match width × height',
       ),
     partyStart: z.array(Cell).length(4),
+    /** Allies who fight on the party's side if a story flag is set (Ser Ida at the Crowning). */
+    allies: z
+      .array(
+        z
+          .object({
+            id: Id,
+            monster: Id,
+            name: z.string().min(1),
+            pos: Cell,
+            ifFlag: z.string().optional(),
+          })
+          .strict(),
+      )
+      .optional(),
+    /** A hero who sits this fight out (Corin, when the ember takes him). */
+    excludeOrigin: z.literal('corin').optional(),
     /** A brawl: knockouts instead of deaths (PHB: Knocking a Creature Out). */
     nonlethal: z.boolean().optional(),
     /** Losing doesn't end the game: the story carries on (the tavern brawl). */

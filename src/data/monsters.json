@@ -4230,6 +4230,28 @@
           "verifyNote": "Homebrew placeholder [inferred]."
         },
         {
+          "id": "molten-spit",
+          "name": "Molten spit",
+          "summary": "Bound to the circle, it spits gobbets of the crown's molten gold at anyone who keeps their distance.",
+          "effects": [
+            {
+              "type": "attack",
+              "kind": "ranged",
+              "toHit": 8,
+              "range": [60, 120],
+              "onHit": [
+                {
+                  "type": "damage",
+                  "dice": "3d8",
+                  "damageType": "fire"
+                }
+              ]
+            }
+          ],
+          "verify": true,
+          "verifyNote": "Homebrew [inferred, M9]: without a ranged attack, a circle-bound wraith can be shot from a distance in safety."
+        },
+        {
           "id": "ember-breath",
           "name": "Ember Breath",
           "effects": [
@@ -4270,7 +4292,7 @@
         {
           "id": "shard-bound",
           "name": "Shard-Bound",
-          "summary": "Loses HP each time a crown shard is struck (amount set in M9)."
+          "summary": "Every point of damage dealt to a crown shard is also dealt to the wraith [inferred, M9]."
         },
         {
           "id": "half-formed",
@@ -4283,6 +4305,66 @@
       "art": "A half-formed dragon of smoke and molten gold. Its \"skin\" is the cracking crown, and it's missing its back half, which is still stone",
       "verify": true,
       "verifyNote": "Homebrew. AC 17, about 110 HP, fly 60, 30-ft cone of about 8d6 fire and CR budget 6-7 come from the docs; ability scores, attack numbers and save DC are my placeholders [inferred]. Fire immunity from Items.md (\"Cindrath is immune to fire\")."
+    },
+    {
+      "id": "crown-shard",
+      "name": "Crown shard",
+      "size": "Tiny",
+      "type": "construct",
+      "cr": "0",
+      "xp": 10,
+      "ac": 15,
+      "hp": 20,
+      "speed": {
+        "walk": 0
+      },
+      "abilities": {
+        "str": 1,
+        "dex": 1,
+        "con": 10,
+        "int": 1,
+        "wis": 1,
+        "cha": 1
+      },
+      "actions": [
+        {
+          "id": "pulse",
+          "name": "Ember pulse",
+          "summary": "It doesn't act; it holds the dragon in the circle.",
+          "effects": [
+            {
+              "type": "special",
+              "id": "none"
+            }
+          ]
+        }
+      ],
+      "immunities": ["fire", "poison", "psychic"],
+      "conditionImmunities": [
+        "charmed",
+        "frightened",
+        "paralyzed",
+        "poisoned",
+        "prone",
+        "stunned",
+        "unconscious"
+      ],
+      "traits": [
+        {
+          "id": "object",
+          "name": "Object",
+          "summary": "It doesn't take turns and doesn't count as an enemy left standing."
+        },
+        {
+          "id": "shard",
+          "name": "Shard",
+          "summary": "Damage dealt to it is also dealt to the ember-wraith (Shard-Bound)."
+        }
+      ],
+      "usedIn": ["F21 finale"],
+      "art": "A glowing wedge of King Varrow's crown, hanging in the ritual circle",
+      "verify": true,
+      "verifyNote": "Homebrew for the finale [inferred]: AC 15, 20 HP; tune in M10."
     }
   ]
 }
