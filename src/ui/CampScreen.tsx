@@ -1,4 +1,4 @@
-import { Fragment, useState } from 'react';
+import { Fragment, useEffect, useState } from 'react';
 import { letterReplies, wix } from '../data';
 import { formatDate } from '../game/calendar';
 import { canReply, getLetter, letterText } from '../game/letters';
@@ -47,7 +47,10 @@ export function CampScreen() {
     spendHitDie,
     endShortRest,
     shortRest,
-    longRest,
+    planLongRest,
+    interruptLongRest,
+    wakeEarly,
+    completeLongRest,
     answerLetter,
     openMap,
     goto,
@@ -71,18 +74,57 @@ export function CampScreen() {
       ? wix.greeting
       : `${sleeping ? '(whispering) ' : ''}${wix.jokes[joke % wix.jokes.length]}`;
 
+  // The long rest plays out hour by hour (playtest feedback): you can wake early, and a night
+  // ambush strikes partway through.
+  const [rest, setRest] = useState<{
+    hour: number;
+    interruptAt: number | null;
+    encounterId: string | null;
+  } | null>(null);
+  const resting = !!rest;
+  useEffect(() => {
+    if (!rest) return;
+    const fast =
+      typeof window !== 'undefined' &&
+      window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
+    const t = setTimeout(
+      () => {
+        const hour = rest.hour + 1;
+        if (rest.encounterId && rest.interruptAt === hour) {
+          setRest(null);
+          setSleeping(false);
+          interruptLongRest(rest.encounterId, hour);
+          return;
+        }
+        if (hour >= 8) {
+          setRest(null);
+          completeLongRest();
+          if (useGame.getState().screen === 'camp') setSleeping(true);
+          return;
+        }
+        setRest({ ...rest, hour });
+      },
+      fast ? 120 : 700,
+    );
+    return () => clearTimeout(t);
+  }, [rest, interruptLongRest, completeLongRest]);
+
   const doLong = () => {
+    if (rest) {
+      wakeEarly(rest.hour);
+      setRest(null);
+      setSleeping(false);
+      return;
+    }
     if (sleeping) {
       setSleeping(false);
       return;
     }
-    const before = useGame.getState().game!.clock;
-    longRest();
-    const after = useGame.getState();
-    if (after.screen === 'camp' && after.game!.clock > before) {
-      setSleeping(true);
-      if (hasWix) setJoke((j) => j + 2);
-    }
+    const plan = planLongRest();
+    if (!plan) return;
+    setSleeping(true);
+    setRest({ hour: 0, ...plan });
+    if (hasWix) setJoke((j) => j + 2);
   };
 
   return (
@@ -132,6 +174,15 @@ export function CampScreen() {
         />
       )}
 
+      {resting && (
+        <div className="rest-progress" role="status" aria-live="polite">
+          <span className="strong">Sleeping… hour {rest!.hour} of 8</span>
+          <div className="rest-bar" aria-hidden="true">
+            <div style={{ width: `${(rest!.hour / 8) * 100}%` }} />
+          </div>
+          <span className="small muted">{formatDate(g.clock + rest!.hour)}</span>
+        </div>
+      )}
       <footer className="camp-footer">
         <div className="camp-status" role="log" aria-live="polite">
           <span className="eyebrow">Camp</span>
@@ -149,7 +200,7 @@ export function CampScreen() {
         <button
           type="button"
           className="camp-btn"
-          disabled={sleeping || !!shortRest}
+          disabled={sleeping || resting || !!shortRest}
           onClick={() => {
             beginShortRest();
             if (hasWix) setJoke(joke + 1);
@@ -164,13 +215,17 @@ export function CampScreen() {
           disabled={!!shortRest}
           onClick={doLong}
         >
-          <span className="strong">{sleeping ? 'Wake the party' : 'Long rest'}</span>
+          <span className="strong">
+            {resting ? 'Wake early' : sleeping ? 'Wake the party' : 'Long rest'}
+          </span>
           <span className="small">
-            {sleeping
-              ? 'Party is asleep'
-              : canLong
-                ? '8 hours · full recovery'
-                : 'Not yet (once per day)'}
+            {resting
+              ? `Hour ${rest!.hour} of 8 · stopping now gives no benefit`
+              : sleeping
+                ? 'Rested: start the day'
+                : canLong
+                  ? '8 hours · full recovery'
+                  : 'Not yet (once per day)'}
           </span>
         </button>
         <button
@@ -187,7 +242,7 @@ export function CampScreen() {
         <button
           type="button"
           className="camp-btn"
-          disabled={sleeping || !!shortRest}
+          disabled={sleeping || resting || !!shortRest}
           onClick={() => (inTown ? goto('explore') : openMap())}
         >
           <span className="strong">Break camp</span>

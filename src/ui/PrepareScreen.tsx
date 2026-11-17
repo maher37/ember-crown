@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { formationOrder } from '../game/formation';
 import { difficulties, monsters } from '../data';
 import type { DifficultyId } from '../data/schemas/difficulty';
 import { getEncounter, parseMapForUi } from './combatUi';
@@ -13,14 +14,28 @@ const multiplier = (n: number) => (n <= 1 ? 1 : n === 2 ? 1.5 : n <= 6 ? 2 : 2.5
 
 /** The pre-combat "Prepare" step: what you face, difficulty, formation, then fight. */
 export function PrepareScreen() {
-  const { game, encounterId, startFight, goHome, pendingArrival, backToCamp, talkPast } = useGame();
+  const {
+    game,
+    encounterId,
+    startFight,
+    goHome,
+    pendingArrival,
+    backToCamp,
+    talkPast,
+    setFormation,
+  } = useGame();
   const [talkResult, setTalkResult] = useState<{ success: boolean; text: string } | null>(null);
   const onRoad = !!pendingArrival || backToCamp;
   const settings = useSettings();
   const [difficulty, setDifficulty] = useState<DifficultyId>(settings.difficulty);
   const enc = getEncounter(encounterId!);
   const party = game!.party;
-  const [order, setOrder] = useState(party.map((h) => h.id));
+  const [order, setOrderState] = useState(() => formationOrder(game!));
+  // Reordering here is remembered for every later fight.
+  const setOrder = (o: string[]) => {
+    setOrderState(o);
+    setFormation(o);
+  };
   const [mageArmor, setMageArmor] = useState<string[]>([]);
   const foes = enc.enemies.filter((e) => e.difficulties.includes(difficulty));
   const raw = foes.reduce((n, e) => n + monsters.find((m) => m.id === e.monster)!.xp, 0);
@@ -114,7 +129,10 @@ export function PrepareScreen() {
 
         <section className="prepare-col" aria-label="Formation">
           <h2 className="eyebrow">Formation</h2>
-          <p className="muted small">Starting squares, front to back. Use the arrows to reorder.</p>
+          <p className="muted small">
+            Starting squares, front to back. Use the arrows to reorder; the order is remembered for
+            every fight (you can also set it on the party sheet).
+          </p>
           <ol className="formation">
             {order.map((id, i) => {
               const h = party.find((x) => x.id === id)!;

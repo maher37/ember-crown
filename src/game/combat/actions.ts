@@ -91,7 +91,8 @@ export type FeatureId =
   | 'call-lightning'
   | 'heat-metal'
   | 'vampiric-touch'
-  | 'wholeness-of-body';
+  | 'wholeness-of-body'
+  | 'move-mark';
 
 export type PlayerAction =
   | { type: 'move'; to: Pos }
@@ -443,7 +444,8 @@ export interface FeatureInfo {
 const left = (c: Combatant, id: string) => resourceLeft(heroOf(c)!, id);
 
 /** The class features a hero can use in combat right now. */
-export function featureList(c: Combatant): FeatureInfo[] {
+/** Class features usable now. `s` (the fight) lets features look at other creatures. */
+export function featureList(c: Combatant, s?: CombatState): FeatureInfo[] {
   const h = heroOf(c);
   if (!h) return [];
   const out: FeatureInfo[] = [];
@@ -700,6 +702,24 @@ export function featureList(c: Combatant): FeatureInfo[] {
       detail: `heal ${3 * lvl('monk')} HP · once per long rest`,
       blocked: action(res('wholeness-of-body')),
     });
+  // PHB: Hex / Hunter's Mark. When the marked creature drops to 0 HP, move the mark to a new
+  // creature as a bonus action [inferred: allowed on the same turn too].
+  const markSpell = c.creature.concentration;
+  if (s && (markSpell === 'hex' || markSpell === 'hunters-mark')) {
+    const tag = markSpell === 'hex' ? 'hex-target' : 'hunters-mark-target';
+    const marked = Object.values(s.combatants).some(
+      (x) => conscious(x) && x.effects.some((e) => e.tag === tag && e.sourceId === c.id),
+    );
+    if (!marked)
+      out.push({
+        id: 'move-mark',
+        name: markSpell === 'hex' ? 'Hex: curse a new target' : "Hunter's Mark: mark a new target",
+        cost: 'bonus',
+        detail: 'the last one dropped; move it without a new spell slot',
+        target: 'enemy',
+        blocked: bonus(),
+      });
+  }
   const lightning = c.effects.find((e) => e.tag === 'call-lightning');
   if (lightning)
     out.push({
@@ -747,7 +767,7 @@ function feature(
   targetId?: string,
 ): string | null | undefined {
   const { s, rng } = ctx;
-  const info = featureList(c).find((f) => f.id === id);
+  const info = featureList(c, ctx.s).find((f) => f.id === id);
   if (!info) return "You don't have that feature.";
   if (info.blocked) return `${info.name}: ${info.blocked}.`;
   const h = heroOf(c) as Hero;
@@ -769,7 +789,9 @@ function feature(
     case 'action-surge':
       spendResource(c, 'action-surge');
       c.turn.extraActions += 1;
-      me(`Action Surge! ${c.name} gains one extra action.`);
+      me(
+        `Action Surge! ${c.name} gains one extra action: attack again, Dash to run further, Disengage, Dodge or cast.`,
+      );
       return null;
     case 'rage':
       spendResource(c, 'rage');
@@ -1058,6 +1080,24 @@ function feature(
       if (!target || !opt) return 'No target in range.';
       c.turn.hordeUsed = true;
       makeAttack(ctx, c, target, opt);
+      return null;
+    }
+    case 'move-mark': {
+      const spell = c.creature.concentration;
+      if (!target || target.side === c.side) return 'Choose an enemy.';
+      if (spell !== 'hex' && spell !== 'hunters-mark') return 'You are not concentrating on it.';
+      const tag = spell === 'hex' ? 'hex-target' : 'hunters-mark-target';
+      if (distanceFeet(c.pos, target.pos) > 90) return 'Too far (90 ft).';
+      for (const x of Object.values(s.combatants))
+        x.effects = x.effects.filter((e) => !(e.tag === tag && e.sourceId === c.id));
+      addEffect(target, {
+        id: tag,
+        name: spell === 'hex' ? 'Hex' : "Hunter's Mark",
+        sourceId: c.id,
+        tag,
+        concentration: spell,
+      });
+      me(`${c.name} moves ${spell === 'hex' ? 'the Hex' : "the Hunter's Mark"} to ${target.name}`);
       return null;
     }
     case 'wholeness-of-body': {

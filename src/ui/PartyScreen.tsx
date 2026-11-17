@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { formationOrder } from '../game/formation';
 import { getBackground, getClass, getSpecies, skillBonus, type Hero } from '../game/hero';
 import { SLOT_NAMES, type SlotId } from '../game/save';
 import { useGame } from '../game/store';
@@ -13,7 +14,7 @@ import { downloadSave } from './saveFiles';
  * until exploration arrives (M5).
  */
 export function PartyScreen() {
-  const { game, saveTo, goto, goHome, openLevelUp } = useGame();
+  const { game, saveTo, goto, goHome, openLevelUp, setFormation } = useGame();
   const [message, setMessage] = useState('');
   if (!game) return null;
 
@@ -73,10 +74,48 @@ export function PartyScreen() {
       <p className="party-status" role="status">
         {message}
       </p>
+      <section className="marching" aria-label="Marching order">
+        <span className="eyebrow">Marching order (front to back, used in every fight)</span>
+        <ol>
+          {formationOrder(game).map((id, i, all) => {
+            const h = game.party.find((x) => x.id === id)!;
+            const move = (j: number) => {
+              const o = [...all];
+              [o[i], o[j]] = [o[j]!, o[i]!];
+              setFormation(o);
+            };
+            return (
+              <li key={id}>
+                <span>{h.name}</span>
+                <button
+                  type="button"
+                  className="mini"
+                  disabled={i === 0}
+                  aria-label={`Move ${h.name} forward`}
+                  onClick={() => move(i - 1)}
+                >
+                  ↑
+                </button>
+                <button
+                  type="button"
+                  className="mini"
+                  disabled={i === all.length - 1}
+                  aria-label={`Move ${h.name} back`}
+                  onClick={() => move(i + 1)}
+                >
+                  ↓
+                </button>
+              </li>
+            );
+          })}
+        </ol>
+      </section>
       <div className="party-grid">
-        {game.party.map((h) => (
-          <HeroCard key={h.id} hero={h} />
-        ))}
+        {formationOrder(game)
+          .map((id) => game.party.find((h) => h.id === id)!)
+          .map((h) => (
+            <HeroCard key={h.id} hero={h} />
+          ))}
       </div>
     </div>
   );
