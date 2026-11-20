@@ -73,6 +73,12 @@ One milestone per Claude Code session (bigger ones may take two). Each milestone
 - The Old Mine and the King's Kiln become walk-around maps (`src/data/placeMaps.json`): areas open as the story goes, with a few things to search.
 - **Prompt:** done in the session after M9.
 
+## M9c: Equipment, shop and character sheet (owner request, Nov 20)
+- A full character sheet per hero (Character, Spells, Equipment tabs); prepared casters re-prepare after a long rest.
+- Brannoc's stores; armor, shields and weapons worn from the party's pack; portraits show armor, shields and helmets.
+- Adventuring gear (`src/data/gear.json`): rope, torches, crowbar and thieves' tools open story choices; a healer's kit and thrown flasks work in fights.
+- **Prompt:** done in the session after M9b.
+
 ## M10: Balance and polish
 - A headless balance simulator (party vs. encounter × 500 runs), with tuning per Encounters_and_XP targets.
 - Bug pass, settings screen, credits.

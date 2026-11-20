@@ -49,6 +49,7 @@ import {
   SPECIES_ORDER,
 } from './creatorCopy';
 import { Portrait } from './Portrait';
+import { portraitGear } from './heroLook';
 
 const SHORT: Record<Ability, string> = {
   str: 'STR',
@@ -246,6 +247,14 @@ export function Creator() {
                   {...draft.portrait}
                   ears={ELF_EARS.has(sp.id) ? 'elf' : 'human'}
                   cloth={CLASS_COPY[cls.id]!.cloth}
+                  gear={portraitGear({
+                    classId: cls.id,
+                    portrait: draft.portrait,
+                    equipment: {
+                      armor: cls.startingKit.armor ?? null,
+                      shield: cls.startingKit.shield,
+                    },
+                  })}
                   label="Portrait of your character"
                 />
               </div>

@@ -4,7 +4,7 @@
 
 Each line was entered from memory or is marked ⚠ in the design docs. Check it against your PDFs. When a line is right (or fixed), remove its `verify` and `verifyNote` from the JSON and run `npm run verify-list` again.
 
-**315 items to check.**
+**316 items to check.**
 
 ## species.json
 
@@ -259,6 +259,10 @@ Each line was entered from memory or is marked ⚠ in the design docs. Check it 
 ## armor.json
 
 - [ ] **(whole file)**: The PHB Armor table (chapter 5) from memory: check AC, Dex caps, Strength, stealth, cost and weight.
+
+## gear.json
+
+- [ ] **(whole file)**: Prices from the PHB equipment tables, from memory: check them. Effects of the flasks and the healer's kit follow the PHB descriptions; how the game uses rope, torches, the crowbar and thieves' tools (story choices) is our own.
 
 ## magicItems.json
 

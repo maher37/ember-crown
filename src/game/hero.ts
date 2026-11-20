@@ -36,6 +36,8 @@ export interface Portrait {
   hairStyle: HairStyle;
   beard: boolean;
   scar: boolean;
+  /** Show a helm (cosmetic). Unset: shown with chain mail, half plate, splint and plate. */
+  helmet?: boolean;
 }
 
 export type AbilityMethod = 'array' | 'point' | 'roll';
@@ -54,6 +56,8 @@ export interface Hero extends Creature {
   speed: number;
   portrait: Portrait;
   equipment: { armor: string | null; shield: boolean; weapons: string[]; magic: string[] };
+  /** Clerics, druids and paladins may re-prepare spells (set after a long rest, cleared by a fight). */
+  canPrepare?: boolean;
   /** Cantrips and leveled spells known or prepared. */
   cantrips: string[];
   spells: string[];
@@ -433,6 +437,13 @@ export function resourceLeft(
   id: string,
 ): number {
   return Math.max(0, resourceMax(hero, id) - (hero.resourcesUsed[id] ?? 0));
+}
+
+/** PHB: heavy armor with a Strength requirement slows a weaker wearer by 10 ft (not dwarves). */
+export function armorSlows(hero: Pick<Hero, 'equipment' | 'abilities' | 'speciesId'>): boolean {
+  const a = armorList.find((x) => x.id === hero.equipment.armor);
+  if (!a?.strength || hero.speciesId.includes('dwarf')) return false;
+  return hero.abilities.str < a.strength;
 }
 
 /** Default spells for a class (src/data/loadouts.json) [inferred until spell choice, M5]. */

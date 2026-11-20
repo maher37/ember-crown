@@ -202,7 +202,8 @@ Warlock (pact magic; recharges on a short rest): L1: one 1st-level slot; L2: two
 ## 6. Items and treasure (sketch; details in a future Items.md)
 - **Healing potions:** Potion of Healing heals 2d4 + 2. Drinking one is an action in RAW; consider the BG3-style bonus-action house rule.
 - **Magic items:** plan 2–4 memorable items per act, using the DMG's magic-item rarity by level (Ch. 7). Story items already named: the fire-resistance shield (Act II), the forge-quenched weapon (Act III), and Mother Sallow's bargain reward.
-- **Gold:** keep the economy small. The shop sells PHB equipment at PHB prices.
+- **Gold:** keep the economy small. The shop (Brannoc's stores, in the Drowned Lantern) sells PHB equipment at PHB prices and buys gear back at half (PHB: Selling Treasure). Story treasures can't be sold.
+- **Adventuring gear (D24):** rope, torches, a hooded lantern, a crowbar, thieves' tools, a healer's kit, alchemist's fire, holy water and acid (`src/data/gear.json`). No weight, rations or ammunition are tracked.
 
 ## 7. House rules (track every deviation here)
 - [ ] (Proposed) Potions as a bonus action.
@@ -260,6 +261,15 @@ Warlock (pact magic; recharges on a short rest): L1: one 1st-level slot; L2: two
 - [ ] (Proposed, M9) Kell holds the Kiln Gate if he respects you or owes you (the gate fight drops to one gargoyle); he can claim the crown at the end if he's at the gate or hostile. Ulric's passage or Wix's back way halves the Star's last stand.
 - [ ] (Proposed, M9) Dark One's Own Luck (warlock 6) is used automatically when it can turn a failed save into a success. Land's Stride lets a level-6 druid ignore brush. Countercharm and the Wix's Clan Gift bag have no combat use yet.
 - [ ] (Proposed, M9) Last Boats from Ashford: whichever Brannoc chooses, he gives you the Drowned Lantern.
+
+- [x] (Owner's choice, Nov 20) Spells change by the official rules: clerics, druids and paladins re-prepare from their class list after a long rest (ability modifier + level; paladins half level); bards, rangers, sorcerers and warlocks change spells at level-up. Wizards keep the M5 simplification (the whole spellbook is ready).
+- [x] (Owner's choice, Nov 20) Gear is useful with no bookkeeping: torches, the lantern, rope, the crowbar, thieves' tools and the healer's kit never run out; thrown flasks are used up.
+- [ ] (Proposed, Nov 20) The chance to re-prepare spells lasts from the long rest until the next fight starts [inferred reading of "when you finish a long rest"].
+- [ ] (Proposed, Nov 20) Heroes can only wear armor and wield weapons their class (or species) is trained with (RAW allows it with penalties). At most six weapons carried.
+- [ ] (Proposed, Nov 20) Alchemist's fire: the target makes the DC 10 Dex check to put it out at the end of each of its turns, as a save (RAW: someone spends an action; monsters never would).
+- [ ] (Proposed, Nov 20) Thieves' tools on the Kiln's dials use Sleight of Hand (RAW: Dex with tool proficiency).
+- [ ] (Proposed, Nov 20) A new party starts with 15 gp a hero, rope, torches and a healer's kit (thieves' tools with a rogue); older saves get the same once (save version 7).
+- [ ] (Proposed, Nov 20) Heavy armor too heavy for the wearer's Strength costs 10 ft of speed (PHB). Noisy armor's Stealth disadvantage is shown on the sheet but not applied to checks yet.
 
 ## CONFIRM LOCALLY
 - [ ] Spell details for anything not marked ✅. They're summarized from memory of the 2014 PHB, so verify damage dice and saves when entering data (the PHB text extracts cleanly enough to check each spell).

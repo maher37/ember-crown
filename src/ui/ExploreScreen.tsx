@@ -7,6 +7,7 @@ import { XP_THRESHOLDS } from '../rules';
 import './Explore.css';
 import { InventoryDialog, JournalDialog, SaveDialog, SpellsDialog } from './ExploreDialogs';
 import { PartyBar } from './PartyBar';
+import { ShopDialog } from './ShopDialog';
 import { TavernMap } from './scenes/TavernMap';
 import { PARTY_OFFSETS, useWalk } from './useWalk';
 import { SoundButton } from '../audio/SoundButton';
@@ -29,7 +30,9 @@ interface Hotspot {
 /** The Drowned Lantern on Lantern Night (rebuilt from docs/mockups/Exploration.dc.html). */
 export function ExploreScreen() {
   const { game, talk, toasts, clearToasts, goto, saveTo, openCamp } = useGame();
-  const [dialog, setDialog] = useState<null | 'journal' | 'spells' | 'save' | 'inventory'>(null);
+  const [dialog, setDialog] = useState<null | 'journal' | 'spells' | 'save' | 'inventory' | 'shop'>(
+    null,
+  );
   const g = game!;
   const f = (k: string) => !!g.flags[k];
   const { at, walkTo } = useWalk('tavern', [455, 382], [450, 260]);
@@ -101,6 +104,15 @@ export function ExploreScreen() {
       kind: 'npc',
     },
     {
+      id: 'shop',
+      glyph: '⚖',
+      label: 'Shop (buy and sell)',
+      knot: '',
+      x: 736,
+      y: 214,
+      kind: 'object',
+    },
+    {
       id: 'door',
       label: 'Front door',
       knot: 'front_door',
@@ -155,16 +167,20 @@ export function ExploreScreen() {
                 className={`hotspot ${s.kind}`}
                 style={{ left: s.x - 22, top: s.y - 22 }}
                 aria-label={`${s.label}${s.news ? ' (new)' : ''}`}
-                onClick={() => walkTo(s.x, s.y, () => talk(s.knot))}
+                onClick={() =>
+                  walkTo(s.x, s.y, () => (s.id === 'shop' ? setDialog('shop') : talk(s.knot)))
+                }
               >
                 <span aria-hidden="true">
                   {s.kind === 'exit'
                     ? '⇣'
-                    : s.kind === 'object'
-                      ? '◇'
-                      : s.id === 'hooded'
-                        ? '?'
-                        : s.label[0]}
+                    : s.id === 'shop'
+                      ? '⚖'
+                      : s.kind === 'object'
+                        ? '◇'
+                        : s.id === 'hooded'
+                          ? '?'
+                          : s.label[0]}
                 </span>
                 {s.news && (
                   <span className="news" aria-hidden="true">
@@ -294,6 +310,7 @@ export function ExploreScreen() {
       {dialog === 'spells' && <SpellsDialog onClose={() => setDialog(null)} />}
       {dialog === 'save' && <SaveDialog onClose={() => setDialog(null)} />}
       {dialog === 'inventory' && <InventoryDialog onClose={() => setDialog(null)} />}
+      {dialog === 'shop' && <ShopDialog onClose={() => setDialog(null)} />}
     </div>
   );
 }

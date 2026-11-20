@@ -1,5 +1,5 @@
 import { beforeEach, describe, expect, it } from 'vitest';
-import { buildHero, newDraft } from '../../src/game/hero';
+import { buildHero, getSpecies, newDraft } from '../../src/game/hero';
 import {
   describeSave,
   latestSave,
@@ -274,7 +274,30 @@ describe('save version 5 → 6 (M8: gold)', () => {
     const g = game() as Partial<GameState>;
     delete g.gold;
     const r = parseSave(JSON.stringify({ saveVersion: 5, savedAt: 'x', game: g }));
-    expect(r.ok && r.save.game.gold).toBe(0);
-    expect(r.ok && r.save.saveVersion).toBe(6);
+    // v5 → v6 adds an empty purse; v6 → v7 then adds the starting purse (15 gp a hero).
+    expect(r.ok && r.save.game.gold).toBe(15 * g.party!.length);
+    expect(r.ok && r.save.saveVersion).toBe(SAVE_VERSION);
+  });
+});
+
+describe('save version 6 → 7 (equipment)', () => {
+  it('adds the starting supplies once, re-counts speed for heavy armor, and allows preparing', () => {
+    const g = game();
+    const weak = {
+      ...g.party[0]!,
+      abilities: { ...g.party[0]!.abilities, str: 8 },
+      equipment: { ...g.party[0]!.equipment, armor: 'plate' },
+    };
+    const old = { ...g, gold: 40, inventory: { rope: 2 }, party: [weak, ...g.party.slice(1)] };
+    const r = parseSave(JSON.stringify({ saveVersion: 6, savedAt: 'x', game: old }));
+    expect(r.ok).toBe(true);
+    if (!r.ok) return;
+    expect(r.save.game.gold).toBe(40 + 15 * old.party.length);
+    expect(r.save.game.inventory['rope']).toBe(2);
+    expect(r.save.game.inventory['torches']).toBe(1);
+    expect(r.save.game.inventory['healers-kit']).toBe(1);
+    // PHB: plate needs Str 15; a Str 8 wearer is 10 ft slower.
+    expect(r.save.game.party[0]!.speed).toBe(getSpecies(weak.speciesId).speed - 10);
+    expect(r.save.game.party.every((h) => h.canPrepare)).toBe(true);
   });
 });

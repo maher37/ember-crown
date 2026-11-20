@@ -1,12 +1,14 @@
 import { z } from 'zod';
 import { AbilityId, ConditionIdSchema, DamageTypeId, SkillId } from '../data/schemas/common';
 import { defaultInvocations, defaultSpells, type Hero } from './hero';
+import { startingPack } from './gear';
+import { heroSpeed } from './levelup';
 import type { QuestState } from './journal';
 import type { LetterState } from './letters';
 import { GAME_START } from './calendar';
 
 /** Bump when the save format changes, and add a migration below. Never break old saves. */
-export const SAVE_VERSION = 6;
+export const SAVE_VERSION = 7;
 
 export interface GameState {
   id: string;
@@ -111,7 +113,9 @@ export const HeroSchema = z.object({
     hairStyle: z.enum(['short', 'long', 'bald', 'hood']),
     beard: z.boolean(),
     scar: z.boolean(),
+    helmet: z.boolean().optional(),
   }),
+  canPrepare: z.boolean().optional(),
   equipment: z.object({
     armor: z.string().nullable(),
     shield: z.boolean(),
@@ -213,6 +217,20 @@ export const MIGRATIONS: Record<number, (old: Record<string, unknown>) => Record
     },
     // v5 → v6 (M8): the party's gold.
     5: (old) => ({ ...old, game: { gold: 0, ...(old.game as Record<string, unknown>) } }),
+    // v6 → v7 (equipment): the starting supplies and purse a new party gets, speed that
+    // counts heavy armor, and spells can be re-prepared until the next fight.
+    6: (old) => {
+      const game = old.game as GameState;
+      const pack = startingPack(game.party);
+      const inventory = { ...game.inventory };
+      for (const [id, n] of Object.entries(pack.items))
+        inventory[id] = Math.max(inventory[id] ?? 0, n);
+      const party = game.party.map((h) => ({ ...h, speed: heroSpeed(h), canPrepare: true }));
+      return {
+        ...old,
+        game: { ...game, party, inventory, gold: (game.gold ?? 0) + pack.gold },
+      };
+    },
   };
 
 export type LoadResult = { ok: true; save: SaveFile } | { ok: false; error: string };

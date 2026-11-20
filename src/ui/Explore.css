@@ -108,6 +108,7 @@
 }
 .hotspot {
   position: absolute;
+  z-index: 3;
   width: 44px;
   height: 44px;
   border-radius: 22px;
@@ -663,6 +664,13 @@
   cursor: not-allowed;
 }
 
+/* Choices opened by a piece of gear (rope, thieves' tools…). */
+.tag.gear {
+  margin-right: 8px;
+  background: #2f3a2a;
+  color: #cfe6b4;
+  border: 1px solid #7a9a5a;
+}
 /* Choices that start a fight (Encounters_and_XP §6). */
 .tag.fight {
   margin-left: 8px;

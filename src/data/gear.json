@@ -1,0 +1,93 @@
+{
+  "verify": true,
+  "verifyNote": "Prices from the PHB equipment tables, from memory: check them. Effects of the flasks and the healer's kit follow the PHB descriptions; how the game uses rope, torches, the crowbar and thieves' tools (story choices) is our own.",
+  "gear": [
+    {
+      "id": "rope",
+      "name": "Rope (50 feet)",
+      "category": "gear",
+      "costGp": 1,
+      "summary": "Hempen rope. Opens climbing and roping choices in the story (Ashfall Pass)."
+    },
+    {
+      "id": "torches",
+      "name": "Torches",
+      "category": "light",
+      "costGp": 0.1,
+      "summary": "A bundle of torches. Light for dark places: opens choices like checking the cellar tunnel's timbers. Never runs out in this game."
+    },
+    {
+      "id": "lantern",
+      "name": "Hooded lantern",
+      "category": "light",
+      "costGp": 5,
+      "summary": "A steadier light than a torch. Works wherever torches do."
+    },
+    {
+      "id": "crowbar",
+      "name": "Crowbar",
+      "category": "gear",
+      "costGp": 2,
+      "summary": "For prying things open. Opens forcing choices in the story (the sealed dwarven arch)."
+    },
+    {
+      "id": "thieves-tools",
+      "name": "Thieves' tools",
+      "category": "tool",
+      "costGp": 25,
+      "summary": "Picks and files for locks and traps. Opens lock-and-mechanism choices in the story (the King's Kiln door)."
+    },
+    {
+      "id": "healers-kit",
+      "name": "Healer's kit",
+      "category": "tool",
+      "costGp": 5,
+      "summary": "Bandages and salves. In a fight, use your action to stabilize a dying ally next to you, no Medicine check needed. Never runs out in this game.",
+      "use": { "type": "stabilize" }
+    },
+    {
+      "id": "alchemists-fire",
+      "name": "Alchemist's fire",
+      "category": "throwable",
+      "costGp": 50,
+      "summary": "A flask of sticky fire. Throw it (20 ft, a ranged attack): 1d4 fire on a hit, and it keeps burning for 1d4 each turn until the target shakes it off (DC 10 Dexterity).",
+      "use": {
+        "type": "throw",
+        "rangeFt": 20,
+        "dice": "1d4",
+        "damageType": "fire",
+        "burning": true
+      },
+      "consumable": true
+    },
+    {
+      "id": "holy-water",
+      "name": "Holy water",
+      "category": "throwable",
+      "costGp": 25,
+      "summary": "A flask of blessed water. Throw it (20 ft, a ranged attack): 2d6 radiant to undead and fiends; harmless to anything else.",
+      "use": {
+        "type": "throw",
+        "rangeFt": 20,
+        "dice": "2d6",
+        "damageType": "radiant",
+        "onlyVs": ["undead", "fiend"]
+      },
+      "consumable": true
+    },
+    {
+      "id": "acid-vial",
+      "name": "Acid",
+      "category": "throwable",
+      "costGp": 25,
+      "summary": "A glass vial of acid. Throw it (20 ft, a ranged attack): 2d6 acid on a hit.",
+      "use": { "type": "throw", "rangeFt": 20, "dice": "2d6", "damageType": "acid" },
+      "consumable": true
+    }
+  ],
+  "startingSupplies": {
+    "items": { "rope": 1, "torches": 1, "healers-kit": 1 },
+    "byClass": { "rogue": { "thieves-tools": 1 } },
+    "goldPerHero": 15
+  }
+}

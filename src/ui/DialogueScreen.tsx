@@ -2,9 +2,9 @@ import { useEffect } from 'react';
 import { npcById } from '../game/dialogue';
 import { placeMapFor } from '../game/placeMaps';
 import { useGame } from '../game/store';
-import { CLASS_COPY, ELF_EARS } from './creatorCopy';
 import './Explore.css';
 import { Portrait } from './Portrait';
+import { heroPortrait } from './heroLook';
 import { isPlaceSpeaker, PlaceArt, sceneFor } from './scenes/PlaceArt';
 import { SoundButton } from '../audio/SoundButton';
 
@@ -112,6 +112,7 @@ export function DialogueScreen() {
               >
                 <span className="num">{i + 1}.</span>
                 {ch.as && <span className="tag as">[{ch.as.label}]</span>}
+                {ch.gear && <span className="tag gear">{ch.gear}</span>}
                 {ch.check && (
                   <span className="tag check">
                     {ch.check.skillName} DC {ch.check.dc} · {ch.check.heroName}{' '}
@@ -132,12 +133,7 @@ export function DialogueScreen() {
       </section>
       <div className="speaker-bar">
         <div className="leader-portrait">
-          <Portrait
-            {...leader.portrait}
-            ears={ELF_EARS.has(leader.speciesId) ? 'elf' : 'human'}
-            cloth={CLASS_COPY[leader.classId]!.cloth}
-            label={`Portrait of ${leader.name}`}
-          />
+          <Portrait {...heroPortrait(leader)} />
         </div>
         <span>
           {leader.name.split(' ')[0]} speaks for the party. Skill checks use whoever in the party is
