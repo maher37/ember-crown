@@ -1,9 +1,9 @@
 import { getClass, getSpecies } from '../game/hero';
 import { useGame } from '../game/store';
 import { canLevelUp } from '../rules';
-import { CLASS_COPY, ELF_EARS } from './creatorCopy';
 import './Explore.css';
 import { Portrait } from './Portrait';
+import { heroPortrait } from './heroLook';
 
 /** The party's cards along the bottom of the tavern and place maps. */
 export function PartyBar() {
@@ -17,14 +17,12 @@ export function PartyBar() {
             type="button"
             className="card-portrait"
             aria-label={`Character sheet: ${h.name}`}
-            onClick={() => goto('party')}
+            onClick={() => {
+              useGame.setState({ sheetHeroId: h.id });
+              goto('party');
+            }}
           >
-            <Portrait
-              {...h.portrait}
-              ears={ELF_EARS.has(h.speciesId) ? 'elf' : 'human'}
-              cloth={CLASS_COPY[h.classId]!.cloth}
-              label={`Portrait of ${h.name}`}
-            />
+            <Portrait {...heroPortrait(h)} />
           </button>
           <div className="card-info">
             <span className="card-name">{h.name}</span>

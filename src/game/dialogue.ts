@@ -30,7 +30,8 @@ import {
   type Skill,
 } from '../rules';
 import { skillBonus, type Hero } from './hero';
-import { getItem, hasItem, hasSpecial, itemMods } from './items';
+import { hasItem, hasSpecial, itemMods } from './items';
+import { itemName } from './gear';
 import { savingThrow } from '../rules';
 
 import { addNote, completeStep, giveAward, questDone } from './journal';
@@ -151,10 +152,9 @@ export function giveItem(
   id: string,
   qty = 1,
 ): { game: GameState; messages: string[] } {
-  const item = getItem(id);
   return {
     game: { ...g, inventory: { ...g.inventory, [id]: (g.inventory[id] ?? 0) + qty } },
-    messages: [`Received: ${item.name}${qty > 1 ? ` ×${qty}` : ''}`],
+    messages: [`Received: ${itemName(id)}${qty > 1 ? ` ×${qty}` : ''}`],
   };
 }
 
@@ -203,6 +203,8 @@ export interface ChoiceView {
   as?: { label: string; heroName: string };
   /** Encounters_and_XP §6: choices that start a fight are marked (#fight). */
   fight?: boolean;
+  /** A choice opened by a piece of gear (#gear:rope): the gear's name. */
+  gear?: string;
 }
 
 export interface DialogueLine {
@@ -417,6 +419,8 @@ export class Conversation {
       const check = tags.find((t) => t.startsWith('check:'));
       const view: ChoiceView = { index, text: c.text.trim() };
       if (tags.includes('fight')) view.fight = true;
+      const gearTag = tags.find((t) => t.startsWith('gear:'));
+      if (gearTag) view.gear = itemName(gearTag.slice(5));
       const hero = as ? alive(this.game).find((h) => matches(h, as)) : undefined;
       if (as && hero) view.as = { label: tagLabel(as), heroName: hero.name.split(' ')[0]! };
       if (check) {

@@ -21,6 +21,8 @@ import {
 } from './combat';
 import { Conversation, PLACE_SCENES } from './dialogue';
 import { placeMapFor } from './placeMaps';
+import { buy, equipGear, isMagicItem, sell, startingPack, unequipGear } from './gear';
+import { prepareProblem, prepareSpells } from './spellPrep';
 import { equip, getItem, unequip } from './items';
 import { castHealing, layOnHands } from './healing';
 import { withFormation } from './formation';
@@ -103,12 +105,24 @@ interface GameStore {
   resume: { story: string; knot: string } | null;
   /** After this conversation, open the scene of the place the party is at. */
   afterDialogue: 'place' | null;
+  /** Which hero the party screen's character sheet shows. */
+  sheetHeroId: string | null;
 
   /** Open the story scene of a map location (the current one by default). */
   enterPlace: (placeId?: string) => void;
   /** Wear or wield an item from the pack. Returns an error, if any. */
   equipItem: (heroId: string, itemId: string) => string | undefined;
   unequipItem: (heroId: string, itemId: string) => void;
+  /** Put worn armor, a shield or a weapon back in the pack. */
+  unequipGear: (
+    heroId: string,
+    slot: { armor: true } | { shield: true } | { weapon: string },
+  ) => void;
+  /** Brannoc's shop. Return an error, if any. */
+  buyItem: (itemId: string) => string | undefined;
+  sellItem: (itemId: string) => string | undefined;
+  /** Clerics, druids and paladins: choose prepared spells after a long rest. */
+  prepareHeroSpells: (heroId: string, spellIds: string[]) => string | undefined;
   /** Cast a healing spell, or Lay on Hands, between fights. Returns an error, if any. */
   healOutside: (
     casterId: string,
@@ -201,6 +215,7 @@ export const useGame = create<GameStore>()((set, get) => ({
   shortRest: null,
   resume: null,
   afterDialogue: null,
+  sheetHeroId: null,
   pendingNight: [],
 
   goto: (screen) => set({ screen }),
@@ -244,7 +259,7 @@ export const useGame = create<GameStore>()((set, get) => ({
       createdAt: new Date().toISOString(),
       seed,
       rngState,
-      party: pendingParty,
+      party: pendingParty.map((h) => ({ ...h, canPrepare: true })),
       act: 1,
       location: 'drowned-lantern',
       playSeconds: 0,
@@ -254,8 +269,8 @@ export const useGame = create<GameStore>()((set, get) => ({
       ink: {},
       clock: GAME_START,
       lastLongRest: null,
-      inventory: {},
-      gold: 0,
+      inventory: startingPack(pendingParty).items,
+      gold: startingPack(pendingParty).gold,
       letters: pendingParty.some((h) => h.origin === 'corin')
         ? [{ id: 'letter-0', read: false }]
         : [],
@@ -286,7 +301,10 @@ export const useGame = create<GameStore>()((set, get) => ({
     const { game, encounterId } = get();
     if (!game || !encounterId) throw new Error('No game or encounter');
     const enc = getEncounter(encounterId);
-    const party = game.party.filter((h) => !(enc.excludeOrigin && h.origin === enc.excludeOrigin));
+    const party = game.party
+      .filter((h) => !(enc.excludeOrigin && h.origin === enc.excludeOrigin))
+      // The chance to re-prepare spells ends when a fight starts [inferred].
+      .map((h) => ({ ...h, canPrepare: false }));
     // Autosave before every fight (docs/BUILD_ROADMAP.md, M4).
     get().saveTo('autosave');
     const combat = startCombat({
@@ -453,6 +471,12 @@ export const useGame = create<GameStore>()((set, get) => ({
     const { game, shortRest } = get();
     if (!game) return 'No game';
     if ((game.inventory[itemId] ?? 0) < 1) return 'That item is not in the pack.';
+    if (!isMagicItem(itemId)) {
+      // Armor, a shield or a weapon: wear or wield it (worn armor goes back in the pack).
+      const r = equipGear(game, heroId, itemId);
+      if (!r.error) set({ game: r.game });
+      return r.error;
+    }
     const item = getItem(itemId);
     // Items.md: attuning happens during a short rest.
     if (item.attunement && !shortRest)
@@ -480,6 +504,43 @@ export const useGame = create<GameStore>()((set, get) => ({
         inventory: { ...game.inventory, [itemId]: (game.inventory[itemId] ?? 0) + 1 },
       },
     });
+  },
+
+  unequipGear: (heroId, slot) => {
+    const { game } = get();
+    if (game) set({ game: unequipGear(game, heroId, slot) });
+  },
+
+  buyItem: (itemId) => {
+    const { game } = get();
+    if (!game) return 'No game';
+    const r = buy(game, itemId);
+    if (!r.error) set({ game: r.game });
+    return r.error;
+  },
+
+  sellItem: (itemId) => {
+    const { game } = get();
+    if (!game) return 'No game';
+    const r = sell(game, itemId);
+    if (!r.error) set({ game: r.game });
+    return r.error;
+  },
+
+  prepareHeroSpells: (heroId, spellIds) => {
+    const { game } = get();
+    if (!game) return 'No game';
+    const hero = game.party.find((h) => h.id === heroId);
+    if (!hero) return 'No such hero';
+    const problem = prepareProblem(hero, spellIds);
+    if (problem) return problem;
+    set({
+      game: {
+        ...game,
+        party: game.party.map((h) => (h.id === heroId ? prepareSpells(h, spellIds) : h)),
+      },
+    });
+    return undefined;
   },
 
   spendPearl: (heroId) => {
@@ -551,6 +612,7 @@ export const useGame = create<GameStore>()((set, get) => ({
     const { game, rngState } = get();
     if (!game) return 'No game';
     if ((game.inventory[itemId] ?? 0) < 1) return 'None left.';
+    if (!isMagicItem(itemId)) return 'That isn\u2019t something to drink.';
     const item = getItem(itemId);
     const heal = item.effects.find((e) => e.type === 'heal');
     if (!heal || heal.type !== 'heal') return `${item.name} only matters in a fight.`;
@@ -750,7 +812,11 @@ export const useGame = create<GameStore>()((set, get) => ({
     const rng = SeededRng.fromState(rngState);
     const r = takeLongRest(game, rng);
     // Maelis_Letters.md: letter 2 comes on the first long rest on the road to the marsh.
-    let rested = r.game;
+    // PHB: clerics, druids and paladins can re-prepare spells after a long rest.
+    let rested = {
+      ...r.game,
+      party: r.game.party.map((h) => (h.dead ? h : { ...h, canPrepare: true })),
+    };
     if (rested.act === 2 && !rested.flags['act2_road'])
       rested = { ...rested, flags: { ...rested.flags, act2_road: true } };
     const d = deliverLetters(rested);

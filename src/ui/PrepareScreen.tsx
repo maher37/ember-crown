@@ -3,7 +3,7 @@ import { formationOrder } from '../game/formation';
 import { difficulties, monsters } from '../data';
 import type { DifficultyId } from '../data/schemas/difficulty';
 import { getEncounter, parseMapForUi } from './combatUi';
-import { getClass, slotsLeft } from '../game/hero';
+import { getClass, maxSlots, slotsLeft } from '../game/hero';
 import { useSettings } from '../game/settings';
 import { useGame } from '../game/store';
 import { canLevelUp } from '../rules';
@@ -225,6 +225,42 @@ export function PrepareScreen() {
         </section>
 
         <section className="prepare-col" aria-label="Ready">
+          <h2 className="eyebrow">Your party</h2>
+          <ul className="prep-party">
+            {order.map((id) => {
+              const h = party.find((x) => x.id === id)!;
+              const slots = maxSlots(h)
+                .map((n, i) => (n > 0 ? `${slotsLeft(h)[i] ?? 0}/${n}` : null))
+                .filter(Boolean);
+              const pctHp = h.maxHp ? h.hp / h.maxHp : 0;
+              return (
+                <li key={id}>
+                  <span className="strong">{h.name.split(' ')[0]}</span>
+                  <span className={`prep-hp${pctHp < 0.5 ? ' low' : ''}`}>
+                    <span className="prep-hp-bar" aria-hidden="true">
+                      <span style={{ width: `${Math.round(pctHp * 100)}%` }} />
+                    </span>
+                    HP {h.hp}/{h.maxHp}
+                  </span>
+                  <span className="small muted">
+                    {h.dead
+                      ? 'dead'
+                      : slots.length
+                        ? `slots ${slots.join(' · ')}`
+                        : h.hp === 0
+                          ? 'down'
+                          : ''}
+                  </span>
+                </li>
+              );
+            })}
+          </ul>
+          <p className="small muted">
+            Potions of Healing: {game!.inventory['potion-of-healing'] ?? 0}
+            {party.some((h) => !h.dead && h.hp < h.maxHp / 2) && !onRoad
+              ? ' · Some heroes are badly hurt: “Not yet” and rest first?'
+              : ''}
+          </p>
           {party.some((h) => canLevelUp(h)) && (
             <p className="notice">
               Some heroes have enough XP to level up. Go back to the tavern and use “Level up!” on

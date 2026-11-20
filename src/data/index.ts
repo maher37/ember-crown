@@ -27,7 +27,8 @@ import monstersJson from './monsters.json';
 import { BackgroundFile } from './schemas/background';
 import { ClassFile } from './schemas/class';
 import { DifficultyFile } from './schemas/difficulty';
-import { ArmorFile, MagicItemFile, WeaponFile } from './schemas/item';
+import { ArmorFile, GearFile, MagicItemFile, WeaponFile } from './schemas/item';
+import gearJson from './gear.json';
 import { MonsterFile, NamedFoeFile } from './schemas/monster';
 import { SpeciesFile } from './schemas/species';
 import { SpellFile } from './schemas/spell';
@@ -49,6 +50,9 @@ export const monsters = MonsterFile.parse(monstersJson).monsters;
 export const foes = NamedFoeFile.parse(foesJson).foes;
 export const weapons = WeaponFile.parse(weaponsJson).weapons;
 export const armor = ArmorFile.parse(armorJson).armor;
+const gearFile = GearFile.parse(gearJson);
+export const gear = gearFile.gear;
+export const startingSupplies = gearFile.startingSupplies;
 export const magicItems = MagicItemFile.parse(magicItemsJson).items;
 const encounterFile = EncounterFile.parse(encountersJson);
 export const encounters = encounterFile.encounters;
@@ -81,6 +85,7 @@ export const gameData = {
   foes,
   weapons,
   armor,
+  gear,
   magicItems,
   encounters,
   loadouts,

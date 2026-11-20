@@ -6,6 +6,7 @@ import { useSettings, type ToggleKey } from '../game/settings';
 import { useGame } from '../game/store';
 import { LoadDialog } from './LoadDialog';
 import { SettingsDialog } from './SettingsDialog';
+import { CreditsDialog } from './CreditsDialog';
 import { TitleArt } from './TitleArt';
 import './TitleScreen.css';
 
@@ -22,6 +23,7 @@ export function TitleScreen() {
   const current = levels.find((l) => l.id === settings.difficulty) ?? levels[1]!;
   const [loading, setLoading] = useState(false);
   const [showSettings, setShowSettings] = useState(false);
+  const [showCredits, setShowCredits] = useState(false);
   const { startNewGame, loadGame } = useGame();
   const slots = listSlots();
   const latest = latestSave();
@@ -73,7 +75,10 @@ export function TitleScreen() {
 
         <p className="title-attribution">
           Rules: D&amp;D 5th Edition (2014). Includes material from the System Reference Document
-          5.1 by Wizards of the Coast LLC, licensed under CC-BY-4.0.
+          5.1 by Wizards of the Coast LLC, licensed under CC-BY-4.0.{' '}
+          <button type="button" className="link-btn" onClick={() => setShowCredits(true)}>
+            Credits
+          </button>
         </p>
       </section>
 
@@ -167,6 +172,7 @@ export function TitleScreen() {
       </section>
       {loading && <LoadDialog onClose={() => setLoading(false)} />}
       {showSettings && <SettingsDialog onClose={() => setShowSettings(false)} />}
+      {showCredits && <CreditsDialog onClose={() => setShowCredits(false)} />}
     </div>
   );
 }

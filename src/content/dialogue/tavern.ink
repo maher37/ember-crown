@@ -344,6 +344,9 @@ The last rat goes squealing into the dark. Behind the barrels, a hole in the wal
 
 = tunnel
 #speaker:cellar
+* {has_item("torches") || has_item("lantern")} [Light the way and check the timbers before going in. #gear:torches]
+    By torchlight the bad beam is easy to see: split right through, held up by habit. You prop it with a barrel stave and edge past.
+    -> journal
 * [Follow the tunnel.]
     The timbers groan. Twenty yards in, a beam gives way overhead.
     { trap("dex", 12, "2d6", "bludgeoning"):

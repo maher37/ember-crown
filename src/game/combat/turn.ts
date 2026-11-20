@@ -16,6 +16,7 @@ import {
   rollD20,
   describeTotal,
   type RandomSource,
+  roll,
 } from '../../rules';
 import { attackOptions, makeAttack, type AttackOption } from './attacks';
 import {
@@ -32,6 +33,7 @@ import {
   sayAll,
   spendSlot,
   type Ctx,
+  dealDamage,
 } from './core';
 import { conscious, distanceFeet, moveCost, parseMap } from './grid';
 import { enterSquare, startOfTurnZones, zoneSlows } from './zones';
@@ -426,6 +428,14 @@ function beginTurn(ctx: Ctx): boolean {
   }
   // PHB: Spirit Guardians, Moonbeam... starting a turn inside.
   startOfTurnZones(ctx, c);
+  // PHB: Alchemist's Fire. The target takes the fire's damage at the start of each of its turns.
+  for (const e of c.effects.filter((x) => x.tag === 'burning')) {
+    const r = roll(String(e.data?.dice ?? '1d4'), rng);
+    say(s, 'dmg', `${c.name} burns: ${r.text} fire`);
+    dealDamage(ctx, c, [{ amount: r.total, type: 'fire' }], {
+      attacker: s.combatants[e.sourceId],
+    });
+  }
   if (!conscious(c)) return false;
   // PHB: Haste. One extra (limited) action each turn. PHB: Slow. No reactions.
   if (hasEffect(c, 'hasted')) c.turn.hasteAction = true;

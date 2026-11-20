@@ -15,6 +15,7 @@ import {
 import { attackOptions } from './combat/attacks';
 import type { Combatant } from './combat/types';
 import {
+  armorSlows,
   computeAc,
   getClass,
   getSpecies,
@@ -274,11 +275,13 @@ export function planProblems(hero: Hero, plan: LevelUpPlan): string[] {
 export const rollHitDie = (hero: Hero, rng: RandomSource) =>
   roll(`1d${getClass(hero.classId).hitDie}`, rng).total;
 
-/** Walking speed: species, plus Unarmored Movement (monk) and Fast Movement (barbarian, no heavy armor). */
+/** Walking speed: species, minus heavy armor that's too heavy, plus Unarmored Movement (monk) and Fast Movement (barbarian, no heavy armor). */
 export function heroSpeed(
-  hero: Pick<Hero, 'speciesId' | 'classId' | 'level' | 'equipment'>,
+  hero: Pick<Hero, 'speciesId' | 'classId' | 'level' | 'equipment' | 'abilities'>,
 ): number {
   let speed = getSpecies(hero.speciesId).speed;
+  // PHB: Armor. Heavy armor too heavy for the wearer's Strength costs 10 ft.
+  if (armorSlows(hero)) speed -= 10;
   if (hero.classId === 'monk' && !hero.equipment.armor && !hero.equipment.shield)
     speed += hero.level >= 6 ? 15 : hero.level >= 2 ? 10 : 0;
   if (

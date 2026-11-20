@@ -112,6 +112,9 @@ A sealed archway carved with dwarven runes and a hammer-and-anvil. Ammarindar: t
     {roller()}'s hands find the hidden catch without looking, the way you find a stair in your own house. The arch grinds open.
     ~ award("discover-runes")
     -> opened
++ {has_item("crowbar")} [Lever the arch open with a crowbar. #gear:crowbar]
+    The crowbar finds the seam between the stones. One long heave, and the old catch gives with a crack like a knuckle.
+    -> opened
 + [Back.]
     -> END
 = opened

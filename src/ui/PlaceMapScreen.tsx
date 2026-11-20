@@ -9,6 +9,7 @@ import { canLevelUp } from '../rules';
 import './Explore.css';
 import { InventoryDialog, JournalDialog, SaveDialog, SpellsDialog } from './ExploreDialogs';
 import { PartyBar } from './PartyBar';
+import { GameMenuButton } from './GameMenu';
 import { KilnMap, MineMap } from './scenes/DungeonMaps';
 import { PARTY_OFFSETS, useWalk } from './useWalk';
 
@@ -69,6 +70,7 @@ export function PlaceMapScreen() {
           <button type="button" className="menu-secondary small-btn" onClick={openMap}>
             World map
           </button>
+          <GameMenuButton />
         </div>
       </header>
 

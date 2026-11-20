@@ -8,6 +8,7 @@
       "name": "Brawl at the Drowned Lantern",
       "act": 1,
       "xpPerPc": 25,
+      "expectedLevel": 1,
       "briefing": "Chairs scrape back. The Grey Company's bruisers come at you with fists, chair legs and bottles. Nobody here wants a killing: knock them flat (a melee hit that drops a foe to 0 knocks it out).",
       "surprise": false,
       "map": {
@@ -85,6 +86,7 @@
       "name": "Ambush on the Ashford road",
       "act": 1,
       "xpPerPc": 50,
+      "expectedLevel": 2,
       "briefing": "Smoke-smudged goblins have been raiding the river road. Tracks and a snapped bowstring warn you before they burst from the treeline.",
       "surprise": false,
       "map": {
@@ -166,6 +168,7 @@
       "name": "The warren gate",
       "act": 1,
       "xpPerPc": 50,
+      "expectedLevel": 2,
       "briefing": "Two half-starved wolves are chained at the warren's mouth, and goblin archers watch from the rocks behind them.",
       "surprise": false,
       "map": {
@@ -241,6 +244,7 @@
       "name": "Grisk's hall",
       "act": 1,
       "xpPerPc": 62,
+      "expectedLevel": 2,
       "briefing": "Grisk Two-Teeth rises from a throne of stolen mine carts. His goblins grab spears; the captured miners shout from a pen at the back.",
       "surprise": false,
       "map": {
@@ -316,6 +320,7 @@
       "name": "The mine mouth",
       "act": 1,
       "xpPerPc": 50,
+      "expectedLevel": 2,
       "briefing": "Hollow Star diggers drop their picks and pick up knives. Their foreman, a scarred thug, plants himself in front of the shaft.",
       "surprise": false,
       "map": {
@@ -399,6 +404,7 @@
       "name": "The Deep Seam",
       "act": 1,
       "xpPerPc": 50,
+      "expectedLevel": 2,
       "briefing": "The seam is warm as a bread oven. Pale centipedes as long as a man pour out of cracks in the old Ammarindar stone.",
       "surprise": false,
       "map": {
@@ -474,6 +480,7 @@
       "name": "The sunken shrine",
       "act": 1,
       "xpPerPc": 162,
+      "expectedLevel": 3,
       "briefing": "Brother Ulric stands at the drowned altar with the shard in his hook-hand. The skeletons of Varrow's old miners rise from the water, helmet-lamps flickering. You can still try to talk him down mid-fight.",
       "surprise": false,
       "map": {
@@ -564,6 +571,7 @@
       "name": "Brannoc's cellar",
       "act": 1,
       "xpPerPc": 50,
+      "expectedLevel": 2,
       "briefing": "The trapdoor opens on a heaving carpet of rats. Beneath the barrels, an old dwarf tunnel breathes warm air.",
       "surprise": false,
       "map": {
@@ -655,6 +663,7 @@
       "name": "Wolves in the Ashwood",
       "act": 1,
       "xpPerPc": 37,
+      "expectedLevel": 2,
       "briefing": "Three grey wolves, ribs showing, have been following you for a mile. Now they stop pretending.",
       "surprise": false,
       "map": {
@@ -722,6 +731,7 @@
       "name": "Shadows in the mill",
       "act": 1,
       "xpPerPc": 75,
+      "expectedLevel": 2,
       "briefing": "The shadows peel off the walls, three of them, the shapes of a man, a woman and a boy. Ordinary weapons barely touch them; magic and radiant light do.",
       "surprise": false,
       "map": {
@@ -789,6 +799,7 @@
       "name": "The luck-stone shrine",
       "act": 1,
       "xpPerPc": 50,
+      "expectedLevel": 2,
       "briefing": "The luck-stone sits in a niche of goblin skulls and copper pots. Its hobgoblin keeper and two goblins were waiting for a thief.",
       "surprise": false,
       "map": {
@@ -856,6 +867,7 @@
       "name": "Scald",
       "act": 1,
       "xpPerPc": 275,
+      "expectedLevel": 3,
       "briefing": "A dog-sized red dragon, eggshell still stuck to one horn, rears up on a hoard of stolen copper pots. Spread out: its fire breath fills a 15-foot cone. ☠ Deadly at level 2, Hard at level 3.",
       "surprise": false,
       "map": {
@@ -899,6 +911,7 @@
       "name": "The toll bridge",
       "act": 2,
       "xpPerPc": 100,
+      "expectedLevel": 3,
       "briefing": "Three Grey Company bruisers and a scout with a longbow hold the bridge. The river is too deep and fast to wade.",
       "surprise": false,
       "map": {
@@ -953,7 +966,7 @@
           "monster": "scout",
           "name": "Scout",
           "pos": [10, 1],
-          "difficulties": ["easy", "medium", "hard"],
+          "difficulties": ["hard"],
           "tactic": "ranged"
         },
         {
@@ -974,6 +987,7 @@
       "name": "Lizardfolk hunting grounds",
       "act": 2,
       "xpPerPc": 75,
+      "expectedLevel": 3,
       "briefing": "Three lizardfolk hunters rise out of the reeds, clubs and shields ready. Deep water blocks the way around.",
       "surprise": false,
       "map": {
@@ -1041,6 +1055,7 @@
       "name": "Drowned Marrowmere",
       "act": 2,
       "xpPerPc": 100,
+      "expectedLevel": 3,
       "briefing": "The village's dead stand up out of the warm bog: four bloated zombies, and something quicker behind them. Radiant damage and critical hits stop zombies for good.",
       "surprise": false,
       "map": {
@@ -1124,6 +1139,7 @@
       "name": "Marrowmere chapel",
       "act": 2,
       "xpPerPc": 150,
+      "expectedLevel": 3,
       "briefing": "Three ghouls crouch over the chapel's broken pews. Their claws paralyze (Con save); elves are immune.",
       "surprise": false,
       "map": {
@@ -1191,6 +1207,7 @@
       "name": "Betrayal at Ashford Hall",
       "act": 2,
       "xpPerPc": 200,
+      "expectedLevel": 4,
       "briefing": "The Hall doors bang shut behind you. Captain Voss of the Hall guard draws a longsword; a hired thug blocks the windows.",
       "surprise": false,
       "map": {
@@ -1250,6 +1267,7 @@
       "name": "Betrayal at Ashford Hall (exposed)",
       "act": 2,
       "xpPerPc": 200,
+      "expectedLevel": 4,
       "briefing": "With the ledger read aloud, the thug drops his club and runs. Only Captain Voss still stands by the mayor.",
       "surprise": false,
       "map": {
@@ -1293,6 +1311,7 @@
       "name": "The abbey cloister",
       "act": 2,
       "xpPerPc": 131,
+      "expectedLevel": 4,
       "briefing": "A cult fanatic and three cultists hold the cloister garden, knives out among the dead roses.",
       "surprise": false,
       "map": {
@@ -1368,6 +1387,7 @@
       "name": "The abbey undercroft",
       "act": 2,
       "xpPerPc": 237,
+      "expectedLevel": 4,
       "briefing": "Sister Venna waits at the drowned altar with the second shard. An ogre in a hollow-star tabard lumbers out of the dark, and two cultists flank her. She calls on the spirits: stay out of her reach if you can.",
       "surprise": false,
       "map": {
@@ -1443,6 +1463,7 @@
       "name": "Mother Sallow",
       "act": 2,
       "xpPerPc": 225,
+      "expectedLevel": 4,
       "briefing": "The kindly old woman's face slides off like wet paper. A green hag claws at you, and the bog's insects rise in two humming clouds.",
       "surprise": false,
       "map": {
@@ -1510,6 +1531,7 @@
       "name": "Deserters' camp",
       "act": 2,
       "xpPerPc": 131,
+      "expectedLevel": 4,
       "briefing": "Sergeant Holm and his three deserters won't go back to Kell in chains. They draw steel.",
       "surprise": false,
       "map": {
@@ -1585,6 +1607,7 @@
       "name": "The flooded crypt",
       "act": 2,
       "xpPerPc": 212,
+      "expectedLevel": 4,
       "briefing": "Two specters drift up out of the black water, and a ghast that stinks of the grave guards the founder's tomb. Their touch drains your maximum HP until a long rest.",
       "surprise": false,
       "map": {
@@ -1652,6 +1675,7 @@
       "name": "Ambush in Cobbler's Lane",
       "act": 2,
       "xpPerPc": 131,
+      "expectedLevel": 4,
       "briefing": "Venna's enforcers have Edric pinned against a wall: a fanatic with a hooked knife and three cultists.",
       "surprise": false,
       "map": {
@@ -1727,6 +1751,7 @@
       "name": "The Drowned Abbot",
       "act": 2,
       "xpPerPc": 500,
+      "expectedLevel": 5,
       "briefing": "The last abbot rises from his flooded tomb, a wraith in rotted vestments, with the specter of a novice at his side. ☠ Deadly at level 4, Hard at level 5. His touch drains maximum HP.",
       "surprise": false,
       "map": {
@@ -1778,6 +1803,7 @@
       "name": "Ashfall Pass",
       "act": 3,
       "xpPerPc": 225,
+      "expectedLevel": 4,
       "briefing": "Two ogres, singed and starving, have rolled boulders across the pass. They want food. All of it.",
       "surprise": false,
       "map": {
@@ -1837,6 +1863,7 @@
       "name": "The Kiln Gate",
       "act": 3,
       "xpPerPc": 225,
+      "expectedLevel": 4,
       "briefing": "Two gargoyles peel themselves off the gate's pillars. Ordinary weapons barely scratch them.",
       "surprise": false,
       "map": {
@@ -1896,6 +1923,7 @@
       "name": "The Kiln Gate (Kell holds the rear)",
       "act": 3,
       "xpPerPc": 225,
+      "expectedLevel": 4,
       "briefing": "Kell's company holds the cult's rearguard off your backs. Only one gargoyle stirs on the gate.",
       "surprise": false,
       "map": {
@@ -1947,6 +1975,7 @@
       "name": "The Furnace Halls",
       "act": 3,
       "xpPerPc": 150,
+      "expectedLevel": 4,
       "briefing": "Three suits of Varrow's forge-guard armor clank to life between the cold furnaces.",
       "surprise": false,
       "map": {
@@ -2014,6 +2043,7 @@
       "name": "Hall of the Honor Guard",
       "act": 3,
       "xpPerPc": 287,
+      "expectedLevel": 5,
       "briefing": "Ser Ida Marrow, dead two hundred years, draws her sword. Two suits of guard-armor and a skeletal squire close ranks with her.",
       "surprise": false,
       "map": {
@@ -2089,6 +2119,7 @@
       "name": "The Ember Galleries",
       "act": 3,
       "xpPerPc": 475,
+      "expectedLevel": 5,
       "briefing": "A wall of Ammarindar stone with a dwarf's face carved in it pulls itself free. A magma mephit cackles in the lava light.",
       "surprise": false,
       "map": {
@@ -2148,6 +2179,7 @@
       "name": "The Star's last stand",
       "act": 3,
       "xpPerPc": 250,
+      "expectedLevel": 5,
       "briefing": "The last of Venna's zealots hold the stair to the Crowning: two fanatics and four cultists, with nothing left to lose.",
       "surprise": false,
       "map": {
@@ -2239,6 +2271,7 @@
       "name": "The Star's last stand (the back way)",
       "act": 3,
       "xpPerPc": 250,
+      "expectedLevel": 5,
       "briefing": "You come in behind them through the back way. Only half the zealots are where they can reach you.",
       "surprise": false,
       "map": {
@@ -2306,6 +2339,7 @@
       "name": "The Crowning: Maelis",
       "act": 3,
       "xpPerPc": 575,
+      "expectedLevel": 5,
       "briefing": "Maelis stands in the burning heart of the mountain with the half-forged crown. She won't be talked down now. She is a trained mage: spread out against her fire.",
       "surprise": false,
       "map": {
@@ -2366,6 +2400,7 @@
       "name": "The Crowning: Cindrath",
       "act": 3,
       "xpPerPc": 725,
+      "expectedLevel": 5,
       "briefing": "Cindrath tears herself half out of the stone: an ember-wraith of smoke and molten gold, bound to the ritual circle. She can't leave it, but her breath fills a 30-ft cone. Strike the three crown shards: every blow on a shard wounds her too.",
       "surprise": false,
       "map": {
@@ -2449,6 +2484,7 @@
       "name": "The Ember Queen",
       "act": 3,
       "xpPerPc": 725,
+      "expectedLevel": 5,
       "briefing": "The crown closes on Maelis's head, and Cindrath wears her. The Ember Queen rises in the circle, burning. Strike the shards.",
       "surprise": false,
       "map": {
@@ -2525,6 +2561,7 @@
       "name": "The Ember Heir",
       "act": 3,
       "xpPerPc": 725,
+      "expectedLevel": 5,
       "briefing": "Corin's eyes go molten gold. Cindrath has found a new host, and it is your friend. Strike the shards to cut her out of him.",
       "surprise": false,
       "map": {
@@ -2602,6 +2639,7 @@
       "name": "The Cold Forge",
       "act": 3,
       "xpPerPc": 500,
+      "expectedLevel": 5,
       "briefing": "The forge's guardian wakes in the lava tubes: a fire elemental, and two magma mephits riding the heat.",
       "surprise": false,
       "map": {
@@ -2669,6 +2707,7 @@
       "name": "The ossuary",
       "act": 3,
       "xpPerPc": 425,
+      "expectedLevel": 5,
       "briefing": "Two ghasts and four ghouls have been feeding in the ossuary for two hundred years. The stench alone is a weapon.",
       "surprise": false,
       "map": {
@@ -2760,7 +2799,8 @@
       "name": "The evacuation convoy",
       "act": 3,
       "xpPerPc": 350,
-      "briefing": "Two hell hounds, born of the mountain's heat, come baying down the river road at the carts.",
+      "expectedLevel": 5,
+      "briefing": "Two hell hounds, born of the mountain's heat, come baying down the river road at the carts. Two of Ashford's militia stand with you.",
       "surprise": false,
       "map": {
         "width": 16,
@@ -2798,7 +2838,7 @@
           "monster": "hell-hound",
           "name": "Hell hound B",
           "pos": [12, 5],
-          "difficulties": ["easy", "medium", "hard"],
+          "difficulties": ["medium", "hard"],
           "tactic": "melee"
         },
         {
@@ -2811,7 +2851,21 @@
         }
       ],
       "verify": true,
-      "verifyNote": "Encounters_and_XP side quests: 2 hell hounds (Medium at L5). [inferred] Easy/Hard changes and the map are my pick."
+      "verifyNote": "Encounters_and_XP side quests: 2 hell hounds (Medium at L5). [inferred] Easy/Hard changes and the map are my pick.",
+      "allies": [
+        {
+          "id": "militia-a",
+          "monster": "guard",
+          "name": "Ashford militia A",
+          "pos": [5, 3]
+        },
+        {
+          "id": "militia-b",
+          "monster": "guard",
+          "name": "Ashford militia B",
+          "pos": [5, 5]
+        }
+      ]
     },
     {
       "id": "s12-wix-giant",
@@ -2819,6 +2873,7 @@
       "name": "The giant at the door",
       "act": 3,
       "xpPerPc": 562,
+      "expectedLevel": 5,
       "briefing": "A hill giant has wedged itself into the clan's front door, with an ogre to fetch and carry.",
       "surprise": false,
       "map": {
@@ -2878,6 +2933,7 @@
       "name": "Vorrag the Kiln-Smith",
       "act": 3,
       "xpPerPc": 1250,
+      "expectedLevel": 6,
       "briefing": "Vorrag the Kiln-Smith hefts a greatsword longer than you are tall. ☠ Deadly at level 5, Hard at level 6. Two huge sword blows a turn, and he throws rocks: spread out and use cover.",
       "surprise": false,
       "map": {
@@ -2921,6 +2977,7 @@
       "name": "Starving wolves",
       "act": 1,
       "xpPerPc": 37,
+      "expectedLevel": 2,
       "briefing": "Three wolves, ribs showing, have followed the goblin exodus down the mountain.",
       "surprise": true,
       "map": {
@@ -2988,6 +3045,7 @@
       "name": "Goblin foragers",
       "act": 1,
       "xpPerPc": 37,
+      "expectedLevel": 2,
       "briefing": "Three goblins with sacks and cooking pots. They look more hungry than hostile.",
       "surprise": true,
       "map": {
@@ -3063,6 +3121,7 @@
       "name": "River-road bandits",
       "act": 1,
       "xpPerPc": 31,
+      "expectedLevel": 2,
       "briefing": "Five bandits working the river road step out from behind the reeds.",
       "surprise": true,
       "map": {
@@ -3146,6 +3205,7 @@
       "name": "Stirges at dusk",
       "act": 1,
       "xpPerPc": 25,
+      "expectedLevel": 2,
       "briefing": "A whine of wings over the water: stirges, hungry for blood.",
       "surprise": true,
       "map": {
@@ -3221,6 +3281,7 @@
       "name": "A brown bear",
       "act": 1,
       "xpPerPc": 50,
+      "expectedLevel": 2,
       "briefing": "A brown bear, driven down by the warm mountain, blocks the road.",
       "surprise": true,
       "map": {
@@ -3264,6 +3325,7 @@
       "name": "A hunting griffon",
       "act": 1,
       "xpPerPc": 112,
+      "expectedLevel": 2,
       "briefing": "A griffon circles once, then dives for your packs.",
       "surprise": true,
       "map": {
@@ -3307,6 +3369,7 @@
       "name": "Cult recruiters",
       "act": 1,
       "xpPerPc": 43,
+      "expectedLevel": 2,
       "briefing": "Three cultists and a thug with a hollow-star banner, recruiting on the road.",
       "surprise": true,
       "map": {
@@ -3390,6 +3453,7 @@
       "name": "Lizardfolk hunters",
       "act": 2,
       "xpPerPc": 50,
+      "expectedLevel": 3,
       "briefing": "Two lizardfolk hunters step out of the reeds, spears level.",
       "surprise": true,
       "map": {
@@ -3457,6 +3521,7 @@
       "name": "Insect swarms",
       "act": 2,
       "xpPerPc": 50,
+      "expectedLevel": 3,
       "briefing": "The warm water boils with midges and biting flies; two clouds of them rise.",
       "surprise": true,
       "map": {
@@ -3516,6 +3581,7 @@
       "name": "Giant spiders",
       "act": 2,
       "xpPerPc": 100,
+      "expectedLevel": 3,
       "briefing": "Webs hang between drowned trees. Two giant spiders drop down.",
       "surprise": true,
       "map": {
@@ -3575,6 +3641,7 @@
       "name": "Bog dead",
       "act": 2,
       "xpPerPc": 50,
+      "expectedLevel": 3,
       "briefing": "Four bloated dead rise from the bog, raised by the heat.",
       "surprise": true,
       "map": {
@@ -3650,6 +3717,7 @@
       "name": "Grey Company patrol",
       "act": 2,
       "xpPerPc": 43,
+      "expectedLevel": 3,
       "briefing": "A Grey Company patrol, three bandits and a thug, wants to see your papers.",
       "surprise": true,
       "map": {
@@ -3732,6 +3800,7 @@
       "name": "Sunken ruin",
       "act": 2,
       "xpPerPc": 37,
+      "expectedLevel": 3,
       "briefing": "Three giant centipedes nest in a sunken ruin on the path.",
       "surprise": true,
       "map": {
@@ -3799,6 +3868,7 @@
       "name": "Ghoul pack",
       "act": 2,
       "xpPerPc": 100,
+      "expectedLevel": 3,
       "briefing": "Two ghouls lope out of the steam, sniffing.",
       "surprise": true,
       "map": {
@@ -3858,6 +3928,7 @@
       "name": "Fleeing war band",
       "act": 3,
       "xpPerPc": 100,
+      "expectedLevel": 4,
       "briefing": "Four orcs from a war band fleeing the heat.",
       "surprise": true,
       "map": {
@@ -3940,6 +4011,7 @@
       "name": "Owlbear",
       "act": 3,
       "xpPerPc": 175,
+      "expectedLevel": 4,
       "briefing": "An owlbear, half-mad with heat, crashes out of the scree.",
       "surprise": true,
       "map": {
@@ -3983,6 +4055,7 @@
       "name": "Griffons",
       "act": 3,
       "xpPerPc": 225,
+      "expectedLevel": 4,
       "briefing": "Two griffons stoop out of the ash-cloud.",
       "surprise": true,
       "map": {
@@ -4042,6 +4115,7 @@
       "name": "Dire wolves",
       "act": 3,
       "xpPerPc": 150,
+      "expectedLevel": 4,
       "briefing": "Three dire wolves pace you along the ridge.",
       "surprise": true,
       "map": {
@@ -4080,7 +4154,7 @@
           "monster": "dire-wolf",
           "name": "Dire wolf B",
           "pos": [12, 5],
-          "difficulties": ["easy", "medium", "hard"],
+          "difficulties": ["medium", "hard"],
           "tactic": "melee"
         },
         {
@@ -4088,7 +4162,7 @@
           "monster": "dire-wolf",
           "name": "Dire wolf C",
           "pos": [13, 4],
-          "difficulties": ["medium", "hard"],
+          "difficulties": ["hard"],
           "tactic": "melee"
         },
         {
@@ -4109,6 +4183,7 @@
       "name": "Magma mephits",
       "act": 3,
       "xpPerPc": 75,
+      "expectedLevel": 4,
       "briefing": "Three magma mephits bubble out of a cracked slope.",
       "surprise": true,
       "map": {
@@ -4176,6 +4251,7 @@
       "name": "Hell hound",
       "act": 3,
       "xpPerPc": 175,
+      "expectedLevel": 4,
       "briefing": "A hell hound, loose from the Kiln, picks up your scent.",
       "surprise": true,
       "map": {
@@ -4227,6 +4303,7 @@
       "name": "Troll under the bridge",
       "act": 3,
       "xpPerPc": 450,
+      "expectedLevel": 4,
       "briefing": "A troll lives under the rope bridge. It is hungry. It is always hungry. (Hard at level 4: fire and acid stop its regeneration.)",
       "surprise": true,
       "map": {

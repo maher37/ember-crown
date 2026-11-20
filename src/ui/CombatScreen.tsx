@@ -10,6 +10,7 @@ import {
   hideProblem,
   offhandWeapons,
   posKey,
+  distanceFeet,
   reachable,
   spellChoices,
   targeting,
@@ -31,11 +32,14 @@ import { useGame } from '../game/store';
 import { hasCondition, SeededRng } from '../rules';
 import './Combat.css';
 import { briefLine, hitChance, isDiceLine } from './combatUi';
-import { CLASS_COPY, ELF_EARS } from './creatorCopy';
 import { Portrait } from './Portrait';
+import { heroPortrait } from './heroLook';
 import { terrainFill, terrainName } from './mapStyle';
 import { foeInfo } from './foeInfo';
+import { useHitFx } from './combatFx';
 import { getItem } from '../game/items';
+import { getGear, isMagicItem } from '../game/gear';
+import { getMonster } from '../game/creatures';
 import { SoundButton } from '../audio/SoundButton';
 
 const CELL = 48;
@@ -72,6 +76,7 @@ export function CombatScreen() {
   const [stun, setStun] = useState(false);
   const [inspect, setInspect] = useState<string | null>(null);
   const s = combat!;
+  const fx = useHitFx(s);
   const me = s.combatants[s.order[s.turnIndex]!]!;
   const myTurn = me.side === 'party' && !s.outcome && !s.prompt;
 
@@ -115,7 +120,13 @@ export function CombatScreen() {
   const knownMetamagic = (isHero(me) ? (me.creature.choices['metamagic'] ?? []) : []).filter(
     (x): x is Metamagic => x in METAMAGIC_NAMES,
   );
-  const potions = Object.entries(s.inventory).filter(([id, n]) => n > 0 && getItem(id).consumable);
+  const potions = Object.entries(s.inventory).filter(
+    ([id, n]) => n > 0 && isMagicItem(id) && getItem(id).consumable,
+  );
+  // Adventuring gear for a fight: thrown flasks and the healer's kit.
+  const fightGear = Object.entries(s.inventory)
+    .filter(([id, n]) => n > 0 && !!getGear(id)?.use)
+    .map(([id, n]) => ({ g: getGear(id)!, n }));
   const features = myTurn ? featureList(me, s) : [];
 
   // Which tokens can be clicked in the current mode.
@@ -138,6 +149,33 @@ export function CombatScreen() {
       );
     if (mode.kind === 'help')
       return new Set(all.filter((c) => c.side === 'party' && c.id !== me.id).map((c) => c.id));
+    if (mode.kind === 'item' && getGear(mode.itemId)?.use?.type === 'throw') {
+      const use = getGear(mode.itemId)!.use as { rangeFt: number; onlyVs?: string[] };
+      return new Set(
+        all
+          .filter(
+            (c) =>
+              c.side === 'enemy' &&
+              distanceFeet(c.pos, me.pos) <= use.rangeFt * 3 &&
+              (!use.onlyVs ||
+                use.onlyVs.includes(c.monsterId ? getMonster(c.monsterId).type : 'humanoid')),
+          )
+          .map((c) => c.id),
+      );
+    }
+    if (mode.kind === 'item' && getGear(mode.itemId)?.use?.type === 'stabilize')
+      return new Set(
+        all
+          .filter(
+            (c) =>
+              c.side === 'party' &&
+              c.creature.hp === 0 &&
+              !c.creature.stable &&
+              Math.abs(c.pos.x - me.pos.x) <= 1 &&
+              Math.abs(c.pos.y - me.pos.y) <= 1,
+          )
+          .map((c) => c.id),
+      );
     if (mode.kind === 'item')
       return new Set(
         all
@@ -310,6 +348,20 @@ export function CombatScreen() {
           !me.turn.bonusUsed)
           ? undefined
           : 'no action left',
+    })),
+    ...fightGear.map(({ g, n }) => ({
+      label:
+        g.use!.type === 'stabilize'
+          ? `${g.name}: stabilize`
+          : `Throw ${g.name.toLowerCase()} (${n})`,
+      detail:
+        g.use!.type === 'stabilize'
+          ? 'a dying ally next to you becomes stable · action'
+          : `${g.use!.type === 'throw' ? `${g.use!.dice} ${g.use!.damageType}` : ''}${
+              g.use!.type === 'throw' && g.use!.onlyVs ? ` vs ${g.use!.onlyVs.join('/')}` : ''
+            } · ${g.use!.type === 'throw' ? g.use!.rangeFt : 5} ft · action`,
+      onClick: () => setMode({ kind: 'item', itemId: g.id }),
+      blocked: actionLeft ? undefined : 'no action left',
     })),
     {
       label: 'Help',
@@ -533,7 +585,7 @@ export function CombatScreen() {
                 <button
                   key={c.id}
                   type="button"
-                  className={`token ${c.side} ${c.id === me.id ? 'active' : ''} ${target ? 'target' : ''} ${dead ? 'dead' : ''} ${down && !dead ? 'downed' : ''}`}
+                  className={`token ${c.side} ${c.id === me.id ? 'active' : ''} ${target ? 'target' : ''} ${dead ? 'dead' : ''} ${down && !dead ? 'downed' : ''} ${fx.flashing(c.id) ? (settings.reduceFlashing ? 'hit calm' : 'hit') : ''}`}
                   style={{ left: c.pos.x * CELL + 4, top: c.pos.y * CELL + 4 }}
                   aria-label={`${c.name}, ${c.side === 'party' ? 'ally' : 'enemy'}, ${dead ? 'dead' : down ? 'down' : `HP ${c.wildShape?.hp ?? c.creature.hp} of ${c.wildShape?.maxHp ?? c.creature.maxHp}`}${target ? ', valid target' : ''}`}
                   aria-disabled={!target && !(mode.kind === 'spell' && validTargets.size === 0)}
@@ -550,6 +602,20 @@ export function CombatScreen() {
                 </button>
               );
             })}
+          {fx.floats.map((f) => {
+            const c = s.combatants[f.id];
+            if (!c) return null;
+            return (
+              <span
+                key={f.key}
+                className={`float ${f.kind}`}
+                style={{ left: c.pos.x * CELL + 24, top: c.pos.y * CELL + 2 }}
+                aria-hidden="true"
+              >
+                {f.text}
+              </span>
+            );
+          })}
           {hovered && (
             <div
               className={`tooltip ${hovered.side}`}
@@ -590,14 +656,17 @@ export function CombatScreen() {
               )}
               {hovered.creature.conditions.length > 0 && (
                 <span className="muted">
+                  Conditions:{' '}
                   {[...new Set(hovered.creature.conditions.map((x) => x.id))].join(', ')}
                 </span>
               )}
               {hovered.effects.length > 0 && (
-                <span className="muted">{hovered.effects.map((e) => e.name).join(', ')}</span>
+                <span className="muted">
+                  Under: {[...new Set(hovered.effects.map((e) => e.name))].join(', ')}
+                </span>
               )}
               <span className="muted">
-                {terrainName(s.map.style, terrainAt(s.map, hovered.pos))}
+                Standing on: {terrainName(s.map.style, terrainAt(s.map, hovered.pos))}
               </span>
             </div>
           )}
@@ -632,12 +701,7 @@ export function CombatScreen() {
           <div className={`active-card ${me.side}`}>
             {hero ? (
               <div className="active-portrait">
-                <Portrait
-                  {...hero.creature.portrait}
-                  ears={ELF_EARS.has(hero.creature.speciesId) ? 'elf' : 'human'}
-                  cloth={CLASS_COPY[hero.creature.classId]!.cloth}
-                  label={`Portrait of ${me.name}`}
-                />
+                <Portrait {...heroPortrait(hero.creature)} />
               </div>
             ) : (
               <div className="active-portrait enemy-face" aria-hidden="true">

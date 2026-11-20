@@ -6,7 +6,7 @@ import { SLOT_NAMES, type SlotId } from '../game/save';
 import { getLetter, trust } from '../game/letters';
 import { useGame } from '../game/store';
 import { TRUTHS } from '../game/dialogue';
-import { attunedCount, getItem, MAX_ATTUNED } from '../game/items';
+import { EquipmentPanel } from './EquipmentPanel';
 import { downloadSave } from './saveFiles';
 
 export function Modal({
@@ -259,18 +259,11 @@ export function SaveDialog({ onClose }: { onClose: () => void }) {
   );
 }
 
-const g0 = (g: ReturnType<typeof useGame.getState>['game']) => g!;
-
 /** The party's pack and what each hero wears (Items.md: attune during a short rest). */
 export function InventoryDialog({ onClose }: { onClose: () => void }) {
-  const { game, equipItem, unequipItem, drinkPotion, shortRest, spendPearl, spendStaff } =
-    useGame();
-  const [patient, setPatient] = useState(g0(game).party[0]!.id);
+  const { game } = useGame();
   const g = game!;
-  const [msg, setMsg] = useState('');
   const [who, setWho] = useState(g.party[0]!.id);
-  const pack = Object.entries(g.inventory).filter(([, n]) => n > 0);
-  const hero = g.party.find((h) => h.id === who)!;
   return (
     <Modal title="Inventory" onClose={onClose}>
       <div className="journal-scroll">
@@ -284,123 +277,7 @@ export function InventoryDialog({ onClose }: { onClose: () => void }) {
             ))}
           </select>
         </label>
-        <section>
-          <h3 className="eyebrow">
-            {hero.name} wears · attuned {attunedCount(hero)}/{MAX_ATTUNED}
-          </h3>
-          {(hero.equipment.magic ?? []).length ? (
-            <ul className="item-list">
-              {hero.equipment.magic.map((id) => (
-                <li key={id}>
-                  <span>
-                    <span className="strong">{getItem(id).name}</span>{' '}
-                    <span className="small muted">{getItem(id).summary}</span>
-                  </span>
-                  <span className="row">
-                    {id === 'bog-pearl' && (
-                      <button
-                        type="button"
-                        className="menu-secondary small-btn"
-                        onClick={() => setMsg(spendPearl(hero.id) ?? '')}
-                      >
-                        Recover a slot
-                      </button>
-                    )}
-                    {id === 'staff-of-healing' && (
-                      <>
-                        <select
-                          value={patient}
-                          onChange={(e) => setPatient(e.target.value)}
-                          aria-label="Heal whom"
-                        >
-                          {g.party.map((p) => (
-                            <option key={p.id} value={p.id}>
-                              {p.name}
-                            </option>
-                          ))}
-                        </select>
-                        <button
-                          type="button"
-                          className="menu-secondary small-btn"
-                          onClick={() => setMsg(spendStaff(hero.id, patient) ?? '')}
-                        >
-                          Cure Wounds ({Number(g.flags['staff_charges'] ?? 10)} charges)
-                        </button>
-                      </>
-                    )}
-                    <button
-                      type="button"
-                      className="menu-secondary small-btn"
-                      onClick={() => unequipItem(hero.id, id)}
-                    >
-                      Take off
-                    </button>
-                  </span>
-                </li>
-              ))}
-            </ul>
-          ) : (
-            <p className="small muted">No magic items.</p>
-          )}
-        </section>
-        <section>
-          <h3 className="eyebrow">The pack · {g.gold ?? 0} gp</h3>
-          {pack.length ? (
-            <ul className="item-list">
-              {pack.map(([id, n]) => {
-                const it = getItem(id);
-                return (
-                  <li key={id}>
-                    <span>
-                      <span className="strong">
-                        {it.name}
-                        {n > 1 ? ` ×${n}` : ''}
-                      </span>{' '}
-                      <span className="small muted">
-                        {it.summary}
-                        {it.attunement ? ' · requires attunement' : ''}
-                      </span>
-                    </span>
-                    {it.consumable ? (
-                      it.effects.some((e) => e.type === 'heal') ? (
-                        <button
-                          type="button"
-                          className="menu-secondary small-btn"
-                          onClick={() => setMsg(drinkPotion(hero.id, id) ?? '')}
-                        >
-                          {hero.name.split(' ')[0]} drinks
-                        </button>
-                      ) : (
-                        <span className="small muted">use it in a fight</span>
-                      )
-                    ) : (
-                      <button
-                        type="button"
-                        className="menu-secondary small-btn"
-                        onClick={() =>
-                          setMsg(equipItem(hero.id, id) ?? `${hero.name} takes ${it.name}.`)
-                        }
-                      >
-                        {it.attunement ? 'Attune' : 'Equip'}
-                      </button>
-                    )}
-                  </li>
-                );
-              })}
-            </ul>
-          ) : (
-            <p className="small muted">Nothing in the pack.</p>
-          )}
-          {!shortRest && (
-            <p className="small muted">
-              Items that need attunement can only be attuned during a short rest (Camp → Short
-              rest).
-            </p>
-          )}
-          <p className="small" role="status">
-            {msg}
-          </p>
-        </section>
+        <EquipmentPanel heroId={who} />
       </div>
     </Modal>
   );

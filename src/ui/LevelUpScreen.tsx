@@ -20,9 +20,9 @@ import {
   XP_THRESHOLDS,
   type Ability,
 } from '../rules';
-import { CLASS_COPY, ELF_EARS } from './creatorCopy';
 import './Explore.css';
 import { Portrait } from './Portrait';
+import { heroPortrait } from './heroLook';
 
 const SHORT: Record<Ability, string> = {
   str: 'STR',
@@ -107,12 +107,7 @@ export function LevelUpScreen() {
       <div className="levelup-body">
         <section aria-label="Character" className="lu-left">
           <div className="lu-portrait">
-            <Portrait
-              {...hero.portrait}
-              ears={ELF_EARS.has(hero.speciesId) ? 'elf' : 'human'}
-              cloth={CLASS_COPY[hero.classId]!.cloth}
-              label={`Portrait of ${hero.name}`}
-            />
+            <Portrait {...heroPortrait(hero)} />
           </div>
           <div className="small">
             <div className="row between">

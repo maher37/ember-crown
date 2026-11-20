@@ -42,6 +42,16 @@ Ash falls like grey snow on the road into the high Greypeaks. Two ogres have rol
         Grey, gritty, everywhere. It gets in your teeth.
     }
     -> talk
++ {has_item("rope")} [Rope up and climb round the boulders on the cliff path. #check:athletics:12 #gear:rope]
+    { passed:
+        Hand over hand along the rope, above the drop, and down again behind the ogres before they finish arguing about which of them is hungrier.
+        ~ award("f15-pay")
+        -> cleared
+    - else:
+        A loose stone clatters down onto the bigger ogre's head. He looks up. "FOOD," he says, and reaches for his club.
+        ~ fight("f15-ashfall-pass", "arrive.after_fight")
+        -> END
+    }
 + [Pay the toll: all our food.]
     The ogres eat it all on the spot, wrappers and all, and roll one boulder aside. "Good walkers," says the big one, chewing.
     ~ award("f15-pay")

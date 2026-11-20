@@ -17,6 +17,8 @@ export const Encounter = z
     act: z.union([z.literal(1), z.literal(2), z.literal(3)]),
     /** docs/Encounters_and_XP.md: XP per character, the same on every difficulty. */
     xpPerPc: z.number().int().positive(),
+    /** docs/Encounters_and_XP.md: the party level this fight is designed for (the balance simulator uses it). */
+    expectedLevel: z.number().int().min(1).max(6),
     briefing: z.string().min(1),
     /** Whether the enemies roll Stealth to surprise the party. */
     surprise: z.boolean(),

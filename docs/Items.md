@@ -48,6 +48,13 @@ Small finds, so exploring pays without upsetting the item plan [inferred amounts
 - **King's Kiln:** the cult supply cache (Investigation DC 13: 2 Potions of Healing and 30 gp, or 1 potion on a failure).
 - No XP for these, so the XP ledger in Encounters_and_XP.md is unchanged.
 
+## Adventuring gear (D24)
+Sold at Brannoc's stores (`src/data/gear.json`), PHB prices [CONFIRM: prices from memory]:
+- **Rope** (1 gp), **torches** (1 sp), **hooded lantern** (5 gp), **crowbar** (2 gp), **thieves' tools** (25 gp): they open story choices (the cellar tunnel, the dwarven arch, Ashfall Pass, the Kiln's dials). They never run out.
+- **Healer's kit** (5 gp): stabilize a dying ally next to you, no check. Never runs out.
+- **Alchemist's fire** (50 gp), **holy water** (25 gp), **acid** (25 gp): thrown in fights and used up.
+- All PHB armor and weapons, and Potions of Healing (50 gp), are also for sale.
+
 ## Elite monsters (one per act, optional)
 | Act | Elite | Monster (MM) | Raw XP → adjusted | Difficulty | XP/PC | Where and how it's telegraphed | Fight notes |
 |---|---|---|---|---|---|---|---|

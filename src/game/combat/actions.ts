@@ -1,3 +1,4 @@
+import { gear } from '../../data';
 import { getMonster } from '../creatures';
 import { getItem } from '../items';
 import { casterNumbers, spiritAttack } from './spells';
@@ -8,10 +9,12 @@ import {
   abilityModifier,
   addCondition,
   hasCondition,
+  isDying,
   isIncapacitated,
   removeCondition,
   roll,
   SKILLS,
+  stabilize,
   type Skill,
 } from '../../rules';
 import { attackBlocked, attackOptions, makeAttack, type AttackOption } from './attacks';
@@ -133,6 +136,13 @@ export function act(state: CombatState, a: PlayerAction): ActResult {
   const next = produce(state, (ctx) => {
     const c = active(ctx.s);
     error = perform(ctx, c, a) ?? undefined;
+    // A hero knocked out on their own turn (walking into Spirit Guardians, say) can't go on:
+    // their turn ends at once.
+    const now = active(ctx.s);
+    if (!error && !ctx.s.outcome && !ctx.s.prompt && now.id === c.id && !canAct(now)) {
+      say(ctx.s, 'info', `${c.name} can't go on; the turn ends.`);
+      nextTurn(ctx);
+    }
     settle(ctx.s);
   });
   return error ? { state, error } : { state: next };
@@ -164,12 +174,14 @@ const actionFree = (c: Combatant) => !c.turn.actionUsed || c.turn.extraActions >
 
 function perform(ctx: Ctx, c: Combatant, a: PlayerAction): string | null | undefined {
   const { s } = ctx;
+  // Ending the turn is always allowed, even for a hero who just dropped (balance-sim bug, M10).
+  if (a.type === 'end-turn') {
+    say(s, 'info', `${c.name} ends the turn.`);
+    nextTurn(ctx);
+    return null;
+  }
   if (!canAct(c)) return `${c.name} can't act.`;
   switch (a.type) {
-    case 'end-turn':
-      say(s, 'info', `${c.name} ends the turn.`);
-      nextTurn(ctx);
-      return null;
     case 'move': {
       const routes = reachable(
         s,
@@ -1171,10 +1183,74 @@ function feature(
   }
 }
 
+/**
+ * Adventuring gear in a fight (PHB Chapter 5): throw a flask (alchemist's fire, holy water, acid)
+ * or use a healer's kit. Thrown flasks are improvised weapons: Dex to hit, no proficiency, 20/60 ft.
+ */
+function applyGear(ctx: Ctx, c: Combatant, itemId: string, targetId: string): string | null {
+  const { s } = ctx;
+  const g = gear.find((x) => x.id === itemId)!;
+  const use = g.use;
+  if (!use) return `${g.name} isn't used in a fight.`;
+  const target = s.combatants[targetId];
+  if (!target) return 'Choose a target.';
+  if (use.type === 'stabilize') {
+    // PHB: Healer's Kit. Stabilize a creature at 0 HP without a Medicine check.
+    if (target.side !== c.side) return 'Choose a dying ally.';
+    if (!isDying(target.creature)) return `${target.name} isn't dying.`;
+    if (distanceFeet(c.pos, target.pos) > 5) return 'You must be next to them.';
+    if (!spendAction(c, true)) return 'No action left.';
+    target.creature = stabilize(target.creature);
+    say(s, 'you', `${c.name} uses a healer's kit on ${target.name}: stable (no check needed)`);
+    return null;
+  }
+  if (target.side === c.side) return 'Throw it at an enemy.';
+  const type = target.monsterId ? getMonster(target.monsterId).type : 'humanoid';
+  if (use.onlyVs && !use.onlyVs.includes(type))
+    return `${g.name} only harms ${use.onlyVs.join(' and ')}.`;
+  const h = heroOf(c);
+  const opt: AttackOption = {
+    id: `throw-${g.id}`,
+    name: g.name,
+    kind: 'ranged',
+    toHit: h ? abilityModifier(h.abilities.dex) : 0,
+    reach: 5,
+    range: [use.rangeFt, use.rangeFt * 3],
+    damage: [{ dice: use.dice, type: use.damageType }],
+    onHit: [],
+    finesse: false,
+    light: false,
+    twoHanded: false,
+    ability: 'none',
+    monk: false,
+    unarmed: false,
+  };
+  const blocked = attackBlocked(ctx, c, target, opt);
+  if (blocked) return `Can't throw at ${target.name}: ${blocked}.`;
+  if (!spendAction(c, true)) return 'No action left.';
+  s.inventory = { ...s.inventory, [itemId]: s.inventory[itemId]! - 1 };
+  say(s, 'you', `${c.name} throws ${g.name.toLowerCase()} at ${target.name}`);
+  const r = makeAttack(ctx, c, target, opt);
+  if (r.hit && use.burning && !target.creature.dead) {
+    // PHB: Alchemist's Fire burns each turn until put out (DC 10 Dex). The target tries at the
+    // end of each of its turns [inferred: monsters never spend an action on it].
+    addEffect(target, {
+      id: `burning-${c.id}`,
+      name: "alchemist's fire",
+      sourceId: c.id,
+      tag: 'burning',
+      data: { dice: use.dice, repeatSave: 'dex', dc: 10 },
+    });
+    say(s, 'dmg', `${target.name} is on fire`);
+  }
+  return null;
+}
+
 /** PHB: Use an Object. Drink a potion, or pour it down an adjacent ally's throat. */
 function applyItem(ctx: Ctx, c: Combatant, itemId: string, targetId: string): string | null {
   const { s, rng } = ctx;
   if ((s.inventory[itemId] ?? 0) < 1) return 'None left.';
+  if (gear.some((x) => x.id === itemId)) return applyGear(ctx, c, itemId, targetId);
   const item = getItem(itemId);
   if (!item.consumable) return `${item.name} isn't something you can use in a fight.`;
   const target = s.combatants[targetId];

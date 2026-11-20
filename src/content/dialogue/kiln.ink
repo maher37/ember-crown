@@ -78,6 +78,8 @@ The gate has no handle: only a ring of nine bronze dials, each stamped with a ru
     -> solve
 + [Search for the mechanism. #check:investigation:15]
     -> solve
++ {has_item("thieves-tools")} [Pick the mechanism with thieves' tools. #check:sleightOfHand:12 #gear:thieves-tools]
+    -> solve
 + [Back.]
     -> END
 = solve

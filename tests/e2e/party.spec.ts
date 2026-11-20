@@ -12,8 +12,13 @@ test('create a party of four, save, reload and continue', async ({ page }) => {
   await page.getByRole('button', { name: 'Continue' }).click();
   await expect(page.getByRole('heading', { name: 'The Drowned Lantern' })).toBeVisible();
   await page.getByRole('button', { name: 'Character sheet: Mira Ashgrove' }).click();
+  // The party screen opens on the hero whose portrait was clicked: a full character sheet.
+  const sheet = page.getByRole('article', { name: 'Mira Ashgrove' });
+  await expect(sheet).toContainText(/Armor Class\s*19/);
+  await expect(sheet).toContainText('Saving throws');
+  await expect(sheet).toContainText('Athletics');
+  await page.getByRole('button', { name: /^Corin Varrow/ }).click();
   await expect(page.getByRole('article', { name: 'Corin Varrow' })).toBeVisible();
-  await expect(page.getByRole('article', { name: 'Mira Ashgrove' })).toContainText('AC19');
 });
 
 test('export a save file and import it in a fresh browser', async ({ page, browser }) => {
