@@ -88,3 +88,11 @@ button {
     transition-duration: 0.01ms !important;
   }
 }
+
+/* The player's "reduce motion" setting: stop decorative animation and smooth movement. */
+[data-reduce-motion='true'] .place-art *,
+[data-reduce-motion='true'] .party-token,
+[data-reduce-motion='true'] .hotspot {
+  animation: none !important;
+  transition: none !important;
+}

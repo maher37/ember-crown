@@ -299,3 +299,36 @@
 .sheet .small {
   font-size: 12.5px;
 }
+
+/* Settings, menu and credits. */
+.settings section,
+.credits {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.settings section {
+  margin-bottom: 12px;
+}
+.setting-row {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  font-size: 14px;
+  color: var(--text);
+}
+.setting-row input {
+  accent-color: #e8833a;
+  width: 18px;
+  height: 18px;
+  margin-top: 1px;
+}
+.game-menu {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  min-width: 340px;
+}
+.credits p {
+  margin: 0 0 8px;
+}

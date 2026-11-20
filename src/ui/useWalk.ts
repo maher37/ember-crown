@@ -1,5 +1,6 @@
 import { useRef, useState } from 'react';
 import { sound } from '../audio/engine';
+import { prefersReducedMotion } from '../game/settings';
 
 /** Where the party last stood on each walk-around map (kept while you talk or fight). */
 const lastSpot = new Map<string, [number, number]>();
@@ -7,9 +8,7 @@ const remember = (key: string, spot: [number, number]) => {
   lastSpot.set(key, spot);
 };
 
-const reduceMotion = () =>
-  typeof window !== 'undefined' &&
-  !!window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
+const reduceMotion = prefersReducedMotion;
 
 /** A spot a few steps short of (x, y), on the side facing `center`, kept inside the map. */
 export function standNear(

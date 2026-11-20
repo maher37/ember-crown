@@ -8,6 +8,7 @@ import './Explore.css';
 import { InventoryDialog, JournalDialog, SaveDialog, SpellsDialog } from './ExploreDialogs';
 import { PartyBar } from './PartyBar';
 import { ShopDialog } from './ShopDialog';
+import { GameMenuButton } from './GameMenu';
 import { TavernMap } from './scenes/TavernMap';
 import { PARTY_OFFSETS, useWalk } from './useWalk';
 import { SoundButton } from '../audio/SoundButton';
@@ -29,7 +30,7 @@ interface Hotspot {
 
 /** The Drowned Lantern on Lantern Night (rebuilt from docs/mockups/Exploration.dc.html). */
 export function ExploreScreen() {
-  const { game, talk, toasts, clearToasts, goto, saveTo, openCamp } = useGame();
+  const { game, talk, toasts, clearToasts, openCamp } = useGame();
   const [dialog, setDialog] = useState<null | 'journal' | 'spells' | 'save' | 'inventory' | 'shop'>(
     null,
   );
@@ -142,16 +143,7 @@ export function ExploreScreen() {
         </div>
         <div className="row">
           <SoundButton />
-          <button
-            type="button"
-            className="menu-secondary small-btn"
-            onClick={() => {
-              saveTo('autosave');
-              goto('title');
-            }}
-          >
-            Menu
-          </button>
+          <GameMenuButton />
         </div>
       </header>
 

@@ -14,6 +14,7 @@ import './World.css';
 import { InventoryDialog } from './ExploreDialogs';
 import { SoundButton } from '../audio/SoundButton';
 import { placeMapFor } from '../game/placeMaps';
+import { prefersReducedMotion } from '../game/settings';
 
 const ART: Record<CampScene, string> = { wild, inn, cave };
 const SCENES: Record<
@@ -85,9 +86,7 @@ export function CampScreen() {
   const resting = !!rest;
   useEffect(() => {
     if (!rest) return;
-    const fast =
-      typeof window !== 'undefined' &&
-      window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
+    const fast = prefersReducedMotion();
     const t = setTimeout(
       () => {
         const hour = rest.hour + 1;

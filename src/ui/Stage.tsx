@@ -1,4 +1,5 @@
 import { useEffect, useState, type ReactNode } from 'react';
+import { useSettings } from '../game/settings';
 
 /** Every screen is designed at 1280×720 (docs/mockups/README.md). */
 export const STAGE_WIDTH = 1280;
@@ -12,6 +13,7 @@ function fitScale(): number {
 /** Scales the fixed-size 1280×720 screen to fit the browser window, letterboxed. */
 export function Stage({ children }: { children: ReactNode }) {
   const [scale, setScale] = useState(fitScale);
+  const reduceMotion = useSettings((x) => x.reduceMotion);
 
   useEffect(() => {
     const onResize = () => setScale(fitScale());
@@ -20,7 +22,7 @@ export function Stage({ children }: { children: ReactNode }) {
   }, []);
 
   return (
-    <div className="stage-viewport">
+    <div className="stage-viewport" data-reduce-motion={reduceMotion ? 'true' : undefined}>
       <div
         className="stage"
         style={{ width: STAGE_WIDTH * scale, height: STAGE_HEIGHT * scale }}

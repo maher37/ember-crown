@@ -36,6 +36,7 @@ import { Portrait } from './Portrait';
 import { heroPortrait } from './heroLook';
 import { terrainFill, terrainName } from './mapStyle';
 import { foeInfo } from './foeInfo';
+import { useHitFx } from './combatFx';
 import { getItem } from '../game/items';
 import { getGear, isMagicItem } from '../game/gear';
 import { getMonster } from '../game/creatures';
@@ -75,6 +76,7 @@ export function CombatScreen() {
   const [stun, setStun] = useState(false);
   const [inspect, setInspect] = useState<string | null>(null);
   const s = combat!;
+  const fx = useHitFx(s);
   const me = s.combatants[s.order[s.turnIndex]!]!;
   const myTurn = me.side === 'party' && !s.outcome && !s.prompt;
 
@@ -583,7 +585,7 @@ export function CombatScreen() {
                 <button
                   key={c.id}
                   type="button"
-                  className={`token ${c.side} ${c.id === me.id ? 'active' : ''} ${target ? 'target' : ''} ${dead ? 'dead' : ''} ${down && !dead ? 'downed' : ''}`}
+                  className={`token ${c.side} ${c.id === me.id ? 'active' : ''} ${target ? 'target' : ''} ${dead ? 'dead' : ''} ${down && !dead ? 'downed' : ''} ${fx.flashing(c.id) ? (settings.reduceFlashing ? 'hit calm' : 'hit') : ''}`}
                   style={{ left: c.pos.x * CELL + 4, top: c.pos.y * CELL + 4 }}
                   aria-label={`${c.name}, ${c.side === 'party' ? 'ally' : 'enemy'}, ${dead ? 'dead' : down ? 'down' : `HP ${c.wildShape?.hp ?? c.creature.hp} of ${c.wildShape?.maxHp ?? c.creature.maxHp}`}${target ? ', valid target' : ''}`}
                   aria-disabled={!target && !(mode.kind === 'spell' && validTargets.size === 0)}
@@ -600,6 +602,20 @@ export function CombatScreen() {
                 </button>
               );
             })}
+          {fx.floats.map((f) => {
+            const c = s.combatants[f.id];
+            if (!c) return null;
+            return (
+              <span
+                key={f.key}
+                className={`float ${f.kind}`}
+                style={{ left: c.pos.x * CELL + 24, top: c.pos.y * CELL + 2 }}
+                aria-hidden="true"
+              >
+                {f.text}
+              </span>
+            );
+          })}
           {hovered && (
             <div
               className={`tooltip ${hovered.side}`}
@@ -640,14 +656,17 @@ export function CombatScreen() {
               )}
               {hovered.creature.conditions.length > 0 && (
                 <span className="muted">
+                  Conditions:{' '}
                   {[...new Set(hovered.creature.conditions.map((x) => x.id))].join(', ')}
                 </span>
               )}
               {hovered.effects.length > 0 && (
-                <span className="muted">{hovered.effects.map((e) => e.name).join(', ')}</span>
+                <span className="muted">
+                  Under: {[...new Set(hovered.effects.map((e) => e.name))].join(', ')}
+                </span>
               )}
               <span className="muted">
-                {terrainName(s.map.style, terrainAt(s.map, hovered.pos))}
+                Standing on: {terrainName(s.map.style, terrainAt(s.map, hovered.pos))}
               </span>
             </div>
           )}

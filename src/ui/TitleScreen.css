@@ -326,3 +326,13 @@
   white-space: nowrap;
   text-overflow: ellipsis;
 }
+
+.link-btn {
+  background: none;
+  border: none;
+  padding: 0;
+  color: var(--ember-text);
+  text-decoration: underline;
+  cursor: pointer;
+  font: inherit;
+}

@@ -136,6 +136,13 @@ export function act(state: CombatState, a: PlayerAction): ActResult {
   const next = produce(state, (ctx) => {
     const c = active(ctx.s);
     error = perform(ctx, c, a) ?? undefined;
+    // A hero knocked out on their own turn (walking into Spirit Guardians, say) can't go on:
+    // their turn ends at once.
+    const now = active(ctx.s);
+    if (!error && !ctx.s.outcome && !ctx.s.prompt && now.id === c.id && !canAct(now)) {
+      say(ctx.s, 'info', `${c.name} can't go on; the turn ends.`);
+      nextTurn(ctx);
+    }
     settle(ctx.s);
   });
   return error ? { state, error } : { state: next };
@@ -167,12 +174,14 @@ const actionFree = (c: Combatant) => !c.turn.actionUsed || c.turn.extraActions >
 
 function perform(ctx: Ctx, c: Combatant, a: PlayerAction): string | null | undefined {
   const { s } = ctx;
+  // Ending the turn is always allowed, even for a hero who just dropped (balance-sim bug, M10).
+  if (a.type === 'end-turn') {
+    say(s, 'info', `${c.name} ends the turn.`);
+    nextTurn(ctx);
+    return null;
+  }
   if (!canAct(c)) return `${c.name} can't act.`;
   switch (a.type) {
-    case 'end-turn':
-      say(s, 'info', `${c.name} ends the turn.`);
-      nextTurn(ctx);
-      return null;
     case 'move': {
       const routes = reachable(
         s,

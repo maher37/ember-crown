@@ -276,3 +276,8 @@ Warlock (pact magic; recharges on a short rest): L1: one 1st-level slot; L2: two
 - [ ] Class resource counts (rages per level, ki, sorcery points, invocations known, spells known for bard, sorcerer, ranger and warlock). Copy them from the PHB class tables during data entry.
 - [ ] Druid Circle of the Land "Mountain" spell list and Wild Shape limits.
 - [ ] Color Spray's higher-level bonus (believed +2d10 per slot level above 1st).
+
+- [ ] (Proposed, M10) A hero knocked out during their own turn (walking into Spirit Guardians, say) ends that turn at once, and End turn is always allowed. (Found by the balance simulator: the fight could get stuck.)
+- [ ] (Proposed, M10) Balance tuning from the simulator: the toll bridge is 3 thugs on Medium (the scout joins on Hard); two Ashford militia fight beside you at the evacuation convoy (one hell hound on Easy); the dire-wolf road encounter is 2 wolves on Medium (1 on Easy, 4 on Hard). XP awards are unchanged.
+- [ ] (Proposed, M10) Comfort settings: Reduce motion (no background animation, the party jumps instead of walking, rests run fast; also follows the system setting) and Reduce flashing (a small shake instead of a flash when someone is hit).
+

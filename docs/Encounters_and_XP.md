@@ -52,7 +52,7 @@
 ### Act II: The Hollow Star
 | # | Fight or quest step | Enemies | Raw → adj | Difficulty | XP/PC | Total | Level |
 |---|---|---|---|---|---|---|---|
-| F8 | **Toll bridge** (talk, bribe or fight) | 3 thugs + 1 scout | 400 → 800 | Medium at L3 | 100 | 1,474 | 3 |
+| F8 | **Toll bridge** (talk, bribe or fight) | 3 thugs (+1 scout on Hard; M10 tuning) | 300 → 600 | Medium at L3 | 100 | 1,474 | 3 |
 | Q | Crossing the Grayflow | — | — | — | 200 | 1,674 | 3 |
 | F9 | **Lizardfolk hunting grounds** (talk or fight) | 3 lizardfolk | 300 → 600 | Medium at L3 | 75 | 1,749 | 3 |
 | Q | The steaming marsh | — | — | — | 300 | 2,049 | 3 |
@@ -109,7 +109,7 @@ Phase 1 is skipped if the party talks Maelis down.
 |---|---|---|---|---|
 | **The Cold Forge** | 1. Lava tubes to the forge. 2. Relight it while resisting the shard's whisper. | Fire elemental + 2 magma mephits: 2,000 → 4,000, **Hard** (still Hard at L6) | 1,450 | +1 weapon of your choice |
 | **Ser Ida's Unfinished Oath** | 1. Hear her oath. 2. The ossuary. 3. Lay King Varrow's remains to rest. | 2 ghasts + 4 ghouls: 1,700 → 3,400, **Hard** | 1,425 | **Family Truth** (backup); Ida fights at the finale |
-| **Last Boats from Ashford** | 1. Escort the evacuation convoy. 2. Brannoc's choice: leave, or defend the inn. | 2 hell hounds: 1,400 → 2,100, **Medium** | 1,350 | Epilogue outcome for the town |
+| **Last Boats from Ashford** | 1. Escort the evacuation convoy. 2. Brannoc's choice: leave, or defend the inn. | 2 hell hounds: 1,400 → 2,100, **Medium** (M10: 2 Ashford militia fight beside you; 1 hound on Easy) | 1,350 | Epilogue outcome for the town |
 | **Wix's Homecoming** | 1. Wix's clan in the upper caves. 2. The giant at their door. | Hill giant + ogre: 2,250 → 3,375, **Hard** | 1,562 | A back way into the Kiln (skips half of the Star's last stand) |
 | *Discoveries* | | | 213 | |
 
@@ -174,7 +174,7 @@ Phase 1 is skipped if the party talks Maelis down.
 | 1 | 4 orcs from a fleeing war band | 400 → 800 (Easy L4) |
 | 2 | An owlbear | 700 → 700 (Easy L4) |
 | 3 | 2 griffons | 900 → 1,350 (Medium L4) |
-| 4 | 3 dire wolves | 600 → 1,200 (Medium L4) |
+| 4 | 2 dire wolves (1 on Easy, 4 on Hard; M10 tuning) | 400 → 600 (Easy L4) |
 | 5 | 3 magma mephits venting from a cracked slope | 300 → 600 (Easy L4) |
 | 6 | A hell hound loose from the Kiln | 700 → 700 (Easy L4) |
 | 7 | A troll under a rope bridge (Hard at L4; rare) | 1,800 → 1,800 (Hard L4) |
@@ -203,7 +203,7 @@ Phase 1 is skipped if the party talks Maelis down.
 - [ ] Each monster's challenge rating and XP in the Monster Manual. These are from memory; an automated text search of the MM PDF was too noisy to confirm them. The doc uses: goblin 50, hobgoblin 100, giant rat 25, swarm of rats 50, wolf 50, shadow 100, bandit 25, bandit captain 450, thug 100, scout 100, guard 25, veteran 700, cultist 25, cult fanatic 450, priest 450, skeleton 50, zombie 50, ghoul 200, ghast 450, specter 200, wight 700, ogre 450, green hag 700, swarm of insects 100, gargoyle 450, animated armor 200, magma mephit 100, fire elemental 1,800, hell hound 700, hill giant 1,800, mage 2,300.
 - [ ] That every monster above is in SRD 5.1 (I believe all are; "goblin boss" is not, so Grisk uses hobgoblin stats). Not a problem for a personal game either way.
 - [ ] The Monster Manual's AC, HP and challenge rating for most monsters were confirmed from the PDF; zombie, magma mephit and the young red dragon base weren't readable in the extracted text (see Monster_Roster.md).
-- [ ] The ember-wraith stat block (homebrew) and the finale tuning in the balance simulator.
+- [ ] The ember-wraith stat block (homebrew) and the finale tuning in the balance simulator. (M10: the simulator's results are in Balance_Report.md.)
 
 ## Wix story hooks
 - The Act I quest gives the joke companion; the Act III quest gives the back way into the Kiln. He also appears in the epilogue: Wix opens a pie stall in the new spa town.

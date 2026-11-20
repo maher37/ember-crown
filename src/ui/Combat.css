@@ -415,14 +415,19 @@ button.cell {
   display: flex;
   flex-direction: column;
   gap: 8px;
-  width: 190px;
+  width: 220px;
   flex-shrink: 0;
+}
+.economy > .row:first-child {
+  flex-wrap: wrap;
+  row-gap: 4px;
 }
 .pip-row {
   display: flex;
   align-items: center;
-  gap: 6px;
-  margin-right: 6px;
+  gap: 5px;
+  margin-right: 4px;
+  white-space: nowrap;
 }
 .pip {
   width: 12px;
@@ -701,4 +706,144 @@ button.cell {
 }
 .foe-edge {
   color: #a8d68c;
+}
+
+/* Prepare: the party's state before the fight. */
+.prep-party {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 14px;
+}
+.prep-party li {
+  display: grid;
+  grid-template-columns: 70px 150px 1fr;
+  gap: 8px;
+  align-items: center;
+}
+.prep-hp {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  font-size: 12px;
+  color: var(--muted);
+}
+.prep-hp-bar {
+  height: 6px;
+  border-radius: 3px;
+  background: var(--ground);
+  overflow: hidden;
+}
+.prep-hp-bar span {
+  display: block;
+  height: 100%;
+  background: #6aa86a;
+}
+.prep-hp.low .prep-hp-bar span {
+  background: #d9a441;
+}
+
+/* Floating numbers and hit flashes (M10). */
+.float {
+  position: absolute;
+  transform: translate(-50%, 0);
+  font: 800 20px var(--font-ui);
+  pointer-events: none;
+  text-shadow:
+    0 2px 3px #000,
+    0 0 2px #000;
+  animation: float-up 1.1s ease-out forwards;
+  z-index: 6;
+  white-space: nowrap;
+}
+.float.dmg {
+  color: #ffb08a;
+}
+.float.crit {
+  color: #ffd25a;
+  font-size: 26px;
+}
+.float.heal {
+  color: #8fe39a;
+}
+.float.miss {
+  color: #c3ccd9;
+  font-size: 15px;
+  font-style: italic;
+}
+@keyframes float-up {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, 6px) scale(0.8);
+  }
+  15% {
+    opacity: 1;
+    transform: translate(-50%, 0) scale(1.1);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -38px) scale(1);
+  }
+}
+@keyframes float-fade {
+  0%,
+  70% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+.token.hit {
+  animation: token-hit 0.45s ease-out;
+}
+.token.hit.calm {
+  animation: token-shake 0.45s ease-out;
+}
+@keyframes token-hit {
+  0% {
+    filter: brightness(2.2) saturate(0.3);
+  }
+  20% {
+    transform: translateX(-4px);
+  }
+  40% {
+    transform: translateX(4px);
+  }
+  60% {
+    transform: translateX(-2px);
+  }
+  100% {
+    filter: none;
+    transform: none;
+  }
+}
+@keyframes token-shake {
+  25% {
+    transform: translateX(-3px);
+  }
+  75% {
+    transform: translateX(3px);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .float {
+    animation: float-fade 1.1s linear forwards;
+  }
+  .token.hit,
+  .token.hit.calm {
+    animation: none;
+    outline: 3px solid #ff8a5a;
+  }
+}
+[data-reduce-motion='true'] .float {
+  animation: float-fade 1.1s linear forwards;
+}
+[data-reduce-motion='true'] .token.hit,
+[data-reduce-motion='true'] .token.hit.calm {
+  animation: none;
+  outline: 3px solid #ff8a5a;
 }

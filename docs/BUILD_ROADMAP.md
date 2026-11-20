@@ -80,8 +80,8 @@ One milestone per Claude Code session (bigger ones may take two). Each milestone
 - **Prompt:** done in the session after M9b.
 
 ## M10: Balance and polish
-- A headless balance simulator (party vs. encounter × 500 runs), with tuning per Encounters_and_XP targets.
-- Bug pass, settings screen, credits.
+- A headless balance simulator (party vs. encounter × 500 runs), with tuning per Encounters_and_XP targets. **Done:** `npm run balance` (add `-- --report` to rewrite `docs/Balance_Report.md`, `-- --only f8-toll-bridge` for one fight).
+- Bug pass, settings screen, credits. **Done**, plus floating damage numbers, hit flashes, the party on the Prepare screen, and the review's layout fixes.
 - **Prompt:** `Do Milestone M10 from docs/BUILD_ROADMAP.md.`
 
 ## M11: Animations (phase 2)

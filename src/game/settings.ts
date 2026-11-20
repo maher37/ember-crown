@@ -21,6 +21,10 @@ export interface Settings {
   effects: number;
   /** All sound off (the M key toggles it). */
   muted: boolean;
+  /** Less movement: animations off, the party jumps instead of walking (also follows the system setting). */
+  reduceMotion: boolean;
+  /** No bright flashes when something is hit (and, from M11, from spell effects). */
+  reduceFlashing: boolean;
 }
 
 export const defaultSettings: Settings = {
@@ -32,11 +36,14 @@ export const defaultSettings: Settings = {
   ambience: 0.7,
   effects: 0.8,
   muted: false,
+  reduceMotion: false,
+  reduceFlashing: false,
 };
 
 export type VolumeKey = 'music' | 'ambience' | 'effects';
 
-export type ToggleKey = 'showRolls' | 'clickToRoll' | 'allowCombatSave';
+export type ToggleKey =
+  'showRolls' | 'clickToRoll' | 'allowCombatSave' | 'reduceMotion' | 'reduceFlashing';
 
 interface SettingsStore extends Settings {
   setDifficulty: (d: DifficultyId) => void;
@@ -72,6 +79,8 @@ export const useSettings = create<SettingsStore>()(
         ambience,
         effects,
         muted,
+        reduceMotion,
+        reduceFlashing,
       }) => ({
         difficulty,
         showRolls,
@@ -81,7 +90,18 @@ export const useSettings = create<SettingsStore>()(
         ambience,
         effects,
         muted,
+        reduceMotion,
+        reduceFlashing,
       }),
     },
   ),
 );
+
+/** Less motion: the player's setting, or their system's "reduce motion" preference. */
+export function prefersReducedMotion(): boolean {
+  if (useSettings.getState().reduceMotion) return true;
+  return (
+    typeof window !== 'undefined' &&
+    !!window.matchMedia?.('(prefers-reduced-motion: reduce)').matches
+  );
+}

@@ -14,7 +14,8 @@
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "validate-data": "tsx scripts/validate-data.ts",
-    "verify-list": "tsx scripts/verify-list.ts"
+    "verify-list": "tsx scripts/verify-list.ts",
+    "balance": "tsx scripts/balance.ts"
   },
   "dependencies": {
     "inkjs": "^2.4.0",

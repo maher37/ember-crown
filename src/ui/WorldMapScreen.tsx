@@ -9,6 +9,7 @@ import { InventoryDialog, SpellsDialog } from './ExploreDialogs';
 import mapArt from './art/worldmap.svg?raw';
 import './World.css';
 import { SoundButton } from '../audio/SoundButton';
+import { GameMenuButton } from './GameMenu';
 
 const KIND_COLORS: Record<string, [string, string]> = {
   town: ['#f8f3e8', '#5a3b22'],
@@ -50,7 +51,6 @@ export function WorldMapScreen() {
       <header className="world-header">
         <div className="row baseline">
           <h1>The Southern Greypeaks</h1>
-          <span className="muted">The North of Faerûn · travel map</span>
         </div>
         <div className="row">
           <span className="date" aria-label="Date">
@@ -75,7 +75,7 @@ export function WorldMapScreen() {
               className="menu-secondary small-btn"
               onClick={() => goto('explore')}
             >
-              Back to the Drowned Lantern
+              To the tavern
             </button>
           ) : (
             <button type="button" className="menu-secondary small-btn" onClick={() => openCamp()}>
@@ -96,6 +96,7 @@ export function WorldMapScreen() {
             Spells &amp; healing
           </button>
           <SoundButton />
+          <GameMenuButton />
         </div>
       </header>
       <div className="world-main">
