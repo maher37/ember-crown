@@ -1,5 +1,7 @@
 // The Old Mine: F5 (mine mouth), F6 (Deep Seam), the Ammarindar halls, F7 (Ulric), the shard and Maelis (Story_Bible §7, rest block C).
 // Engine hooks: see tavern.ink and src/content/README.md.
+// The mine is a walk-around map (src/data/placeMaps.json): each area's stitch is started from
+// its spot on the map, and ends back on the map.
 EXTERNAL has(tag)
 EXTERNAL flag(name)
 EXTERNAL set_flag(name, value)
@@ -16,6 +18,7 @@ EXTERNAL has_item(id)
 EXTERNAL truth(id)
 EXTERNAL set_act(n)
 EXTERNAL trap(ability, dc, dice, type)
+EXTERNAL give_gold(n)
 
 VAR passed = false
 
@@ -41,8 +44,10 @@ VAR passed = false
 
 
 = leave_only
-+ [Leave (to the map).]
++ [Back.]
     -> END
+= back
+-> END
 
 = mouth
 Fresh spoil heaps, new timbers, and a crane that wasn't there ten years ago. A dozen diggers in grey robes stop work as you come up the track. Their foreman hefts a pick handle.
@@ -58,7 +63,7 @@ Fresh spoil heaps, new timbers, and a crane that wasn't there ten years ago. A d
 + [Stand aside or be moved. #fight]
     ~ fight("f5-mine-mouth", "arrive.after_mouth")
     -> END
-+ [Leave (to the map).]
++ [Back.]
     -> END
 = talk
 { passed:
@@ -66,7 +71,8 @@ Fresh spoil heaps, new timbers, and a crane that wasn't there ten years ago. A d
     ~ set_flag("mouth_cleared", true)
     ~ award("f5-talk")
     ~ quest_step("old-mine", "mine-mouth")
-    -> seam
+    The shaft is open. A miners' tunnel leads down into the dark.
+    -> back
 - else:
     "Brave talk," says the foreman, and the knives come out.
     ~ fight("f5-mine-mouth", "arrive.after_mouth")
@@ -76,7 +82,7 @@ Fresh spoil heaps, new timbers, and a crane that wasn't there ten years ago. A d
 #speaker:mine
 The last of the diggers flees down the track. The shaft breathes warm air at you, like an oven door left open.
 ~ quest_step("old-mine", "mine-mouth")
--> seam
+-> back
 
 = seam
 #speaker:mine
@@ -84,12 +90,12 @@ The old Varrow seam runs down into the dark, warm as a bread oven. Pale things m
 + [Press on into the seam. #fight]
     ~ fight("f6-deep-seam", "arrive.after_seam")
     -> END
-+ [Go back up (to the map) and rest first.]
++ [Not yet. Go back and rest first.]
     -> END
 = after_seam
 The centipedes lie curled and still. Past their nest, the rough miners' tunnel meets something older: smooth-cut dwarven stone.
 ~ quest_step("old-mine", "deep-seam")
--> halls
+-> back
 
 = halls
 #speaker:mine
@@ -106,14 +112,15 @@ A sealed archway carved with dwarven runes and a hammer-and-anvil. Ammarindar: t
     {roller()}'s hands find the hidden catch without looking, the way you find a stair in your own house. The arch grinds open.
     ~ award("discover-runes")
     -> opened
-+ [Go back up (to the map).]
++ [Back.]
     -> END
 = opened
 ~ set_flag("found_halls", true)
 ~ quest_step("old-mine", "halls")
 ~ award("ammarindar-halls")
 ~ note("Below the Varrow seam lie the old Ammarindar halls, and a shrine half-drowned in warm water.")
--> shrine
+Beyond the arch, stairs lead down toward the sound of water.
+-> back
 
 = shrine
 #speaker:mine
@@ -132,7 +139,7 @@ Stairs go down into a hall half-full of steaming water. At its far end, a drowne
 + [Step down into the shrine. #fight]
     ~ fight("f7-sunken-shrine", "arrive.after_shrine")
     -> END
-+ [Not yet. Go back up (to the map) and rest.]
++ [Not yet. Go back and rest.]
     -> END
 = after_shrine
 { flag("parley:f7-sunken-shrine"):
@@ -154,7 +161,8 @@ The shard is warm, and heavier than it should be. When you hold it the steam sto
 ~ set_flag("has_shard", true)
 ~ quest_step("old-mine", "shrine")
 ~ note("You took the first crown shard. It whispers. Holding it, fire seems to sting less.")
--> maelis
+Somewhere above, at the mine mouth, a red lantern is burning.
+-> back
 
 = maelis
 #speaker:mine
@@ -191,5 +199,52 @@ When you climb back out into the evening, someone is waiting at the mine mouth: 
 ~ note("Maelis Varrow, the hooded woman from Lantern Night, met you at the mine mouth. The Grey Company is marching to the Marsh of Chelimber for the second shard.")
 ~ set_act(2)
 #speaker:mine
-Act I ends here. (Act II's places now show on the map; their stories arrive in a later milestone.)
+Act I ends here. The marsh roads are open on the map.
 -> END
+
+// ── Things to find (search spots on the mine map) ──
+
+= cart
+#speaker:mine
+An ore cart lies on its side by the track, one wheel still turning in the wind. The diggers left in a hurry.
++ [Search it. #check:investigation:12]
+    { passed:
+        Under the spilled ore, {roller()} finds a strongbox: a week of the Hollow Star's wages, never paid out.
+        ~ give_gold(25)
+    - else:
+        A few coins in the spilled ore, and a lot of grit under your nails.
+        ~ give_gold(8)
+    }
+    ~ set_flag("mine_cart", true)
+    -> back
++ [Leave it.]
+    -> END
+
+= memorial
+#speaker:mine
+Where the old tunnel meets the shaft, someone has carved names into the rock: thirty of them, in neat miners' capitals, with candle stubs beneath. Between two of the names is a gap the width of one more.
+{ flag("truth_collapse"):
+    You know whose name belongs in the gap. The town left Hadric Varrow out on purpose.
+}
+{ has("corin"):
+    Corin looks at the gap for a long time and says nothing at all.
+}
+~ set_flag("mine_memorial", true)
++ [Light a candle for the thirty-one.]
+    The flame stands straight up in the still air. For a moment the mine feels less hungry.
+    -> back
+
+= alcove
+#speaker:mine
+A side chamber off the dwarven hall: stone shelves, a cold brazier, and clay jars sealed with wax and stamped with a hammer.
++ [Open the jars carefully. #check:perception:13]
+    { passed:
+        Most are dust. One holds a dwarven healing draught, still bright red after centuries.
+        ~ give_item("potion-of-healing", 1)
+    - else:
+        Dust, dust, and a jar of something that used to be pickles.
+    }
+    ~ set_flag("mine_alcove", true)
+    -> back
++ [Leave them be.]
+    -> END

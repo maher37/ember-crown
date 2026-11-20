@@ -5,6 +5,7 @@ import { describeSave, latestSave, listSlots, SLOT_NAMES } from '../game/save';
 import { useSettings, type ToggleKey } from '../game/settings';
 import { useGame } from '../game/store';
 import { LoadDialog } from './LoadDialog';
+import { SettingsDialog } from './SettingsDialog';
 import { TitleArt } from './TitleArt';
 import './TitleScreen.css';
 
@@ -19,8 +20,8 @@ export function TitleScreen() {
   const settings = useSettings();
   const levels = difficulties.levels;
   const current = levels.find((l) => l.id === settings.difficulty) ?? levels[1]!;
-  const [notice, setNotice] = useState('');
   const [loading, setLoading] = useState(false);
+  const [showSettings, setShowSettings] = useState(false);
   const { startNewGame, loadGame } = useGame();
   const slots = listSlots();
   const latest = latestSave();
@@ -64,21 +65,10 @@ export function TitleScreen() {
             <button type="button" className="menu-secondary" onClick={() => setLoading(true)}>
               Load Game
             </button>
-            <button
-              type="button"
-              className="menu-secondary"
-              onClick={() =>
-                setNotice(
-                  'The full Settings screen comes later. The options on the right already work.',
-                )
-              }
-            >
+            <button type="button" className="menu-secondary" onClick={() => setShowSettings(true)}>
               Settings
             </button>
           </div>
-          <p className="menu-notice" role="status" aria-live="polite">
-            {notice}
-          </p>
         </nav>
 
         <p className="title-attribution">
@@ -176,6 +166,7 @@ export function TitleScreen() {
         </div>
       </section>
       {loading && <LoadDialog onClose={() => setLoading(false)} />}
+      {showSettings && <SettingsDialog onClose={() => setShowSettings(false)} />}
     </div>
   );
 }

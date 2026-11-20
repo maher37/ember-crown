@@ -9,15 +9,18 @@ import { LevelUpScreen } from './LevelUpScreen';
 import './Creator.css';
 import './LoadDialog.css';
 import { PartyScreen } from './PartyScreen';
+import { PlaceMapScreen } from './PlaceMapScreen';
 import { PrepareScreen } from './PrepareScreen';
 import { WorldMapScreen } from './WorldMapScreen';
 import { Stage } from './Stage';
 import { TitleScreen } from './TitleScreen';
+import { SoundDirector } from '../audio/SoundDirector';
 
 export function App() {
   const screen = useGame((s) => s.screen);
   return (
     <Stage>
+      <SoundDirector />
       {screen === 'title' && <TitleScreen />}
       {screen === 'creator' && <Creator />}
       {screen === 'party' && <PartyScreen />}
@@ -27,6 +30,7 @@ export function App() {
       {screen === 'prepare' && <PrepareScreen />}
       {screen === 'combat' && <CombatScreen />}
       {screen === 'map' && <WorldMapScreen />}
+      {screen === 'placemap' && <PlaceMapScreen />}
       {screen === 'camp' && <CampScreen />}
       {screen === 'epilogue' && <EpilogueScreen />}
     </Stage>

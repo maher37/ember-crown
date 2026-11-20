@@ -44,6 +44,7 @@ function game(flags: GameState['flags'] = {}, corin = false): GameState {
 }
 const hi = () => new ScriptedRng(Array(40).fill(20));
 const lo = () => new ScriptedRng(Array(40).fill(1));
+const said = (c: Conversation) => c.lines.map((l) => l.text).join(' ');
 const pick = (c: Conversation, re: RegExp) => {
   const ch = c.choices.find((x) => re.test(x.text));
   if (!ch) throw new Error(`No choice ${re}: ${c.choices.map((x) => x.text).join(' | ')}`);
@@ -105,14 +106,21 @@ describe("the King's Kiln", () => {
       game({ pass_cleared: true, kell_owes: true, truth_crown: true }),
       hi(),
     ).start('arrive');
+    // Each area is a stop on the Kiln map; going back in picks up at the next one.
+    const again = (x: Conversation) => new Conversation('kiln', x.game, hi()).start('arrive');
     pick(c, /Break through the gate/);
     expect(c.fight?.encounterId).toBe('f16-kiln-gate-kell');
     c = afterFight(c);
+    expect(c.ended).toBe(true);
+    c = again(c);
     pick(c, /Work out the dials/);
     expect(c.game.flags['gate_open']).toBe(true);
+    c = again(c);
     pick(c, /Go on through the halls/);
     c = afterFight(c);
+    c = again(c);
     pick(c, /Press the shard/);
+    c = again(c);
     pick(c, /Cindrath is inside it/);
     expect(c.game.flags['ida_aside']).toBe(true);
     expect(c.game.party[0]!.xp).toBe(43 + 300 + 600 + 287); // fight XP comes from the fights themselves
@@ -172,7 +180,23 @@ describe("the King's Kiln", () => {
     expect(c.fight?.encounterId).toBe('f20-last-stand-half');
     c = afterFight(c);
     expect(c.game.flags['before_crowning']).toBe(true);
+    c = new Conversation('kiln', c.game, hi()).start('arrive');
     expect(c.choices.some((x) => /Go down to the Crowning/.test(x.text))).toBe(true);
+  });
+  it("things to find: the cult cache and the smiths' mural; the galleries have their own stop", () => {
+    let c = pick(
+      new Conversation('kiln', game({}), hi()).start('arrive.cache'),
+      /Search the crates/,
+    );
+    expect(c.game.inventory['potion-of-healing']).toBe(2);
+    expect(c.game.gold).toBe(30);
+    c = new Conversation('kiln', game({ truth_crown: true }), hi()).start('arrive.mural');
+    expect(said(c)).toMatch(/crown being hammered shut/);
+    c = pick(
+      new Conversation('kiln', game({}), hi()).start('arrive.galleries'),
+      /Cross the Ember Galleries/,
+    );
+    expect(c.fight?.encounterId).toBe('f19-ember-galleries');
   });
 });
 

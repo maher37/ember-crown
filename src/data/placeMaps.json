@@ -1,0 +1,281 @@
+{
+  "maps": [
+    {
+      "id": "old-mine",
+      "title": "The Old Mine",
+      "subtitle": "Varrow's old diggings, and what lies under them",
+      "story": "mine",
+      "quest": "old-mine",
+      "art": "mine",
+      "start": [140, 104],
+      "spots": [
+        {
+          "id": "exit",
+          "label": "To the world map",
+          "glyph": "⇠",
+          "kind": "exit",
+          "x": 62,
+          "y": 96
+        },
+        {
+          "id": "mouth",
+          "label": "The mine mouth",
+          "glyph": "M",
+          "kind": "area",
+          "knot": "arrive.mouth",
+          "x": 214,
+          "y": 104,
+          "done": [["won:f5-mine-mouth", "mouth_cleared"]]
+        },
+        {
+          "id": "maelis",
+          "label": "A red lantern",
+          "glyph": "?",
+          "kind": "quest",
+          "knot": "arrive.maelis",
+          "x": 360,
+          "y": 84,
+          "showIf": [["won:f7-sunken-shrine", "parley:f7-sunken-shrine"]],
+          "done": [["act1_complete"]]
+        },
+        {
+          "id": "cart",
+          "label": "Overturned ore cart",
+          "glyph": "◇",
+          "kind": "search",
+          "knot": "arrive.cart",
+          "x": 316,
+          "y": 196,
+          "requires": [["won:f5-mine-mouth", "mouth_cleared"]],
+          "done": [["mine_cart"]],
+          "hint": "Inside the mine: deal with the diggers first.",
+          "fog": [236, 150, 420, 92]
+        },
+        {
+          "id": "memorial",
+          "label": "Names in the rock",
+          "glyph": "◇",
+          "kind": "search",
+          "knot": "arrive.memorial",
+          "x": 470,
+          "y": 190,
+          "requires": [["won:f5-mine-mouth", "mouth_cleared"]],
+          "done": [["mine_memorial"]],
+          "hint": "Inside the mine: deal with the diggers first."
+        },
+        {
+          "id": "seam",
+          "label": "The Deep Seam",
+          "glyph": "S",
+          "kind": "area",
+          "knot": "arrive.seam",
+          "x": 660,
+          "y": 286,
+          "requires": [["won:f5-mine-mouth", "mouth_cleared"]],
+          "done": [["won:f6-deep-seam"]],
+          "hint": "Deeper in: deal with the diggers at the mouth first.",
+          "fog": [540, 236, 360, 100]
+        },
+        {
+          "id": "halls",
+          "label": "The sealed arch",
+          "glyph": "A",
+          "kind": "area",
+          "knot": "arrive.halls",
+          "x": 430,
+          "y": 372,
+          "requires": [["won:f6-deep-seam"]],
+          "done": [["found_halls"]],
+          "hint": "Past the Deep Seam.",
+          "fog": [110, 330, 450, 100]
+        },
+        {
+          "id": "alcove",
+          "label": "Dwarven storeroom",
+          "glyph": "◇",
+          "kind": "search",
+          "knot": "arrive.alcove",
+          "x": 236,
+          "y": 384,
+          "requires": [["found_halls"]],
+          "done": [["mine_alcove"]],
+          "hint": "Behind the sealed arch."
+        },
+        {
+          "id": "shrine",
+          "label": "The sunken shrine",
+          "glyph": "✦",
+          "kind": "area",
+          "knot": "arrive.shrine",
+          "x": 740,
+          "y": 420,
+          "requires": [["found_halls"]],
+          "done": [["won:f7-sunken-shrine", "parley:f7-sunken-shrine"]],
+          "hint": "Behind the sealed arch.",
+          "fog": [560, 350, 340, 142]
+        }
+      ]
+    },
+    {
+      "id": "kings-kiln",
+      "title": "The King’s Kiln",
+      "subtitle": "King Varrow's tomb, in the mountain's heart",
+      "story": "kiln",
+      "quest": "kings-kiln",
+      "art": "kiln",
+      "start": [158, 96],
+      "spots": [
+        {
+          "id": "exit",
+          "label": "To the world map",
+          "glyph": "⇠",
+          "kind": "exit",
+          "x": 62,
+          "y": 112
+        },
+        {
+          "id": "cache",
+          "label": "Cult supply cache",
+          "glyph": "◇",
+          "kind": "search",
+          "knot": "arrive.cache",
+          "x": 128,
+          "y": 170,
+          "done": [["kiln_cache"]]
+        },
+        {
+          "id": "gate",
+          "label": "The black gate",
+          "glyph": "G",
+          "kind": "area",
+          "knot": "arrive.gate",
+          "x": 236,
+          "y": 112,
+          "done": [["won:f16-kiln-gate", "won:f16-kiln-gate-kell"]]
+        },
+        {
+          "id": "puzzle",
+          "label": "The door of dials",
+          "glyph": "◎",
+          "kind": "area",
+          "knot": "arrive.puzzle",
+          "x": 330,
+          "y": 136,
+          "requires": [["won:f16-kiln-gate", "won:f16-kiln-gate-kell"]],
+          "done": [["gate_open"]],
+          "hint": "Past the gate's guards.",
+          "fog": [290, 60, 610, 140]
+        },
+        {
+          "id": "halls",
+          "label": "The Furnace Halls",
+          "glyph": "F",
+          "kind": "area",
+          "knot": "arrive.halls",
+          "x": 450,
+          "y": 156,
+          "requires": [["gate_open"]],
+          "done": [["won:f17-furnace-halls"]],
+          "hint": "Through the door of dials."
+        },
+        {
+          "id": "seal",
+          "label": "The red seal",
+          "glyph": "◆",
+          "kind": "area",
+          "knot": "arrive.seal",
+          "x": 590,
+          "y": 160,
+          "requires": [["won:f17-furnace-halls"]],
+          "done": [["seal_broken"]],
+          "hint": "At the end of the Furnace Halls."
+        },
+        {
+          "id": "honor",
+          "label": "Hall of the Honor Guard",
+          "glyph": "H",
+          "kind": "area",
+          "knot": "arrive.honor",
+          "x": 700,
+          "y": 246,
+          "requires": [["seal_broken"]],
+          "done": [["won:f18-honor-guard", "ida_aside"]],
+          "hint": "Beyond the red seal.",
+          "fog": [380, 200, 520, 292]
+        },
+        {
+          "id": "mural",
+          "label": "The smiths' mural",
+          "glyph": "◇",
+          "kind": "search",
+          "knot": "arrive.mural",
+          "x": 820,
+          "y": 210,
+          "requires": [["seal_broken"]],
+          "done": [["kiln_mural"]],
+          "hint": "Beyond the red seal."
+        },
+        {
+          "id": "ossuary",
+          "label": "The ossuary",
+          "glyph": "O",
+          "kind": "quest",
+          "knot": "arrive.ossuary",
+          "x": 480,
+          "y": 300,
+          "showIf": [["ida_aside"]],
+          "requires": [["ida_aside"]],
+          "done": [["quest:ida-oath"]]
+        },
+        {
+          "id": "coldforge",
+          "label": "The Cold Forge",
+          "glyph": "C",
+          "kind": "quest",
+          "knot": "arrive.cold_forge",
+          "x": 830,
+          "y": 330,
+          "requires": [["won:f18-honor-guard", "ida_aside"]],
+          "done": [["quest:cold-forge"]],
+          "hint": "Past the Hall of the Honor Guard."
+        },
+        {
+          "id": "galleries",
+          "label": "The Ember Galleries",
+          "glyph": "E",
+          "kind": "area",
+          "knot": "arrive.galleries",
+          "x": 650,
+          "y": 360,
+          "requires": [["won:f18-honor-guard", "ida_aside"]],
+          "done": [["won:f19-ember-galleries"]],
+          "hint": "Past the Hall of the Honor Guard."
+        },
+        {
+          "id": "stand",
+          "label": "The great stair",
+          "glyph": "▼",
+          "kind": "area",
+          "knot": "arrive.stand",
+          "x": 520,
+          "y": 410,
+          "requires": [["won:f19-ember-galleries"]],
+          "done": [["before_crowning"]],
+          "hint": "Across the Ember Galleries.",
+          "fog": [250, 380, 420, 112]
+        },
+        {
+          "id": "heart",
+          "label": "The heart of the mountain",
+          "glyph": "♛",
+          "kind": "quest",
+          "knot": "arrive.heart",
+          "x": 360,
+          "y": 452,
+          "requires": [["before_crowning"]],
+          "hint": "Down the great stair."
+        }
+      ]
+    }
+  ]
+}

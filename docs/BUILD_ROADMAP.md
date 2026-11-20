@@ -67,6 +67,12 @@ One milestone per Claude Code session (bigger ones may take two). Each milestone
 - Level 6. Act III content, the ember-wraith finale, the Truths check, and all endings with epilogue slides.
 - **Prompt:** `Do Milestone M9 from docs/BUILD_ROADMAP.md.`
 
+## M9b: Sound, place art and walk-around dungeons (owner request, Nov 20)
+- Sound: generative music per mood, a background sound for every place, and effects for hits, misses, spells, dice, level-ups and quests (Web Audio, no recorded files). Volume sliders and mute (M key).
+- An illustrated, gently animated backdrop for every place's scenes; a richer tavern where the party walks to what you click.
+- The Old Mine and the King's Kiln become walk-around maps (`src/data/placeMaps.json`): areas open as the story goes, with a few things to search.
+- **Prompt:** done in the session after M9.
+
 ## M10: Balance and polish
 - A headless balance simulator (party vs. encounter × 500 runs), with tuning per Encounters_and_XP targets.
 - Bug pass, settings screen, credits.

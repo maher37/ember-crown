@@ -1,14 +1,15 @@
 import { useEffect, useState } from 'react';
 import { quests } from '../data';
-import { getClass, getSpecies } from '../game/hero';
 import { formatDate } from '../game/calendar';
 import { partyLevel } from '../game/journal';
 import { useGame } from '../game/store';
-import { canLevelUp, XP_THRESHOLDS } from '../rules';
-import { CLASS_COPY, ELF_EARS } from './creatorCopy';
+import { XP_THRESHOLDS } from '../rules';
 import './Explore.css';
 import { InventoryDialog, JournalDialog, SaveDialog, SpellsDialog } from './ExploreDialogs';
-import { Portrait } from './Portrait';
+import { PartyBar } from './PartyBar';
+import { TavernMap } from './scenes/TavernMap';
+import { PARTY_OFFSETS, useWalk } from './useWalk';
+import { SoundButton } from '../audio/SoundButton';
 
 interface Hotspot {
   id: string;
@@ -27,10 +28,11 @@ interface Hotspot {
 
 /** The Drowned Lantern on Lantern Night (rebuilt from docs/mockups/Exploration.dc.html). */
 export function ExploreScreen() {
-  const { game, talk, openLevelUp, toasts, clearToasts, goto, saveTo, openCamp } = useGame();
+  const { game, talk, toasts, clearToasts, goto, saveTo, openCamp } = useGame();
   const [dialog, setDialog] = useState<null | 'journal' | 'spells' | 'save' | 'inventory'>(null);
   const g = game!;
   const f = (k: string) => !!g.flags[k];
+  const { at, walkTo } = useWalk('tavern', [455, 382], [450, 260]);
 
   useEffect(() => {
     if (!toasts.length) return;
@@ -126,21 +128,24 @@ export function ExploreScreen() {
             Ashford · Act {['I', 'II', 'III'][g.act - 1]} · {formatDate(g.clock)}
           </span>
         </div>
-        <button
-          type="button"
-          className="menu-secondary small-btn"
-          onClick={() => {
-            saveTo('autosave');
-            goto('title');
-          }}
-        >
-          Menu
-        </button>
+        <div className="row">
+          <SoundButton />
+          <button
+            type="button"
+            className="menu-secondary small-btn"
+            onClick={() => {
+              saveTo('autosave');
+              goto('title');
+            }}
+          >
+            Menu
+          </button>
+        </div>
       </header>
 
       <div className="explore-main">
         <div className="tavern-map">
-          <TavernArt />
+          <TavernMap />
           {spots
             .filter((s) => !s.hidden)
             .map((s) => (
@@ -150,7 +155,7 @@ export function ExploreScreen() {
                 className={`hotspot ${s.kind}`}
                 style={{ left: s.x - 22, top: s.y - 22 }}
                 aria-label={`${s.label}${s.news ? ' (new)' : ''}`}
-                onClick={() => talk(s.knot)}
+                onClick={() => walkTo(s.x, s.y, () => talk(s.knot))}
               >
                 <span aria-hidden="true">
                   {s.kind === 'exit'
@@ -176,26 +181,26 @@ export function ExploreScreen() {
             className="hotspot object"
             style={{ left: 96 - 22, top: 417 - 22 }}
             aria-label="Stairs to the rooms (rest)"
-            onClick={() => openCamp('inn')}
+            onClick={() => walkTo(96, 417, () => openCamp('inn'))}
           >
             <span aria-hidden="true">≡</span>
             <span className="spot-label" aria-hidden="true">
               Stairs
             </span>
           </button>
-          {g.party.map((h, i) => (
-            <span
-              key={h.id}
-              className="party-token"
-              style={{
-                left: [455, 410, 500, 455][i]! - 16,
-                top: [400, 424, 424, 440][i]! - 16 - 40,
-              }}
-              aria-hidden="true"
-            >
-              {h.name[0]}
-            </span>
-          ))}
+          {g.party.map((h, i) => {
+            const [ox, oy] = PARTY_OFFSETS[i % 4]!;
+            return (
+              <span
+                key={h.id}
+                className="party-token"
+                style={{ left: at[0] + ox - 16, top: at[1] + oy - 16 }}
+                aria-hidden="true"
+              >
+                {h.name[0]}
+              </span>
+            );
+          })}
         </div>
 
         <aside className="journal-panel" aria-label="Journal">
@@ -263,43 +268,7 @@ export function ExploreScreen() {
       </div>
 
       <footer className="explore-footer">
-        <div className="party-bar">
-          {g.party.map((h) => (
-            <div key={h.id} className="party-card">
-              <button
-                type="button"
-                className="card-portrait"
-                aria-label={`Character sheet: ${h.name}`}
-                onClick={() => goto('party')}
-              >
-                <Portrait
-                  {...h.portrait}
-                  ears={ELF_EARS.has(h.speciesId) ? 'elf' : 'human'}
-                  cloth={CLASS_COPY[h.classId]!.cloth}
-                  label={`Portrait of ${h.name}`}
-                />
-              </button>
-              <div className="card-info">
-                <span className="card-name">{h.name}</span>
-                <span className="small muted">
-                  {getSpecies(h.speciesId).name} {getClass(h.classId).name} {h.level}
-                </span>
-                <span className="small">
-                  HP {h.hp} / {h.maxHp} · AC {h.ac}
-                </span>
-                {canLevelUp(h) ? (
-                  <button type="button" className="level-btn" onClick={() => openLevelUp(h.id)}>
-                    Level up!
-                  </button>
-                ) : (
-                  <div className="hp-mini">
-                    <div style={{ width: `${Math.round((h.hp / h.maxHp) * 100)}%` }} />
-                  </div>
-                )}
-              </div>
-            </div>
-          ))}
-        </div>
+        <PartyBar />
         <nav aria-label="Actions" className="explore-actions">
           <button type="button" onClick={() => setDialog('inventory')}>
             Inventory
@@ -326,100 +295,5 @@ export function ExploreScreen() {
       {dialog === 'save' && <SaveDialog onClose={() => setDialog(null)} />}
       {dialog === 'inventory' && <InventoryDialog onClose={() => setDialog(null)} />}
     </div>
-  );
-}
-
-/** The tavern floor plan (original SVG art from the Exploration mockup). */
-function TavernArt() {
-  return (
-    <svg
-      viewBox="0 0 900 492"
-      width="900"
-      height="492"
-      role="img"
-      aria-label="Top-down map of the Drowned Lantern tavern: bar to the north-east, hearth to the west, stairs to the south-west, and the front door to the south."
-    >
-      <defs>
-        <pattern id="planks" width="80" height="40" patternUnits="userSpaceOnUse">
-          <rect x="0" y="0" width="80" height="40" fill="#5b402b" />
-          <rect x="0" y="20" width="80" height="20" fill="#563c28" />
-          <path
-            d="M0 19.5 H80 M0 39.5 H80 M40 0 V20 M0 20 V40 M80 20 V40"
-            stroke="#3b2a1c"
-            strokeWidth="1"
-          />
-        </pattern>
-      </defs>
-      <rect x="0" y="0" width="900" height="492" fill="#1d242f" />
-      <rect x="24" y="24" width="852" height="444" fill="url(#planks)" />
-      <circle cx="70" cy="226" r="150" fill="#e8833a" opacity="0.1" />
-      <circle cx="70" cy="226" r="80" fill="#e8833a" opacity="0.08" />
-      <rect x="24" y="24" width="852" height="444" fill="none" stroke="#2a1f17" strokeWidth="16" />
-      <rect x="33" y="33" width="834" height="426" fill="none" stroke="#6a5038" strokeWidth="2" />
-      <rect x="418" y="458" width="74" height="22" fill="#5b402b" />
-      <path
-        d="M418 468 A 74 74 0 0 1 492 468"
-        fill="none"
-        stroke="#8a6a46"
-        strokeWidth="2"
-        strokeDasharray="4 4"
-      />
-      <rect x="24" y="176" width="46" height="100" fill="#4a4743" />
-      <rect x="30" y="192" width="30" height="68" fill="#1a0f0a" />
-      <path d="M45 252 C34 240 40 226 45 214 C50 226 58 238 45 252 Z" fill="#e8833a" />
-      <path d="M45 252 C40 244 43 236 45 230 C48 238 51 244 45 252 Z" fill="#f6c76a" />
-      <circle cx="606" cy="56" r="14" fill="#6b4529" stroke="#3a2516" strokeWidth="3" />
-      <circle cx="642" cy="56" r="14" fill="#6b4529" stroke="#3a2516" strokeWidth="3" />
-      <rect x="574" y="100" width="246" height="34" fill="#3a2516" />
-      <rect x="786" y="100" width="34" height="160" fill="#3a2516" />
-      <rect x="574" y="100" width="246" height="6" fill="#7a5233" />
-      <rect x="40" y="378" width="112" height="78" fill="#3e2c1e" />
-      <path
-        d="M54 378 V456 M68 378 V456 M82 378 V456 M96 378 V456 M110 378 V456 M124 378 V456 M138 378 V456"
-        stroke="#2a1d13"
-        strokeWidth="2"
-      />
-      <rect
-        x="700"
-        y="300"
-        width="44"
-        height="44"
-        fill="#4a3220"
-        stroke="#2a1c12"
-        strokeWidth="3"
-      />
-      <path d="M700 300 L744 344 M744 300 L700 344" stroke="#2a1c12" strokeWidth="2" />
-      <g fill="#5c3d26">
-        {[
-          [160, 130],
-          [240, 130],
-          [200, 92],
-          [160, 226],
-          [240, 226],
-          [200, 264],
-          [290, 330],
-          [370, 330],
-          [430, 180],
-          [510, 180],
-          [470, 142],
-          [760, 400],
-        ].map(([x, y]) => (
-          <circle key={`${x},${y}`} cx={x} cy={y} r="9" />
-        ))}
-      </g>
-      <g fill="#7a5232" stroke="#3e2a1a" strokeWidth="3">
-        <circle cx="200" cy="130" r="30" />
-        <circle cx="200" cy="226" r="30" />
-        <circle cx="330" cy="330" r="30" />
-        <circle cx="470" cy="180" r="30" />
-        <circle cx="800" cy="410" r="28" />
-      </g>
-      <circle cx="200" cy="226" r="5" fill="#d9c9a0" />
-      <circle cx="330" cy="330" r="5" fill="#d9c9a0" />
-      <g fill="#3a4558" stroke="#6a5c4a" strokeWidth="2">
-        <circle cx="290" cy="300" r="13" />
-        <circle cx="510" cy="210" r="13" />
-      </g>
-    </svg>
   );
 }
