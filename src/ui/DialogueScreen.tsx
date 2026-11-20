@@ -1,9 +1,12 @@
 import { useEffect } from 'react';
 import { npcById } from '../game/dialogue';
+import { placeMapFor } from '../game/placeMaps';
 import { useGame } from '../game/store';
 import { CLASS_COPY, ELF_EARS } from './creatorCopy';
 import './Explore.css';
 import { Portrait } from './Portrait';
+import { isPlaceSpeaker, PlaceArt, sceneFor } from './scenes/PlaceArt';
+import { SoundButton } from '../audio/SoundButton';
 
 /** A conversation (rebuilt from docs/mockups/Dialogue.dc.html). */
 export function DialogueScreen() {
@@ -12,6 +15,8 @@ export function DialogueScreen() {
   const c = conversation!;
   const npc = npcById(c.speaker) ?? npcById('tavern')!;
   const leader = game!.party.find((h) => !h.dead)!;
+  // A place speaking (the mine, the marsh…) gets the whole backdrop instead of a portrait.
+  const isPlace = !npc.portrait || isPlaceSpeaker(npc.id);
   const choices = c.choices;
 
   useEffect(() => {
@@ -37,19 +42,18 @@ export function DialogueScreen() {
           ← Leave
         </button>
       )}
-      <div className="npc">
-        <div className="npc-portrait">
-          {npc.portrait ? (
-            <Portrait {...npc.portrait} ears="human" label={`Portrait of ${npc.name}`} />
-          ) : (
-            <svg viewBox="0 0 120 120" role="img" aria-label={npc.name} className="place-emblem">
-              <rect width="120" height="120" rx="10" fill="#323d4f" />
-              <path d="M18 92 L44 50 L60 70 L76 40 L102 92 Z" fill="#51607a" />
-              <path d="M76 40 L84 54 L70 54 Z" fill="#eef2f7" opacity="0.7" />
-              <circle cx="88" cy="28" r="9" fill="#e8833a" />
-            </svg>
-          )}
-        </div>
+      <div className="sound-corner bottom">
+        <SoundButton />
+      </div>
+      <div className={`dialogue-art${isPlace ? ' place' : ''}`}>
+        <PlaceArt scene={sceneFor(npc.id, game!.location)} />
+      </div>
+      <div className={`npc${isPlace ? ' place' : ''}`}>
+        {!isPlace && (
+          <div className="npc-portrait">
+            <Portrait {...npc.portrait!} ears="human" label={`Portrait of ${npc.name}`} />
+          </div>
+        )}
         <div className="npc-name">
           <span className="name">{npc.name}</span>
           <span className="title">{npc.title}</span>
@@ -91,7 +95,9 @@ export function DialogueScreen() {
                         ? 'Go on'
                         : game!.location === 'drowned-lantern'
                           ? 'Back to the tavern'
-                          : 'Back to the map'}
+                          : placeMapFor(game!.location)
+                            ? `Back to ${placeMapFor(game!.location)!.title}`
+                            : 'Back to the map'}
             </span>
           </button>
         ) : (

@@ -6,7 +6,16 @@ import encountersJson from './encounters.json';
 import loadoutsJson from './loadouts.json';
 import npcsJson from './npcs.json';
 import questsJson from './quests.json';
-import { EpilogueFile, LetterFile, NpcFile, PlaceFile, QuestFile, WixFile } from './schemas/story';
+import {
+  EpilogueFile,
+  LetterFile,
+  NpcFile,
+  PlaceFile,
+  PlaceMapFile,
+  QuestFile,
+  WixFile,
+} from './schemas/story';
+import placeMapsJson from './placeMaps.json';
 import epilogueJson from './epilogue.json';
 import placesJson from './places.json';
 import wixJson from './wix.json';
@@ -53,6 +62,7 @@ export const quests = questFile.quests;
 export const awards = questFile.awards;
 export const npcs = NpcFile.parse(npcsJson).npcs;
 export const places = PlaceFile.parse(placesJson).places;
+export const placeMaps = PlaceMapFile.parse(placeMapsJson).maps;
 export const wix = WixFile.parse(wixJson);
 export const epilogue = EpilogueFile.parse(epilogueJson);
 const letterFile = LetterFile.parse(lettersJson);
@@ -78,6 +88,7 @@ export const gameData = {
   awards,
   npcs,
   places,
+  placeMaps,
   letters,
   roadTables,
 };

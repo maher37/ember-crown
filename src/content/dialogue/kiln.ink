@@ -25,6 +25,9 @@ EXTERNAL ember()
 
 VAR passed = false
 
+// The Kiln is a walk-around map (src/data/placeMaps.json): each area's stitch starts from its
+// spot on the map and ends back there.
+
 === arrive ===
 #speaker:kiln
 { not (flag("won:f16-kiln-gate") || flag("won:f16-kiln-gate-kell")):
@@ -59,11 +62,14 @@ King Varrow's tomb is cut into the mountain's heart: a gate of black iron forty 
         ~ fight("f16-kiln-gate", "arrive.after_gate")
     }
     -> END
-+ [Leave (to the map).]
++ [Back.]
     -> END
 = after_gate
 ~ quest_step("kings-kiln", "gate")
--> puzzle
+The gate's guards are down. Beyond it, a door with no handle waits.
+-> back
+= back
+-> END
 
 = puzzle
 #speaker:kiln
@@ -72,7 +78,7 @@ The gate has no handle: only a ring of nine bronze dials, each stamped with a ru
     -> solve
 + [Search for the mechanism. #check:investigation:15]
     -> solve
-+ [Leave (to the map).]
++ [Back.]
     -> END
 = solve
 { passed:
@@ -90,7 +96,7 @@ The gate has no handle: only a ring of nine bronze dials, each stamped with a ru
 ~ set_flag("gate_open", true)
 ~ quest_step("kings-kiln", "puzzle")
 ~ award("q-puzzle")
--> halls
+-> back
 
 = halls
 #speaker:kiln
@@ -98,11 +104,12 @@ The Furnace Halls run deep into the mountain: cold furnaces as big as houses, an
 + [Go on through the halls. #fight]
     ~ fight("f17-furnace-halls", "arrive.after_halls")
     -> END
-+ [Leave (to the map) and rest first.]
++ [Not yet. Go back and rest first.]
     -> END
 = after_halls
 ~ quest_step("kings-kiln", "halls")
--> seal
+At the far end of the halls, a door of red stone is warm to the touch.
+-> back
 
 = seal
 #speaker:kiln
@@ -115,8 +122,8 @@ A door of red stone seals the deeper halls, warm to the touch, carved with a cro
     ~ set_flag("seal_broken", true)
     ~ quest_step("kings-kiln", "seal")
     ~ award("q-seal")
-    -> honor
-+ [Leave (to the map).]
+    -> back
++ [Back.]
     -> END
 
 = honor
@@ -130,7 +137,7 @@ In the Hall of the Honor Guard, two hundred dead knights stand in ranks along th
 + [Then we go through you. #fight]
     ~ fight("f18-honor-guard", "arrive.after_honor")
     -> END
-+ [Leave (to the map).]
++ [Back.]
     -> END
 = ida_talk
 + [We know what the crown is. Cindrath is inside it.]
@@ -141,7 +148,7 @@ In the Hall of the Honor Guard, two hundred dead knights stand in ranks along th
     ~ quest_step("ida-oath", "oath")
     "One thing," she says as you pass. "I swore to see my king laid to rest. His bones are in the ossuary below, and the ghouls have them. If you have time, I would be in your debt."
     ~ note("Ser Ida Marrow stood aside. Her unfinished oath: lay King Varrow's remains to rest in the ossuary.")
-    -> hub
+    -> back
 + [Then we go through you. #fight]
     ~ fight("f18-honor-guard", "arrive.after_honor")
     -> END
@@ -150,7 +157,8 @@ In the Hall of the Honor Guard, two hundred dead knights stand in ranks along th
 Ser Ida falls to one knee, and the light goes out of her eyes. The ranks of dead knights stay where they are.
 ~ set_flag("ida_destroyed", true)
 ~ quest_step("kings-kiln", "honor-guard")
--> hub
+Passages branch off the hall: down to the ossuary, along the lava tubes, and on toward the Ember Galleries.
+-> back
 
 = hub
 #speaker:kiln
@@ -172,9 +180,18 @@ Ser Ida falls to one knee, and the light goes out of her eyes. The ranks of dead
     -> heart
 + [Leave (to the map).]
     -> END
+= galleries
+#speaker:kiln
+The Ember Galleries: a long bridge of black glass over a lake of fire. Things made of living embers drift along it, waiting.
++ [Cross the Ember Galleries. #fight]
+    ~ fight("f19-ember-galleries", "arrive.after_galleries")
+    -> END
++ [Not yet. Go back and rest first.]
+    -> END
 = after_galleries
 ~ quest_step("kings-kiln", "galleries")
--> hub
+Past the galleries, a great stair climbs toward the heart of the mountain.
+-> back
 
 = ossuary
 #speaker:kiln
@@ -183,7 +200,7 @@ The ossuary is a cathedral of bones. Something is moving among them, and it smel
     ~ fight("s10-ossuary", "arrive.after_ossuary")
     -> END
 + [Back.]
-    -> hub
+    -> END
 = after_ossuary
 #speaker:kiln
 In a niche marked with a broken crown you find him: King Varrow, small and ordinary in death, his hands still blistered from the forge.
@@ -196,7 +213,7 @@ Ser Ida kneels and lays her king in his tomb. "He was not a tyrant," she says. "
 ~ award("discover-ida")
 ~ quest_step("ida-oath", "rest")
 ~ note("Ser Ida's account: King Varrow forged the crown to cage Cindrath, and it killed him. The Varrows were never tyrants. Ida will fight beside you at the Crowning.")
--> hub
+-> back
 
 = cold_forge
 #speaker:kiln
@@ -209,7 +226,7 @@ The lava tubes are hot enough to bake bread in. At their end, something made of 
     ~ fight("s9-cold-forge", "arrive.cold_forge")
     -> END
 + [Back.]
-    -> hub
+    -> END
 = relight
 King Varrow's own forge sits cold in a cave of black glass, his hammer still on the anvil. A shard set in the hearth would light it, if you can stand what the shard says while it burns.
 * [Read Varrow's forge-marks. #check:history:14]
@@ -233,13 +250,13 @@ King Varrow's own forge sits cold in a cave of black glass, his hammer still on 
     ~ set_flag("ember", ember() + 1)
     -> quench
 + [Back.]
-    -> hub
+    -> END
 = quench
 You quench a weapon in the relit forge. It comes out with a faint red line along the edge that never quite cools.
 ~ give_item("kiln-quenched-weapon", 1)
 ~ quest_step("cold-forge", "relight")
 ~ note("The Kiln-Quenched Weapon: +1, made from the first weapon of whoever carries it.")
--> hub
+-> back
 
 = stand
 #speaker:kiln
@@ -256,13 +273,41 @@ The last of Venna's zealots hold the great stair down to the mountain's heart.
     ~ fight("f20-last-stand", "arrive.after_stand")
     -> END
 + [Back.]
-    -> hub
+    -> END
 = after_stand
 ~ quest_step("kings-kiln", "last-stand")
 ~ set_flag("before_crowning", true)
 #speaker:kiln
 The stair is clear. Below, the heart of the mountain is burning. (This is the last chance to rest. Make camp first if you need to.)
--> hub
+-> back
+
+// ── Things to find (search spots on the Kiln map) ──
+= cache
+#speaker:kiln
+Behind a fallen pillar outside the gate, the Hollow Star left crates for the climb: rope, lamp oil, and a strongbox nobody came back for.
++ [Search the crates. #check:investigation:13]
+    { passed:
+        {roller()} finds the good stuff packed at the bottom: two healing potions wrapped in a cultist's spare robe, and a purse.
+        ~ give_item("potion-of-healing", 2)
+        ~ give_gold(30)
+    - else:
+        Mostly rope. But one potion of healing rolls out of a split crate.
+        ~ give_item("potion-of-healing", 1)
+    }
+    ~ set_flag("kiln_cache", true)
+    -> back
++ [Leave it.]
+    -> END
+
+= mural
+#speaker:kiln
+A mural runs the length of a side passage, cut into the rock by dwarven smiths: a king at an anvil, a red dragon coiled in the fire, and a crown being hammered shut around it like a lid on a box. The last panel is blank, as if they never got to carve how it ended.
+{ flag("truth_crown"):
+    Now you know how it ends. Or rather, that it hasn't, yet.
+}
+~ set_flag("kiln_mural", true)
++ [Go on.]
+    -> back
 
 // ── The Crowning ──
 = heart

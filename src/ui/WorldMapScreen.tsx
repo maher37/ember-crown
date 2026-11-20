@@ -8,6 +8,7 @@ import { canLevelUp } from '../rules';
 import { InventoryDialog, SpellsDialog } from './ExploreDialogs';
 import mapArt from './art/worldmap.svg?raw';
 import './World.css';
+import { SoundButton } from '../audio/SoundButton';
 
 const KIND_COLORS: Record<string, [string, string]> = {
   town: ['#f8f3e8', '#5a3b22'],
@@ -94,6 +95,7 @@ export function WorldMapScreen() {
           >
             Spells &amp; healing
           </button>
+          <SoundButton />
         </div>
       </header>
       <div className="world-main">

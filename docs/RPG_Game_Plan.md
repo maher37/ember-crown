@@ -30,6 +30,8 @@
 | D13 | **Premade origin character** | ✅ **DECIDED: one origin character, Corin Varrow** (human Draconic Bloodline sorcerer, the villain's brother), with his own scenes, dialogue and endings. Custom heroes get a complete story without him. | See Story_Bible.md §9. |
 | D14 | **Build order** | ✅ **DECIDED: core mechanics first, animations after.** Version 1 uses tokens and floating numbers; the animation system is phase 2. | Keeps the week realistic. |
 | D15 | **Look** | ✅ **DECIDED: lighter slate-and-parchment palette** (replacing dark brown), with ember-orange accents. Personal use only; no sharing planned. | Applied to the mockups. |
+| D22 | **Sound** | ✅ **DECIDED (owner, Nov 20): sound is in v1**, not v2. Music, place sounds and effects are generated live in the browser (Web Audio), so there are no files to license. Music, place-sound and effect volumes plus mute live in Settings and the speaker button (M mutes). | The owner asked for sound during the first playthrough. Recorded music could replace the generated tracks later [inferred option]. |
+| D23 | **Explorable places** | ✅ **DECIDED (owner, Nov 20): the Old Mine and the King's Kiln are walk-around maps** like the tavern; every other place keeps its illustrated scene. Each area of the story is a spot on the map that opens when the story reaches it, plus a few spots to search (small gold and potion finds). Spots are data in `src/data/placeMaps.json`. | Baldur's Gate players expect to explore. Two dungeons first; more can follow the same pattern. |
 | D10 | **Claude plan** | ✅ **You have Claude Pro.** Pro includes Claude Code, and Claude chat and Claude Code share the same usage limits (a 5-hour session limit plus a weekly limit). | Pace the week. Long build sessions may hit the 5-hour limit; plan breaks around it. |
 
 ---
@@ -52,7 +54,7 @@
 - Layered **paper-doll character builder** (body, skin, hair, beard, armor that shows on the sprite). See §6.
 - BG-style companions with dialogue and approval.
 - Multiclassing, feats beyond the basics, more subclasses (homebrew), levels 7+.
-- Sound and music polish, cutscenes.
+- Cutscenes. (Sound moved into v1: see D22.)
 
 ---
 

@@ -36,6 +36,7 @@ import { Portrait } from './Portrait';
 import { terrainFill, terrainName } from './mapStyle';
 import { foeInfo } from './foeInfo';
 import { getItem } from '../game/items';
+import { SoundButton } from '../audio/SoundButton';
 
 const CELL = 48;
 const ZONE_FILL: Record<string, string> = {
@@ -363,22 +364,25 @@ export function CombatScreen() {
             Round {s.round} · {encounterText}
           </span>
         </div>
-        <div role="radiogroup" aria-label="Difficulty" className="seg">
-          {difficulties.levels.map((d) => (
-            <button
-              key={d.id}
-              type="button"
-              role="radio"
-              aria-checked={s.difficulty === d.id}
-              className={s.difficulty === d.id ? 'on' : ''}
-              onClick={() => {
-                settings.setDifficulty(d.id);
-                setCombatDifficulty(d.id);
-              }}
-            >
-              {d.name}
-            </button>
-          ))}
+        <div className="row">
+          <SoundButton />
+          <div role="radiogroup" aria-label="Difficulty" className="seg">
+            {difficulties.levels.map((d) => (
+              <button
+                key={d.id}
+                type="button"
+                role="radio"
+                aria-checked={s.difficulty === d.id}
+                className={s.difficulty === d.id ? 'on' : ''}
+                onClick={() => {
+                  settings.setDifficulty(d.id);
+                  setCombatDifficulty(d.id);
+                }}
+              >
+                {d.name}
+              </button>
+            ))}
+          </div>
         </div>
       </header>
 

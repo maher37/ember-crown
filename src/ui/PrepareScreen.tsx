@@ -8,6 +8,7 @@ import { useSettings } from '../game/settings';
 import { useGame } from '../game/store';
 import { canLevelUp } from '../rules';
 import './Combat.css';
+import { SoundButton } from '../audio/SoundButton';
 
 // DMG encounter multipliers (docs/Encounters_and_XP.md §3).
 const multiplier = (n: number) => (n <= 1 ? 1 : n === 2 ? 1.5 : n <= 6 ? 2 : 2.5);
@@ -80,6 +81,7 @@ export function PrepareScreen() {
             Not yet
           </button>
         )}
+        <SoundButton />
       </header>
       <div className="prepare-body">
         <section className="prepare-col" aria-label="Briefing">

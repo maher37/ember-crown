@@ -1,0 +1,151 @@
+/* Place backdrops: slow, gentle motion. All of it stops for players who prefer reduced motion. */
+.place-art {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+.place-art .anim-flicker {
+  transform-box: fill-box;
+  transform-origin: 50% 100%;
+  animation: scene-flicker 0.9s ease-in-out infinite alternate;
+}
+.place-art .anim-glow {
+  animation: scene-glow 3.2s ease-in-out infinite alternate;
+}
+.place-art .anim-rise {
+  transform-box: fill-box;
+  animation: scene-rise 6s linear infinite;
+}
+.place-art .anim-drift {
+  animation: scene-drift 40s linear infinite alternate;
+}
+.place-art .anim-shimmer {
+  animation: scene-shimmer 4s ease-in-out infinite alternate;
+}
+.place-art .anim-sway {
+  transform-box: fill-box;
+  transform-origin: 50% 100%;
+  animation: scene-sway 5s ease-in-out infinite alternate;
+}
+.place-art .anim-spin {
+  animation: scene-spin 14s linear infinite;
+}
+.place-art .anim-twinkle circle {
+  animation: scene-twinkle 4s ease-in-out infinite alternate;
+}
+.place-art .anim-ash circle {
+  animation: scene-fall 12s linear infinite;
+}
+.place-art .anim-embers circle {
+  animation: scene-up 10s linear infinite;
+}
+.place-art .anim-fireflies circle {
+  animation: scene-float 9s ease-in-out infinite alternate;
+}
+
+@keyframes scene-flicker {
+  0% {
+    transform: scale(1, 1) skewX(0deg);
+  }
+  50% {
+    transform: scale(0.94, 1.08) skewX(3deg);
+  }
+  100% {
+    transform: scale(1.04, 0.95) skewX(-3deg);
+  }
+}
+@keyframes scene-glow {
+  from {
+    opacity: 0.75;
+  }
+  to {
+    opacity: 1;
+  }
+}
+@keyframes scene-rise {
+  from {
+    transform: translate(0, 0) scale(0.6);
+    opacity: 0.5;
+  }
+  to {
+    transform: translate(30px, -220px) scale(2.2);
+    opacity: 0;
+  }
+}
+@keyframes scene-drift {
+  from {
+    transform: translateX(-60px);
+  }
+  to {
+    transform: translateX(60px);
+  }
+}
+@keyframes scene-shimmer {
+  from {
+    opacity: 0.15;
+    transform: translateX(-6px);
+  }
+  to {
+    opacity: 0.45;
+    transform: translateX(6px);
+  }
+}
+@keyframes scene-sway {
+  from {
+    transform: rotate(-2deg);
+  }
+  to {
+    transform: rotate(2deg);
+  }
+}
+@keyframes scene-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+@keyframes scene-twinkle {
+  from {
+    opacity: 0.2;
+  }
+  to {
+    opacity: 0.9;
+  }
+}
+@keyframes scene-fall {
+  from {
+    transform: translate(0, -60px);
+  }
+  to {
+    transform: translate(-80px, 760px);
+  }
+}
+@keyframes scene-up {
+  from {
+    transform: translate(0, 60px);
+    opacity: 0.9;
+  }
+  to {
+    transform: translate(40px, -760px);
+    opacity: 0;
+  }
+}
+@keyframes scene-float {
+  from {
+    transform: translate(-14px, 8px);
+    opacity: 0.2;
+  }
+  to {
+    transform: translate(14px, -12px);
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .place-art *,
+  .place-art .anim-twinkle circle,
+  .place-art .anim-ash circle,
+  .place-art .anim-embers circle,
+  .place-art .anim-fireflies circle {
+    animation: none !important;
+  }
+}

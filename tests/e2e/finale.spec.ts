@@ -38,9 +38,9 @@ test('the Crowning: three Truths talk Maelis down, Corin breaks the crown, and t
   });
   await page.goto('./');
   await page.getByRole('button', { name: 'Continue' }).click();
-  await expect(page.getByRole('heading', { name: 'The Southern Greypeaks' })).toBeVisible();
-  await page.getByRole('button', { name: /Explore The King’s Kiln/ }).click();
-  await pick(page, /Go down to the Crowning/);
+  // The Kiln is a map to walk around; the heart of the mountain is the last stop.
+  await expect(page.getByRole('heading', { name: 'The King’s Kiln' })).toBeVisible();
+  await page.getByRole('button', { name: /^The heart of the mountain/ }).click();
   await expect(
     page.getByText(/three crown shards hang in the air around Maelis Varrow/),
   ).toBeVisible();

@@ -302,7 +302,7 @@ describe('side quests', () => {
       expect(
         c.choices.map((x) => x.text),
         story,
-      ).toEqual(['Leave (to the map).']);
+      ).toEqual([story === 'mine' ? 'Back.' : 'Leave (to the map).']);
     }
   });
 });

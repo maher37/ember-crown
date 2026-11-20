@@ -20,6 +20,7 @@ import {
   type Pos,
 } from './combat';
 import { Conversation, PLACE_SCENES } from './dialogue';
+import { placeMapFor } from './placeMaps';
 import { equip, getItem, unequip } from './items';
 import { castHealing, layOnHands } from './healing';
 import { withFormation } from './formation';
@@ -51,8 +52,15 @@ export type Screen =
   | 'prepare'
   | 'combat'
   | 'map'
+  | 'placemap'
   | 'camp'
   | 'epilogue';
+/** Where the party "is" between scenes: the tavern, a walk-around place map, or the world map. */
+export function homeScreen(g: GameState | null | undefined): Screen {
+  if (!g || g.location === 'drowned-lantern') return 'explore';
+  return placeMapFor(g.location) ? 'placemap' : 'map';
+}
+
 export type CampScene = 'wild' | 'inn' | 'cave';
 export const PARTY_SIZE = 4;
 
@@ -198,7 +206,7 @@ export const useGame = create<GameStore>()((set, get) => ({
   goto: (screen) => set({ screen }),
   goHome: () => {
     const g = get().game;
-    set({ screen: !g || g.location === 'drowned-lantern' ? 'explore' : 'map', resume: null });
+    set({ screen: homeScreen(g), resume: null });
   },
 
   startNewGame: (seed = newSeed()) =>
@@ -357,11 +365,7 @@ export const useGame = create<GameStore>()((set, get) => ({
       game: next,
       combat: null,
       lastResult: result,
-      screen: backToCamp
-        ? 'camp'
-        : pendingArrival && pendingArrival !== 'ashford'
-          ? 'map'
-          : 'explore',
+      screen: backToCamp ? 'camp' : homeScreen(next),
       rngState: combat.rngState,
       toasts: messages,
       travelLog: [...messages, ...get().travelLog].slice(0, 30),
@@ -412,7 +416,7 @@ export const useGame = create<GameStore>()((set, get) => ({
     set({
       conversation: null,
       afterDialogue: null,
-      screen: !game || game.location === 'drowned-lantern' ? 'explore' : 'map',
+      screen: homeScreen(game),
     });
     // Autosave after every conversation, so story progress is never lost [inferred].
     get().saveTo('autosave');
@@ -433,6 +437,10 @@ export const useGame = create<GameStore>()((set, get) => ({
     const { game } = get();
     if (!game) return;
     const id = placeId ?? game.location;
+    if (placeMapFor(id)) {
+      set({ screen: 'placemap' });
+      return;
+    }
     const scene = PLACE_SCENES[id];
     if (!scene) {
       set({ screen: id === 'drowned-lantern' || id === 'ashford' ? 'explore' : 'map' });
@@ -798,11 +806,7 @@ export const useGame = create<GameStore>()((set, get) => ({
     ];
     set({
       game: next,
-      screen: backToCamp
-        ? 'camp'
-        : pendingArrival && pendingArrival !== 'ashford'
-          ? 'map'
-          : 'explore',
+      screen: backToCamp ? 'camp' : homeScreen(next),
       pendingArrival: null,
       backToCamp: false,
       toasts: messages,
@@ -823,11 +827,7 @@ export const useGame = create<GameStore>()((set, get) => ({
       seed: save.game.seed,
       rngState: save.game.rngState,
       pendingParty: [],
-      screen: save.game.flags['ending']
-        ? 'epilogue'
-        : save.game.location === 'drowned-lantern'
-          ? 'explore'
-          : 'map',
+      screen: save.game.flags['ending'] ? 'epilogue' : homeScreen(save.game),
       sessionStart: Date.now(),
       combat: null,
       resume: null,

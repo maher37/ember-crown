@@ -7,7 +7,16 @@ import encountersJson from './encounters.json';
 import loadoutsJson from './loadouts.json';
 import npcsJson from './npcs.json';
 import questsJson from './quests.json';
-import { LetterFile, NpcFile, PlaceFile, QuestFile, WixFile, EpilogueFile } from './schemas/story';
+import {
+  LetterFile,
+  NpcFile,
+  PlaceFile,
+  PlaceMapFile,
+  QuestFile,
+  WixFile,
+  EpilogueFile,
+} from './schemas/story';
+import placeMapsJson from './placeMaps.json';
 import placesJson from './places.json';
 import wixJson from './wix.json';
 import lettersJson from './letters.json';
@@ -50,4 +59,5 @@ export const dataFiles = [
   { name: 'wix.json', schema: WixFile, raw: wixJson },
   { name: 'letters.json', schema: LetterFile, raw: lettersJson },
   { name: 'epilogue.json', schema: EpilogueFile, raw: epilogueJson },
+  { name: 'placeMaps.json', schema: PlaceMapFile, raw: placeMapsJson },
 ] as const satisfies readonly { name: string; schema: z.ZodType; raw: unknown }[];

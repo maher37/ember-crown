@@ -89,9 +89,16 @@ test('F2 Road ambush: prepare, fight to the end, and come back with XP', async (
     await expect(page.getByText(/Wix is too small to eat/)).toBeVisible();
     await pick(page, /Spare him/);
     await page.getByRole('button', { name: 'Go on' }).click();
+    // The Old Mine is a map to walk around: the mouth is the way in.
+    await expect(page.getByRole('heading', { name: 'The Old Mine' })).toBeVisible();
+    await expect(
+      page.getByRole('button', { name: /^Names in the rock \(not reached yet\)/ }),
+    ).toBeVisible();
+    await page.getByRole('button', { name: /^The mine mouth \(go here next\)/ }).click();
     await expect(page.getByText(/Private dig/)).toBeVisible();
-    await pick(page, /Leave \(to the map\)/);
-    await page.getByRole('button', { name: 'Back to the map' }).click();
+    await pick(page, /^\d\.\s*Back\.$/);
+    await page.getByRole('button', { name: 'Back to The Old Mine' }).click();
+    await page.getByRole('button', { name: 'World map' }).first().click();
     // The party arrived where it was going, and the map's travel log has the news.
     await expect(page.getByRole('heading', { name: 'The Southern Greypeaks' })).toBeVisible();
     await expect(page.getByRole('log')).toContainText('Victory! +50 XP each.');

@@ -167,6 +167,11 @@
 }
 .party-token {
   position: absolute;
+  transition:
+    left 0.65s ease-in-out,
+    top 0.65s ease-in-out;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.45);
+  z-index: 2;
   width: 32px;
   height: 32px;
   border-radius: 16px;
@@ -665,11 +670,6 @@
   color: #f2b49a;
   border: 1px solid #e06a3b;
 }
-.place-emblem {
-  width: 100%;
-  height: 100%;
-  display: block;
-}
 .item-list {
   list-style: none;
   padding: 0;
@@ -701,9 +701,132 @@
   left: 12px;
   z-index: 2;
 }
+/* The place behind the conversation: clear on the left, darkened under the text. */
+.dialogue-art {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+.dialogue-art::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    90deg,
+    rgba(24, 17, 12, 0.55) 0%,
+    rgba(24, 17, 12, 0.7) 28%,
+    rgba(24, 17, 12, 0.9) 36%,
+    rgba(24, 17, 12, 0.93) 100%
+  );
+}
+.dialogue-art.place::after {
+  background: linear-gradient(
+    90deg,
+    rgba(24, 17, 12, 0) 0%,
+    rgba(24, 17, 12, 0.1) 26%,
+    rgba(24, 17, 12, 0.85) 37%,
+    rgba(24, 17, 12, 0.92) 100%
+  );
+}
+.dialogue > .npc,
+.dialogue > .conversation,
+.dialogue > .speaker-bar {
+  position: relative;
+  z-index: 1;
+}
+.dialogue > .speaker-bar {
+  background: rgba(24, 17, 12, 0.85);
+  margin: 0 -40px;
+  padding: 0 40px;
+}
+.npc.place {
+  justify-content: flex-end;
+  padding-bottom: 18px;
+}
+.npc.place .npc-name {
+  text-align: center;
+  background: rgba(24, 17, 12, 0.78);
+  border: 1px solid #8a6a3a;
+  border-radius: 8px;
+  padding: 8px 18px;
+}
 .heal-row {
   gap: 8px;
   align-items: center;
   flex-wrap: wrap;
   margin-top: 4px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .party-token {
+    transition: none;
+  }
+}
+
+/* Walk-around place maps (the Old Mine, the King's Kiln). */
+.place-map .hotspot.search {
+  border-color: #c9a46a;
+  border-radius: 10px;
+  transform: rotate(0deg);
+}
+.place-map .hotspot.area {
+  border-color: #e8833a;
+}
+.place-map .hotspot.locked {
+  opacity: 0.6;
+  border-style: dashed;
+  border-color: #7a8699;
+  background: #2a3240;
+  cursor: help;
+}
+.place-map .hotspot.done {
+  border-color: #6f8f5f;
+  background: #2f3a33;
+}
+.place-map .hotspot.next {
+  box-shadow: 0 0 0 4px rgba(232, 131, 58, 0.35);
+  animation: spot-pulse 1.6s ease-in-out infinite;
+}
+@keyframes spot-pulse {
+  50% {
+    box-shadow: 0 0 0 9px rgba(232, 131, 58, 0.12);
+  }
+}
+.hotspot .tick {
+  position: absolute;
+  bottom: -6px;
+  right: -8px;
+  width: 20px;
+  height: 20px;
+  border-radius: 10px;
+  background: #6f8f5f;
+  color: #fff;
+  font-size: 12px;
+  line-height: 20px;
+}
+.map-fog {
+  position: absolute;
+  background: radial-gradient(ellipse at center, rgba(8, 8, 12, 0.88), rgba(8, 8, 12, 0.7));
+  border-radius: 40px;
+  filter: blur(6px);
+  pointer-events: none;
+}
+.map-hint {
+  position: absolute;
+  left: 50%;
+  bottom: 12px;
+  transform: translateX(-50%);
+  background: rgba(24, 17, 12, 0.92);
+  border: 1px solid #8a6a3a;
+  border-radius: 8px;
+  padding: 8px 14px;
+  font-size: 14px;
+  color: var(--parchment);
+  z-index: 3;
+  max-width: 80%;
+}
+@media (prefers-reduced-motion: reduce) {
+  .place-map .hotspot.next {
+    animation: none;
+  }
 }

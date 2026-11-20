@@ -12,6 +12,8 @@ import moth from './art/moth.svg?raw';
 import './art/camp-anim.css';
 import './World.css';
 import { InventoryDialog } from './ExploreDialogs';
+import { SoundButton } from '../audio/SoundButton';
+import { placeMapFor } from '../game/placeMaps';
 
 const ART: Record<CampScene, string> = { wild, inn, cave };
 const SCENES: Record<
@@ -52,8 +54,7 @@ export function CampScreen() {
     wakeEarly,
     completeLongRest,
     answerLetter,
-    openMap,
-    goto,
+    goHome,
   } = useGame();
   const g = game!;
   const [sleeping, setSleeping] = useState(false);
@@ -142,6 +143,9 @@ export function CampScreen() {
               : `Camp · near ${place.name}`}
         </span>
         <span className="muted small">{formatDate(g.clock)}</span>
+      </div>
+      <div className="sound-corner">
+        <SoundButton />
       </div>
       {scenes.length > 1 && (
         <div role="radiogroup" aria-label="Camp location" className="seg camp-seg">
@@ -243,10 +247,16 @@ export function CampScreen() {
           type="button"
           className="camp-btn"
           disabled={sleeping || resting || !!shortRest}
-          onClick={() => (inTown ? goto('explore') : openMap())}
+          onClick={goHome}
         >
           <span className="strong">Break camp</span>
-          <span className="small">{inTown ? 'Back to the tavern' : 'Back to the map'}</span>
+          <span className="small">
+            {inTown
+              ? 'Back to the tavern'
+              : placeMapFor(g.location)
+                ? `Back to ${placeMapFor(g.location)!.title}`
+                : 'Back to the map'}
+          </span>
         </button>
       </footer>
 

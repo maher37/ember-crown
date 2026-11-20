@@ -42,6 +42,12 @@
 
 ---
 
+## Things to find on the walk-around maps (D23)
+Small finds, so exploring pays without upsetting the item plan [inferred amounts]:
+- **Old Mine:** the overturned ore cart (Investigation DC 12: 25 gp, or 8 gp on a failure); the dwarven storeroom (Perception DC 13: 1 Potion of Healing).
+- **King's Kiln:** the cult supply cache (Investigation DC 13: 2 Potions of Healing and 30 gp, or 1 potion on a failure).
+- No XP for these, so the XP ledger in Encounters_and_XP.md is unchanged.
+
 ## Elite monsters (one per act, optional)
 | Act | Elite | Monster (MM) | Raw XP → adjusted | Difficulty | XP/PC | Where and how it's telegraphed | Fight notes |
 |---|---|---|---|---|---|---|---|

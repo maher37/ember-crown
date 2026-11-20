@@ -82,6 +82,61 @@ export const Place = z
 export type Place = z.infer<typeof Place>;
 export const PlaceFile = fileOf('places', Place);
 
+/**
+ * A condition on story state: a list of groups that must ALL hold, where each group holds if ANY
+ * of its tokens does. A token is a flag name, "quest:<id>" (that quest is done), and "!" in
+ * front negates it. [["won:f5", "mouth_cleared"], ["!act1_complete"]] = (won:f5 or mouth_cleared)
+ * and not act1_complete.
+ */
+export const StoryCondition = z.array(z.array(z.string().min(1)).min(1));
+
+/** One clickable spot on a walk-around place map. */
+export const MapSpot = z
+  .object({
+    id: Id,
+    label: z.string().min(1),
+    /** One or two characters on the marker. */
+    glyph: z.string().min(1).max(2),
+    /** area: a stage of the place's story; search: something to find; quest: a meeting; exit. */
+    kind: z.enum(['area', 'search', 'quest', 'exit']),
+    /** The stitch in the place's story to start ("arrive.seam"). Not for exits. */
+    knot: z.string().min(1).optional(),
+    x: z.number(),
+    y: z.number(),
+    /** Can be visited once this holds (otherwise shown dimmed, with `hint`). */
+    requires: StoryCondition.optional(),
+    /** Finished once this holds (shown with a tick). */
+    done: StoryCondition.optional(),
+    /** Only on the map at all while this holds. */
+    showIf: StoryCondition.optional(),
+    hint: z.string().min(1).optional(),
+    /** Darkness over the unexplored part of the map, lifted once the spot can be visited. */
+    fog: z.tuple([z.number(), z.number(), z.number(), z.number()]).optional(),
+  })
+  .strict();
+export type MapSpot = z.infer<typeof MapSpot>;
+
+/** A place you walk around instead of reading one long scene (the Old Mine, the King's Kiln). */
+export const PlaceMap = z
+  .object({
+    /** The places.json id. */
+    id: Id,
+    title: z.string().min(1),
+    subtitle: z.string().min(1),
+    /** Its Ink story (src/content/dialogue/<story>.ink). */
+    story: z.string().min(1),
+    /** The quest whose steps show beside the map. */
+    quest: Id,
+    art: z.enum(['mine', 'kiln']),
+    /** Where the party stands on arrival. */
+    start: z.tuple([z.number(), z.number()]),
+    spots: z.array(MapSpot).min(2),
+    ...Verify,
+  })
+  .strict();
+export type PlaceMap = z.infer<typeof PlaceMap>;
+export const PlaceMapFile = fileOf('maps', PlaceMap);
+
 export const WixFile = z
   .object({ jokes: z.array(z.string().min(1)).min(1), greeting: z.string().min(1) })
   .strict();

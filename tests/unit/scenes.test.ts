@@ -93,22 +93,35 @@ describe('the goblin warren', () => {
 
 describe('the Old Mine to the end of Act I', () => {
   it('mouth (talked down) → seam → halls → Ulric (talked down) → Deepdelver, the shard, and Maelis', () => {
-    let c = new Conversation('mine', game(false, { knows_ulric: true }), hi()).start('arrive');
+    // Each area is its own stop on the mine map: it ends, and the next one is started from the map.
+    const at = (c: Conversation, knot: string) =>
+      new Conversation('mine', c.game, hi()).start(knot);
+    let c = new Conversation('mine', game(false, { knows_ulric: true }), hi()).start(
+      'arrive.mouth',
+    );
     pick(c, /None of this is worth dying for/);
     expect(c.game.flags['mouth_cleared']).toBe(true);
+    expect(c.ended).toBe(true);
+    c = at(c, 'arrive.seam');
     pick(c, /Press on into the seam/);
     expect(c.fight?.encounterId).toBe('f6-deep-seam');
     c = afterFight(c);
+    expect(c.ended).toBe(true);
+    c = at(c, 'arrive.halls');
     pick(c, /Read the runes/);
     expect(c.game.quests['old-mine']!.steps).toEqual(
       expect.arrayContaining(['mine-mouth', 'deep-seam', 'halls']),
     );
+    c = at(c, 'arrive.shrine');
     pick(c, /Brannoc sent us/);
     pick(c, /Step down into the shrine/);
     expect(c.fight?.encounterId).toBe('f7-sunken-shrine');
     c = afterFight(c, 'parley');
     expect(c.game.flags['ulric_spared']).toBe(true);
     expect(c.game.inventory['deepdelver']).toBe(1);
+    expect(said(c)).toMatch(/red lantern is burning/);
+    // Back at the mine mouth, Maelis is waiting.
+    c = at(c, 'arrive.maelis');
     expect(said(c)).toMatch(/Maelis Varrow/);
     const xp = c.game.party[0]!.xp;
     pick(c, /No\. The shard stays/);
@@ -125,9 +138,25 @@ describe('the Old Mine to the end of Act I', () => {
     pick(c, /Step down/);
     c = afterFight(c, 'won');
     expect(c.game.flags['ulric_dead']).toBe(true);
+    c = new Conversation('mine', c.game, hi()).start('arrive');
     pick(c, /Take it\. It's yours/);
     expect(c.game.flags['gave_shard']).toBe(true);
     expect(c.game.flags['has_shard']).toBe(false);
+  });
+
+  it('things to find: the ore cart, the names in the rock, the dwarven storeroom', () => {
+    let c = pick(new Conversation('mine', game(), hi()).start('arrive.cart'), /Search it/);
+    expect(c.game.gold).toBe(25);
+    expect(c.game.flags['mine_cart']).toBe(true);
+    c = pick(new Conversation('mine', game(), lo()).start('arrive.cart'), /Search it/);
+    expect(c.game.gold).toBe(8);
+    c = new Conversation('mine', game(false, { truth_collapse: true }), hi()).start(
+      'arrive.memorial',
+    );
+    expect(said(c)).toMatch(/thirty of them/);
+    expect(said(c)).toMatch(/Hadric Varrow out on purpose/);
+    c = pick(new Conversation('mine', game(), hi()).start('arrive.alcove'), /Open the jars/);
+    expect(c.game.inventory['potion-of-healing']).toBe(1);
   });
 
   it('[Corin]: meeting Maelis is a reunion', () => {
