@@ -1,5 +1,7 @@
 # The Ember Crown: Magic Items & Elite Monsters (v0.1)
 
+> **Item numbers and descriptions live in `src/data/magicItems.json`.** This doc keeps where each item comes from and why. If they disagree, the JSON wins.
+
 *Every magic item is from the user's DMG (✅ = found in the DMG's item tables) unless marked homebrew. Rarity follows the DMG's guidance: uncommon items through about level 4, rare from about level 5. Each act's **elite** reward is one step stronger than the act's other items. It's powerful, but still within reason for the level.*
 
 ---

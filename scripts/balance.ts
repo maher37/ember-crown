@@ -59,7 +59,7 @@ if (writeReport) {
         .join('; ') +
       '.',
     '',
-    'Targets [inferred, RPG_Game_Plan §5]: main fights won 85–97% on Medium at the expected level; Hard-designed fights 75–95%; elites 40–85% (they are Deadly by design); travel encounters 90%+. The bot plays sensibly but not brilliantly, so real players should do a little better.',
+    'Targets [inferred, DECISIONS.md]: main fights won 85–97% on Medium at the expected level; Hard-designed fights 75–95%; elites 40–85% (they are Deadly by design); travel encounters 90%+. The bot plays sensibly but not brilliantly, so real players should do a little better.',
     '',
     '| Fight | Lvl | Party | Easy | Medium | Hard | Medium: rounds | HP left (wins) | Downed | A hero died | Target |',
     '|---|---|---|---|---|---|---|---|---|---|---|',

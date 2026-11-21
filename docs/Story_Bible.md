@@ -316,7 +316,7 @@ Epilogue slides also report on Brannoc, Edric, Ulric, Wynn's granddaughter, Kell
 - The villain is always sympathetic and never a cartoon. Maelis is right about the past and wrong about the future.
 - Foreshadow each reveal at least twice before it lands (for example, the "friend in Ashford Hall" letter and Tarrow's nervous kindness).
 - **Set in the Forgotten Realms (personal use only).** Use real Faerûn geography (Greypeaks, Grayflow, Marsh of Chelimber, Waterdeep), real gods (townsfolk swear by Tymora, the cleric serves Lathander, miners pray to Moradin's old shrines) and light real history (Ammarindar). Keep our own characters, towns and plot; don't copy from published adventures. Monsters and rules come from the PHB/DMG/MM.
-- If this game is ever shared, swap the Faerûn names back to invented ones (a simple find-and-replace list lives in RPG_Game_Plan.md).
+- If this game is ever shared, swap the Faerûn names back to invented ones (a simple find-and-replace list lives in DECISIONS.md, D18).
 
 ---
 

@@ -1,6 +1,6 @@
 # The Ember Crown: Encounters & XP (v0.1)
 
-*Companion to Story_Bible.md and RPG_Game_Plan.md. All XP values are **per character** (party of 4) unless marked.*
+*Companion to Story_Bible.md and DECISIONS.md. All XP values are **per character** (party of 4) unless marked.*
 *Math uses the 2014 DMG encounter rules and the PHB leveling table (verified from the user's PDFs). Monster stats are from SRD 5.1 / the Monster Manual. CR/XP values are from memory: verify each in the MM (see CONFIRM LOCALLY).*
 
 ---

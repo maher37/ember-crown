@@ -1,5 +1,7 @@
 # The Ember Crown: Rules Scope (v0.1)
 
+> **Spell, class and item numbers live in `src/data/*.json`.** This doc says *which* rules exist and any house rules (§7). If a number here disagrees with the JSON, the JSON wins.
+
 *Exactly which 5e (2014) rules the game implements. Source: the user's Player's Handbook, DMG and Basic Rules PDFs, for personal use. Everything here is written in our own words and keeps only the numbers the engine needs. ✅ = checked against the PDFs this session; everything else is from the 2014 PHB as best known; verify during data entry (see CONFIRM LOCALLY).*
 
 ---
