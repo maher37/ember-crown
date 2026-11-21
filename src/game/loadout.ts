@@ -160,6 +160,9 @@ export function placeProblem(hero: Hero, lo: Loadout, slot: SlotId, id: string):
   }
   if (kind === 'shield' && !armorProfsOf(hero).includes('shields'))
     return `${first} isn't trained with shields.`;
+  // DMG: Attunement. Some items can only be attuned by a spellcaster (Wand of the War Mage, Pearl of Power).
+  if (magicOf(id)?.attunement === 'spellcaster' && !getClass(hero.classId).spellcasting)
+    return `${name} needs a spellcaster to attune to it.`;
   if (kind === 'weapon') {
     const w = weaponFor(id, hero);
     if (!w) return `${name} can't be wielded.`;

@@ -79,6 +79,8 @@ adopt, then Story_Bible.md is updated in the same PR (CLAUDE.md: ask before chan
 | 9 | **Shorter, punchier scenes** | All three | Trim long description to 2–3 sentences, end scenes on a question or a cliffhanger, and add more spoken lines from people instead of narration. The new dialogue styling already helps. | S, ongoing |
 | 10 | **Party banter on the road** | BG2/BG3 | Short exchanges between *your* heroes while travelling, chosen from their class, background and personality (a new pick in the character creator: ideal, bond and flaw from the PHB backgrounds). | M |
 
+**Adopted (owner, Nov 21):** #1 (every hero is marked), #3 and #6. See D28 in RPG_Game_Plan.md.
+
 **My suggested first step [inferred]:** #1 (ember-marked heroes) + #3 (the world remembers) + #6
 (Maelis in person). Together they fix the biggest problem, "why do I care?", without rebuilding the
 game. #2 (camp companions) is the biggest win after that.

@@ -1,0 +1,83 @@
+{
+  "verify": true,
+  "verifyNote": "Bounties are our own: each reuses a road encounter (its usual XP) plus a small quest award and a purse. Gold is our pick for the act [inferred].",
+  "bounties": [
+    {
+      "quest": "bounty-stirges",
+      "act": 1,
+      "poster": "REWARD 25 gp. Stirges nesting in the reeds below Varrow's Mill have bled two mules white. Kill the lot.",
+      "place": "mill",
+      "encounter": "road-stirges",
+      "rewardGp": 25,
+      "requires": [["quest:lantern-night"]],
+      "from": "Hamlin Shaw, carter"
+    },
+    {
+      "quest": "bounty-bandits",
+      "act": 1,
+      "poster": "REWARD 50 gp. Robbers on the Ashwood track, five at least, masked. Two carts taken this tenday. Bring them in or drive them off.",
+      "place": "ashwood",
+      "encounter": "road-bandits",
+      "rewardGp": 50,
+      "requires": [["quest:lantern-night"]],
+      "from": "Ashford Hall"
+    },
+    {
+      "quest": "bounty-griffon",
+      "act": 1,
+      "poster": "REWARD 100 gp. A griffon has taken nine goats from the hills above the old mine. It will take a child next. Kill it or drive it off.",
+      "place": "old-mine",
+      "encounter": "road-griffon",
+      "rewardGp": 100,
+      "requires": [["quest:lantern-night"]],
+      "from": "The Shepherds of Copper Ridge"
+    },
+    {
+      "quest": "deserters",
+      "act": 2,
+      "poster": "REWARD 300 gp. Four bandits camped at the edge of the Forgotten Forest. Dead or alive. Apply to the Grey Company.",
+      "place": "deserters-camp",
+      "setsFlag": "bounty_known",
+      "from": "Captain R. Kell"
+    },
+    {
+      "quest": "bounty-spiders",
+      "act": 2,
+      "poster": "REWARD 80 gp. Giant spiders across the marsh paths. The lizardfolk will thank you; the Hall will pay you.",
+      "place": "lizardfolk-grounds",
+      "encounter": "marsh-spiders",
+      "rewardGp": 80,
+      "requires": [["bridge_crossed"]],
+      "from": "Ashford Hall"
+    },
+    {
+      "quest": "bounty-ghouls",
+      "act": 2,
+      "poster": "REWARD 100 gp. Two ghouls on the Marrowmere causeway. Don't get scratched.",
+      "place": "marrowmere",
+      "encounter": "marsh-ghouls",
+      "rewardGp": 100,
+      "requires": [["bridge_crossed"]],
+      "from": "The Ferrymen's Guild"
+    },
+    {
+      "quest": "bounty-owlbear",
+      "act": 3,
+      "poster": "REWARD 150 gp. An owlbear holds the pass road. Evacuees need that road. Hurry.",
+      "place": "ashfall-pass",
+      "encounter": "heights-owlbear",
+      "rewardGp": 150,
+      "from": "Ashford Hall"
+    },
+    {
+      "quest": "bounty-troll",
+      "act": 3,
+      "poster": "REWARD 250 gp. A troll under the old bridge below the Great Forge. Bring fire. Bring a lot of fire.",
+      "place": "great-forge",
+      "encounter": "heights-troll",
+      "rewardGp": 250,
+      "requires": [["pass_cleared"]],
+      "from": "The Kiln-Road Teamsters"
+    }
+  ]
+}

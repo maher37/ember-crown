@@ -11,6 +11,13 @@ import { InventoryDialog, JournalDialog, SaveDialog, SpellsDialog } from './Expl
 import { PartyBar } from './PartyBar';
 import { GameMenuButton } from './GameMenu';
 import { KilnMap, MineMap } from './scenes/DungeonMaps';
+import { TownMap } from './scenes/TownMap';
+import { BoardDialog } from './BoardDialog';
+import { FindsPanel } from './FindsPanel';
+import { ShopDialog } from './ShopDialog';
+import { boardNotices } from '../game/bounties';
+import { questTargets } from '../game/questMap';
+import { getShop, hoursToMarket, shopOpen } from '../game/shops';
 import { PARTY_OFFSETS, useWalk } from './useWalk';
 
 const STATE_TEXT: Record<SpotState, string> = {
@@ -20,10 +27,13 @@ const STATE_TEXT: Record<SpotState, string> = {
   done: 'done',
 };
 
-/** A place you walk around (the Old Mine, the King's Kiln): each spot opens part of its story. */
+/** A place you walk around (Ashford, the Old Mine, the King's Kiln): each spot opens part of its story. */
 export function PlaceMapScreen() {
-  const { game, talk, toasts, clearToasts, goto, openMap, openCamp } = useGame();
-  const [dialog, setDialog] = useState<null | 'journal' | 'spells' | 'save' | 'inventory'>(null);
+  const { game, talk, toasts, clearToasts, goto, openMap, openCamp, enterTavern } = useGame();
+  const [dialog, setDialog] = useState<
+    null | 'journal' | 'spells' | 'save' | 'inventory' | 'board'
+  >(null);
+  const [shopId, setShopId] = useState<string | null>(null);
   const [hint, setHint] = useState<string | null>(null);
   const g = game!;
   const m = placeMapFor(g.location)!;
@@ -36,8 +46,16 @@ export function PlaceMapScreen() {
   }, [toasts, clearToasts]);
 
   const next = nextSpot(g, m);
-  const quest = quests.find((q) => q.id === m.quest);
-  const qs = g.quests[m.quest];
+  const quest = m.quest ? quests.find((q) => q.id === m.quest) : undefined;
+  const qs = m.quest ? g.quests[m.quest] : undefined;
+  const isTown = m.art === 'town';
+  // In town: the active main quests, and a "!" where there's something new.
+  const mainQuests = Object.entries(g.quests)
+    .map(([id, st]) => ({ q: quests.find((x) => x.id === id)!, st }))
+    .filter((x) => x.q && x.q.kind === 'main' && x.st.status === 'active');
+  const boardNews = boardNotices(g).some((n) => n.state === 'new' || n.state === 'hunted');
+  const tavernNews = isTown && (questTargets(g)['ashford'] ?? []).length > 0;
+  const closed = (s: MapSpot) => s.kind === 'shop' && !shopOpen(g, getShop(s.shop!));
   const visit = (s: MapSpot, state: SpotState) => {
     if (state === 'locked') {
       setHint(`${s.label}: ${s.hint ?? 'not reached yet.'}`);
@@ -45,12 +63,26 @@ export function PlaceMapScreen() {
     }
     setHint(null);
     if (s.kind === 'exit') return walkTo(s.x, s.y, openMap);
+    if (s.kind === 'door') return walkTo(s.x, s.y, enterTavern);
+    if (s.kind === 'board') return walkTo(s.x, s.y, () => setDialog('board'));
+    if (s.kind === 'shop') {
+      if (closed(s)) {
+        const days = Math.max(1, Math.ceil(hoursToMarket(g.clock) / 24));
+        return walkTo(s.x, s.y, () =>
+          setHint(
+            `The market square is quiet. Odo's wagon comes on market days (the first four of each tenday): back in about ${days} day${days === 1 ? '' : 's'}.`,
+          ),
+        );
+      }
+      return walkTo(s.x, s.y, () => setShopId(s.shop!));
+    }
+    if (s.kind === 'npc') return walkTo(s.x, s.y, () => talk(s.knot!, s.story ?? m.story));
     if (state === 'done') {
       // Somewhere already dealt with: just walk there.
       walkTo(s.x, s.y, () => setHint(`${s.label}: nothing more to do here.`));
       return;
     }
-    walkTo(s.x, s.y, () => talk(s.knot!, m.story));
+    walkTo(s.x, s.y, () => talk(s.knot!, s.story ?? m.story));
   };
 
   return (
@@ -76,7 +108,13 @@ export function PlaceMapScreen() {
 
       <div className="explore-main">
         <div className="tavern-map place-map">
-          {m.art === 'mine' ? <MineMap /> : <KilnMap />}
+          {m.art === 'mine' ? (
+            <MineMap />
+          ) : m.art === 'kiln' ? (
+            <KilnMap />
+          ) : (
+            <TownMap act={g.act} market={shopOpen(g, getShop('wagon'))} />
+          )}
           {m.spots.map((s) => {
             const st = spotState(g, s);
             return st !== 'locked' || !s.fog ? null : (
@@ -91,14 +129,18 @@ export function PlaceMapScreen() {
           {m.spots.map((s) => {
             const st = spotState(g, s);
             if (st === 'hidden') return null;
-            const isNext = next?.id === s.id;
+            const isNext =
+              next?.id === s.id ||
+              (s.kind === 'board' && boardNews) ||
+              (s.kind === 'door' && tavernNews);
+            const away = closed(s);
             return (
               <button
                 key={s.id}
                 type="button"
-                className={`hotspot ${s.kind} ${st}${isNext ? ' next' : ''}`}
+                className={`hotspot ${s.kind} ${st}${isNext ? ' next' : ''}${away ? ' away' : ''}`}
                 style={{ left: s.x - 22, top: s.y - 22 }}
-                aria-label={`${s.label}${STATE_TEXT[st] ? ` (${STATE_TEXT[st]})` : ''}${isNext ? ' (go here next)' : ''}`}
+                aria-label={`${s.label}${STATE_TEXT[st] ? ` (${STATE_TEXT[st]})` : ''}${away ? ' (away today)' : ''}${isNext ? (s.kind === 'board' || s.kind === 'door' ? ' (new)' : ' (go here next)') : ''}`}
                 aria-disabled={st === 'locked'}
                 onClick={() => visit(s, st)}
               >
@@ -140,6 +182,22 @@ export function PlaceMapScreen() {
         </div>
 
         <aside className="journal-panel" aria-label="Journal">
+          {isTown &&
+            mainQuests.map(({ q, st }) => (
+              <div key={q.id} className="quest-card main">
+                <span className="eyebrow">Main quest</span>
+                <span className="quest-title">{q.title}</span>
+                {q.steps
+                  .filter((s) => !st.steps.includes(s.id))
+                  .slice(0, 3)
+                  .map((s) => (
+                    <div key={s.id} className="step">
+                      <span className="box" aria-hidden="true" />
+                      <span>{s.text}</span>
+                    </div>
+                  ))}
+              </div>
+            ))}
           {quest && qs && (
             <div className="quest-card main">
               <span className="eyebrow">
@@ -159,10 +217,12 @@ export function PlaceMapScreen() {
               ))}
             </div>
           )}
+          <FindsPanel placeId={m.id} />
           <div className="xp-card small">
             <span>
-              Click a marked place to go there. <strong>!</strong> is the way on; ◇ is something to
-              search; ? is somewhere you haven't reached.
+              {isTown
+                ? 'Click a building or a person to walk there. ! means something new.'
+                : "Click a marked place to go there. ! is the way on; ◇ is something to search; ? is somewhere you haven't reached."}
             </span>
           </div>
           <div className="toasts" role="status" aria-live="polite">
@@ -184,8 +244,8 @@ export function PlaceMapScreen() {
           <button type="button" onClick={() => setDialog('spells')}>
             Spells
           </button>
-          <button type="button" onClick={() => openCamp()}>
-            Make camp
+          <button type="button" onClick={() => (isTown ? enterTavern() : openCamp())}>
+            {isTown ? 'Rest at the inn' : 'Make camp'}
           </button>
           <button type="button" onClick={() => setDialog('journal')}>
             Journal
@@ -202,6 +262,8 @@ export function PlaceMapScreen() {
       {dialog === 'spells' && <SpellsDialog onClose={() => setDialog(null)} />}
       {dialog === 'save' && <SaveDialog onClose={() => setDialog(null)} />}
       {dialog === 'inventory' && <InventoryDialog onClose={() => setDialog(null)} />}
+      {dialog === 'board' && <BoardDialog onClose={() => setDialog(null)} />}
+      {shopId && <ShopDialog shopId={shopId} onClose={() => setShopId(null)} />}
     </div>
   );
 }

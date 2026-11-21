@@ -1,3 +1,4 @@
+import { getPlace } from '../game/travel';
 import { useEffect, useRef, useState } from 'react';
 import { quests, spells } from '../data';
 import { getClass, resourceLeft, slotsLeft, maxSlots } from '../game/hero';
@@ -72,6 +73,9 @@ export function JournalDialog({ onClose }: { onClose: () => void }) {
                         <li key={s.id} className={st.steps.includes(s.id) ? 'done' : ''}>
                           {st.steps.includes(s.id) ? '✓ ' : '☐ '}
                           {s.text}
+                          {!st.steps.includes(s.id) && s.place && (
+                            <span className="small faint"> · {getPlace(s.place).name}</span>
+                          )}
                         </li>
                       ))}
                   </ul>

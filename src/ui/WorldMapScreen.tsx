@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { places } from '../data';
 import { formatDate } from '../game/calendar';
 import { useGame } from '../game/store';
+import { questTargets } from '../game/questMap';
 import { currentPlace, isUnlocked, travelHours } from '../game/travel';
 import { PLACE_SCENES } from '../game/dialogue';
 import { canLevelUp } from '../rules';
@@ -10,7 +11,8 @@ import mapArt from './art/worldmap.svg?raw';
 import './World.css';
 import { SoundButton } from '../audio/SoundButton';
 import { GameMenuButton } from './GameMenu';
-import { ShopDialog } from './ShopDialog';
+import { FindsPanel } from './FindsPanel';
+import { placeMapFor } from '../game/placeMaps';
 
 const KIND_COLORS: Record<string, [string, string]> = {
   town: ['#f8f3e8', '#5a3b22'],
@@ -35,14 +37,22 @@ const DANGER: Record<string, [string, string]> = {
 
 /** Travel map of the southern Greypeaks (rebuilt from docs/mockups/WorldMap.dc.html). */
 export function WorldMapScreen() {
-  const { game, travelTo, travelLog, goto, openCamp, enterPlace } = useGame();
+  const { game, travelTo, travelLog, goto, openCamp, enterPlace, enterTown } = useGame();
   const [items, setItems] = useState(false);
-  const [shop, setShop] = useState(false);
   const [spellsOpen, setSpells] = useState(false);
   const g = game!;
   const here = currentPlace(g);
-  const [selId, setSel] = useState(here.id === 'ashford' ? 'old-mine' : here.id);
+  const targets = questTargets(g);
+  // Start where the party is; in Ashford, on where the main quest leads (else any quest).
+  const [selId, setSel] = useState(() =>
+    here.id !== 'ashford'
+      ? here.id
+      : (Object.entries(targets).find(([id, l]) => id !== here.id && l[0]!.kind === 'main')?.[0] ??
+        Object.keys(targets).find((id) => id !== here.id) ??
+        here.id),
+  );
   const sel = places.find((p) => p.id === selId)!;
+  const selTargets = targets[sel.id] ?? [];
   const locked = !isUnlocked(g, sel);
   const isHere = sel.id === here.id;
   const hours = travelHours(here, sel);
@@ -72,12 +82,8 @@ export function WorldMapScreen() {
             {formatDate(g.clock)}
           </span>
           {here.id === 'ashford' ? (
-            <button
-              type="button"
-              className="menu-secondary small-btn"
-              onClick={() => goto('explore')}
-            >
-              To the tavern
+            <button type="button" className="menu-secondary small-btn" onClick={() => enterTown()}>
+              Into town
             </button>
           ) : (
             <button type="button" className="menu-secondary small-btn" onClick={() => openCamp()}>
@@ -87,15 +93,6 @@ export function WorldMapScreen() {
           <button type="button" className="menu-secondary small-btn" onClick={() => goto('party')}>
             Party{g.party.some((h) => canLevelUp(h)) ? ' · level up!' : ''}
           </button>
-          {here.id === 'ashford' && (
-            <button
-              type="button"
-              className="menu-secondary small-btn"
-              onClick={() => setShop(true)}
-            >
-              Shop
-            </button>
-          )}
           <button type="button" className="menu-secondary small-btn" onClick={() => setItems(true)}>
             Inventory
           </button>
@@ -127,7 +124,7 @@ export function WorldMapScreen() {
                 key={p.id}
                 type="button"
                 className={`marker ${p.id === selId ? 'on' : ''}`}
-                aria-label={`${p.name} (${isUnlocked(g, p) ? p.tag : `Act ${['I', 'II', 'III'][p.act - 1]} · locked`})${p.id === here.id ? ', you are here' : ''}`}
+                aria-label={`${p.name} (${isUnlocked(g, p) ? p.tag : `Act ${['I', 'II', 'III'][p.act - 1]} · locked`})${p.id === here.id ? ', you are here' : ''}${targets[p.id] ? `, quest: ${targets[p.id]!.map((t) => t.title).join(', ')}` : ''}`}
                 aria-pressed={p.id === selId}
                 style={{
                   left: p.x - size / 2,
@@ -139,6 +136,14 @@ export function WorldMapScreen() {
                 }}
                 onClick={() => setSel(p.id)}
               >
+                {targets[p.id] && (
+                  <span
+                    className={`quest-pin ${targets[p.id]!.some((t) => t.kind === 'main') ? 'main' : 'side'}`}
+                    aria-hidden="true"
+                  >
+                    !
+                  </span>
+                )}
                 {p.kind === 'elite' && isUnlocked(g, p) && (
                   <svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true">
                     <circle cx="7" cy="6" r="5" fill="#f3e3d0" />
@@ -164,6 +169,20 @@ export function WorldMapScreen() {
                   ? sel.requires.hint
                   : 'The story hasn’t reached here yet.'}
             </span>
+            {selTargets.length > 0 && (
+              <ul className="quest-here" aria-label="Quests here">
+                {selTargets.map((t) => (
+                  <li key={t.questId} className={t.kind}>
+                    <span className="quest-pin-inline" aria-hidden="true">
+                      !
+                    </span>
+                    <span>
+                      <strong>{t.title}:</strong> {t.step}
+                    </span>
+                  </li>
+                ))}
+              </ul>
+            )}
             <dl className="place-facts">
               <div>
                 <dt>Travel time</dt>
@@ -184,6 +203,11 @@ export function WorldMapScreen() {
                 <dd>{REGION_NAMES[sel.region === 'none' ? here.region : sel.region]}</dd>
               </div>
             </dl>
+            {isHere && sel.id === 'ashford' && (
+              <button type="button" className="travel-btn" onClick={() => enterTown()}>
+                Walk into Ashford
+              </button>
+            )}
             {isHere && PLACE_SCENES[sel.id] && (
               <button type="button" className="travel-btn" onClick={() => enterPlace(sel.id)}>
                 Explore {sel.name}
@@ -209,6 +233,7 @@ export function WorldMapScreen() {
               </span>
             )}
           </div>
+          {here.id !== 'ashford' && !placeMapFor(here.id) && <FindsPanel placeId={here.id} />}
           <div className="travel-log" role="log" aria-live="polite">
             <span className="eyebrow muted-eyebrow">Travel log</span>
             {travelLog.length === 0 && (
@@ -236,11 +261,16 @@ export function WorldMapScreen() {
             <span>
               <span className="legend-dot" style={{ background: '#9a9488' }} /> Unexplored
             </span>
+            <span>
+              <span className="quest-pin-inline" aria-hidden="true">
+                !
+              </span>{' '}
+              Where a quest leads
+            </span>
           </div>
         </aside>
       </div>
       {items && <InventoryDialog onClose={() => setItems(false)} />}
-      {shop && <ShopDialog onClose={() => setShop(false)} />}
       {spellsOpen && <SpellsDialog onClose={() => setSpells(false)} />}
     </div>
   );

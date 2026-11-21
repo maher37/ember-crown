@@ -171,6 +171,18 @@ export function startCombat(o: StartOptions): CombatState {
     // ember bargain can also make him resist fire.
     for (const c of Object.values(s.combatants)) {
       const h = heroOf(c);
+      // Story_Review #1: the kindled gifts. Fire resistance for every marked hero, and the
+      // warmth that keeps them standing (temporary HP equal to their level at the start of a fight).
+      if (h && o.flags?.['kindled_resist'])
+        c.effects.push({
+          id: 'resist-fire-kindled',
+          name: 'Kindled: fire resistance',
+          sourceId: c.id,
+          tag: 'resistance',
+          data: { type: 'fire' },
+        });
+      if (h && o.flags?.['kindled_vigor'] && !h.dead && h.hp > 0)
+        c.creature = { ...c.creature, tempHp: Math.max(c.creature.tempHp, h.level) };
       if (h && h.origin === 'corin' && o.flags?.['ember_resist'])
         c.effects.push({
           id: 'resist-fire-ember',
@@ -359,9 +371,13 @@ function beginTurn(ctx: Ctx): boolean {
   const who = c.side === 'party' ? 'you' : 'foe';
   // DMG: Periapt of Wound Closure (Lysa's Locket). While dying, you stabilize at the start of your turn.
   const wearer = heroOf(c);
-  if (isDying(c.creature) && wearer && hasItem(wearer, 'lysas-locket')) {
+  if (isDying(c.creature) && wearer && hasSpecial(wearer, 'auto-stabilize')) {
     c.creature = stabilize(c.creature);
-    say(s, 'you', `${c.name}'s locket glows: ${c.name} is stable`);
+    say(
+      s,
+      'you',
+      `${c.name}'s ${hasItem(wearer, 'lysas-locket') ? 'locket' : 'periapt'} glows: ${c.name} is stable`,
+    );
     return false;
   }
   if (isDying(c.creature)) {

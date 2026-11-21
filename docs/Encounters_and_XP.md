@@ -113,6 +113,20 @@ Phase 1 is skipped if the party talks Maelis down.
 | **Wix's Homecoming** | 1. Wix's clan in the upper caves. 2. The giant at their door. | Hill giant + ogre: 2,250 → 3,375, **Hard** | 1,562 | A back way into the Kiln (skips half of the Star's last stand) |
 | *Discoveries* | | | 213 | |
 
+### Bounties and finds (D27, Nov 21)
+Extra, on top of the four side quests per act. Bounties reuse road encounters (their usual combat XP) and add quest XP and gold:
+| Bounty | Act | Fight | Quest XP/PC | Gold |
+|---|---|---|---|---|
+| Stirges at the Mill Pond | I | road-stirges (25) | 50 | 25 |
+| Bandits on the River Road | I | road-bandits (31) | 75 | 50 |
+| The Goat-Taker | I | road-griffon (112) | 100 | 100 |
+| Spiders in the Reeds | II | marsh-spiders (100) | 100 | 80 |
+| The Causeway Ghouls | II | marsh-ghouls (100) | 125 | 100 |
+| Owlbear on the Goat Track | III | heights-owlbear (175) | 150 | 150 |
+| The Troll at the Forge Bridge | III | heights-troll (450) | 250 | 250 |
+
+Find quests (no fights): the Smuggler's Note 100, the Sergeant's Key 150, the Kiln-Wardens' Strongroom 250 XP/PC. All of this together is about 1,800 XP/PC across the game, which mostly brings level 6 a little earlier for completionists [inferred: not yet run through the balance simulator].
+
 ### Completion math (per character, before the finale)
 | Completion of optional content | Total XP | Level at finale |
 |---|---|---|

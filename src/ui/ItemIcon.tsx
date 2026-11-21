@@ -1,7 +1,7 @@
 // Item icons (playtest): a small drawing for every item, framed by rarity, so a hard-won magic item
 // looks special beside plain gear. Original SVG.
 import { armor, magicItems, weapons } from '../data';
-import { RARE_FINDS } from '../game/gear';
+import { SOLD_ANYWHERE } from '../game/shops';
 import { slotKindOf } from '../game/loadout';
 
 export type Rarity = 'mundane' | 'common' | 'uncommon' | 'rare' | 'very-rare' | 'story';
@@ -10,7 +10,7 @@ export type Rarity = 'mundane' | 'common' | 'uncommon' | 'rare' | 'very-rare' | 
 export function rarityOf(id: string): Rarity {
   const m = magicItems.find((x) => x.id === id);
   if (!m) return 'mundane';
-  const bought = RARE_FINDS.some((x) => x.id === id) || id.startsWith('potion-of-healing');
+  const bought = SOLD_ANYWHERE.has(id) || id.startsWith('potion-of-healing');
   if (!bought && !m.consumable) return 'story';
   return m.rarity;
 }

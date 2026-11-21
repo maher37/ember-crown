@@ -40,6 +40,8 @@ import { heroPortrait } from './heroLook';
 import { Portrait } from './Portrait';
 import './Sheet.css';
 
+const NO_FLAGS: Record<string, boolean | number | string> = {};
+
 const ABILITY_NAMES: Record<Ability, string> = {
   str: 'Strength',
   dex: 'Dexterity',
@@ -88,6 +90,14 @@ export function CharacterSheet({ hero }: { hero: Hero }) {
 
 function StatsTab({ hero }: { hero: Hero }) {
   const { openLevelUp } = useGame();
+  const flags = useGame((s) => s.game?.flags) ?? NO_FLAGS;
+  // Story_Review #1: the ember-kiss and Cindrath's gifts.
+  const marked = !!flags['ember_marked'];
+  const gifts = [
+    flags['kindled_resist'] && 'resists fire',
+    flags['kindled_strike'] && 'once a turn a weapon hit adds 1d4 fire',
+    flags['kindled_vigor'] && `starts each fight with ${hero.level} temporary HP`,
+  ].filter(Boolean);
   const cls = getClass(hero.classId);
   const sp = getSpecies(hero.speciesId);
   const bg = getBackground(hero.backgroundId);
@@ -306,6 +316,18 @@ function StatsTab({ hero }: { hero: Hero }) {
                   <span className="small muted">{t.summary}</span>
                 </li>
               ))}
+              {marked && (
+                <li>
+                  <span className="strong">Ember-kiss</span>{' '}
+                  <span className="faint small">(Lantern Night)</span>{' '}
+                  <span className="small muted">
+                    A red ring under the skin of the palm. Cindrath can speak to the marked.
+                    {gifts.length
+                      ? ` Kindled ${Number(flags['kindled'] ?? 0)} of 3: ${gifts.join('; ')}.`
+                      : ' No gifts taken.'}
+                  </span>
+                </li>
+              )}
               <li>
                 <span className="strong">{bg.feature.name}</span>{' '}
                 <span className="faint small">({bg.name})</span>{' '}

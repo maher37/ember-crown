@@ -276,6 +276,8 @@ describe('side quests', () => {
       bridge_crossed: true,
       lizard_passed: true,
       marrowmere_done: true,
+      // Maelis's one visit to the mill (Story_Review #6) has happened.
+      maelis_mill_met: true,
     });
     const g = {
       ...done,

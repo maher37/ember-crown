@@ -18,6 +18,7 @@ import cavesInk from '../content/dialogue/caves.ink';
 import forgeInk from '../content/dialogue/forge.ink';
 import kilnInk from '../content/dialogue/kiln.ink';
 import passInk from '../content/dialogue/pass.ink';
+import townInk from '../content/dialogue/town.ink';
 import { backgrounds, classes, npcs, species } from '../data';
 import {
   abilityCheck,
@@ -59,6 +60,7 @@ export const STORIES: Record<string, string> = {
   forge: forgeInk,
   caves: cavesInk,
   kiln: kilnInk,
+  town: townInk,
 };
 
 /** The scene that opens when the party arrives at a map location (Ashford is the tavern). */
@@ -286,6 +288,8 @@ export class Conversation {
     s.BindExternalFunction('gold', () => this.game.gold ?? 0, true);
     s.BindExternalFunction('truths', () => truthCount(this.game), true);
     s.BindExternalFunction('ember', () => Number(this.game.flags['ember'] ?? 0), true);
+    s.BindExternalFunction('kindled', () => Number(this.game.flags['kindled'] ?? 0), true);
+    s.BindExternalFunction('trust', () => Number(this.game.flags['maelis_trust'] ?? 0), true);
     s.BindExternalFunction('speech', () => this.speech());
     s.BindExternalFunction('regain_slot', () => {
       const r = regainCorinSlot(this.game);
@@ -371,7 +375,9 @@ export class Conversation {
       };
       return false;
     }
-    const dc = 15 - finaleDcReduction(g);
+    // Story_Review #1: each of Cindrath's gifts the party took makes the voice harder to argue with
+    // (+1 DC per gift).
+    const dc = 15 - finaleDcReduction(g) + Number(g.flags['kindled'] ?? 0);
     const bonus = skillBonus(roller, 'persuasion') - abilityModifier(roller.abilities.cha);
     const r = abilityCheck(roller, 'cha', dc, this.rng, {
       label: 'Persuasion',

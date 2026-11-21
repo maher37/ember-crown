@@ -171,6 +171,41 @@ export function crossCheck(d: GameData): { errors: string[]; warnings: string[] 
   for (const q of d.quests)
     if (q.next && !questIds.has(q.next))
       errors.push(`quest ${q.id}: unknown next quest "${q.next}"`);
+  // Quest steps point at real places on the world map.
+  const placeIds = ids(d.places);
+  for (const q of d.quests)
+    for (const st of q.steps)
+      if (st.place && !placeIds.has(st.place))
+        errors.push(`quest ${q.id} step ${st.id}: unknown place "${st.place}"`);
+
+  // Shops, bounties and finds point at real items, quests, places, fights and shops.
+  const sellable = new Set([...itemIds, ...weaponIds, ...ids(d.armor), ...ids(d.gear)]);
+  const shopIds = ids(d.shops);
+  for (const sh of d.shops)
+    for (const it of sh.items)
+      if (!sellable.has(it.id)) errors.push(`shop ${sh.id}: unknown item "${it.id}"`);
+  for (const b of d.bounties) {
+    if (!questIds.has(b.quest)) errors.push(`bounty ${b.quest}: unknown quest`);
+    if (!placeIds.has(b.place)) errors.push(`bounty ${b.quest}: unknown place "${b.place}"`);
+    if (b.encounter && !encIds.has(b.encounter))
+      errors.push(`bounty ${b.quest}: unknown encounter "${b.encounter}"`);
+    if (b.encounter && !b.rewardGp) errors.push(`bounty ${b.quest}: a fight needs a reward`);
+  }
+  for (const f of d.finds) {
+    if (!placeIds.has(f.place)) errors.push(`find ${f.id}: unknown place "${f.place}"`);
+    for (const it of f.loot.items)
+      if (!sellable.has(it.id)) errors.push(`find ${f.id}: unknown item "${it.id}"`);
+    if (f.startsQuest && !questIds.has(f.startsQuest))
+      errors.push(`find ${f.id}: unknown quest "${f.startsQuest}"`);
+    if (f.completes) {
+      const q = d.quests.find((x) => x.id === f.completes!.quest);
+      if (!q?.steps.some((s) => s.id === f.completes!.step))
+        errors.push(`find ${f.id}: unknown quest step ${f.completes.quest}/${f.completes.step}`);
+    }
+    if (f.shop && !shopIds.has(f.shop)) errors.push(`find ${f.id}: unknown shop "${f.shop}"`);
+    if (f.kind === 'merchant' && !f.shop) errors.push(`find ${f.id}: a merchant needs a shop`);
+  }
+  if (new Set(d.finds.map((f) => f.id)).size !== d.finds.length) errors.push('finds: duplicate id');
 
   // Magic weapons point at real weapons.
   for (const i of d.magicItems) {

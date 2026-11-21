@@ -456,6 +456,123 @@
       "id": "epilogue",
       "name": "Afterwards",
       "title": "The end of the story"
+    },
+    {
+      "id": "hobb",
+      "name": "Hobb Tullow",
+      "title": "Town crier of Ashford",
+      "portrait": {
+        "skin": "#d9a77e",
+        "hair": "#7a4a2a",
+        "eyes": "#4a6b8a",
+        "hairStyle": "short",
+        "beard": false,
+        "scar": false,
+        "cloth": "#8a2f2f"
+      }
+    },
+    {
+      "id": "gran-esk",
+      "name": "Gran Esk",
+      "title": "Keeper of the well, and of everyone's business",
+      "portrait": {
+        "skin": "#c99a7a",
+        "hair": "#d8d4cc",
+        "eyes": "#5a5a4a",
+        "hairStyle": "hood",
+        "beard": false,
+        "scar": false,
+        "cloth": "#5a4a6a"
+      }
+    },
+    {
+      "id": "mags",
+      "name": "Mags Fenner",
+      "title": "Fishwife at the Grayflow docks",
+      "portrait": {
+        "skin": "#a8714e",
+        "hair": "#3a2a1e",
+        "eyes": "#6b4a2b",
+        "hairStyle": "long",
+        "beard": false,
+        "scar": true,
+        "cloth": "#3f6a6a"
+      }
+    },
+    {
+      "id": "pell",
+      "name": "Pell",
+      "title": "A miner's boy, nine and a half",
+      "portrait": {
+        "skin": "#e0b48c",
+        "hair": "#c98a3a",
+        "eyes": "#4a7a4a",
+        "hairStyle": "short",
+        "beard": false,
+        "scar": false,
+        "cloth": "#6a5a3a"
+      }
+    },
+    {
+      "id": "hulda",
+      "name": "Hulda Stonemantle",
+      "title": "Smith of the Stonemantle Forge",
+      "portrait": {
+        "skin": "#b98a6a",
+        "hair": "#8a3a1e",
+        "eyes": "#3a3a3a",
+        "hairStyle": "long",
+        "beard": true,
+        "scar": true,
+        "cloth": "#4a3a2a"
+      }
+    },
+    {
+      "id": "sabeth",
+      "name": "Sabeth Quillon",
+      "title": "Keeper of Quillon's Curios",
+      "portrait": {
+        "skin": "#e8c8a8",
+        "hair": "#2a2a3a",
+        "eyes": "#7a5aa8",
+        "hairStyle": "long",
+        "beard": false,
+        "scar": false,
+        "cloth": "#4a2f6a"
+      }
+    },
+    {
+      "id": "aubra",
+      "name": "Sister Aubra",
+      "title": "Priest of Lathander at the Dawn Shrine",
+      "portrait": {
+        "skin": "#8a5a3a",
+        "hair": "#1e1a18",
+        "eyes": "#5a3a1e",
+        "hairStyle": "hood",
+        "beard": false,
+        "scar": false,
+        "cloth": "#c98a2a"
+      }
+    },
+    {
+      "id": "odo",
+      "name": "Odo Fenwick",
+      "title": "Travelling peddler (halfling)",
+      "portrait": {
+        "skin": "#e0b090",
+        "hair": "#6a4a2a",
+        "eyes": "#4a6a3a",
+        "hairStyle": "short",
+        "beard": false,
+        "scar": false,
+        "cloth": "#2f5a3a"
+      }
+    },
+    {
+      "id": "town",
+      "name": "Ashford",
+      "title": "The town on the Grayflow"
     }
   ]
 }

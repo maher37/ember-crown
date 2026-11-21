@@ -36,8 +36,12 @@ export function PartyScreen() {
         <div>
           <h1>Party</h1>
           <p className="muted">
-            {game.location === 'drowned-lantern' ? 'The Drowned Lantern, Ashford' : 'On the road'} ·
-            Act {['I', 'II', 'III'][game.act - 1]}
+            {game.location === 'drowned-lantern'
+              ? 'The Drowned Lantern, Ashford'
+              : game.location === 'ashford'
+                ? 'The streets of Ashford'
+                : 'On the road'}{' '}
+            · Act {['I', 'II', 'III'][game.act - 1]}
           </p>
         </div>
         <div className="party-actions">
@@ -45,7 +49,9 @@ export function PartyScreen() {
             {homeScreen(game) === 'explore'
               ? 'Back to the tavern'
               : homeScreen(game) === 'placemap'
-                ? 'Back'
+                ? game.location === 'ashford'
+                  ? 'Back to Ashford'
+                  : 'Back'
                 : 'Back to the map'}
           </button>
           {game.party

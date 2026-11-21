@@ -4,7 +4,7 @@
 
 Each line was entered from memory or is marked ⚠ in the design docs. Check it against your PDFs. When a line is right (or fixed), remove its `verify` and `verifyNote` from the JSON and run `npm run verify-list` again.
 
-**332 items to check.**
+**342 items to check.**
 
 ## species.json
 
@@ -297,6 +297,13 @@ Each line was entered from memory or is marked ⚠ in the design docs. Check it 
 - [ ] **items › Shield +1**: Price is our own (XGtE: uncommon 101–500 gp).
 - [ ] **items › Ring of Protection**: Price is our own (XGtE: rare 501–5,000 gp; kept low for a small economy).
 - [ ] **items › Cloak of Protection**: Price is our own. A second cloak for the shop (Scald's hoard has the first).
+- [ ] **items › Wand of the War Mage +1**: Name from the DMG; effect summarized from memory, price our own (XGtE puts uncommon items at 101–500 gp, rare at 501–5,000).
+- [ ] **items › Wand of the War Mage +2**: Name from the DMG; effect summarized from memory, price our own (XGtE puts uncommon items at 101–500 gp, rare at 501–5,000).
+- [ ] **items › Pearl of Power**: Name from the DMG; effect summarized from memory, price our own (XGtE puts uncommon items at 101–500 gp, rare at 501–5,000).
+- [ ] **items › Sentinel Shield**: Name from the DMG; effect summarized from memory, price our own (XGtE puts uncommon items at 101–500 gp, rare at 501–5,000).
+- [ ] **items › Periapt of Wound Closure**: Name from the DMG; effect summarized from memory, price our own (XGtE puts uncommon items at 101–500 gp, rare at 501–5,000).
+- [ ] **items › Boots of Elvenkind**: Name from the DMG; effect summarized from memory, price our own (XGtE puts uncommon items at 101–500 gp, rare at 501–5,000).
+- [ ] **items › Stone of Good Luck**: Name from the DMG; effect summarized from memory, price our own (XGtE puts uncommon items at 101–500 gp, rare at 501–5,000).
 
 ## encounters.json
 
@@ -378,6 +385,18 @@ Each line was entered from memory or is marked ⚠ in the design docs. Check it 
 - [ ] **places › The Ashwood**: Added in M7 for The Herbalist's Granddaughter ('track her through the Ashwood'); the map position is my pick [inferred].
 - [ ] **places › The toll bridge**: Added in M8 for F8 (Encounters_and_XP §4); placed at the mockup's 'toll bridge' label [inferred].
 - [ ] **places › Deserters' camp**: Added in M8 for Deserters' Bounty; position is my pick [inferred].
+
+## shops.json
+
+- [ ] **(whole file)**: Shops, keepers and prices are our own (PHB prices for mundane gear; magic item prices from the XGtE ranges). Temple service prices follow the DMG's spellcasting-services guidance as remembered [inferred].
+
+## bounties.json
+
+- [ ] **(whole file)**: Bounties are our own: each reuses a road encounter (its usual XP) plus a small quest award and a purse. Gold is our pick for the act [inferred].
+
+## finds.json
+
+- [ ] **(whole file)**: Finds, DCs and rewards are our own (DMG DCs: easy 10, medium 15, hard 20; treasure sized to each act) [inferred].
 
 ## epilogue.json
 

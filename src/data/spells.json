@@ -1552,7 +1552,7 @@
       },
       "components": "V, S, M",
       "classes": ["bard", "cleric", "druid", "sorcerer", "warlock", "wizard"],
-      "summary": "A humanoid makes a Wis save or is paralyzed; it repeats the save at the end of each of its turns.",
+      "summary": "A humanoid makes a Wis save or is paralyzed: attacks against it have advantage, and any hit from within 5 ft is a critical hit. It repeats the save at the end of each of its turns.",
       "effects": [
         {
           "type": "save",

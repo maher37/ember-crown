@@ -10,15 +10,18 @@
       "steps": [
         {
           "id": "talk-brannoc",
-          "text": "Speak with Brannoc, the innkeeper"
+          "text": "Speak with Brannoc, the innkeeper",
+          "place": "ashford"
         },
         {
           "id": "tend-edric",
-          "text": "See to the wounded courier (Medicine)"
+          "text": "See to the wounded courier (Medicine)",
+          "place": "ashford"
         },
         {
           "id": "secure-letter",
-          "text": "Find out who wants the courier's letter"
+          "text": "Find out who wants the courier's letter",
+          "place": "ashford"
         }
       ],
       "completeWhen": ["tend-edric", "secure-letter"],
@@ -34,39 +37,48 @@
       "steps": [
         {
           "id": "road",
-          "text": "Take the Ashford road toward the old mine (F2)"
+          "text": "Take the Ashford road toward the old mine (F2)",
+          "place": "old-mine"
         },
         {
           "id": "warren-gate",
-          "text": "Get past the goblin warren's gate (F3)"
+          "text": "Get past the goblin warren's gate (F3)",
+          "place": "warren"
         },
         {
           "id": "grisk",
-          "text": "Deal with Grisk Two-Teeth (F4: fight, sneak or trade)"
+          "text": "Deal with Grisk Two-Teeth (F4: fight, sneak or trade)",
+          "place": "warren"
         },
         {
           "id": "miners",
-          "text": "Bring the missing miners out of the warren"
+          "text": "Bring the missing miners out of the warren",
+          "place": "warren"
         },
         {
           "id": "mine-mouth",
-          "text": "Get past the diggers at the mine mouth (F5)"
+          "text": "Get past the diggers at the mine mouth (F5)",
+          "place": "old-mine"
         },
         {
           "id": "deep-seam",
-          "text": "Cross the Deep Seam (F6)"
+          "text": "Cross the Deep Seam (F6)",
+          "place": "old-mine"
         },
         {
           "id": "halls",
-          "text": "Find the way into the old Ammarindar halls"
+          "text": "Find the way into the old Ammarindar halls",
+          "place": "old-mine"
         },
         {
           "id": "shrine",
-          "text": "Face Brother Ulric in the sunken shrine (F7)"
+          "text": "Face Brother Ulric in the sunken shrine (F7)",
+          "place": "old-mine"
         },
         {
           "id": "maelis",
-          "text": "Climb back to the mine mouth with the shard"
+          "text": "Climb back to the mine mouth with the shard",
+          "place": "old-mine"
         }
       ],
       "completeWhen": ["maelis"],
@@ -82,15 +94,18 @@
       "steps": [
         {
           "id": "start",
-          "text": "Ask Brannoc about the scratching"
+          "text": "Ask Brannoc about the scratching",
+          "place": "ashford"
         },
         {
           "id": "clear",
-          "text": "Clear Brannoc's cellar"
+          "text": "Clear Brannoc's cellar",
+          "place": "ashford"
         },
         {
           "id": "tunnel",
-          "text": "Follow the old tunnel under the cellar"
+          "text": "Follow the old tunnel under the cellar",
+          "place": "ashford"
         }
       ],
       "completeWhen": ["tunnel"]
@@ -105,15 +120,18 @@
       "steps": [
         {
           "id": "plea",
-          "text": "Hear Old Wynn out at the Drowned Lantern"
+          "text": "Hear Old Wynn out at the Drowned Lantern",
+          "place": "ashford"
         },
         {
           "id": "track",
-          "text": "Track Tamsin through the Ashwood"
+          "text": "Track Tamsin through the Ashwood",
+          "place": "ashwood"
         },
         {
           "id": "camp",
-          "text": "Find the recruiters' camp: bring Tamsin home, or let her choose"
+          "text": "Find the recruiters' camp: bring Tamsin home, or let her choose",
+          "place": "ashwood"
         }
       ],
       "completeWhen": ["camp"]
@@ -128,15 +146,18 @@
       "steps": [
         {
           "id": "investigate",
-          "text": "Investigate Varrow's Mill after dark"
+          "text": "Investigate Varrow's Mill after dark",
+          "place": "mill"
         },
         {
           "id": "shadows",
-          "text": "Drive out the shadows"
+          "text": "Drive out the shadows",
+          "place": "mill"
         },
         {
           "id": "rest",
-          "text": "Find Lysa Varrow's locket and lay her ghost to rest"
+          "text": "Find Lysa Varrow's locket and lay her ghost to rest",
+          "place": "mill"
         }
       ],
       "completeWhen": ["rest"]
@@ -151,15 +172,18 @@
       "steps": [
         {
           "id": "spare",
-          "text": "Spare the goblin scout on the road"
+          "text": "Spare the goblin scout on the road",
+          "place": "old-mine"
         },
         {
           "id": "pies",
-          "text": "Settle the matter of the stolen pies with Brannoc"
+          "text": "Settle the matter of the stolen pies with Brannoc",
+          "place": "ashford"
         },
         {
           "id": "luck-stone",
-          "text": "Bring Wix's clan luck-stone out of the warren"
+          "text": "Bring Wix's clan luck-stone out of the warren",
+          "place": "warren"
         }
       ],
       "completeWhen": ["luck-stone"]
@@ -174,39 +198,48 @@
       "steps": [
         {
           "id": "bridge",
-          "text": "Cross the Grayflow at the Grey Company's toll bridge (F8)"
+          "text": "Cross the Grayflow at the Grey Company's toll bridge (F8)",
+          "place": "toll-bridge"
         },
         {
           "id": "marsh",
-          "text": "Get through the lizardfolk hunting grounds (F9)"
+          "text": "Get through the lizardfolk hunting grounds (F9)",
+          "place": "lizardfolk-grounds"
         },
         {
           "id": "marrowmere",
-          "text": "Find out what happened in Drowned Marrowmere (F10)"
+          "text": "Find out what happened in Drowned Marrowmere (F10)",
+          "place": "marrowmere"
         },
         {
           "id": "chapel",
-          "text": "Clear the Marrowmere chapel (F11)"
+          "text": "Clear the Marrowmere chapel (F11)",
+          "place": "marrowmere"
         },
         {
           "id": "hall",
-          "text": "Find the 'friend in Ashford Hall'"
+          "text": "Find the 'friend in Ashford Hall'",
+          "place": "ashford"
         },
         {
           "id": "tarrow",
-          "text": "Decide Mayor Tarrow's fate (F12)"
+          "text": "Decide Mayor Tarrow's fate (F12)",
+          "place": "ashford"
         },
         {
           "id": "cloister",
-          "text": "Break into the abbey cloister (F13)"
+          "text": "Break into the abbey cloister (F13)",
+          "place": "abbey"
         },
         {
           "id": "undercroft",
-          "text": "Face Sister Venna in the abbey undercroft (F14)"
+          "text": "Face Sister Venna in the abbey undercroft (F14)",
+          "place": "abbey"
         },
         {
           "id": "archives",
-          "text": "Read the abbey archives"
+          "text": "Read the abbey archives",
+          "place": "abbey"
         }
       ],
       "completeWhen": ["archives"],
@@ -222,11 +255,13 @@
       "steps": [
         {
           "id": "find",
-          "text": "Find Mother Sallow's hut through the wisp-lit bog"
+          "text": "Find Mother Sallow's hut through the wisp-lit bog",
+          "place": "sallow"
         },
         {
           "id": "bargain",
-          "text": "Strike her bargain, or break it"
+          "text": "Strike her bargain, or break it",
+          "place": "sallow"
         }
       ],
       "completeWhen": ["bargain"]
@@ -241,11 +276,13 @@
       "steps": [
         {
           "id": "track",
-          "text": "Track the 'bandits'"
+          "text": "Track the 'bandits'",
+          "place": "deserters-camp"
         },
         {
           "id": "decide",
-          "text": "Free them, or turn them in"
+          "text": "Free them, or turn them in",
+          "place": "deserters-camp"
         }
       ],
       "completeWhen": ["decide"]
@@ -260,15 +297,18 @@
       "steps": [
         {
           "id": "clue",
-          "text": "Find the clue in the abbey chapel"
+          "text": "Find the clue in the abbey chapel",
+          "place": "abbey"
         },
         {
           "id": "crypt",
-          "text": "Search the flooded crypt"
+          "text": "Search the flooded crypt",
+          "place": "abbey"
         },
         {
           "id": "restore",
-          "text": "Restore the shield at the shrine"
+          "text": "Restore the shield at the shrine",
+          "place": "abbey"
         }
       ],
       "completeWhen": ["restore"]
@@ -283,15 +323,18 @@
       "steps": [
         {
           "id": "shadow",
-          "text": "Shadow the mayor's runner"
+          "text": "Shadow the mayor's runner",
+          "place": "ashford"
         },
         {
           "id": "ledger",
-          "text": "Steal the Hall ledger"
+          "text": "Steal the Hall ledger",
+          "place": "ashford"
         },
         {
           "id": "ambush",
-          "text": "Survive Venna's enforcers"
+          "text": "Survive Venna's enforcers",
+          "place": "ashford"
         }
       ],
       "completeWhen": ["ambush"]
@@ -306,43 +349,53 @@
       "steps": [
         {
           "id": "ash",
-          "text": "Ash is falling on Ashford"
+          "text": "Ash is falling on Ashford",
+          "place": "ashford"
         },
         {
           "id": "pass",
-          "text": "Get through Ashfall Pass (F15)"
+          "text": "Get through Ashfall Pass (F15)",
+          "place": "ashfall-pass"
         },
         {
           "id": "gate",
-          "text": "Break through the Kiln Gate (F16)"
+          "text": "Break through the Kiln Gate (F16)",
+          "place": "kings-kiln"
         },
         {
           "id": "puzzle",
-          "text": "Open the gate's lock"
+          "text": "Open the gate's lock",
+          "place": "kings-kiln"
         },
         {
           "id": "halls",
-          "text": "Cross the Furnace Halls (F17)"
+          "text": "Cross the Furnace Halls (F17)",
+          "place": "kings-kiln"
         },
         {
           "id": "seal",
-          "text": "Break the Kiln's first seal"
+          "text": "Break the Kiln's first seal",
+          "place": "kings-kiln"
         },
         {
           "id": "honor-guard",
-          "text": "Pass Ser Ida and the Honor Guard (F18)"
+          "text": "Pass Ser Ida and the Honor Guard (F18)",
+          "place": "kings-kiln"
         },
         {
           "id": "galleries",
-          "text": "Cross the Ember Galleries (F19)"
+          "text": "Cross the Ember Galleries (F19)",
+          "place": "kings-kiln"
         },
         {
           "id": "last-stand",
-          "text": "Break the Hollow Star's last stand (F20)"
+          "text": "Break the Hollow Star's last stand (F20)",
+          "place": "kings-kiln"
         },
         {
           "id": "crowning",
-          "text": "Stop the Crowning"
+          "text": "Stop the Crowning",
+          "place": "kings-kiln"
         }
       ],
       "completeWhen": ["crowning"]
@@ -357,11 +410,13 @@
       "steps": [
         {
           "id": "tubes",
-          "text": "Find the forge through the lava tubes"
+          "text": "Find the forge through the lava tubes",
+          "place": "great-forge"
         },
         {
           "id": "relight",
-          "text": "Relight the forge and quench a weapon"
+          "text": "Relight the forge and quench a weapon",
+          "place": "great-forge"
         }
       ],
       "completeWhen": ["relight"]
@@ -376,15 +431,18 @@
       "steps": [
         {
           "id": "oath",
-          "text": "Hear Ser Ida's oath"
+          "text": "Hear Ser Ida's oath",
+          "place": "kings-kiln"
         },
         {
           "id": "ossuary",
-          "text": "Search the ossuary"
+          "text": "Search the ossuary",
+          "place": "kings-kiln"
         },
         {
           "id": "rest",
-          "text": "Lay King Varrow's remains to rest"
+          "text": "Lay King Varrow's remains to rest",
+          "place": "kings-kiln"
         }
       ],
       "completeWhen": ["rest"]
@@ -399,11 +457,13 @@
       "steps": [
         {
           "id": "convoy",
-          "text": "Escort the evacuation convoy"
+          "text": "Escort the evacuation convoy",
+          "place": "ashford"
         },
         {
           "id": "choice",
-          "text": "Brannoc's choice: leave the inn, or defend it"
+          "text": "Brannoc's choice: leave the inn, or defend it",
+          "place": "ashford"
         }
       ],
       "completeWhen": ["choice"]
@@ -418,14 +478,226 @@
       "steps": [
         {
           "id": "clan",
-          "text": "Meet Wix's clan"
+          "text": "Meet Wix's clan",
+          "place": "wix-caves"
         },
         {
           "id": "giant",
-          "text": "Deal with the giant at their door"
+          "text": "Deal with the giant at their door",
+          "place": "wix-caves"
         }
       ],
       "completeWhen": ["giant"]
+    },
+    {
+      "id": "bounty-stirges",
+      "title": "Bounty: Stirges at the Mill Pond",
+      "kind": "side",
+      "act": 1,
+      "summary": "The Hall pays for the bloodsuckers nesting in the reeds by Varrow's Mill.",
+      "xp": 50,
+      "steps": [
+        {
+          "id": "hunt",
+          "text": "Clear the stirges by the mill pond",
+          "place": "mill"
+        },
+        {
+          "id": "claim",
+          "text": "Collect the bounty at the town hall",
+          "place": "ashford"
+        }
+      ],
+      "completeWhen": ["claim"]
+    },
+    {
+      "id": "bounty-bandits",
+      "title": "Bounty: Bandits on the River Road",
+      "kind": "side",
+      "act": 1,
+      "summary": "Five robbers have been stopping carts on the Ashwood track.",
+      "xp": 75,
+      "steps": [
+        {
+          "id": "hunt",
+          "text": "Deal with the bandits on the Ashwood track",
+          "place": "ashwood"
+        },
+        {
+          "id": "claim",
+          "text": "Collect the bounty at the town hall",
+          "place": "ashford"
+        }
+      ],
+      "completeWhen": ["claim"]
+    },
+    {
+      "id": "bounty-griffon",
+      "title": "Bounty: The Goat-Taker",
+      "kind": "side",
+      "act": 1,
+      "summary": "A griffon has been carrying off goats from the hills above the old mine.",
+      "xp": 100,
+      "steps": [
+        {
+          "id": "hunt",
+          "text": "Drive off the griffon in the hills above the mine",
+          "place": "old-mine"
+        },
+        {
+          "id": "claim",
+          "text": "Collect the bounty at the town hall",
+          "place": "ashford"
+        }
+      ],
+      "completeWhen": ["claim"]
+    },
+    {
+      "id": "bounty-spiders",
+      "title": "Bounty: Spiders in the Reeds",
+      "kind": "side",
+      "act": 2,
+      "summary": "Giant spiders are webbing the marsh paths the lizardfolk hunt on.",
+      "xp": 100,
+      "steps": [
+        {
+          "id": "hunt",
+          "text": "Burn out the spiders in the hunting grounds",
+          "place": "lizardfolk-grounds"
+        },
+        {
+          "id": "claim",
+          "text": "Collect the bounty at the town hall",
+          "place": "ashford"
+        }
+      ],
+      "completeWhen": ["claim"]
+    },
+    {
+      "id": "bounty-ghouls",
+      "title": "Bounty: The Causeway Ghouls",
+      "kind": "side",
+      "act": 2,
+      "summary": "Two ghouls stalk the causeway into Marrowmere after dark.",
+      "xp": 125,
+      "steps": [
+        {
+          "id": "hunt",
+          "text": "Put down the ghouls on the Marrowmere causeway",
+          "place": "marrowmere"
+        },
+        {
+          "id": "claim",
+          "text": "Collect the bounty at the town hall",
+          "place": "ashford"
+        }
+      ],
+      "completeWhen": ["claim"]
+    },
+    {
+      "id": "bounty-owlbear",
+      "title": "Bounty: Owlbear on the Goat Track",
+      "kind": "side",
+      "act": 3,
+      "summary": "An owlbear, driven down by the heat, has the pass road to itself.",
+      "xp": 150,
+      "steps": [
+        {
+          "id": "hunt",
+          "text": "Deal with the owlbear in Ashfall Pass",
+          "place": "ashfall-pass"
+        },
+        {
+          "id": "claim",
+          "text": "Collect the bounty at the town hall",
+          "place": "ashford"
+        }
+      ],
+      "completeWhen": ["claim"]
+    },
+    {
+      "id": "bounty-troll",
+      "title": "Bounty: The Troll at the Forge Bridge",
+      "kind": "side",
+      "act": 3,
+      "summary": "A troll has taken the old bridge below the Great Forge and eats whoever crosses.",
+      "xp": 250,
+      "steps": [
+        {
+          "id": "hunt",
+          "text": "Kill the troll below the Great Forge (fire or acid finishes it)",
+          "place": "great-forge"
+        },
+        {
+          "id": "claim",
+          "text": "Collect the bounty at the town hall",
+          "place": "ashford"
+        }
+      ],
+      "completeWhen": ["claim"]
+    },
+    {
+      "id": "smugglers-cache",
+      "title": "The Smuggler's Note",
+      "kind": "side",
+      "act": 1,
+      "summary": "A note in a buried satchel: 'Rest under the third millstone.'",
+      "xp": 100,
+      "steps": [
+        {
+          "id": "note",
+          "text": "Find what the smuggler buried in the Ashwood",
+          "place": "ashwood"
+        },
+        {
+          "id": "cache",
+          "text": "Look under the third millstone at Varrow's Mill",
+          "place": "mill"
+        }
+      ],
+      "completeWhen": ["cache"]
+    },
+    {
+      "id": "sergeants-key",
+      "title": "The Sergeant's Key",
+      "kind": "side",
+      "act": 2,
+      "summary": "A drowned Grey Company sergeant carried a key tagged 'Marrowmere chapel, strongbox'.",
+      "xp": 150,
+      "steps": [
+        {
+          "id": "badge",
+          "text": "Search the drowned sergeant in the reeds",
+          "place": "lizardfolk-grounds"
+        },
+        {
+          "id": "strongbox",
+          "text": "Find the strongbox in Marrowmere",
+          "place": "marrowmere"
+        }
+      ],
+      "completeWhen": ["strongbox"]
+    },
+    {
+      "id": "wardens-vault",
+      "title": "The Kiln-Wardens' Strongroom",
+      "kind": "side",
+      "act": 3,
+      "summary": "An Ammarindar rune-stone names a strongroom near the Great Forge.",
+      "xp": 250,
+      "steps": [
+        {
+          "id": "rune",
+          "text": "Read the rune-stone in Ashfall Pass",
+          "place": "ashfall-pass"
+        },
+        {
+          "id": "vault",
+          "text": "Open the Kiln-Wardens' strongroom at the Great Forge",
+          "place": "great-forge"
+        }
+      ],
+      "completeWhen": ["vault"]
     }
   ],
   "awards": [

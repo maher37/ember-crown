@@ -1,6 +1,123 @@
 {
   "maps": [
     {
+      "id": "ashford",
+      "title": "Ashford",
+      "subtitle": "A mining town on the Grayflow",
+      "story": "town",
+      "art": "town",
+      "start": [352, 318],
+      "spots": [
+        {
+          "id": "exit",
+          "label": "The north road (world map)",
+          "glyph": "⇡",
+          "kind": "exit",
+          "x": 452,
+          "y": 36
+        },
+        {
+          "id": "tavern",
+          "label": "The Drowned Lantern",
+          "glyph": "⌂",
+          "kind": "door",
+          "x": 214,
+          "y": 392
+        },
+        {
+          "id": "board",
+          "label": "Ashford Hall: notice board",
+          "glyph": "✉",
+          "kind": "board",
+          "x": 548,
+          "y": 186
+        },
+        {
+          "id": "hall",
+          "label": "Ashford Hall: see the mayor",
+          "glyph": "H",
+          "kind": "area",
+          "story": "ashford",
+          "knot": "hall",
+          "x": 452,
+          "y": 152,
+          "showIf": [["marrowmere_done"], ["!hall_resolved"]]
+        },
+        {
+          "id": "smithy",
+          "label": "Stonemantle Forge (smith)",
+          "glyph": "⚒",
+          "kind": "shop",
+          "shop": "smithy",
+          "x": 160,
+          "y": 210
+        },
+        {
+          "id": "curios",
+          "label": "Quillon's Curios (magic)",
+          "glyph": "✦",
+          "kind": "shop",
+          "shop": "curios",
+          "x": 726,
+          "y": 318
+        },
+        {
+          "id": "temple",
+          "label": "The Dawn Shrine (temple)",
+          "glyph": "☀",
+          "kind": "shop",
+          "shop": "temple",
+          "x": 738,
+          "y": 150
+        },
+        {
+          "id": "wagon",
+          "label": "Market square: Odo's wagon",
+          "glyph": "⚖",
+          "kind": "shop",
+          "shop": "wagon",
+          "x": 456,
+          "y": 298
+        },
+        {
+          "id": "crier",
+          "label": "Hobb, the town crier",
+          "glyph": "H",
+          "kind": "npc",
+          "knot": "crier",
+          "x": 590,
+          "y": 250
+        },
+        {
+          "id": "gran",
+          "label": "Gran Esk, by the well",
+          "glyph": "G",
+          "kind": "npc",
+          "knot": "gran",
+          "x": 330,
+          "y": 276
+        },
+        {
+          "id": "mags",
+          "label": "Mags, at the docks",
+          "glyph": "M",
+          "kind": "npc",
+          "knot": "mags",
+          "x": 618,
+          "y": 430
+        },
+        {
+          "id": "pell",
+          "label": "Pell, a miner's boy",
+          "glyph": "P",
+          "kind": "npc",
+          "knot": "pell",
+          "x": 300,
+          "y": 164
+        }
+      ]
+    },
+    {
       "id": "old-mine",
       "title": "The Old Mine",
       "subtitle": "Varrow's old diggings, and what lies under them",

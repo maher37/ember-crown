@@ -40,6 +40,10 @@ export interface GameState {
   inventory: Record<string, number>;
   /** The party's purse, in gold pieces (M8). */
   gold: number;
+  /** Things found while exploring (finds.json): spotted, or opened and emptied. */
+  finds?: Record<string, 'seen' | 'done'>;
+  /** Purchases from merchants with a limit, by "shop:visit". */
+  purchases?: Record<string, number>;
 }
 
 export interface SaveFile {
@@ -173,7 +177,10 @@ export const GameStateSchema = z.object({
   lastLongRest: z.number().int().nullable(),
   letters: z.array(z.object({ id: z.string(), read: z.boolean(), reply: z.string().optional() })),
   inventory: z.record(z.string(), z.number().int().min(0)),
-  gold: z.number().int().min(0),
+  // Gold can be fractional (1 sp = 0.1 gp).
+  gold: z.number().min(0),
+  finds: z.record(z.string(), z.enum(['seen', 'done'])).optional(),
+  purchases: z.record(z.string(), z.number().int().min(0)).optional(),
 }) satisfies z.ZodType<GameState>;
 
 export const SaveFileSchema = z.object({

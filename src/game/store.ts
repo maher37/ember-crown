@@ -21,10 +21,14 @@ import {
 } from './combat';
 import { Conversation, PLACE_SCENES } from './dialogue';
 import { placeMapFor } from './placeMaps';
+import { claimBounty, getBounty, markHunted, takeBounty } from './bounties';
+import { openFind, searchArea, spotFinds, type OpenHow, type OpenResult } from './finds';
+import { buyAt, sellAt, applyService } from './shops';
 import {
   buy,
   equipToSlot,
   isMagicItem,
+  itemName,
   sell,
   startingPack,
   switchWeapons,
@@ -41,18 +45,16 @@ import { GAME_START } from './calendar';
 import { formatDate } from './calendar';
 import { bestFor, parseSkill } from './dialogue';
 import { skillBonus, spellNumbers } from './hero';
-import { addNote, completeStep, partyXp } from './journal';
+import { addNote, completeStep, kindledOfferDue, partyXp } from './journal';
 import { deliverLetters, readLetter } from './letters';
 import { canLongRest, finishShortRest, spendDie, startShortRest, takeLongRest } from './rest';
 import { currentPlace, getPlace, roadCheck, travelHours, travelLeg } from './travel';
 import { applyLevelUp, type LevelUpPlan } from './levelup';
 import { makeSave, writeSlot, type GameState, type SaveFile, type SlotId } from './save';
 
-/** Put the party at a place (Ashford means the tavern). */
-const arrive = (g: GameState, placeId: string): GameState => ({
-  ...g,
-  location: placeId === 'ashford' ? 'drowned-lantern' : placeId,
-});
+/** Put the party at a place, and notice what's in plain sight or within passive Perception. */
+const arrive = (g: GameState, placeId: string): { game: GameState; messages: string[] } =>
+  spotFinds({ ...g, location: placeId }, placeId);
 
 export type Screen =
   | 'title'
@@ -117,6 +119,23 @@ interface GameStore {
   afterDialogue: 'place' | null;
   /** Which hero the party screen's character sheet shows. */
   sheetHeroId: string | null;
+  /** The bounty whose fight is under way (its hunt step completes on a win). */
+  hunt: string | null;
+
+  buyFrom: (shopId: string, itemId: string) => string | undefined;
+  sellTo: (shopId: string, itemId: string) => string | undefined;
+  templeService: (serviceId: string, heroId?: string) => string | undefined;
+  /** Take a notice from the Hall's board. */
+  takeNotice: (questId: string) => void;
+  claimNotice: (questId: string) => string | undefined;
+  /** Go after a taken bounty here: its fight starts. */
+  huntBounty: (questId: string) => void;
+  /** Search the place the party is at (once a day); returns the log. */
+  searchHere: () => string[];
+  openFindAt: (findId: string, how: OpenHow) => OpenResult;
+  /** Step out of the tavern into Ashford's streets, or back in. */
+  enterTown: () => void;
+  enterTavern: () => void;
 
   /** Open the story scene of a map location (the current one by default). */
   enterPlace: (placeId?: string) => void;
@@ -150,7 +169,7 @@ interface GameStore {
   /** Drink a potion outside a fight. */
   drinkPotion: (heroId: string, itemId: string) => string | undefined;
   /** DMG: Pearl of Power (the Bog Pearl). Regain one spent slot of 3rd level or lower, once a day. */
-  spendPearl: (heroId: string) => string | undefined;
+  spendPearl: (heroId: string, itemId?: string) => string | undefined;
   /** DMG: Staff of Healing. Cure Wounds for 1 charge, out of combat. */
   spendStaff: (wielderId: string, targetId: string) => string | undefined;
 
@@ -232,6 +251,7 @@ export const useGame = create<GameStore>()((set, get) => ({
   resume: null,
   afterDialogue: null,
   sheetHeroId: null,
+  hunt: null,
   pendingNight: [],
 
   goto: (screen) => set({ screen }),
@@ -401,8 +421,19 @@ export const useGame = create<GameStore>()((set, get) => ({
         after = 'place';
       }
     }
+    // A bounty's fight won: the purse waits at the Hall.
+    const hunt = get().hunt;
+    if (hunt && !lost && getBounty(hunt).encounter === combat.encounterId) {
+      const r = markHunted(next, hunt);
+      next = r.game;
+      messages.push(...r.messages);
+    }
     const { pendingArrival, backToCamp } = get();
-    if (pendingArrival) next = arrive(next, pendingArrival);
+    if (pendingArrival) {
+      const r = arrive(next, pendingArrival);
+      next = r.game;
+      messages.push(...r.messages);
+    }
     if (!resume && pendingArrival && PLACE_SCENES[pendingArrival]) after = 'place';
     set({
       game: next,
@@ -418,6 +449,7 @@ export const useGame = create<GameStore>()((set, get) => ({
       pendingArrival: null,
       backToCamp: false,
       resume: null,
+      hunt: null,
     });
     get().saveTo('autosave');
     if (resume) {
@@ -468,6 +500,7 @@ export const useGame = create<GameStore>()((set, get) => ({
       get().openPrepare(fight.encounterId);
     } else if (travel === 'epilogue') set({ screen: 'epilogue' });
     else if (travel === 'map') get().openMap();
+    else if (travel === 'town') get().enterTown();
     else if (travel?.startsWith('scene:')) {
       // Another story's scene, e.g. "scene:ashford.hall" (the tavern's front door → Ashford Hall).
       const [story, ...rest] = travel.slice(6).split('.');
@@ -486,7 +519,7 @@ export const useGame = create<GameStore>()((set, get) => ({
     }
     const scene = PLACE_SCENES[id];
     if (!scene) {
-      set({ screen: id === 'drowned-lantern' || id === 'ashford' ? 'explore' : 'map' });
+      set({ screen: id === 'drowned-lantern' ? 'explore' : 'map' });
       return;
     }
     get().talk(scene.knot, scene.story);
@@ -561,6 +594,92 @@ export const useGame = create<GameStore>()((set, get) => ({
     if (game) set({ game: switchWeapons(game, heroId) });
   },
 
+  buyFrom: (shopId, itemId) => {
+    const { game } = get();
+    if (!game) return 'No game';
+    const r = buyAt(game, shopId, itemId);
+    if (!r.error) set({ game: r.game });
+    return r.error;
+  },
+
+  sellTo: (shopId, itemId) => {
+    const { game } = get();
+    if (!game) return 'No game';
+    const r = sellAt(game, shopId, itemId);
+    if (!r.error) set({ game: r.game });
+    return r.error;
+  },
+
+  templeService: (serviceId, heroId) => {
+    const { game } = get();
+    if (!game) return 'No game';
+    const r = applyService(game, serviceId, heroId);
+    if (r.error) return r.error;
+    set({ game: r.game });
+    if (r.message) get().toast([r.message]);
+    return undefined;
+  },
+
+  takeNotice: (questId) => {
+    const { game } = get();
+    if (!game) return;
+    const r = takeBounty(game, questId);
+    set({ game: r.game });
+    get().toast(r.messages);
+  },
+
+  claimNotice: (questId) => {
+    const { game } = get();
+    if (!game) return 'No game';
+    const r = claimBounty(game, questId);
+    if (r.error) return r.error;
+    set({ game: r.game });
+    get().toast(r.messages);
+    get().saveTo('autosave');
+    return undefined;
+  },
+
+  huntBounty: (questId) => {
+    const b = getBounty(questId);
+    if (!b.encounter) return;
+    set({ hunt: questId, pendingArrival: null, backToCamp: false, resume: null });
+    get().openPrepare(b.encounter);
+  },
+
+  searchHere: () => {
+    const { game, rngState } = get();
+    if (!game) return [];
+    const rng = SeededRng.fromState(rngState);
+    const r = searchArea(game, currentPlace(game).id, rng);
+    set({ game: r.game, rngState: rng.state });
+    return r.log;
+  },
+
+  openFindAt: (findId, how) => {
+    const { game, rngState } = get();
+    if (!game) throw new Error('No game');
+    const rng = SeededRng.fromState(rngState);
+    const r = openFind(game, findId, how, rng);
+    set({ game: r.game, rngState: rng.state });
+    if (r.messages.length) get().toast(r.messages);
+    if (r.opened) get().saveTo('autosave');
+    return r;
+  },
+
+  enterTown: () => {
+    const { game } = get();
+    if (!game) return;
+    const r = arrive(game, 'ashford');
+    set({ game: r.game, screen: 'placemap' });
+    if (r.messages.length) get().toast(r.messages);
+  },
+
+  enterTavern: () => {
+    const { game } = get();
+    if (!game) return;
+    set({ game: { ...game, location: 'drowned-lantern' }, screen: 'explore' });
+  },
+
   buyItem: (itemId) => {
     const { game } = get();
     if (!game) return 'No game';
@@ -593,10 +712,12 @@ export const useGame = create<GameStore>()((set, get) => ({
     return undefined;
   },
 
-  spendPearl: (heroId) => {
+  spendPearl: (heroId, itemId = 'bog-pearl') => {
     const { game } = get();
     if (!game) return 'No game';
-    if (game.flags['pearl_used']) return 'The pearl is dull until tomorrow (after a long rest).';
+    // The Bog Pearl keeps its old flag (saves); other pearls have one each.
+    const usedKey = itemId === 'bog-pearl' ? 'pearl_used' : `item_used:${itemId}`;
+    if (game.flags[usedKey]) return 'The pearl is dull until tomorrow (after a long rest).';
     const h = game.party.find((x) => x.id === heroId)!;
     const lvl = [3, 2, 1].find((l) => (h.slotsUsed[l - 1] ?? 0) > 0);
     if (!lvl) return `${h.name} has no spent spell slot of 3rd level or lower.`;
@@ -604,11 +725,11 @@ export const useGame = create<GameStore>()((set, get) => ({
     set({
       game: {
         ...game,
-        flags: { ...game.flags, pearl_used: true },
+        flags: { ...game.flags, [usedKey]: true },
         party: game.party.map((x) => (x.id === heroId ? { ...x, slotsUsed } : x)),
       },
     });
-    get().toast([`The Bog Pearl glows: ${h.name} regains a level-${lvl} spell slot.`]);
+    get().toast([`The ${itemName(itemId)} glows: ${h.name} regains a level-${lvl} spell slot.`]);
     return undefined;
   },
 
@@ -709,9 +830,12 @@ export const useGame = create<GameStore>()((set, get) => ({
     let next: GameState = { ...game, clock: game.clock + travelHours(from, to) };
     if (out.kind === 'arrive' && out.note) next = addNote(next, out.note).game;
     const log = [...out.log];
+    let spotted: string[] = [];
     if (out.kind === 'arrive') {
-      next = arrive(next, placeId);
-      log.push(`Arrived at ${to.name}. ${formatDate(next.clock)}.`);
+      const r = arrive(next, placeId);
+      next = r.game;
+      spotted = r.messages;
+      log.push(`Arrived at ${to.name}. ${formatDate(next.clock)}.`, ...spotted);
     }
     const scene = out.kind === 'arrive' && PLACE_SCENES[placeId];
     set({
@@ -725,7 +849,8 @@ export const useGame = create<GameStore>()((set, get) => ({
       return;
     }
     get().saveTo('autosave');
-    if (placeId === 'ashford') set({ screen: 'explore' });
+    if (spotted.length) get().toast(spotted);
+    if (placeId === 'ashford') set({ screen: 'placemap' });
     else if (scene) get().enterPlace(placeId);
   },
 
@@ -876,8 +1001,14 @@ export const useGame = create<GameStore>()((set, get) => ({
     get().saveTo('autosave');
     // Story_Bible Act II: after Marrowmere, Maelis comes to the camp in person (once).
     const g = get().game!;
+    const offer = kindledOfferDue(g);
     if (g.act === 2 && g.flags['marrowmere_done'] && !g.flags['maelis_parley'])
       get().talk('parley', 'camp');
+    // Story_Review #1: once an act, Cindrath offers the ember-marked party a gift in a dream.
+    else if (offer) {
+      set({ game: { ...g, flags: { ...g.flags, [`kindled_offer_${offer}`]: true } } });
+      get().talk('kindled_dream', 'camp');
+    }
     // Story_Bible §9: after the first shard, Cindrath offers Corin a dream bargain every long rest.
     else if (
       g.flags['act1_complete'] &&
@@ -914,15 +1045,20 @@ export const useGame = create<GameStore>()((set, get) => ({
     // D16: talking past a fight is worth the same XP.
     let next = partyXp(game, enc.xpPerPc, enc.name).game;
     if (enc.talk.note) next = addNote(next, enc.talk.note).game;
-    if (pendingArrival) next = arrive(next, pendingArrival);
+    if (pendingArrival) next = arrive(next, pendingArrival).game;
+    const hunt = get().hunt;
+    const huntDone = hunt && getBounty(hunt).encounter === enc.id ? markHunted(next, hunt) : null;
+    if (huntDone) next = huntDone.game;
     const messages = [
       r.log.text,
       enc.talk.success,
       `+${enc.xpPerPc} XP each: ${enc.name} (talked past)`,
+      ...(huntDone?.messages ?? []),
     ];
     set({
       game: next,
       screen: backToCamp ? 'camp' : homeScreen(next),
+      hunt: null,
       pendingArrival: null,
       backToCamp: false,
       toasts: messages,

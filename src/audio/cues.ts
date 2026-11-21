@@ -61,7 +61,7 @@ export type Cue =
 /** Each place's background sound (by places.json id). */
 export const PLACE_AMBIENCE: Record<string, Ambience> = {
   'drowned-lantern': 'tavern',
-  ashford: 'tavern',
+  ashford: 'river',
   'old-mine': 'cave',
   warren: 'cave',
   'steaming-cave': 'cave',

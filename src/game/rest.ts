@@ -6,7 +6,7 @@ import {
   spendHitDie,
   type RandomSource,
 } from '../rules';
-import { hasItem } from './items';
+import { hasSpecial } from './items';
 import type { GameState } from './save';
 
 export interface RestResult {
@@ -58,10 +58,12 @@ export function spendDie(game: GameState, heroId: string, rng: RandomSource): Re
   let healed = r.creature as Hero;
   const log = r.log.map((l) => l.text);
   // DMG: Periapt of Wound Closure (Lysa's Locket). Hit Dice healing is doubled.
-  if (hasItem(h, 'lysas-locket')) {
+  if (hasSpecial(h, 'double-hit-dice-healing')) {
     const gained = healed.hp - h.hp;
     const hp = Math.min(h.maxHp, healed.hp + gained);
-    log.push(`Lysa's Locket doubles it: +${hp - healed.hp} more HP.`);
+    log.push(
+      `${h.equipment.magic?.includes('lysas-locket') ? "Lysa's Locket" : 'The periapt'} doubles it: +${hp - healed.hp} more HP.`,
+    );
     healed = { ...healed, hp };
   }
   const party = game.party.map((x) => (x.id === heroId ? healed : x));
@@ -145,7 +147,12 @@ export function takeLongRest(game: GameState, rng: RandomSource): RestResult {
   });
   log.push('Hit points, spell slots and class abilities are restored. Half your Hit Dice return.');
   // DMG: Pearl of Power (once per day) and Staff of Healing (1d6 + 4 charges at dawn, max 10).
-  const flags: GameState['flags'] = { ...game.flags, pearl_used: false };
+  // Once-a-day items (Pearls of Power) recharge.
+  const flags: GameState['flags'] = Object.fromEntries(
+    Object.entries({ ...game.flags, pearl_used: false }).map(([k, v]) =>
+      k.startsWith('item_used:') ? [k, false] : [k, v],
+    ),
+  );
   if (game.flags['staff_charges'] !== undefined) {
     const back = roll('1d6+4', rng).total;
     flags['staff_charges'] = Math.min(10, Number(game.flags['staff_charges']) + back);

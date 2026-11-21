@@ -100,6 +100,7 @@ Key places:
   - Acts 2–3: a lantern-moth letter at each long rest (6–8 short letters, each written so it still makes sense whichever choices you've made).
   - Act 2: one face-to-face parley.
   - Act 3: the finale.
+  - (D28, Nov 21) Also in person: hooded at Varrow's Mill if you return after laying Lysa to rest in Act 1 (she leaves wildflowers); at her mother's kitchen table after Act 1; and on a ridge above Ashfall Pass before the Kiln. Each time she knows what you've done (Ulric, Tarrow, Brannoc, the letters, the marks) and argues her case. Kind words about Lysa, or Corin's plea, add Trust; the Crown Truth plants doubt.
 - **Arc:** she can be redeemed, defeated, or lost to Cindrath (see Endings).
 
 ### Cindrath (the true threat)
@@ -147,8 +148,15 @@ Key places:
 - **Ser Ida Marrow:** captain of Varrow's honor guard. Undead, honorable, and furious.
 - **Hadric Varrow:** dead before the story begins; appears only in memories and records.
 - **Lysa Varrow:** Maelis's mother. Her ghost haunts the mill.
+- **Townsfolk of Ashford (D26):** Hobb Tullow the town crier (the news, as Ashford tells it), Gran Esk at the well (superstitions, and everyone's business), Mags Fenner at the docks (who came down the river), Pell (a miner's boy who wants to be a hero, or a smith, or a hero smith), Hulda Stonemantle the dwarf smith, Sabeth Quillon of Quillon's Curios (from Waterdeep, and she'll tell you so), Sister Aubra of the Dawn Shrine, and Odo Fenwick, a halfling peddler on market days. In the wilds: Nib the goblin pedlar, Ssessk the lizardfolk trader, and Brokk Emberbeard, an exiled dwarf smith.
 
 ---
+
+## 5b. The ember-kiss (D28, Story_Review #1)
+On Lantern Night, the first time the party steps out of the Drowned Lantern, every river lantern flares red (thirty-one, and one more nobody lit) and leaves a warm red ring under the skin of each hero's palm. The old miners call it the ember-kiss. Corin's was always there; it just never glowed. The marked can hear Cindrath; the Hollow Star calls them "the kindled".
+- Once an act (after the mine, after the abbey, and once through Ashfall Pass), at a long rest, the party shares a dream: Cindrath offers a gift (fire resistance; burning blows; warmth that keeps them standing). Taking one widens the rings.
+- Each gift taken makes Maelis harder to talk down at the Crowning (the voice is harder to argue with when you've taken its gifts). Maelis notices the marks; her Act II letter warns you.
+- Epilogue: the marks either fade to freckles (no gifts) or glow on cold nights.
 
 ## 6. The three Truths (the clue system behind the endings)
 

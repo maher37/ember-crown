@@ -200,6 +200,16 @@
       "if": ["corin"],
       "endings": ["lamp-lit"],
       "text": "Corin stayed for Lantern Night, and the one after that. He and Maelis still don't agree about anything, loudly, over burnt honey-bread."
+    },
+    {
+      "title": "The kindled",
+      "if": ["kindled"],
+      "text": "The ember-kiss never quite faded. On cold nights the rings on your palms glow like coals, and once in a long while, just before sleep, something warm and patient says your name."
+    },
+    {
+      "title": "The kindled",
+      "if": ["ember_marked", "!kindled"],
+      "text": "By spring the red rings on your palms had faded to freckles. You never answered the voice in the dream, and in the end it stopped asking."
     }
   ]
 }

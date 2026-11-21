@@ -4,6 +4,7 @@ import {
   classes,
   defaultChoices,
   loadouts,
+  magicItems,
   spellSlots,
   species as speciesList,
 } from '../data';
@@ -518,16 +519,33 @@ export function levelUpHero(hero: Hero): Hero {
 
 /** Spellcasting numbers. PHB: spell save DC = 8 + proficiency + ability modifier. */
 export function spellNumbers(
-  hero: Pick<Hero, 'classId' | 'abilities' | 'proficiencyBonus'>,
+  hero: Pick<Hero, 'classId' | 'abilities' | 'proficiencyBonus'> & {
+    equipment?: Pick<Hero['equipment'], 'magic'>;
+  },
 ): { ability: Ability; mod: number; attack: number; dc: number } | null {
   const sc = getClass(hero.classId).spellcasting;
   if (!sc) return null;
   const mod = abilityModifier(hero.abilities[sc.ability]);
+  // DMG: Wand of the War Mage and similar: a bonus to spell attacks (or save DCs) while attuned.
+  const bonus = (target: 'spell-attack' | 'spell-dc') =>
+    (hero.equipment?.magic ?? []).reduce((n, id) => {
+      const it = magicItems.find((x) => x.id === id);
+      return (
+        n +
+        (it?.effects ?? []).reduce(
+          (m, e) =>
+            e.type === 'modifier' && e.target === target && typeof e.value === 'number'
+              ? m + e.value
+              : m,
+          0,
+        )
+      );
+    }, 0);
   return {
     ability: sc.ability,
     mod,
-    attack: mod + hero.proficiencyBonus,
-    dc: 8 + mod + hero.proficiencyBonus,
+    attack: mod + hero.proficiencyBonus + bonus('spell-attack'),
+    dc: 8 + mod + hero.proficiencyBonus + bonus('spell-dc'),
   };
 }
 

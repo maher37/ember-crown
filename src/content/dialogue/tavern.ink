@@ -77,7 +77,23 @@ Three strangers in grey came in behind him, asking quietly after "a lost letter.
     -> pies
 }
 { brannoc > 1:
-    Brannoc wipes a mug that was clean an hour ago. "Still here? Good. I could use the company."
+    // Story_Review #3: Brannoc remembers what you did.
+    {
+        - flag("ulric_spared") && not flag("brannoc_ulric_said"):
+            ~ set_flag("brannoc_ulric_said", true)
+            Brannoc sets down two mugs before you ask. "Ulric came by. Sat right there and cried into his ale, and said you let him walk out of that shrine." He looks away. "Twenty years he was my shift partner. Thank you."
+        - flag("ulric_killed") && not flag("brannoc_ulric_said"):
+            ~ set_flag("brannoc_ulric_said", true)
+            Brannoc doesn't look up from the mug he's wiping. "They brought Ulric down from the mine yesterday." A long pause. "I know. He'd have done the same to you. Still. Twenty years."
+        - flag("miners_rescued") && not flag("brannoc_miners_said"):
+            ~ set_flag("brannoc_miners_said", true)
+            "The Tullow lads are home, and their mam's sent three pies over with your names on them." Brannoc jerks a thumb at the kitchen. "I've hidden them. There's a goblin about, or there will be."
+        - flag("won:f1-tavern-brawl") && not flag("act1_complete") && not flag("brannoc_brawl_said"):
+            ~ set_flag("brannoc_brawl_said", true)
+            Brannoc sweeps the last of a broken chair into a bucket. "Four of the Grey Company's finest, on my floor. You're good for business and terrible for furniture."
+        - else:
+            Brannoc wipes a mug that was clean an hour ago. "Still here? Good. I could use the company."
+    }
 - else:
     "He came in off the river road an hour past dusk, half-dead and clutching that satchel like it was his own heart. Then three strangers walked in after him, asking after 'a lost letter.'"
     "I don't want trouble in my house, friends. But I think trouble's already sitting at my tables."
@@ -438,12 +454,26 @@ Wix is sitting on the kitchen table with pastry on both ears. "Friends! Tell the
 -> END
 
 // ── The front door ──
+// Story_Review #1: the ember-kiss. The first time you step out after Lantern Night, the river
+// lanterns flare red and mark every hero.
+=== lantern_flare ===
+Your hand is on the latch when the light changes. Through the shutters, every lantern on the river flares red at once: thirty-one of them, and one more nobody lit.
+Each of you feels it land, a warm spark under the skin of the palm, like a coal you can't drop. When you look, there's a thin red ring there that fades to a freckle.
+{has("corin"): Corin's was already there. It has always been there. It has just never glowed before.}
+Brannoc stares at your hands, and his voice goes quiet. "The old miners called that the ember-kiss. Gods keep you. It's not a blessing."
+~ set_flag("ember_marked", true)
+~ note("On Lantern Night the river lanterns flared red and left a mark on every one of you: a warm red ring under the skin of the palm. Brannoc calls it the ember-kiss.")
+->->
+
 === front_door ===
 #speaker:tavern
 { not quest_done("lantern-night"):
     {not flag("edric_tended"): Brannoc catches your sleeve. "You're not walking out on the boy now."}
     {flag("edric_tended") && not (flag("has_letter") || flag("letter_lost")): Rain hammers the shutters. Whatever this letter business is, it isn't finished yet.}
     -> END
+}
+{ not flag("ember_marked"):
+    -> lantern_flare ->
 }
 { not flag("road_done"):
     The Ashford road runs north along the Grayflow toward the old mine. Goblins have been seen on it, coming down from the mountains.
@@ -453,6 +483,9 @@ Wix is sitting on the kitchen table with pastry on both ears. "Friends! Tell the
 }
 + {flag("marrowmere_done") && not flag("hall_resolved")} [Go to Ashford Hall and see the mayor.]
     ~ travel("scene:ashford.hall")
+    -> END
++ [Step out into Ashford.]
+    ~ travel("town")
     -> END
 + [Set out (open the map).]
     ~ travel("map")
