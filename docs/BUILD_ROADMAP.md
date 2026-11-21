@@ -1,9 +1,29 @@
 # Build roadmap
 
-One milestone per Claude Code session (bigger ones may take two). Each milestone ends with a PR the owner merges, then plays on https://maher37.github.io/ember-crown/.
+**How to start a task:** open a **new** Claude Code cloud session on this repo and paste the task's "Prompt" line. Claude reads `CLAUDE.md` automatically, opens a small PR, and merges it itself once the checks pass. It's live at https://maher37.github.io/ember-crown/ about 3 minutes later.
 
-**How to start each session:** paste the "Prompt" line for that milestone. Claude reads `CLAUDE.md` automatically.
+## Next up (recommended order; the owner can reorder)
+| # | Task | Prompt |
+|---|---|---|
+| N1 | **Data fixes** from the rulebook check (a fix list from the claude.ai chat, saved as `docs/Data_Fixes.md` when ready) | `Apply docs/Data_Fixes.md.` |
+| N2 | **Story pass:** the remaining picks in `docs/Story_Review.md`, one PR per pick | `Do the next story pick from docs/Story_Review.md.` |
+| N3 | **Decide D31** (should Medium be harder?), then apply it with a balance run | `D31 is decided: <your choice>. Apply it and rerun the balance report.` |
+| N4 | **Refactor:** split the biggest files (`src/game/combat/actions.ts`, `src/ui/CombatScreen.tsx`, `src/game/store.ts`, `src/data/encounters.json` by act) with no behavior change | `Do refactor R1 from docs/BUILD_ROADMAP.md.` |
+| N5 | **Full playthrough** by the owner, start to finish, with notes in `docs/PLAYTEST.md` or issues | (no prompt; then `Work the playtest inbox.`) |
+| N6 | **M11 animations** | `Do Milestone M11 from docs/BUILD_ROADMAP.md.` |
 
+**Recommendation:** hold new features (more subclasses, shops, places) until N5 is done. Note them in `docs/PLAYTEST.md` as "feature wish" so nothing is lost.
+
+## R1: Refactor the biggest files
+- Split into feature-sized modules, each under about 600 lines:
+  - `src/game/combat/actions.ts` (≈1,450 lines)
+  - `src/ui/CombatScreen.tsx` (≈1,240)
+  - `src/game/store.ts` (≈1,090)
+- Split `src/data/encounters.json` (≈4,400 lines) into one file per act.
+- No behavior change: all tests, the build and Playwright must pass unchanged.
+- **Prompt:** `Do refactor R1 from docs/BUILD_ROADMAP.md.`
+
+## Finished milestones (history)
 ---
 
 ## M0: Project skeleton and deploy
@@ -112,6 +132,6 @@ One milestone per Claude Code session (bigger ones may take two). Each milestone
 - Open: should Medium be harder? (D31)
 
 ## M11: Animations (phase 2)
-- A presentation-event system, then the effects list in `RPG_Game_Plan.md` §9d (projectiles, spell areas, damage-type colors, condition icons, downed state).
+- A presentation-event system, then the effects list in `docs/Animation_Plan.md` (projectiles, spell areas, damage-type colors, condition icons, downed state).
 - Includes the reduce-motion and reduce-flashing settings.
 - **Prompt:** `Do Milestone M11 from docs/BUILD_ROADMAP.md.`

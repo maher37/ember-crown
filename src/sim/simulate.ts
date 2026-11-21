@@ -1,4 +1,4 @@
-// The headless balance simulator (docs/BUILD_ROADMAP.md M10; targets in RPG_Game_Plan §5:
+// The headless balance simulator (docs/BUILD_ROADMAP.md M10; targets in DECISIONS.md:
 // main-path fights won about 85–95% of the time at the expected level on Medium).
 import { encounters } from '../data';
 import type { DifficultyId } from '../data/schemas/difficulty';
@@ -108,7 +108,7 @@ export function simulate(
 export const storyFights = () => encounters.filter((e) => !/^(road|marsh|heights)-/.test(e.id));
 export const roadFights = () => encounters.filter((e) => /^(road|marsh|heights)-/.test(e.id));
 
-/** The documented target for a fight on Medium at its expected level [inferred, RPG_Game_Plan §5]. */
+/** The documented target for a fight on Medium at its expected level [inferred, DECISIONS.md]. */
 export function target(encounterId: string): [number, number] {
   // Elites are Deadly at their expected level by design (Encounters_and_XP §5c).
   if (/^e\d/.test(encounterId)) return [0.4, 0.85];

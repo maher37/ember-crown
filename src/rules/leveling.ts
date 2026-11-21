@@ -4,7 +4,7 @@ import { roll } from './dice';
 import { log, type LogEntry } from './log';
 import type { RandomSource } from './rng';
 
-/** The game's level cap (docs/RPG_Game_Plan.md, D16). */
+/** The game's level cap (docs/DECISIONS.md, D16). */
 export const MAX_LEVEL = 6;
 
 // PHB: Character Advancement table (also docs/Encounters_and_XP.md §1).

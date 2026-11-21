@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-// Difficulty setting (docs/RPG_Game_Plan.md, D9): Easy / Medium / Hard, Medium by default.
+// Difficulty setting (docs/DECISIONS.md, D9): Easy / Medium / Hard, Medium by default.
 export const DifficultyId = z.enum(['easy', 'medium', 'hard']);
 export type DifficultyId = z.infer<typeof DifficultyId>;
 

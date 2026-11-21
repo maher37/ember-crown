@@ -1,5 +1,7 @@
 # The Ember Crown: Monster Roster (v0.1)
 
+> **Numbers live in `src/data/monsters.json` (and `foes.json`).** This doc keeps each monster's role, story use and art concept. If a number here disagrees with the JSON, the JSON wins; don't update numbers in this file.
+
 *Every creature the game uses, with the numbers the combat engine needs. AC, HP, speed, challenge rating and XP were **pulled from the user's Monster Manual PDF** (✅) unless marked ⚠ (unreadable in the PDF text; from memory, verify). Attack lines and trait summaries are from memory and written in our own words; verify attack bonuses during data entry. Personal use only.*
 
 **Art policy:** the Monster Manual's illustrations are copyrighted, so they aren't extracted or reused. Each monster below has an **original art concept** tailored to this story, to use for drawn tokens, free art packs, or prompts for an AI image tool.
