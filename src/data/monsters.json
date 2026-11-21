@@ -63,9 +63,7 @@
       ],
       "acNote": "leather armor",
       "usedIn": ["F1 brawl (as unarmed bruisers)", "travel"],
-      "art": "Grey Company bruiser: grey sash, split knuckles, a chair leg for a club",
-      "verify": true,
-      "verifyNote": "AC, HP, speed and CR from the MM PDF (✅). Ability scores, hit dice and attack lines from memory: check them."
+      "art": "Grey Company bruiser: grey sash, split knuckles, a chair leg for a club"
     },
     {
       "id": "grey-bruiser",
@@ -229,9 +227,7 @@
       },
       "multiattack": ["scimitar", "scimitar", "dagger"],
       "usedIn": ["Deserters' Bounty"],
-      "art": "Deserter sergeant with a torn company badge",
-      "verify": true,
-      "verifyNote": "AC, HP, speed and CR from the MM PDF (✅). Ability scores, hit dice and attack lines from memory: check them."
+      "art": "Deserter sergeant with a torn company badge"
     },
     {
       "id": "thug",
@@ -304,9 +300,7 @@
       ],
       "multiattack": ["mace", "mace"],
       "usedIn": ["F5", "F8", "F12", "travel"],
-      "art": "Heavy-set enforcer in a leather apron; ledger chained to his belt",
-      "verify": true,
-      "verifyNote": "AC, HP, speed and CR from the MM PDF (✅). Ability scores, hit dice and attack lines from memory: check them."
+      "art": "Heavy-set enforcer in a leather apron; ledger chained to his belt"
     },
     {
       "id": "scout",
@@ -385,9 +379,7 @@
       ],
       "multiattack": ["longbow", "longbow"],
       "usedIn": ["F8 toll bridge"],
-      "art": "Lean archer on a bridge pylon, grey cloak, spyglass",
-      "verify": true,
-      "verifyNote": "AC, HP, speed and CR from the MM PDF (✅). Ability scores, hit dice and attack lines from memory: check them."
+      "art": "Lean archer on a bridge pylon, grey cloak, spyglass"
     },
     {
       "id": "guard",
@@ -449,9 +441,7 @@
         "perception": 2
       },
       "usedIn": ["Ashford Hall"],
-      "art": "Town watch in mismatched mail, lantern-sigil tabard",
-      "verify": true,
-      "verifyNote": "AC, HP, speed and CR from the MM PDF (✅). Ability scores, hit dice and attack lines from memory: check them."
+      "art": "Town watch in mismatched mail, lantern-sigil tabard"
     },
     {
       "id": "veteran",
@@ -542,7 +532,7 @@
       "usedIn": ["F12 Hall captain"],
       "art": "Mayor's captain: polished splint mail, tired eyes",
       "verify": true,
-      "verifyNote": "AC, HP, speed and CR from the MM PDF (✅). Ability scores, hit dice and attack lines from memory: check them."
+      "verifyNote": "AC, HP, speed and CR from the MM PDF (✅). Data_Fixes.md says the heavy crossbow does 1d10, but the SRD 5.1 says 1d10+1 (kept). Check the crossbow damage, ability scores and hit dice in the MM."
     },
     {
       "id": "cultist",
@@ -595,9 +585,7 @@
         }
       ],
       "usedIn": ["F5", "F13", "F14", "F20"],
-      "art": "Out-of-work miner, pickaxe and a soot-drawn hollow star on his brow",
-      "verify": true,
-      "verifyNote": "AC, HP, speed and CR from the MM PDF (✅). Ability scores, hit dice and attack lines from memory: check them."
+      "art": "Out-of-work miner, pickaxe and a soot-drawn hollow star on his brow"
     },
     {
       "id": "cult-fanatic",
@@ -680,9 +668,7 @@
         "verifyNote": "Spell list and slots from memory (Monster_Roster CONFIRM LOCALLY)."
       },
       "usedIn": ["Brother Ulric (F7)", "F13", "F20"],
-      "art": "Ulric: broad, grey-bearded foreman; lantern hook in place of a hand",
-      "verify": true,
-      "verifyNote": "AC, HP, speed and CR from the MM PDF (✅). Ability scores, hit dice and attack lines from memory: check them."
+      "art": "Ulric: broad, grey-bearded foreman; lantern hook in place of a hand"
     },
     {
       "id": "priest",
@@ -758,9 +744,7 @@
         "verifyNote": "Spell list and slots from memory."
       },
       "usedIn": ["Sister Venna (F14)"],
-      "art": "Venna: widow's veil burned at the edges, ember-red prayer beads",
-      "verify": true,
-      "verifyNote": "AC, HP, speed and CR from the MM PDF (✅). Ability scores, hit dice and attack lines from memory: check them."
+      "art": "Venna: widow's veil burned at the edges, ember-red prayer beads"
     },
     {
       "id": "mage",
@@ -849,9 +833,7 @@
         "verifyNote": "Spell list and slots from memory."
       },
       "usedIn": ["Maelis (finale phase 1)"],
-      "art": "Maelis: archivist's coat, ink-stained fingers, a hooded lantern whose flame is the wrong color",
-      "verify": true,
-      "verifyNote": "AC, HP, speed and CR from the MM PDF (✅). Ability scores, hit dice and attack lines from memory: check them."
+      "art": "Maelis: archivist's coat, ink-stained fingers, a hooded lantern whose flame is the wrong color"
     },
     {
       "id": "lizardfolk",
@@ -962,9 +944,7 @@
       ],
       "multiattack": ["bite", "heavy-club"],
       "usedIn": ["F9", "travel"],
-      "art": "Chelimber hunters with bone-and-reed armor, wary not cruel",
-      "verify": true,
-      "verifyNote": "AC, HP, speed and CR from the MM PDF (✅). Ability scores, hit dice and attack lines from memory: check them."
+      "art": "Chelimber hunters with bone-and-reed armor, wary not cruel"
     },
     {
       "id": "goblin",
@@ -1040,9 +1020,7 @@
         }
       ],
       "usedIn": ["F2", "F3", "F4", "travel"],
-      "art": "Soot-smudged refugees carrying cooking pots, singed ears",
-      "verify": true,
-      "verifyNote": "AC, HP, speed and CR from the MM PDF (✅). Ability scores, hit dice and attack lines from memory: check them."
+      "art": "Soot-smudged refugees carrying cooking pots, singed ears"
     },
     {
       "id": "hobgoblin",
@@ -1115,9 +1093,7 @@
         }
       ],
       "usedIn": ["Grisk (F4)", "Wix quest"],
-      "art": "Grisk Two-Teeth: chipped chainmail, gold-capped tusks, pot-lid shield",
-      "verify": true,
-      "verifyNote": "AC, HP, speed and CR from the MM PDF (✅). Ability scores, hit dice and attack lines from memory: check them."
+      "art": "Grisk Two-Teeth: chipped chainmail, gold-capped tusks, pot-lid shield"
     },
     {
       "id": "orc",
@@ -1206,9 +1182,7 @@
         }
       ],
       "usedIn": ["travel (Greypeaks)"],
-      "art": "Mountain war band, frost-scarred, fleeing the heat with their herds",
-      "verify": true,
-      "verifyNote": "⚠ row in Monster_Roster.md: AC, HP and CR were not readable in the PDF either. Check everything."
+      "art": "Mountain war band, frost-scarred, fleeing the heat with their herds"
     },
     {
       "id": "bugbear",
@@ -1302,9 +1276,7 @@
           "summary": "+2d6 damage if it hits a surprised creature in the first round."
         }
       ],
-      "usedIn": ["spare"],
-      "verify": true,
-      "verifyNote": "AC, HP, speed and CR from the MM PDF (✅). Ability scores, hit dice and attack lines from memory: check them."
+      "usedIn": ["spare"]
     },
     {
       "id": "wolf",
@@ -1378,9 +1350,7 @@
         }
       ],
       "usedIn": ["F3", "travel"],
-      "art": "Ribs showing, singed fur from the warm slopes",
-      "verify": true,
-      "verifyNote": "AC, HP, speed and CR from the MM PDF (✅). Ability scores, hit dice and attack lines from memory: check them."
+      "art": "Ribs showing, singed fur from the warm slopes"
     },
     {
       "id": "worg",
@@ -1448,9 +1418,7 @@
           "summary": "Advantage on Perception checks that use hearing or smell (or sight)."
         }
       ],
-      "usedIn": ["spare"],
-      "verify": true,
-      "verifyNote": "AC, HP, speed and CR from the MM PDF (✅). Ability scores, hit dice and attack lines from memory: check them."
+      "usedIn": ["spare"]
     },
     {
       "id": "dire-wolf",
@@ -1524,9 +1492,7 @@
         }
       ],
       "usedIn": ["travel (Greypeaks)"],
-      "art": "Pale-grey mountain wolves with frost on their muzzles",
-      "verify": true,
-      "verifyNote": "AC, HP, speed and CR from the MM PDF (✅). Ability scores, hit dice and attack lines from memory: check them."
+      "art": "Pale-grey mountain wolves with frost on their muzzles"
     },
     {
       "id": "giant-rat",
@@ -1584,9 +1550,7 @@
         }
       ],
       "usedIn": ["cellar side quest"],
-      "art": "Brannoc's cellar rats, fat on stolen cheese",
-      "verify": true,
-      "verifyNote": "AC, HP, speed and CR from the MM PDF (✅). Ability scores, hit dice and attack lines from memory: check them."
+      "art": "Brannoc's cellar rats, fat on stolen cheese"
     },
     {
       "id": "swarm-of-rats",
@@ -1660,9 +1624,7 @@
         }
       ],
       "usedIn": ["cellar side quest"],
-      "art": "A tide of rats from the old tunnel",
-      "verify": true,
-      "verifyNote": "AC, HP, speed and CR from the MM PDF (✅). Ability scores, hit dice and attack lines from memory: check them."
+      "art": "A tide of rats from the old tunnel"
     },
     {
       "id": "giant-centipede",
@@ -1729,9 +1691,7 @@
         }
       ],
       "usedIn": ["F6", "travel"],
-      "art": "Pale cave centipedes nesting in warm Ammarindar stone",
-      "verify": true,
-      "verifyNote": "AC, HP, speed and CR from the MM PDF (✅). Ability scores, hit dice and attack lines from memory: check them."
+      "art": "Pale cave centipedes nesting in warm Ammarindar stone"
     },
     {
       "id": "stirge",
@@ -1784,9 +1744,7 @@
       "acNote": "natural armor",
       "darkvision": 60,
       "usedIn": ["travel"],
-      "art": "Dusk swarms over the Grayflow",
-      "verify": true,
-      "verifyNote": "AC, HP, speed and CR from the MM PDF (✅). Ability scores, hit dice and attack lines from memory: check them."
+      "art": "Dusk swarms over the Grayflow"
     },
     {
       "id": "brown-bear",
@@ -1818,7 +1776,7 @@
             {
               "type": "attack",
               "kind": "melee",
-              "toHit": 6,
+              "toHit": 5,
               "reach": 5,
               "onHit": [
                 {
@@ -1837,7 +1795,7 @@
             {
               "type": "attack",
               "kind": "melee",
-              "toHit": 6,
+              "toHit": 5,
               "reach": 5,
               "onHit": [
                 {
@@ -1865,7 +1823,7 @@
       "usedIn": ["travel"],
       "art": "Driven downhill, confused and hungry",
       "verify": true,
-      "verifyNote": "AC, HP, speed and CR from the MM PDF (✅). Ability scores, hit dice and attack lines from memory: check them."
+      "verifyNote": "AC, HP, speed, CR and both attack lines checked against the MM (Data_Fixes.md); to-hit fixed to +5. Ability scores and hit dice not confirmed yet."
     },
     {
       "id": "giant-spider",
@@ -1967,9 +1925,7 @@
         }
       ],
       "usedIn": ["travel (marsh)"],
-      "art": "Marsh spiders webbing between drowned trees",
-      "verify": true,
-      "verifyNote": "AC, HP, speed and CR from the MM PDF (✅). Ability scores, hit dice and attack lines from memory: check them."
+      "art": "Marsh spiders webbing between drowned trees"
     },
     {
       "id": "swarm-of-insects",
@@ -2039,9 +1995,7 @@
         }
       ],
       "usedIn": ["Mother Sallow", "travel"],
-      "art": "Steam-hatched midges from the warm marsh",
-      "verify": true,
-      "verifyNote": "AC, HP, speed and CR from the MM PDF (✅). Ability scores, hit dice and attack lines from memory: check them."
+      "art": "Steam-hatched midges from the warm marsh"
     },
     {
       "id": "griffon",
@@ -2118,9 +2072,7 @@
       ],
       "multiattack": ["beak", "claws"],
       "usedIn": ["travel (Greypeaks)"],
-      "art": "Greypeak griffons, gold-brown, nesting on old dwarf statues",
-      "verify": true,
-      "verifyNote": "AC, HP, speed and CR from the MM PDF (✅). Ability scores, hit dice and attack lines from memory: check them."
+      "art": "Greypeak griffons, gold-brown, nesting on old dwarf statues"
     },
     {
       "id": "owlbear",
@@ -2197,9 +2149,7 @@
       ],
       "multiattack": ["beak", "claws"],
       "usedIn": ["travel (Greypeaks)"],
-      "art": "Snow-mottled mountain owlbear",
-      "verify": true,
-      "verifyNote": "AC, HP, speed and CR from the MM PDF (✅). Ability scores, hit dice and attack lines from memory: check them."
+      "art": "Snow-mottled mountain owlbear"
     },
     {
       "id": "skeleton",
@@ -2268,9 +2218,7 @@
       "immunities": ["poison"],
       "conditionImmunities": ["exhaustion", "poisoned"],
       "usedIn": ["F7", "F18"],
-      "art": "Varrow's long-dead miners, still wearing helmet-lamps",
-      "verify": true,
-      "verifyNote": "AC, HP, speed and CR from the MM PDF (✅). Ability scores, hit dice and attack lines from memory: check them."
+      "art": "Varrow's long-dead miners, still wearing helmet-lamps"
     },
     {
       "id": "zombie",
@@ -2414,9 +2362,7 @@
       "immunities": ["poison"],
       "conditionImmunities": ["charmed", "exhaustion", "poisoned"],
       "usedIn": ["F10", "F11", "Ser Ida quest"],
-      "art": "Marrowmere's hungry dead in rotting fishermen's oilskins",
-      "verify": true,
-      "verifyNote": "AC, HP, speed and CR from the MM PDF (✅). Ability scores, hit dice and attack lines from memory: check them."
+      "art": "Marrowmere's hungry dead in rotting fishermen's oilskins"
     },
     {
       "id": "ghast",
@@ -2513,9 +2459,7 @@
         }
       ],
       "usedIn": ["Paladin's Shield", "Ser Ida quests"],
-      "art": "A drowned abbey brother, grave-bloated",
-      "verify": true,
-      "verifyNote": "AC, HP, speed and CR from the MM PDF (✅). Ability scores, hit dice and attack lines from memory: check them."
+      "art": "A drowned abbey brother, grave-bloated"
     },
     {
       "id": "shadow",
@@ -2609,9 +2553,7 @@
         }
       ],
       "usedIn": ["The Mill at Night"],
-      "art": "Shadows that move like a family at a dinner table",
-      "verify": true,
-      "verifyNote": "AC, HP, speed and CR from the MM PDF (✅). Ability scores, hit dice and attack lines from memory: check them."
+      "art": "Shadows that move like a family at a dinner table"
     },
     {
       "id": "specter",
@@ -2707,9 +2649,7 @@
         }
       ],
       "usedIn": ["Paladin's Shield"],
-      "art": "A faceless abbey novice",
-      "verify": true,
-      "verifyNote": "AC, HP, speed and CR from the MM PDF (✅). Ability scores, hit dice and attack lines from memory: check them."
+      "art": "A faceless abbey novice"
     },
     {
       "id": "wraith",
@@ -2817,7 +2757,7 @@
       "usedIn": ["The Drowned Abbot (Act II elite)"],
       "art": "A drowned abbot in a waterlogged sun-vestment; his face is a hollow full of black water",
       "verify": true,
-      "verifyNote": "AC, HP, speed and CR from the MM PDF (✅). Ability scores, hit dice and attack lines from memory: check them. Life Drain DC (Items.md CONFIRM LOCALLY)."
+      "verifyNote": "Stat block checked against the MM (Data_Fixes.md). Still to check: the Life Drain save DC (traits and DCs were not part of that check)."
     },
     {
       "id": "wight",
@@ -2931,9 +2871,7 @@
       ],
       "multiattack": ["longsword", "longsword"],
       "usedIn": ["Ser Ida Marrow (F18)"],
-      "art": "Ida: a tall, armored woman with frost in her eye sockets and a broken crown-sigil on her shield",
-      "verify": true,
-      "verifyNote": "AC, HP, speed and CR from the MM PDF (✅). Ability scores, hit dice and attack lines from memory: check them."
+      "art": "Ida: a tall, armored woman with frost in her eye sockets and a broken crown-sigil on her shield"
     },
     {
       "id": "animated-armor",
@@ -3003,9 +2941,7 @@
       ],
       "multiattack": ["slam", "slam"],
       "usedIn": ["F17", "F18"],
-      "art": "Varrow's forge-guards in soot-black plate with ember eye-slits",
-      "verify": true,
-      "verifyNote": "AC, HP, speed and CR from the MM PDF (✅). Ability scores, hit dice and attack lines from memory: check them."
+      "art": "Varrow's forge-guards in soot-black plate with ember eye-slits"
     },
     {
       "id": "gargoyle",
@@ -3084,9 +3020,7 @@
       ],
       "multiattack": ["bite", "claws"],
       "usedIn": ["F16 Kiln Gate"],
-      "art": "Dwarf-carved gate-wardens cracked by heat",
-      "verify": true,
-      "verifyNote": "AC, HP, speed and CR from the MM PDF (✅). Ability scores, hit dice and attack lines from memory: check them."
+      "art": "Dwarf-carved gate-wardens cracked by heat"
     },
     {
       "id": "earth-elemental",
@@ -3236,9 +3170,7 @@
       ],
       "multiattack": ["touch", "touch"],
       "usedIn": ["The Cold Forge"],
-      "art": "The forge's old spirit, angry at being woken",
-      "verify": true,
-      "verifyNote": "AC, HP, speed and CR from the MM PDF (✅). Ability scores, hit dice and attack lines from memory: check them."
+      "art": "The forge's old spirit, angry at being woken"
     },
     {
       "id": "magma-mephit",
@@ -3285,9 +3217,7 @@
                 }
               ]
             }
-          ],
-          "verify": true,
-          "verifyNote": "Monster_Roster.md says +1d4 fire; memory says 2d4 fire. Docs win until checked."
+          ]
         },
         {
           "id": "fire-breath",
@@ -3336,9 +3266,7 @@
         }
       ],
       "usedIn": ["F19", "Cold Forge", "travel"],
-      "art": "Giggling, dripping imps of lava",
-      "verify": true,
-      "verifyNote": "⚠ row in Monster_Roster.md: AC, HP and CR were not readable in the PDF either. Check everything."
+      "art": "Giggling, dripping imps of lava"
     },
     {
       "id": "hell-hound",
@@ -3432,9 +3360,7 @@
         }
       ],
       "usedIn": ["Last Boats", "travel"],
-      "art": "Coal-black hounds with ember-crack skin, loosed from the Kiln",
-      "verify": true,
-      "verifyNote": "AC, HP, speed and CR from the MM PDF (✅). Ability scores, hit dice and attack lines from memory: check them."
+      "art": "Coal-black hounds with ember-crack skin, loosed from the Kiln"
     },
     {
       "id": "salamander",
@@ -3535,9 +3461,7 @@
         }
       ],
       "multiattack": ["spear", "tail"],
-      "usedIn": ["spare"],
-      "verify": true,
-      "verifyNote": "AC, HP, speed and CR from the MM PDF (✅). Ability scores, hit dice and attack lines from memory: check them."
+      "usedIn": ["spare"]
     },
     {
       "id": "ogre",
@@ -3616,9 +3540,7 @@
       "acNote": "hide armor",
       "darkvision": 60,
       "usedIn": ["F14", "F15 Ashfall Pass", "Wix quest"],
-      "art": "Ogre brothers in scorched furs who want breakfast, not blood",
-      "verify": true,
-      "verifyNote": "AC, HP, speed and CR from the MM PDF (✅). Ability scores, hit dice and attack lines from memory: check them."
+      "art": "Ogre brothers in scorched furs who want breakfast, not blood"
     },
     {
       "id": "hill-giant",
@@ -3687,9 +3609,7 @@
       },
       "multiattack": ["greatclub", "greatclub"],
       "usedIn": ["Wix's Homecoming"],
-      "art": "A giant squatting in the goblin caves, eating the clan's mushroom farm",
-      "verify": true,
-      "verifyNote": "AC, HP, speed and CR from the MM PDF (✅). Ability scores, hit dice and attack lines from memory: check them."
+      "art": "A giant squatting in the goblin caves, eating the clan's mushroom farm"
     },
     {
       "id": "fire-giant",
@@ -3765,9 +3685,7 @@
       "immunities": ["fire"],
       "multiattack": ["greatsword", "greatsword"],
       "usedIn": ["Vorrag the Kiln-Smith (Act III elite)"],
-      "art": "Coal-black skin, beard of live embers, a leather apron of dragon hide; politely terrifying",
-      "verify": true,
-      "verifyNote": "AC 18 and HP 162 from the MM PDF (✅). CR 9 is \"believed\" in the docs; abilities and attacks from memory."
+      "art": "Coal-black skin, beard of live embers, a leather apron of dragon hide; politely terrifying"
     },
     {
       "id": "troll",
@@ -3849,9 +3767,7 @@
       ],
       "multiattack": ["bite", "claw", "claw"],
       "usedIn": ["travel (rare)"],
-      "art": "A rope-bridge troll",
-      "verify": true,
-      "verifyNote": "AC, HP, speed and CR from the MM PDF (✅). Ability scores, hit dice and attack lines from memory: check them."
+      "art": "A rope-bridge troll"
     },
     {
       "id": "green-hag",
@@ -3949,9 +3865,7 @@
         "verifyNote": "Innate spells from memory."
       },
       "usedIn": ["Mother Sallow"],
-      "art": "A kindly-looking old woman whose reflection in the bog water is not kind",
-      "verify": true,
-      "verifyNote": "AC, HP, speed and CR from the MM PDF (✅). Ability scores, hit dice and attack lines from memory: check them."
+      "art": "A kindly-looking old woman whose reflection in the bog water is not kind"
     },
     {
       "id": "red-dragon-wyrmling",
@@ -4042,9 +3956,7 @@
       },
       "immunities": ["fire"],
       "usedIn": ["Scald (Act I elite)"],
-      "art": "Scald: dog-sized, eggshell still stuck to one horn, curious and vicious, hoarding copper pots stolen from the goblins",
-      "verify": true,
-      "verifyNote": "AC, HP, speed and CR from the MM PDF (✅). Ability scores, hit dice and attack lines from memory: check them."
+      "art": "Scald: dog-sized, eggshell still stuck to one horn, curious and vicious, hoarding copper pots stolen from the goblins"
     },
     {
       "id": "young-red-dragon",
@@ -4155,9 +4067,7 @@
       "immunities": ["fire"],
       "multiattack": ["bite", "claw", "claw"],
       "referenceOnly": true,
-      "usedIn": ["reference only (too strong for L5-6)"],
-      "verify": true,
-      "verifyNote": "⚠ row in Monster_Roster.md: AC, HP and CR were not readable in the PDF either. Check everything."
+      "usedIn": ["reference only (too strong for L5-6)"]
     },
     {
       "id": "ember-wraith",

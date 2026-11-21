@@ -4,7 +4,7 @@
 
 Each line was entered from memory or is marked ⚠ in the design docs. Check it against your PDFs. When a line is right (or fixed), remove its `verify` and `verifyNote` from the JSON and run `npm run verify-list` again.
 
-**386 items to check.**
+**219 items to check.**
 
 ## species.json
 
@@ -32,7 +32,6 @@ Each line was entered from memory or is marked ⚠ in the design docs. Check it 
 ## classes.json
 
 - [ ] **classes › Barbarian**: Proficiencies and skill list from memory of the PHB. Hit die, saves and subclass level checked (✅).
-- [ ] **classes › Barbarian › Rage**: Rages 2/2/3/3/3/4 (Rules_Scope §4 gives L1, L3 and L6; L2, L4, L5 from memory).
 - [ ] **classes › Barbarian › features › Totem Spirit: Bear**: Added Nov 21 (owner asked for more subclasses), from memory of the PHB; check the details.
 - [ ] **classes › Barbarian › features › Totem Spirit: Wolf**: Added Nov 21 (owner asked for more subclasses), from memory of the PHB; check the details.
 - [ ] **classes › Barbarian › features › Totem Spirit: Eagle**: Added Nov 21 (owner asked for more subclasses), from memory of the PHB; check the details.
@@ -44,7 +43,6 @@ Each line was entered from memory or is marked ⚠ in the design docs. Check it 
 - [ ] **classes › Barbarian › Totem Warrior: Wolf**: Added Nov 21 (owner asked for more subclasses), from memory of the PHB; check the details.
 - [ ] **classes › Barbarian › Totem Warrior: Eagle**: Added Nov 21 (owner asked for more subclasses), from memory of the PHB; check the details.
 - [ ] **classes › Bard**: Proficiencies and skill list from memory of the PHB. Hit die, saves and subclass level checked (✅).
-- [ ] **classes › Bard**: Cantrips/spells known counts from memory of the PHB class table.
 - [ ] **classes › Bard › Bardic Inspiration**: Uses = Cha modifier (min 1). Recharges on a short rest from level 5 (Font of Inspiration).
 - [ ] **classes › Bard › features › Bonus Proficiencies**: Added Nov 21 (owner asked for more subclasses), from memory of the PHB; check the details.
 - [ ] **classes › Bard › features › Combat Inspiration**: Added Nov 21 (owner asked for more subclasses), from memory of the PHB; check the details.
@@ -52,8 +50,6 @@ Each line was entered from memory or is marked ⚠ in the design docs. Check it 
 - [ ] **classes › Bard**: One of the PHB starting-equipment options, from memory and simplified (no packs or gold yet).
 - [ ] **classes › Bard › College of Valor**: Added Nov 21 (owner asked for more subclasses), from memory of the PHB; check the details.
 - [ ] **classes › Cleric**: Proficiencies and skill list from memory of the PHB. Hit die, saves and subclass level checked (✅).
-- [ ] **classes › Cleric**: Cantrips/spells known counts from memory of the PHB class table.
-- [ ] **classes › Cleric › Channel Divinity**: 1 use at L2-5, 2 at L6 (Rules_Scope §4 ✅ names; counts from memory).
 - [ ] **classes › Cleric › Warding Flare**: PHB: Wisdom modifier (minimum 1) uses, back on a long rest (from memory).
 - [ ] **classes › Cleric › War Priest**: PHB: Wisdom modifier (minimum 1) uses, back on a long rest (from memory).
 - [ ] **classes › Cleric › Wrath of the Storm**: PHB: Wisdom modifier (minimum 1) uses, back on a long rest (from memory).
@@ -64,8 +60,6 @@ Each line was entered from memory or is marked ⚠ in the design docs. Check it 
 - [ ] **classes › Cleric › War Domain**: Domain spells from memory of the PHB; Magic Weapon and Crusader's Mantle aren't in the game's spell list yet.
 - [ ] **classes › Cleric › Tempest Domain**: Domain spells from memory of the PHB; Gust of Wind isn't in the game's spell list yet.
 - [ ] **classes › Druid**: Proficiencies and skill list from memory of the PHB. Hit die, saves and subclass level checked (✅).
-- [ ] **classes › Druid**: Cantrips/spells known counts from memory of the PHB class table.
-- [ ] **classes › Druid › Wild Shape**: Use counts from memory of the PHB class table (Rules_Scope CONFIRM LOCALLY).
 - [ ] **classes › Druid › Natural Recovery**: Use counts from memory of the PHB class table (Rules_Scope CONFIRM LOCALLY).
 - [ ] **classes › Druid › features › Wild Shape**: Wild Shape limits (Rules_Scope CONFIRM LOCALLY).
 - [ ] **classes › Druid › features › Circle Spells**: Mountain circle list (Rules_Scope CONFIRM LOCALLY).
@@ -79,14 +73,11 @@ Each line was entered from memory or is marked ⚠ in the design docs. Check it 
 - [ ] **classes › Fighter**: One of the PHB starting-equipment options, from memory and simplified (no packs or gold yet).
 - [ ] **classes › Fighter › Battle Master**: Added Nov 21 (owner asked for more subclasses), from memory of the PHB; check the details.
 - [ ] **classes › Monk**: Proficiencies and skill list from memory of the PHB. Hit die, saves and subclass level checked (✅).
-- [ ] **classes › Monk › Ki**: Ki = monk level from L2 (Rules_Scope §4).
 - [ ] **classes › Monk › Wholeness of Body**: PHB Open Hand 6: once per long rest, heal 3 × monk level (from memory).
 - [ ] **classes › Monk**: One of the PHB starting-equipment options, from memory and simplified (no packs or gold yet).
 - [ ] **classes › Paladin**: Proficiencies and skill list from memory of the PHB. Hit die, saves and subclass level checked (✅).
-- [ ] **classes › Paladin**: Cantrips/spells known counts from memory of the PHB class table.
 - [ ] **classes › Paladin › Divine Sense**: Use counts from memory of the PHB class table (Rules_Scope CONFIRM LOCALLY).
 - [ ] **classes › Paladin › Lay on Hands pool**: Pool of 5 × level HP (Rules_Scope §4).
-- [ ] **classes › Paladin › Channel Divinity**: Use counts from memory of the PHB class table (Rules_Scope CONFIRM LOCALLY).
 - [ ] **classes › Paladin › features › Oath Spells**: Devotion oath spell list from memory.
 - [ ] **classes › Paladin › features › Channel Divinity: Vow of Enmity**: Added Nov 21 (owner asked for more subclasses), from memory of the PHB; check the details.
 - [ ] **classes › Paladin › features › Channel Divinity: Abjure Enemy**: Added Nov 21 (owner asked for more subclasses), from memory of the PHB; check the details.
@@ -94,7 +85,6 @@ Each line was entered from memory or is marked ⚠ in the design docs. Check it 
 - [ ] **classes › Paladin**: One of the PHB starting-equipment options, from memory and simplified (no packs or gold yet).
 - [ ] **classes › Paladin › Oath of Vengeance**: Added Nov 21 (owner asked for more subclasses), from memory of the PHB; check the details.
 - [ ] **classes › Ranger**: Proficiencies and skill list from memory of the PHB. Hit die, saves and subclass level checked (✅).
-- [ ] **classes › Ranger**: Cantrips/spells known counts from memory of the PHB class table.
 - [ ] **classes › Ranger**: One of the PHB starting-equipment options, from memory and simplified (no packs or gold yet).
 - [ ] **classes › Rogue**: Proficiencies and skill list from memory of the PHB. Hit die, saves and subclass level checked (✅).
 - [ ] **classes › Rogue › features › Assassinate**: Added Nov 21 (owner asked for more subclasses), from memory of the PHB; check the details.
@@ -102,11 +92,8 @@ Each line was entered from memory or is marked ⚠ in the design docs. Check it 
 - [ ] **classes › Rogue**: One of the PHB starting-equipment options, from memory and simplified (no packs or gold yet).
 - [ ] **classes › Rogue › Assassin**: Added Nov 21 (owner asked for more subclasses), from memory of the PHB; check the details.
 - [ ] **classes › Sorcerer**: Proficiencies and skill list from memory of the PHB. Hit die, saves and subclass level checked (✅).
-- [ ] **classes › Sorcerer**: Cantrips/spells known counts from memory of the PHB class table.
-- [ ] **classes › Sorcerer › Sorcery Points**: Sorcery points = level from L2 (Rules_Scope §4).
 - [ ] **classes › Sorcerer**: One of the PHB starting-equipment options, from memory and simplified (no packs or gold yet).
 - [ ] **classes › Warlock**: Proficiencies and skill list from memory of the PHB. Hit die, saves and subclass level checked (✅).
-- [ ] **classes › Warlock**: Cantrips/spells known counts from memory of the PHB class table.
 - [ ] **classes › Warlock › Dark One's Own Luck**: Use counts from memory of the PHB class table (Rules_Scope CONFIRM LOCALLY).
 - [ ] **classes › Warlock › Entropic Ward**: Added Nov 21 (owner asked for more subclasses), from memory of the PHB; check the details.
 - [ ] **classes › Warlock › features › Expanded Spell List**: Fiend expanded list from memory.
@@ -117,7 +104,6 @@ Each line was entered from memory or is marked ⚠ in the design docs. Check it 
 - [ ] **classes › Warlock**: One of the PHB starting-equipment options, from memory and simplified (no packs or gold yet).
 - [ ] **classes › Warlock › The Great Old One**: Added Nov 21 (owner asked for more subclasses), from memory of the PHB; check the details.
 - [ ] **classes › Wizard**: Proficiencies and skill list from memory of the PHB. Hit die, saves and subclass level checked (✅).
-- [ ] **classes › Wizard**: Cantrips/spells known counts from memory of the PHB class table.
 - [ ] **classes › Wizard › Arcane Recovery**: Use counts from memory of the PHB class table (Rules_Scope CONFIRM LOCALLY).
 - [ ] **classes › Wizard › features › Arcane Ward**: Added Nov 21 (owner asked for more subclasses), from memory of the PHB; check the details.
 - [ ] **classes › Wizard › features › Projected Ward**: Added Nov 21 (owner asked for more subclasses), from memory of the PHB; check the details.
@@ -126,173 +112,20 @@ Each line was entered from memory or is marked ⚠ in the design docs. Check it 
 
 ## spells.json
 
-- [ ] **spells › Fire Bolt**: From memory of the PHB (Rules_Scope §5 summary): check damage dice, save, range, duration and school.
-- [ ] **spells › Ray of Frost**: From memory of the PHB (Rules_Scope §5 summary): check damage dice, save, range, duration and school.
-- [ ] **spells › Shocking Grasp**: From memory of the PHB (Rules_Scope §5 summary): check damage dice, save, range, duration and school.
-- [ ] **spells › Acid Splash**: From memory of the PHB (Rules_Scope §5 summary): check damage dice, save, range, duration and school.
-- [ ] **spells › Chill Touch**: From memory of the PHB (Rules_Scope §5 summary): check damage dice, save, range, duration and school.
-- [ ] **spells › Eldritch Blast**: From memory of the PHB (Rules_Scope §5 summary): check damage dice, save, range, duration and school.
-- [ ] **spells › Poison Spray**: From memory of the PHB (Rules_Scope §5 summary): check damage dice, save, range, duration and school.
-- [ ] **spells › Sacred Flame**: From memory of the PHB (Rules_Scope §5 summary): check damage dice, save, range, duration and school.
-- [ ] **spells › Vicious Mockery**: From memory of the PHB (Rules_Scope §5 summary): check damage dice, save, range, duration and school.
-- [ ] **spells › Produce Flame**: From memory of the PHB (Rules_Scope §5 summary): check damage dice, save, range, duration and school.
-- [ ] **spells › Shillelagh**: From memory of the PHB (Rules_Scope §5 summary): check damage dice, save, range, duration and school.
-- [ ] **spells › Thorn Whip**: From memory of the PHB (Rules_Scope §5 summary): check damage dice, save, range, duration and school.
-- [ ] **spells › Guidance**: From memory of the PHB (Rules_Scope §5 summary): check damage dice, save, range, duration and school.
-- [ ] **spells › Spare the Dying**: From memory of the PHB (Rules_Scope §5 summary): check damage dice, save, range, duration and school.
-- [ ] **spells › Light**: From memory of the PHB (Rules_Scope §5 summary): check damage dice, save, range, duration and school.
-- [ ] **spells › Mage Hand**: From memory of the PHB (Rules_Scope §5 summary): check damage dice, save, range, duration and school.
-- [ ] **spells › Minor Illusion**: From memory of the PHB (Rules_Scope §5 summary): check damage dice, save, range, duration and school.
-- [ ] **spells › Prestidigitation**: From memory of the PHB (Rules_Scope §5 summary): check damage dice, save, range, duration and school.
-- [ ] **spells › Thaumaturgy**: From memory of the PHB (Rules_Scope §5 summary): check damage dice, save, range, duration and school.
-- [ ] **spells › Dancing Lights**: From memory of the PHB (Rules_Scope §5 summary): check damage dice, save, range, duration and school.
-- [ ] **spells › Bless**: From memory of the PHB (Rules_Scope §5 summary): check damage dice, save, range, duration and school.
-- [ ] **spells › Bane**: From memory of the PHB (Rules_Scope §5 summary): check damage dice, save, range, duration and school.
-- [ ] **spells › Burning Hands**: From memory of the PHB (Rules_Scope §5 summary): check damage dice, save, range, duration and school.
-- [ ] **spells › Color Spray**: Effect checked against the PHB (Rules_Scope §5 ✅); school, range and components from memory.
-- [ ] **spells › Command**: From memory of the PHB (Rules_Scope §5 summary): check damage dice, save, range, duration and school.
-- [ ] **spells › Cure Wounds**: From memory of the PHB (Rules_Scope §5 summary): check damage dice, save, range, duration and school.
-- [ ] **spells › Healing Word**: From memory of the PHB (Rules_Scope §5 summary): check damage dice, save, range, duration and school.
-- [ ] **spells › Guiding Bolt**: From memory of the PHB (Rules_Scope §5 summary): check damage dice, save, range, duration and school.
-- [ ] **spells › Inflict Wounds**: From memory of the PHB (Rules_Scope §5 summary): check damage dice, save, range, duration and school.
-- [ ] **spells › Magic Missile**: Effect checked against the PHB (Rules_Scope §5 ✅); school, range and components from memory.
-- [ ] **spells › Shield**: From memory of the PHB (Rules_Scope §5 summary): check damage dice, save, range, duration and school.
-- [ ] **spells › Mage Armor**: From memory of the PHB (Rules_Scope §5 summary): check damage dice, save, range, duration and school.
-- [ ] **spells › Sleep**: From memory of the PHB (Rules_Scope §5 summary): check damage dice, save, range, duration and school.
-- [ ] **spells › Thunderwave**: From memory of the PHB (Rules_Scope §5 summary): check damage dice, save, range, duration and school.
-- [ ] **spells › Faerie Fire**: From memory of the PHB (Rules_Scope §5 summary): check damage dice, save, range, duration and school.
-- [ ] **spells › Entangle**: From memory of the PHB (Rules_Scope §5 summary): check damage dice, save, range, duration and school.
-- [ ] **spells › Hex**: From memory of the PHB (Rules_Scope §5 summary): check damage dice, save, range, duration and school.
-- [ ] **spells › Hunter's Mark**: From memory of the PHB (Rules_Scope §5 summary): check damage dice, save, range, duration and school.
-- [ ] **spells › Hellish Rebuke**: From memory of the PHB (Rules_Scope §5 summary): check damage dice, save, range, duration and school.
-- [ ] **spells › Armor of Agathys**: From memory of the PHB (Rules_Scope §5 summary): check damage dice, save, range, duration and school.
-- [ ] **spells › Shield of Faith**: From memory of the PHB (Rules_Scope §5 summary): check damage dice, save, range, duration and school.
-- [ ] **spells › Divine Favor**: From memory of the PHB (Rules_Scope §5 summary): check damage dice, save, range, duration and school.
-- [ ] **spells › Sanctuary**: From memory of the PHB (Rules_Scope §5 summary): check damage dice, save, range, duration and school.
-- [ ] **spells › Charm Person**: From memory of the PHB (Rules_Scope §5 summary): check damage dice, save, range, duration and school.
-- [ ] **spells › Dissonant Whispers**: From memory of the PHB (Rules_Scope §5 summary): check damage dice, save, range, duration and school.
-- [ ] **spells › Detect Magic**: From memory of the PHB (Rules_Scope §5 summary): check damage dice, save, range, duration and school.
-- [ ] **spells › Feather Fall**: From memory of the PHB (Rules_Scope §5 summary): check damage dice, save, range, duration and school.
-- [ ] **spells › Fog Cloud**: From memory of the PHB (Rules_Scope §5 summary): check damage dice, save, range, duration and school.
-- [ ] **spells › Disguise Self**: From memory of the PHB (Rules_Scope §5 summary): check damage dice, save, range, duration and school.
-- [ ] **spells › Protection from Evil and Good**: From memory of the PHB (Rules_Scope §5 summary): check damage dice, save, range, duration and school.
-- [ ] **spells › Goodberry**: From memory of the PHB (Rules_Scope §5 summary): check damage dice, save, range, duration and school.
-- [ ] **spells › Aid**: From memory of the PHB (Rules_Scope §5 summary): check damage dice, save, range, duration and school.
-- [ ] **spells › Hold Person**: From memory of the PHB (Rules_Scope §5 summary): check damage dice, save, range, duration and school.
-- [ ] **spells › Misty Step**: From memory of the PHB (Rules_Scope §5 summary): check damage dice, save, range, duration and school.
-- [ ] **spells › Scorching Ray**: From memory of the PHB (Rules_Scope §5 summary): check damage dice, save, range, duration and school.
-- [ ] **spells › Shatter**: From memory of the PHB (Rules_Scope §5 summary): check damage dice, save, range, duration and school.
-- [ ] **spells › Spiritual Weapon**: From memory of the PHB (Rules_Scope §5 summary): check damage dice, save, range, duration and school.
-- [ ] **spells › Moonbeam**: From memory of the PHB (Rules_Scope §5 summary): check damage dice, save, range, duration and school.
-- [ ] **spells › Flaming Sphere**: From memory of the PHB (Rules_Scope §5 summary): check damage dice, save, range, duration and school.
-- [ ] **spells › Spike Growth**: From memory of the PHB (Rules_Scope §5 summary): check damage dice, save, range, duration and school.
-- [ ] **spells › Web**: From memory of the PHB (Rules_Scope §5 summary): check damage dice, save, range, duration and school.
-- [ ] **spells › Lesser Restoration**: From memory of the PHB (Rules_Scope §5 summary): check damage dice, save, range, duration and school.
-- [ ] **spells › Prayer of Healing**: From memory of the PHB (Rules_Scope §5 summary): check damage dice, save, range, duration and school.
-- [ ] **spells › Invisibility**: From memory of the PHB (Rules_Scope §5 summary): check damage dice, save, range, duration and school.
-- [ ] **spells › Mirror Image**: From memory of the PHB (Rules_Scope §5 summary): check damage dice, save, range, duration and school.
-- [ ] **spells › Silence**: From memory of the PHB (Rules_Scope §5 summary): check damage dice, save, range, duration and school.
-- [ ] **spells › Heat Metal**: From memory of the PHB (Rules_Scope §5 summary): check damage dice, save, range, duration and school.
-- [ ] **spells › Pass without Trace**: From memory of the PHB (Rules_Scope §5 summary): check damage dice, save, range, duration and school.
-- [ ] **spells › Branding Smite**: From memory of the PHB (Rules_Scope §5 summary): check damage dice, save, range, duration and school.
-- [ ] **spells › Suggestion**: From memory of the PHB (Rules_Scope §5 summary): check damage dice, save, range, duration and school.
-- [ ] **spells › Darkness**: From memory of the PHB (Rules_Scope §5 summary): check damage dice, save, range, duration and school.
-- [ ] **spells › Fireball**: Effect checked against the PHB (Rules_Scope §5 ✅); school, range and components from memory.
-- [ ] **spells › Lightning Bolt**: From memory of the PHB (Rules_Scope §5 summary): check damage dice, save, range, duration and school.
-- [ ] **spells › Counterspell**: From memory of the PHB (Rules_Scope §5 summary): check damage dice, save, range, duration and school.
-- [ ] **spells › Dispel Magic**: From memory of the PHB (Rules_Scope §5 summary): check damage dice, save, range, duration and school.
-- [ ] **spells › Spirit Guardians**: From memory of the PHB (Rules_Scope §5 summary): check damage dice, save, range, duration and school.
-- [ ] **spells › Revivify**: From memory of the PHB (Rules_Scope §5 summary): check damage dice, save, range, duration and school.
-- [ ] **spells › Mass Healing Word**: From memory of the PHB (Rules_Scope §5 summary): check damage dice, save, range, duration and school.
-- [ ] **spells › Hypnotic Pattern**: From memory of the PHB (Rules_Scope §5 summary): check damage dice, save, range, duration and school.
-- [ ] **spells › Haste**: From memory of the PHB (Rules_Scope §5 summary): check damage dice, save, range, duration and school.
-- [ ] **spells › Fly**: From memory of the PHB (Rules_Scope §5 summary): check damage dice, save, range, duration and school.
-- [ ] **spells › Call Lightning**: From memory of the PHB (Rules_Scope §5 summary): check damage dice, save, range, duration and school.
-- [ ] **spells › Conjure Animals**: From memory of the PHB (Rules_Scope §5 summary): check damage dice, save, range, duration and school.
-- [ ] **spells › Hunger of Hadar**: From memory of the PHB (Rules_Scope §5 summary): check damage dice, save, range, duration and school.
-- [ ] **spells › Vampiric Touch**: From memory of the PHB (Rules_Scope §5 summary): check damage dice, save, range, duration and school.
-- [ ] **spells › Fear**: From memory of the PHB (Rules_Scope §5 summary): check damage dice, save, range, duration and school.
-- [ ] **spells › Slow**: From memory of the PHB (Rules_Scope §5 summary): check damage dice, save, range, duration and school.
-- [ ] **spells › Remove Curse**: From memory of the PHB (Rules_Scope §5 summary): check damage dice, save, range, duration and school.
-- [ ] **spells › Beacon of Hope**: From memory of the PHB (Rules_Scope §5 summary): check damage dice, save, range, duration and school.
-- [ ] **spells › Stinking Cloud**: From memory of the PHB (Rules_Scope §5 summary): check damage dice, save, range, duration and school.
-- [ ] **spells › Sleet Storm**: From memory of the PHB (Rules_Scope §5 summary): check damage dice, save, range, duration and school.
-- [ ] **spells › Meld into Stone**: From memory of the PHB (Rules_Scope §5 summary): check damage dice, save, range, duration and school.
-- [ ] **spells › Spider Climb**: From memory of the PHB (Rules_Scope §5 summary): check damage dice, save, range, duration and school.
-- [ ] **spells › Greater Invisibility**: From memory of the PHB (Rules_Scope §5 summary): check damage dice, save, range, duration and school.
-- [ ] **spells › Ice Storm**: From memory of the PHB (Rules_Scope §5 summary): check damage dice, save, range, duration and school.
-- [ ] **spells › Cone of Cold**: From memory of the PHB (Rules_Scope §5 summary): check damage dice, save, range, duration and school.
-- [ ] **spells › Resistance**: Added Nov 21 (owner asked for more spells), from memory of the PHB: check dice, saves, range and duration.
-- [ ] **spells › False Life**: Added Nov 21 (owner asked for more spells), from memory of the PHB: check dice, saves, range and duration.
-- [ ] **spells › Ray of Sickness**: Added Nov 21 (owner asked for more spells), from memory of the PHB: check dice, saves, range and duration.
-- [ ] **spells › Tasha's Hideous Laughter**: Added Nov 21 (owner asked for more spells), from memory of the PHB: check dice, saves, range and duration.
-- [ ] **spells › Searing Smite**: Added Nov 21 (owner asked for more spells), from memory of the PHB: check dice, saves, range and duration.
-- [ ] **spells › Blindness/Deafness**: Added Nov 21 (owner asked for more spells), from memory of the PHB: check dice, saves, range and duration.
-- [ ] **spells › Blur**: Added Nov 21 (owner asked for more spells), from memory of the PHB: check dice, saves, range and duration.
-- [ ] **spells › Enlarge/Reduce**: Added Nov 21 (owner asked for more spells), from memory of the PHB: check dice, saves, range and duration.
-- [ ] **spells › Magic Weapon**: Added Nov 21 (owner asked for more spells), from memory of the PHB: check dice, saves, range and duration.
 - [ ] **spells › Gust of Wind**: Added Nov 21 (owner asked for more spells), from memory of the PHB: check dice, saves, range and duration.
-- [ ] **spells › Protection from Energy**: Added Nov 21 (owner asked for more spells), from memory of the PHB: check dice, saves, range and duration.
-- [ ] **spells › Bestow Curse**: Added Nov 21 (owner asked for more spells), from memory of the PHB: check dice, saves, range and duration.
-- [ ] **spells › Daylight**: Added Nov 21 (owner asked for more spells), from memory of the PHB: check dice, saves, range and duration.
 
 ## monsters.json
 
-- [ ] **monsters › Bandit**: AC, HP, speed and CR from the MM PDF (✅). Ability scores, hit dice and attack lines from memory: check them.
 - [ ] **monsters › Grey Company bruiser**: Bandit stats (Encounters_and_XP F1: 'bandit stats, fists and clubs'); club and bottle attacks are my own [inferred].
-- [ ] **monsters › Bandit captain**: AC, HP, speed and CR from the MM PDF (✅). Ability scores, hit dice and attack lines from memory: check them.
-- [ ] **monsters › Thug**: AC, HP, speed and CR from the MM PDF (✅). Ability scores, hit dice and attack lines from memory: check them.
-- [ ] **monsters › Scout**: AC, HP, speed and CR from the MM PDF (✅). Ability scores, hit dice and attack lines from memory: check them.
-- [ ] **monsters › Guard**: AC, HP, speed and CR from the MM PDF (✅). Ability scores, hit dice and attack lines from memory: check them.
-- [ ] **monsters › Veteran**: AC, HP, speed and CR from the MM PDF (✅). Ability scores, hit dice and attack lines from memory: check them.
-- [ ] **monsters › Cultist**: AC, HP, speed and CR from the MM PDF (✅). Ability scores, hit dice and attack lines from memory: check them.
-- [ ] **monsters › Cult fanatic**: AC, HP, speed and CR from the MM PDF (✅). Ability scores, hit dice and attack lines from memory: check them.
+- [ ] **monsters › Veteran**: AC, HP, speed and CR from the MM PDF (✅). Data_Fixes.md says the heavy crossbow does 1d10, but the SRD 5.1 says 1d10+1 (kept). Check the crossbow damage, ability scores and hit dice in the MM.
 - [ ] **monsters › Cult fanatic**: Spell list and slots from memory (Monster_Roster CONFIRM LOCALLY).
-- [ ] **monsters › Priest**: AC, HP, speed and CR from the MM PDF (✅). Ability scores, hit dice and attack lines from memory: check them.
 - [ ] **monsters › Priest**: Spell list and slots from memory.
-- [ ] **monsters › Mage**: AC, HP, speed and CR from the MM PDF (✅). Ability scores, hit dice and attack lines from memory: check them.
 - [ ] **monsters › Mage**: Spell list and slots from memory.
-- [ ] **monsters › Lizardfolk**: AC, HP, speed and CR from the MM PDF (✅). Ability scores, hit dice and attack lines from memory: check them.
-- [ ] **monsters › Goblin**: AC, HP, speed and CR from the MM PDF (✅). Ability scores, hit dice and attack lines from memory: check them.
-- [ ] **monsters › Hobgoblin**: AC, HP, speed and CR from the MM PDF (✅). Ability scores, hit dice and attack lines from memory: check them.
-- [ ] **monsters › Orc**: ⚠ row in Monster_Roster.md: AC, HP and CR were not readable in the PDF either. Check everything.
-- [ ] **monsters › Bugbear**: AC, HP, speed and CR from the MM PDF (✅). Ability scores, hit dice and attack lines from memory: check them.
-- [ ] **monsters › Wolf**: AC, HP, speed and CR from the MM PDF (✅). Ability scores, hit dice and attack lines from memory: check them.
-- [ ] **monsters › Worg**: AC, HP, speed and CR from the MM PDF (✅). Ability scores, hit dice and attack lines from memory: check them.
-- [ ] **monsters › Dire wolf**: AC, HP, speed and CR from the MM PDF (✅). Ability scores, hit dice and attack lines from memory: check them.
-- [ ] **monsters › Giant rat**: AC, HP, speed and CR from the MM PDF (✅). Ability scores, hit dice and attack lines from memory: check them.
-- [ ] **monsters › Swarm of rats**: AC, HP, speed and CR from the MM PDF (✅). Ability scores, hit dice and attack lines from memory: check them.
-- [ ] **monsters › Giant centipede**: AC, HP, speed and CR from the MM PDF (✅). Ability scores, hit dice and attack lines from memory: check them.
-- [ ] **monsters › Stirge**: AC, HP, speed and CR from the MM PDF (✅). Ability scores, hit dice and attack lines from memory: check them.
-- [ ] **monsters › Brown bear**: AC, HP, speed and CR from the MM PDF (✅). Ability scores, hit dice and attack lines from memory: check them.
-- [ ] **monsters › Giant spider**: AC, HP, speed and CR from the MM PDF (✅). Ability scores, hit dice and attack lines from memory: check them.
-- [ ] **monsters › Swarm of insects**: AC, HP, speed and CR from the MM PDF (✅). Ability scores, hit dice and attack lines from memory: check them.
-- [ ] **monsters › Griffon**: AC, HP, speed and CR from the MM PDF (✅). Ability scores, hit dice and attack lines from memory: check them.
-- [ ] **monsters › Owlbear**: AC, HP, speed and CR from the MM PDF (✅). Ability scores, hit dice and attack lines from memory: check them.
-- [ ] **monsters › Skeleton**: AC, HP, speed and CR from the MM PDF (✅). Ability scores, hit dice and attack lines from memory: check them.
+- [ ] **monsters › Brown bear**: AC, HP, speed, CR and both attack lines checked against the MM (Data_Fixes.md); to-hit fixed to +5. Ability scores and hit dice not confirmed yet.
 - [ ] **monsters › Zombie**: ⚠ row in Monster_Roster.md: AC, HP and CR were not readable in the PDF either. Check everything.
-- [ ] **monsters › Ghoul**: AC, HP, speed and CR from the MM PDF (✅). Ability scores, hit dice and attack lines from memory: check them.
-- [ ] **monsters › Ghast**: AC, HP, speed and CR from the MM PDF (✅). Ability scores, hit dice and attack lines from memory: check them.
-- [ ] **monsters › Shadow**: AC, HP, speed and CR from the MM PDF (✅). Ability scores, hit dice and attack lines from memory: check them.
-- [ ] **monsters › Specter**: AC, HP, speed and CR from the MM PDF (✅). Ability scores, hit dice and attack lines from memory: check them.
-- [ ] **monsters › Wraith**: AC, HP, speed and CR from the MM PDF (✅). Ability scores, hit dice and attack lines from memory: check them. Life Drain DC (Items.md CONFIRM LOCALLY).
-- [ ] **monsters › Wight**: AC, HP, speed and CR from the MM PDF (✅). Ability scores, hit dice and attack lines from memory: check them.
-- [ ] **monsters › Animated armor**: AC, HP, speed and CR from the MM PDF (✅). Ability scores, hit dice and attack lines from memory: check them.
-- [ ] **monsters › Gargoyle**: AC, HP, speed and CR from the MM PDF (✅). Ability scores, hit dice and attack lines from memory: check them.
+- [ ] **monsters › Wraith**: Stat block checked against the MM (Data_Fixes.md). Still to check: the Life Drain save DC (traits and DCs were not part of that check).
 - [ ] **monsters › Earth elemental**: AC, HP, speed and CR from the MM PDF (✅). Ability scores, hit dice and attack lines from memory: check them.
-- [ ] **monsters › Fire elemental**: AC, HP, speed and CR from the MM PDF (✅). Ability scores, hit dice and attack lines from memory: check them.
-- [ ] **monsters › Magma mephit**: ⚠ row in Monster_Roster.md: AC, HP and CR were not readable in the PDF either. Check everything.
-- [ ] **monsters › Magma mephit › Claws**: Monster_Roster.md says +1d4 fire; memory says 2d4 fire. Docs win until checked.
-- [ ] **monsters › Hell hound**: AC, HP, speed and CR from the MM PDF (✅). Ability scores, hit dice and attack lines from memory: check them.
-- [ ] **monsters › Salamander**: AC, HP, speed and CR from the MM PDF (✅). Ability scores, hit dice and attack lines from memory: check them.
-- [ ] **monsters › Ogre**: AC, HP, speed and CR from the MM PDF (✅). Ability scores, hit dice and attack lines from memory: check them.
-- [ ] **monsters › Hill giant**: AC, HP, speed and CR from the MM PDF (✅). Ability scores, hit dice and attack lines from memory: check them.
-- [ ] **monsters › Fire giant**: AC 18 and HP 162 from the MM PDF (✅). CR 9 is "believed" in the docs; abilities and attacks from memory.
-- [ ] **monsters › Troll**: AC, HP, speed and CR from the MM PDF (✅). Ability scores, hit dice and attack lines from memory: check them.
-- [ ] **monsters › Green hag**: AC, HP, speed and CR from the MM PDF (✅). Ability scores, hit dice and attack lines from memory: check them.
 - [ ] **monsters › Green hag**: Innate spells from memory.
-- [ ] **monsters › Red dragon wyrmling**: AC, HP, speed and CR from the MM PDF (✅). Ability scores, hit dice and attack lines from memory: check them.
-- [ ] **monsters › Young red dragon**: ⚠ row in Monster_Roster.md: AC, HP and CR were not readable in the PDF either. Check everything.
 - [ ] **monsters › Cindrath's ember-wraith**: Homebrew. AC 17, about 110 HP, fly 60, 30-ft cone of about 8d6 fire and CR budget 6-7 come from the docs; ability scores, attack numbers and save DC are my placeholders [inferred]. Fire immunity from Items.md ("Cindrath is immune to fire").
 - [ ] **monsters › Cindrath's ember-wraith › Bite**: Homebrew placeholder numbers [inferred]; tune with the balance simulator (M10).
 - [ ] **monsters › Cindrath's ember-wraith › Claw**: Homebrew placeholder [inferred].

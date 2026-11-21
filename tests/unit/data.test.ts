@@ -314,9 +314,38 @@ describe('monsters, foes and items', () => {
     ]).toEqual([17, 75, 1100]);
   });
 
-  it('flags every ⚠ row and the homebrew ember-wraith for checking', () => {
-    for (const id of ['zombie', 'magma-mephit', 'orc', 'young-red-dragon', 'ember-wraith'])
+  it('keeps flagged what the rulebook check could not read, and the homebrew (Data_Fixes.md §3)', () => {
+    for (const id of ['zombie', 'earth-elemental', 'grey-bruiser', 'ember-wraith', 'crown-shard'])
       expect(monsters.find((m) => m.id === id)!.verify).toBe(true);
+  });
+
+  it('clears the flag on monsters checked against the MM (Data_Fixes.md §2)', () => {
+    for (const id of ['orc', 'magma-mephit', 'young-red-dragon', 'goblin', 'fire-giant'])
+      expect(monsters.find((m) => m.id === id)!.verify).toBeUndefined();
+  });
+
+  it('applies the rulebook fixes (Data_Fixes.md §1)', () => {
+    // MM: Brown bear bite and claws are +5 to hit.
+    const bear = monsters.find((m) => m.id === 'brown-bear')!;
+    for (const a of bear.actions) {
+      const atk = a.effects.find((e) => e.type === 'attack');
+      if (atk && atk.type === 'attack') expect(atk.toHit).toBe(5);
+    }
+    // PHB spell schools and ranges.
+    const sp = (id: string) => spells.find((s) => s.id === id)!;
+    expect(sp('revivify').school).toBe('conjuration');
+    expect(sp('protection-from-evil-and-good').range).toBe('touch');
+    const feet: [string, number][] = [
+      ['prestidigitation', 10],
+      ['dancing-lights', 120],
+      ['feather-fall', 60],
+      ['fog-cloud', 120],
+      ['beacon-of-hope', 30],
+      ['sleet-storm', 150],
+    ];
+    for (const [id, ft] of feet) expect(sp(id).range).toEqual({ feet: ft });
+    // Only gust-of-wind (unreadable scan) is still flagged.
+    expect(spells.filter((s) => s.verify).map((s) => s.id)).toEqual(['gust-of-wind']);
   });
 
   it('has the three elites and their rewards (Items.md)', () => {

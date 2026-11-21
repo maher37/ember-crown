@@ -52,9 +52,7 @@
           "id": "rage",
           "name": "Rage",
           "recharge": "long-rest",
-          "perLevel": [2, 2, 3, 3, 3, 4],
-          "verify": true,
-          "verifyNote": "Rages 2/2/3/3/3/4 (Rules_Scope §4 gives L1, L3 and L6; L2, L4, L5 from memory)."
+          "perLevel": [2, 2, 3, 3, 3, 4]
         }
       ],
       "levels": [
@@ -254,9 +252,7 @@
         "style": "known",
         "cantripsKnown": [2, 2, 2, 3, 3, 3],
         "ritualCasting": true,
-        "spellsKnown": [4, 5, 6, 7, 8, 9],
-        "verify": true,
-        "verifyNote": "Cantrips/spells known counts from memory of the PHB class table."
+        "spellsKnown": [4, 5, 6, 7, 8, 9]
       },
       "resources": [
         {
@@ -452,18 +448,14 @@
         "style": "prepared",
         "cantripsKnown": [3, 3, 3, 4, 4, 4],
         "ritualCasting": true,
-        "preparedFormula": "wis-mod+level",
-        "verify": true,
-        "verifyNote": "Cantrips/spells known counts from memory of the PHB class table."
+        "preparedFormula": "wis-mod+level"
       },
       "resources": [
         {
           "id": "channel-divinity",
           "name": "Channel Divinity",
           "recharge": "short-rest",
-          "perLevel": [0, 1, 1, 1, 1, 2],
-          "verify": true,
-          "verifyNote": "1 use at L2-5, 2 at L6 (Rules_Scope §4 ✅ names; counts from memory)."
+          "perLevel": [0, 1, 1, 1, 1, 2]
         },
         {
           "id": "warding-flare",
@@ -774,18 +766,14 @@
         "style": "prepared",
         "cantripsKnown": [2, 2, 2, 3, 3, 3],
         "ritualCasting": true,
-        "preparedFormula": "wis-mod+level",
-        "verify": true,
-        "verifyNote": "Cantrips/spells known counts from memory of the PHB class table."
+        "preparedFormula": "wis-mod+level"
       },
       "resources": [
         {
           "id": "wild-shape",
           "name": "Wild Shape",
           "recharge": "short-rest",
-          "perLevel": [0, 2, 2, 2, 2, 2],
-          "verify": true,
-          "verifyNote": "Use counts from memory of the PHB class table (Rules_Scope CONFIRM LOCALLY)."
+          "perLevel": [0, 2, 2, 2, 2, 2]
         },
         {
           "id": "natural-recovery",
@@ -1114,9 +1102,7 @@
           "id": "ki",
           "name": "Ki",
           "recharge": "short-rest",
-          "perLevel": [0, 2, 3, 4, 5, 6],
-          "verify": true,
-          "verifyNote": "Ki = monk level from L2 (Rules_Scope §4)."
+          "perLevel": [0, 2, 3, 4, 5, 6]
         },
         {
           "id": "wholeness-of-body",
@@ -1277,9 +1263,7 @@
         "style": "prepared",
         "cantripsKnown": [0, 0, 0, 0, 0, 0],
         "ritualCasting": false,
-        "preparedFormula": "cha-mod+half-level",
-        "verify": true,
-        "verifyNote": "Cantrips/spells known counts from memory of the PHB class table."
+        "preparedFormula": "cha-mod+half-level"
       },
       "resources": [
         {
@@ -1302,9 +1286,7 @@
           "id": "channel-divinity",
           "name": "Channel Divinity",
           "recharge": "short-rest",
-          "perLevel": [0, 0, 1, 1, 1, 1],
-          "verify": true,
-          "verifyNote": "Use counts from memory of the PHB class table (Rules_Scope CONFIRM LOCALLY)."
+          "perLevel": [0, 0, 1, 1, 1, 1]
         }
       ],
       "levels": [
@@ -1532,9 +1514,7 @@
         "style": "known",
         "cantripsKnown": [0, 0, 0, 0, 0, 0],
         "ritualCasting": false,
-        "spellsKnown": [0, 2, 3, 3, 4, 4],
-        "verify": true,
-        "verifyNote": "Cantrips/spells known counts from memory of the PHB class table."
+        "spellsKnown": [0, 2, 3, 3, 4, 4]
       },
       "levels": [
         {
@@ -1861,18 +1841,14 @@
         "style": "known",
         "cantripsKnown": [4, 4, 4, 5, 5, 5],
         "ritualCasting": false,
-        "spellsKnown": [2, 3, 4, 5, 6, 7],
-        "verify": true,
-        "verifyNote": "Cantrips/spells known counts from memory of the PHB class table."
+        "spellsKnown": [2, 3, 4, 5, 6, 7]
       },
       "resources": [
         {
           "id": "sorcery-points",
           "name": "Sorcery Points",
           "recharge": "long-rest",
-          "perLevel": [0, 2, 3, 4, 5, 6],
-          "verify": true,
-          "verifyNote": "Sorcery points = level from L2 (Rules_Scope §4)."
+          "perLevel": [0, 2, 3, 4, 5, 6]
         }
       ],
       "levels": [
@@ -2041,9 +2017,7 @@
         "style": "known",
         "cantripsKnown": [2, 2, 2, 3, 3, 3],
         "ritualCasting": false,
-        "spellsKnown": [2, 3, 4, 5, 6, 7],
-        "verify": true,
-        "verifyNote": "Cantrips/spells known counts from memory of the PHB class table."
+        "spellsKnown": [2, 3, 4, 5, 6, 7]
       },
       "resources": [
         {
@@ -2289,9 +2263,7 @@
         "style": "spellbook",
         "cantripsKnown": [3, 3, 3, 4, 4, 4],
         "ritualCasting": true,
-        "preparedFormula": "int-mod+level",
-        "verify": true,
-        "verifyNote": "Cantrips/spells known counts from memory of the PHB class table."
+        "preparedFormula": "int-mod+level"
       },
       "resources": [
         {

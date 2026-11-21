@@ -11,6 +11,9 @@ export const KNOWN_QUIRKS = new Set([
   "monster veteran: heavy-crossbow damage bonus 1 doesn't match its Str or Dex modifier",
   'monster ghoul: bite to-hit +2, expected +3 (Str) or +4 (Dex) at proficiency +2',
   'monster ghast: bite to-hit +3, expected +5 (Str) or +5 (Dex) at proficiency +2',
+  // MM and SRD 5.1 both print +5 for the brown bear, though Str 19 + proficiency gives +6.
+  'monster brown-bear: bite to-hit +5, expected +6 (Str) or +2 (Dex) at proficiency +2',
+  'monster brown-bear: claws to-hit +5, expected +6 (Str) or +2 (Dex) at proficiency +2',
 ]);
 
 /**
