@@ -493,3 +493,98 @@
   font-size: 22px;
   font-weight: 800;
 }
+
+/* Item icons: the frame shows rarity; unique story treasures glow (playtest). */
+.item-icon {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  vertical-align: middle;
+}
+.item-icon svg {
+  position: relative;
+  z-index: 1;
+}
+.item-icon-frame {
+  position: absolute;
+  inset: 0;
+  border: 2px solid;
+  border-radius: 8px;
+  z-index: 0;
+}
+.item-icon.rarity-uncommon .item-icon-frame,
+.item-icon.rarity-rare .item-icon-frame,
+.item-icon.rarity-very-rare .item-icon-frame {
+  box-shadow: 0 0 6px currentColor;
+}
+.item-icon.rarity-uncommon {
+  color: #4fbf6a;
+}
+.item-icon.rarity-rare {
+  color: #5a9ae8;
+}
+.item-icon.rarity-very-rare {
+  color: #b07ad9;
+}
+.item-icon.rarity-story {
+  color: #e8c27a;
+}
+.item-icon.rarity-story .item-icon-frame {
+  box-shadow:
+    0 0 8px rgba(232, 194, 122, 0.7),
+    inset 0 0 6px rgba(232, 194, 122, 0.35);
+  animation: story-glow 2.6s ease-in-out infinite alternate;
+}
+@keyframes story-glow {
+  from {
+    box-shadow:
+      0 0 4px rgba(232, 194, 122, 0.45),
+      inset 0 0 4px rgba(232, 194, 122, 0.25);
+  }
+  to {
+    box-shadow:
+      0 0 11px rgba(232, 194, 122, 0.85),
+      inset 0 0 7px rgba(232, 194, 122, 0.45);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .item-icon.rarity-story .item-icon-frame {
+    animation: none;
+  }
+}
+[data-reduce-motion='true'] .item-icon.rarity-story .item-icon-frame {
+  animation: none;
+}
+.item-row-main {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  min-width: 0;
+}
+.slot-main {
+  flex-direction: row !important;
+  align-items: center !important;
+  gap: 8px !important;
+}
+.slot-text {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+.rarity-tag {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-left: 4px;
+}
+.rarity-tag.uncommon {
+  color: #4fbf6a;
+}
+.rarity-tag.rare {
+  color: #5a9ae8;
+}
+.rarity-tag.story {
+  color: #e8c27a;
+}

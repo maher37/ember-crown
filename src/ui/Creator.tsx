@@ -92,6 +92,7 @@ export function Creator() {
       classSkills: [],
       expertise: [],
       fightingStyle: null,
+      subclassId: undefined,
     }));
   const pickSpecies = (speciesId: string) =>
     setDraft((d) => {
@@ -399,7 +400,13 @@ export function Creator() {
                   value={cls.primaryAbilities.map((a) => SHORT[a]).join(', ')}
                 />
                 <Fact label="Saves" value={cls.saves.map((a) => SHORT[a]).join(', ')} />
-                <Fact label="Subclass" value={`${cls.subclass.name} (${cls.subclass.level})`} />
+                <Fact
+                  label="Subclass"
+                  value={`${
+                    cls.subclasses?.find((x) => x.id === (draft.subclassId ?? cls.subclass.id))
+                      ?.name ?? cls.subclass.name
+                  } (${cls.subclass.level})`}
+                />
               </div>
             </div>
           </section>
@@ -580,6 +587,7 @@ function StepTwo({
   const bonusCount = bonusSkillCount(draft.speciesId);
   const choices = levelOneChoices(draft.classId);
   const sp = getSpecies(draft.speciesId);
+  const cls = getClass(draft.classId);
   const owned = new Set<Skill>([...granted, ...draft.classSkills, ...draft.bonusSkills]);
   const toggle = (list: Skill[], s: Skill, max: number) =>
     list.includes(s) ? list.filter((x) => x !== s) : list.length < max ? [...list, s] : list;
@@ -680,6 +688,29 @@ function StepTwo({
                   {SKILL_NAMES[s]}
                 </button>
               ))}
+            </div>
+          </>
+        )}
+        {cls.subclasses && (
+          <>
+            <h2 className="eyebrow">Divine domain</h2>
+            <div className="style-list" role="radiogroup" aria-label="Divine domain">
+              {cls.subclasses.map((o) => {
+                const on = (draft.subclassId ?? cls.subclass.id) === o.id;
+                return (
+                  <button
+                    key={o.id}
+                    type="button"
+                    role="radio"
+                    aria-checked={on}
+                    className={`bg-card ${on ? 'on' : ''}`}
+                    onClick={() => update({ subclassId: o.id })}
+                  >
+                    <span className="bg-name">{o.name}</span>
+                    <span className="small">{o.summary}</span>
+                  </button>
+                );
+              })}
             </div>
           </>
         )}

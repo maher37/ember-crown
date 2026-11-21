@@ -2,6 +2,8 @@
 import { describe, expect, it } from 'vitest';
 import {
   ambienceFor,
+  battleMood,
+  intenseFor,
   cuesForLog,
   cuesForMessages,
   moodFor,
@@ -111,5 +113,22 @@ describe('sound settings', () => {
       sound.setMood('combat');
       sound.play('hit');
     }).not.toThrow();
+  });
+});
+
+describe('battle music by what you fight (playtest)', () => {
+  it('undead, beasts, fire creatures, humanoids and bosses each get their theme', () => {
+    expect(battleMood('f10-marrowmere')).toBe('battle-undead');
+    expect(battleMood('s2-ashwood-wolves')).toBe('battle-beast');
+    expect(battleMood('f16-kiln-gate')).toBe('battle-fire');
+    expect(battleMood('f2-road-ambush')).toBe('combat');
+    expect(battleMood('e1-scald')).toBe('boss');
+    expect(battleMood('f21-crowning-maelis')).toBe('boss');
+    expect(moodFor({ screen: 'combat', encounterId: 'f10-marrowmere' })).toBe('battle-undead');
+  });
+  it('Hard fights play more intensely', () => {
+    expect(intenseFor({ screen: 'combat', difficulty: 'hard' })).toBe(true);
+    expect(intenseFor({ screen: 'combat', difficulty: 'medium' })).toBe(false);
+    expect(intenseFor({ screen: 'map', difficulty: 'hard' })).toBe(false);
   });
 });

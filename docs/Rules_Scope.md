@@ -74,7 +74,7 @@
 - **Feats:** none in v1 (ability score increases only at level 4).
 - **Multiclassing:** not in v1.
 
-## 4. Classes, levels 1–6 (one subclass each) ✅ feature names checked in the PHB
+## 4. Classes, levels 1–6 (one subclass each; clerics choose a domain, D4) ✅ feature names checked in the PHB
 **Spell slots.** Full casters (Bard, Cleric, Druid, Sorcerer, Wizard):
 
 | Level | 1 | 2 | 3 | 4 | 5 | 6 |
@@ -98,6 +98,14 @@ Warlock (pact magic; recharges on a short rest): L1: one 1st-level slot; L2: two
 | **Sorcerer** (Draconic, red), d6 | Spellcasting (Cha); Draconic Resilience (+1 HP per level; AC 13 + Dex unarmored) | Font of Magic (sorcery points = level) | Metamagic (choose 2) | Ability score increase | 3rd-level spells | Elemental Affinity (+Cha to fire spell damage) |
 | **Warlock** (Fiend), d8 | Pact Magic (Cha); Dark One's Blessing (temporary HP = Cha + level when you drop an enemy) | Eldritch Invocations (2, e.g., Agonizing Blast) | Pact Boon (Blade, Chain or Tome) | Ability score increase | 3rd-level pact slots; 3 invocations | Dark One's Own Luck (+d10 to a check or save, 1 per rest) |
 | **Wizard** (Evocation), d6 | Spellcasting (Int, spellbook); Arcane Recovery | Evocation Savant; Sculpt Spells (allies are safe inside your area spells) | 2nd-level spells | Ability score increase | 3rd-level spells | Potent Cantrip (half damage on a successful save) |
+
+**Cleric domains (D4, Nov 21).** Life is the table row above. The other three, from memory of the PHB [CONFIRM LOCALLY]:
+
+| Domain | Proficiencies and domain spells (always prepared) | L1 | L2 (Channel Divinity) | L6 |
+|---|---|---|---|---|
+| **Light** | No heavy armor. *Light*; *burning hands*, *faerie fire*; *flaming sphere*, *scorching ray*; *fireball* (*daylight* not in the game) | Warding Flare: reaction, an attacker within 30 ft has disadvantage (Wis mod uses per long rest) | Radiance of the Dawn: enemies within 30 ft make a Con save, 2d10 + cleric level radiant, half on a success | Improved Flare: Warding Flare also protects allies |
+| **War** | Heavy armor, martial weapons. *Divine favor*, *shield of faith*; *spiritual weapon* (*magic weapon* not in the game); *spirit guardians* (*crusader's mantle* not in the game) | War Priest: a bonus-action weapon attack after the Attack action (Wis mod uses per long rest) | Guided Strike: +10 to one of your attack rolls | War God's Blessing: reaction, +10 to an ally's attack roll within 30 ft (uses Channel Divinity) |
+| **Tempest** | Heavy armor, martial weapons. *Fog cloud*, *thunderwave*; *shatter* (*gust of wind* not in the game); *call lightning*, *sleet storm* | Wrath of the Storm: reaction when hit from 5 ft, 2d8 lightning or thunder, Dex save for half (Wis mod uses per long rest) | Destructive Wrath: lightning or thunder damage rolled at its maximum | Thunderbolt Strike: your lightning damage pushes a Large or smaller creature 10 ft |
 
 **Corin Varrow (origin)** is a Draconic Bloodline sorcerer with red (fire) ancestry. The Ember bargains in Story_Bible.md §9 add homebrew boons on top of these features.
 
@@ -275,12 +283,18 @@ Warlock (pact magic; recharges on a short rest): L1: one 1st-level slot; L2: two
 - [ ] Spell details for anything not marked ✅. They're summarized from memory of the 2014 PHB, so verify damage dice and saves when entering data (the PHB text extracts cleanly enough to check each spell).
 - [ ] Class resource counts (rages per level, ki, sorcery points, invocations known, spells known for bard, sorcerer, ranger and warlock). Copy them from the PHB class tables during data entry.
 - [ ] Druid Circle of the Land "Mountain" spell list and Wild Shape limits.
+- [ ] The Light, War and Tempest domain spell lists and features (table in §4): written from memory of the 2014 PHB. Check the use counts (Wisdom modifier, minimum 1) and Radiance of the Dawn's damage (2d10 + cleric level).
 - [ ] Color Spray's higher-level bonus (believed +2d10 per slot level above 1st).
 
 - [ ] (Proposed, M10) A hero knocked out during their own turn (walking into Spirit Guardians, say) ends that turn at once, and End turn is always allowed. (Found by the balance simulator: the fight could get stuck.)
 - [ ] (Proposed, M10) Balance tuning from the simulator: the toll bridge is 3 thugs on Medium (the scout joins on Hard); two Ashford militia fight beside you at the evacuation convoy (one hell hound on Easy); the dire-wolf road encounter is 2 wolves on Medium (1 on Easy, 4 on Hard). XP awards are unchanged.
 - [ ] (Proposed, M10) Comfort settings: Reduce motion (no background animation, the party jumps instead of walking, rests run fast; also follows the system setting) and Reduce flashing (a small shake instead of a flash when someone is hit).
 
+- [x] (Owner's choice, Nov 21) Clerics choose a domain: Life, Light, War or Tempest (D4). Saves from before have Life clerics.
+- [ ] (Proposed, Nov 21) The domain reactions are used automatically: Warding Flare on the first attack against a protected hero that isn't already at disadvantage; War God's Blessing and Wrath of the Storm whenever they apply. Wrath of the Storm deals lightning (thunder if the attacker resists lightning). Warding Flare ignores the rule that creatures immune to blindness aren't affected [inferred simplification].
+- [ ] (Proposed, Nov 21) Guided Strike and Destructive Wrath are "readied" with a free button on your turn and last until the end of it; Channel Divinity is spent only when one actually changes a roll (Guided Strike: a miss by 10 or less, not a natural 1). (RAW you decide after seeing the roll; this keeps the choice with you without a pop-up.) Thunderbolt Strike always pushes.
+- [ ] (Proposed, Nov 21) Light clerics start in scale mail instead of chain mail (no heavy armor).
+- [ ] (Proposed, Nov 21) Hex: the warlock picks the cursed ability on the Party sheet (remembered; Strength by default), and it imposes disadvantage on that ability's checks, including grapple and shove contests. If a fight ends with the warlock still concentrating on Hex (or a ranger on Hunter's Mark), the spell lasts for an hour of game time: in a fight that starts within that hour it can be moved onto a new enemy as a bonus action with no new slot.
 - [x] (Owner's choice, Nov 21) Long rests any time (RAW: once per 24 hours); still 8 hours each, and the road can interrupt one in the wild.
 - [ ] (Proposed, Nov 21) Weapon sets: switching between set 1 and set 2 is free once a turn in a fight (RAW: one free draw or stow per turn; we let it swap both hands, like Baldur's Gate).
 - [ ] (Proposed, Nov 21) The off hand takes a shield or a light weapon (Two-Weapon Fighting); a two-handed weapon empties it.

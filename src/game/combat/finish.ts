@@ -63,8 +63,15 @@ export function finishCombat(state: CombatState, party: Hero[]): CombatResult {
       h = { ...h, exhaustion: Math.min(6, h.exhaustion + 1) };
       notes.push(`${h.name} is exhausted after the frenzy (exhaustion ${h.exhaustion}).`);
     }
+    // PHB: Hex and Hunter's Mark last an hour: a hero still holding one can place it in the next
+    // fight within that hour with a bonus action and no new slot (the store sets the hour).
+    const lingering =
+      (h.concentration === 'hex' || h.concentration === 'hunters-mark') && h.hp > 0 && !h.dead
+        ? { spell: h.concentration }
+        : undefined;
     h = {
       ...h,
+      lingering,
       tempHp: 0,
       concentration: null,
       conditions: [],

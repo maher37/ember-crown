@@ -7,15 +7,22 @@ import {
   stabilize,
   type ConditionId,
   type DiceRoll,
+  type RandomSource,
 } from '../../rules';
+import { getMonster } from '../creatures';
+import { hasSubclass, resourceLeft } from '../hero';
 import {
   addEffect,
   classLevel,
   combatSave,
   dealDamage,
   endConcentrationEffects,
+  effectsWith,
   healCombatant,
+  heroOf,
+  removeEffect,
   say,
+  spendResource,
   type Ctx,
 } from './core';
 import { blocksMovement, inBounds, occupant, terrainAt } from './grid';
@@ -67,17 +74,51 @@ export interface LeafOpts {
   slotLevel?: number;
 }
 
+/** Dice that always land on their highest face. */
+const MAX_DICE: RandomSource = { die: (sides) => sides };
+
+/**
+ * PHB: Tempest Domain, Destructive Wrath. When the cleric rolls lightning or thunder damage,
+ * Channel Divinity makes it the maximum. Here it's readied first, then used up by the next such roll.
+ */
+export function wrathDice(ctx: Ctx, source: Combatant | undefined, type: string): RandomSource {
+  if (!source || (type !== 'lightning' && type !== 'thunder')) return ctx.rng;
+  const e = effectsWith(source, 'destructive-wrath')[0];
+  const h = heroOf(source);
+  if (!e || !h || resourceLeft(h, 'channel-divinity') <= 0) return ctx.rng;
+  removeEffect(source, e);
+  spendResource(source, 'channel-divinity');
+  say(ctx.s, 'you', `Destructive Wrath: ${source.name}'s ${type} damage is rolled at its maximum`);
+  return MAX_DICE;
+}
+
+/**
+ * PHB: Tempest Domain, Thunderbolt Strike (cleric 6). Lightning damage from the cleric can push a
+ * Large or smaller creature up to 10 ft away (always used here [inferred]).
+ */
+export function thunderbolt(ctx: Ctx, source: Combatant, target: Combatant, type: string): void {
+  const h = heroOf(source);
+  if (type !== 'lightning' || !h || !hasSubclass(h, 'cleric', 'tempest', 6)) return;
+  if (target.creature.dead || target.gone || source.id === target.id) return;
+  const size = target.monsterId ? getMonster(target.monsterId).size : 'Medium';
+  if (size === 'Huge') return;
+  say(ctx.s, 'you', `Thunderbolt Strike hurls ${target.name} back`);
+  pushPull(ctx, source, target, 10);
+}
+
 export function rollLeafDamage(
   ctx: Ctx,
   e: Extract<LeafEffect, { type: 'damage' }>,
   opts: LeafOpts,
   critical = false,
+  source?: Combatant,
 ): DiceRoll {
   const pre = opts.preRolled?.get(e);
   if (pre) return pre;
-  const base = roll(e.dice, ctx.rng);
-  const extraDice = critical ? roll({ ...base.expr, bonus: 0 }, ctx.rng) : null;
-  const up = opts.upcastDice ? roll(opts.upcastDice, ctx.rng) : null;
+  const dice = wrathDice(ctx, source, e.damageType);
+  const base = roll(e.dice, dice);
+  const extraDice = critical ? roll({ ...base.expr, bonus: 0 }, dice) : null;
+  const up = opts.upcastDice ? roll(opts.upcastDice, dice) : null;
   const flat = (e.addModifier ? (opts.mod ?? 0) : 0) + (opts.damageBonus ?? 0);
   const total = Math.max(0, base.total + (extraDice?.total ?? 0) + (up?.total ?? 0) + flat);
   const parts = [
@@ -114,7 +155,7 @@ export function applyLeaf(
       return;
     }
     case 'damage': {
-      const r = rollLeafDamage(ctx, e, opts, critical);
+      const r = rollLeafDamage(ctx, e, opts, critical, source);
       const amount = opts.half ? Math.floor(r.total / 2) : r.total;
       say(
         s,
@@ -125,6 +166,7 @@ export function applyLeaf(
         critical,
         attacker: source,
       });
+      if (amount > 0) thunderbolt(ctx, source, target, e.damageType);
       return;
     }
     case 'heal': {
@@ -249,7 +291,7 @@ export function giveCondition(
 }
 
 /** Push (positive) or pull (negative) a target in a straight line, stopping at obstacles. */
-function pushPull(ctx: Ctx, source: Combatant, target: Combatant, feet: number): void {
+export function pushPull(ctx: Ctx, source: Combatant, target: Combatant, feet: number): void {
   const steps = Math.abs(feet) / 5;
   const dir = Math.sign(feet);
   const dx = Math.sign(target.pos.x - source.pos.x) * dir;
@@ -425,19 +467,22 @@ function applySpecial(
             ? 'hunters-mark-target'
             : 'divine-favor';
       const holder = tag === 'divine-favor' ? source : target;
+      // PHB: Hex. The warlock also picks an ability: the target has disadvantage on its checks.
+      const hexAbility = tag === 'hex-target' ? hexAbilityOf(source) : undefined;
       addEffect(holder, {
         id: tag,
         name,
         sourceId: source.id,
         tag,
         concentration: opts.concentration,
+        ...(hexAbility ? { data: { ability: hexAbility } } : {}),
       });
       say(
         s,
         'you',
         tag === 'divine-favor'
           ? `${source.name}'s weapon glows with divine power`
-          : `${target.name} is marked by ${name}`,
+          : `${target.name} is marked by ${name}${hexAbility ? ` (disadvantage on ${ABILITY_LONG[hexAbility]} checks)` : ''}`,
       );
       return;
     }
@@ -750,4 +795,19 @@ function applySpecial(
     default:
       say(s, 'info', `(${name}: "${id}" has no combat effect yet)`);
   }
+}
+
+export const ABILITY_LONG: Record<string, string> = {
+  str: 'Strength',
+  dex: 'Dexterity',
+  con: 'Constitution',
+  int: 'Intelligence',
+  wis: 'Wisdom',
+  cha: 'Charisma',
+};
+
+/** The ability a warlock's Hex curses: their remembered pick (the sheet), else Strength. */
+export function hexAbilityOf(c: Combatant): string {
+  const h = c.creature as { choices?: Record<string, string[]> };
+  return h.choices?.['hex-ability']?.[0] ?? 'str';
 }

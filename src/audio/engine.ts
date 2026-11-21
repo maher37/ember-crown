@@ -27,6 +27,12 @@ interface Song {
   pad: number;
   /** Lowpass on the pad (darker = lower). */
   bright: number;
+  /** A low tolling bell at the start of every other bar (undead). */
+  bell?: boolean;
+  /** Tribal toms on the off-beats (beasts). */
+  toms?: boolean;
+  /** Brassy low stabs on strong beats (fire, bosses). */
+  brass?: boolean;
 }
 
 const DORIAN = [0, 2, 3, 5, 7, 9, 10];
@@ -115,6 +121,48 @@ const SONGS: Record<Mood, Song> = {
     pad: 0.7,
     bright: 1100,
   },
+  'battle-undead': {
+    bpm: 100,
+    root: 47,
+    scale: PHRYGIAN,
+    chords: [0, 1, 0, 6],
+    steps: 8,
+    pluck: 0.35,
+    bass: 0.8,
+    lead: 0.12,
+    drums: 1,
+    pad: 1,
+    bright: 650,
+    bell: true,
+  },
+  'battle-beast': {
+    bpm: 132,
+    root: 43,
+    scale: DORIAN,
+    chords: [0, 0, 3, 6],
+    steps: 8,
+    pluck: 0.3,
+    bass: 1,
+    lead: 0.1,
+    drums: 2,
+    pad: 0.4,
+    bright: 900,
+    toms: true,
+  },
+  'battle-fire': {
+    bpm: 126,
+    root: 50,
+    scale: HARMONIC,
+    chords: [0, 1, 0, 5],
+    steps: 8,
+    pluck: 0.5,
+    bass: 1,
+    lead: 0.2,
+    drums: 2,
+    pad: 0.8,
+    bright: 1400,
+    brass: true,
+  },
   boss: {
     bpm: 132,
     root: 50,
@@ -158,6 +206,9 @@ const SONGS: Record<Mood, Song> = {
 
 /** Loudness per piece, so quiet, sparse pieces sit level with busy ones. */
 const SONG_GAIN: Record<Mood, number> = {
+  'battle-undead': 1.2,
+  'battle-beast': 1,
+  'battle-fire': 1,
   title: 1.9,
   tavern: 1,
   travel: 1.2,
@@ -190,6 +241,8 @@ class Engine {
 
   private last = 0;
   private musicLevel = 0.3;
+  /** Hard fights: faster, with more drums. */
+  private intense = false;
   private songBus: GainNode;
 
   constructor(ctx: AudioContext) {
@@ -247,6 +300,10 @@ class Engine {
 
   // ---------------------------------------------------------------- music
 
+  setIntensity(on: boolean) {
+    this.intense = on;
+  }
+
   setMood(mood: Mood) {
     if (mood === this.mood) return;
     this.mood = mood;
@@ -274,7 +331,7 @@ class Engine {
     const dt = this.last ? Math.min(0.5, now - this.last) : 0.05;
     this.last = now;
     if (this.song) {
-      const sp = 60 / this.song.bpm / 2; // eighth notes
+      const sp = 60 / (this.song.bpm * (this.intense ? 1.1 : 1)) / 2; // eighth notes
       if (this.nextStep < now) this.nextStep = now + 0.05;
       while (this.nextStep < now + 0.25) {
         this.playStep(this.song, this.nextStep, sp);
@@ -311,8 +368,13 @@ class Engine {
       const n = s.root + 12 + s.scale[((i % 7) + 7) % 7]! + 12 * (Math.floor(i / 7) - 1);
       this.lead(n, t, sp * pick([1, 2, 2, 3]));
     }
-    if (s.drums) {
-      if (strong) this.kick(t, s.drums === 2 ? 0.5 : 0.35);
+    if (s.bell && beat === 0 && this.bar % 2 === 0) this.bell(s.root - 12, t);
+    if (s.toms && (beat === 3 || beat === 6 || (beat === 7 && this.bar % 2 === 1)))
+      this.tom(t, 0.28);
+    if (s.brass && strong) this.brass(chord[0]!, t, sp * 1.5);
+    if (s.drums || this.intense) {
+      if (strong) this.kick(t, s.drums === 2 || this.intense ? 0.5 : 0.35);
+      if (this.intense && s.steps === 8 && (beat === 2 || beat === 6)) this.snare(t, 0.16);
       if (s.drums === 2 && beat === 7 && this.bar % 2 === 1) this.tom(t, 0.3);
       if (s.steps === 6 ? beat === 3 || beat === 5 : beat % 2 === 1)
         this.hat(t, s.steps === 6 ? 0.06 : 0.08);
@@ -400,6 +462,35 @@ class Engine {
     const o = this.osc('sine', 120, t, 0.35, g);
     o.frequency.setValueAtTime(120, t);
     o.frequency.exponentialRampToValueAtTime(42, t + 0.15);
+  }
+
+  /** A low bell: a few inharmonic partials with a long ring. */
+  private bell(n: number, t: number) {
+    for (const [m, v] of [
+      [1, 0.12],
+      [2.4, 0.05],
+      [3.9, 0.03],
+    ] as const) {
+      const g = this.ctx.createGain();
+      g.connect(this.songBus);
+      this.env(g, t, v, 0.004, 2.4);
+      this.osc('sine', hz(n) * m, t, 2.5, g);
+    }
+  }
+
+  /** A short brassy stab (filtered saws). */
+  private brass(n: number, t: number, len: number) {
+    const g = this.ctx.createGain();
+    const f = this.ctx.createBiquadFilter();
+    f.type = 'lowpass';
+    f.frequency.setValueAtTime(400, t);
+    f.frequency.exponentialRampToValueAtTime(1800, t + 0.08);
+    f.frequency.exponentialRampToValueAtTime(600, t + len);
+    f.connect(g).connect(this.songBus);
+    this.env(g, t, 0.09, 0.02, len);
+    this.osc('sawtooth', hz(n - 12), t, len + 0.1, f, -6);
+    this.osc('sawtooth', hz(n - 12), t, len + 0.1, f, 6);
+    this.osc('sawtooth', hz(n - 5), t, len + 0.1, f);
   }
 
   private tom(t: number, vol: number) {
@@ -756,7 +847,7 @@ function get(): Engine | null {
   return engine;
 }
 
-let pending: { volumes?: Volumes; mood?: Mood; ambience?: Ambience } = {};
+let pending: { volumes?: Volumes; mood?: Mood; ambience?: Ambience; intense?: boolean } = {};
 let unlocked = false;
 
 export const sound = {
@@ -771,6 +862,7 @@ export const sound = {
     unlocked = true;
     e.resume();
     if (pending.volumes) e.setVolumes(pending.volumes);
+    if (pending.intense) e.setIntensity(true);
     if (pending.mood) e.setMood(pending.mood);
     if (pending.ambience) e.setAmbience(pending.ambience);
   },
@@ -781,6 +873,10 @@ export const sound = {
   setMood(m: Mood) {
     pending.mood = m;
     if (unlocked) engine?.setMood(m);
+  },
+  setIntensity(on: boolean) {
+    pending.intense = on;
+    if (unlocked) engine?.setIntensity(on);
   },
   setAmbience(a: Ambience) {
     pending.ambience = a;

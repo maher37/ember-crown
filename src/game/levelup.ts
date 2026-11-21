@@ -22,6 +22,7 @@ import {
   maxSlots,
   skillBonus,
   spellNumbers,
+  subclassOf,
   type Hero,
 } from './hero';
 
@@ -76,7 +77,10 @@ const SKILL_LABEL = (s: Skill) =>
 export function levelUpOptions(hero: Hero): LevelUpOptions {
   const cls = getClass(hero.classId);
   const newLevel = hero.level + 1;
-  const gained = cls.levels[newLevel - 1]!.features;
+  // Only the features of the hero's own domain (D4).
+  const gained = cls.levels[newLevel - 1]!.features.filter(
+    (f) => !f.subclassId || f.subclassId === subclassOf(hero),
+  );
   const picks: PickGroup[] = [];
   for (const f of gained) {
     if (f.id === 'fighting-style' && f.options)

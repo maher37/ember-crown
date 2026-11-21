@@ -1,11 +1,22 @@
 // What the game should sound like right now. Pure functions (no Web Audio) so they can be tested.
 // Sound is presentation only: nothing here touches the rules or the seeded dice.
-import { spells } from '../data';
+import { encounters, monsters, spells } from '../data';
 import type { LogLine } from '../game/combat';
 
 /** Background music, one per kind of moment. */
 export type Mood =
-  'title' | 'tavern' | 'travel' | 'dungeon' | 'marsh' | 'combat' | 'boss' | 'camp' | 'epilogue';
+  | 'title'
+  | 'tavern'
+  | 'travel'
+  | 'dungeon'
+  | 'marsh'
+  | 'combat'
+  | 'battle-undead'
+  | 'battle-beast'
+  | 'battle-fire'
+  | 'boss'
+  | 'camp'
+  | 'epilogue';
 
 /** The sound of the place you're in. */
 export type Ambience =
@@ -93,9 +104,55 @@ export interface SoundScene {
   location?: string | null;
   encounterId?: string | null;
   campScene?: string | null;
+  difficulty?: string | null;
 }
 
-export function moodFor({ screen, location, encounterId }: SoundScene): Mood {
+/**
+ * Battle music by what you're fighting (playtest): undead get an eerie theme with tolling bells,
+ * beasts tribal drums, fire creatures and dragons a fierce theme, everyone else (cultists,
+ * soldiers, bandits) the march. Elites, bosses and the finale get the boss theme.
+ */
+export function battleMood(
+  encounterId: string,
+  difficulty: string | null | undefined = 'medium',
+): Mood {
+  if (BOSS_FIGHT.test(encounterId)) return 'boss';
+  const enc = encounters.find((e) => e.id === encounterId);
+  if (!enc) return 'combat';
+  const count: Record<string, number> = {};
+  for (const en of enc.enemies) {
+    if (!en.difficulties.includes((difficulty ?? 'medium') as never)) continue;
+    const m = monsters.find((x) => x.id === en.monster);
+    if (!m) continue;
+    const kind =
+      m.type === 'undead'
+        ? 'undead'
+        : m.type === 'beast' || m.type === 'monstrosity'
+          ? 'beast'
+          : m.type === 'elemental' ||
+              m.type === 'dragon' ||
+              m.type === 'fiend' ||
+              m.type === 'giant'
+            ? 'fire'
+            : 'humanoid';
+    count[kind] = (count[kind] ?? 0) + 1;
+  }
+  const top = Object.entries(count).sort((a, b) => b[1] - a[1])[0]?.[0];
+  return top === 'undead'
+    ? 'battle-undead'
+    : top === 'beast'
+      ? 'battle-beast'
+      : top === 'fire'
+        ? 'battle-fire'
+        : 'combat';
+}
+
+/** Hard fights (and bosses on Hard) play faster and with more drums. */
+export const intenseFor = ({ screen, difficulty }: SoundScene) =>
+  (screen === 'combat' || screen === 'prepare') && difficulty === 'hard';
+
+export function moodFor(scene: SoundScene): Mood {
+  const { screen, location, encounterId } = scene;
   switch (screen) {
     case 'title':
     case 'creator':
@@ -110,7 +167,7 @@ export function moodFor({ screen, location, encounterId }: SoundScene): Mood {
       return 'epilogue';
     case 'prepare':
     case 'combat':
-      return encounterId && BOSS_FIGHT.test(encounterId) ? 'boss' : 'combat';
+      return encounterId ? battleMood(encounterId, scene.difficulty) : 'combat';
     default:
       // Dialogue, party, level-up and the place maps follow where the party is.
       return (location && PLACE_MOOD[location]) || (location ? 'travel' : 'title');

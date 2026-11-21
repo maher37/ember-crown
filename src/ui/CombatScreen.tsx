@@ -38,6 +38,7 @@ import { terrainFill, terrainName } from './mapStyle';
 import { foeInfo } from './foeInfo';
 import { useHitFx } from './combatFx';
 import { setLabel } from '../game/loadout';
+import { ABILITY_LONG } from '../game/combat/leaves';
 import { getItem } from '../game/items';
 import { getGear, isMagicItem } from '../game/gear';
 import { getMonster } from '../game/creatures';
@@ -1016,7 +1017,12 @@ export function CombatScreen() {
                         {c.spell.concentration ? ' · concentration' : ''}
                       </span>
                       <br />
-                      <span className="small muted">{c.blocked ?? c.spell.summary}</span>
+                      <span className="small muted">
+                        {c.blocked ?? c.spell.summary}
+                        {c.spell.id === 'hex' && hero
+                          ? ` Curses ${ABILITY_LONG[hero.creature.choices['hex-ability']?.[0] ?? 'str']} (change it on the Party sheet).`
+                          : ''}
+                      </span>
                     </span>
                     <span className="row">
                       {c.levels.map((lv) => (

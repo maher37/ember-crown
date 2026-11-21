@@ -10,7 +10,8 @@ import {
   type CatalogItem,
 } from '../game/gear';
 import { emptyLoadout, placeProblem, slotKindOf, type SlotId } from '../game/loadout';
-import { itemHowItWorks } from './EquipmentPanel';
+import { itemHowItWorks, RarityTag } from './EquipmentPanel';
+import { ItemIcon } from './ItemIcon';
 import { useGame } from '../game/store';
 import { Modal } from './ExploreDialogs';
 import './Sheet.css';
@@ -106,30 +107,34 @@ export function ShopDialog({ onClose }: { onClose: () => void }) {
                     const a = armor.find((x) => x.id === it.id);
                     return (
                       <li key={it.id}>
-                        <span>
-                          <span className="strong">{it.name}</span>{' '}
-                          {owned > 0 && <span className="small muted">(have {owned}) </span>}
-                          <span className="small muted">{it.summary}</span>
-                          {isMagicItem(it.id) && (
-                            <span className="small faint"> {itemHowItWorks(it.id)}</span>
-                          )}
-                          {users && (
-                            <span className="who-can">
-                              {users.map((u) => (
-                                <span
-                                  key={u.name}
-                                  className={`who ${u.ok ? 'ok' : 'no'}`}
-                                  title={u.ok ? `${u.name} can use it` : u.why}
-                                >
-                                  {u.ok ? '✓' : '✗'} {u.name}
-                                  {!u.ok && <span className="why"> · {shortWhy(u.why)}</span>}
-                                </span>
-                              ))}
-                              {a?.strength ? (
-                                <span className="who">needs Str {a.strength} (else −10 ft)</span>
-                              ) : null}
-                            </span>
-                          )}
+                        <span className="item-row-main">
+                          <ItemIcon id={it.id} />
+                          <span>
+                            <span className="strong">{it.name}</span>
+                            <RarityTag id={it.id} />{' '}
+                            {owned > 0 && <span className="small muted">(have {owned}) </span>}
+                            <span className="small muted">{it.summary}</span>
+                            {isMagicItem(it.id) && (
+                              <span className="small faint"> {itemHowItWorks(it.id)}</span>
+                            )}
+                            {users && (
+                              <span className="who-can">
+                                {users.map((u) => (
+                                  <span
+                                    key={u.name}
+                                    className={`who ${u.ok ? 'ok' : 'no'}`}
+                                    title={u.ok ? `${u.name} can use it` : u.why}
+                                  >
+                                    {u.ok ? '✓' : '✗'} {u.name}
+                                    {!u.ok && <span className="why"> · {shortWhy(u.why)}</span>}
+                                  </span>
+                                ))}
+                                {a?.strength ? (
+                                  <span className="who">needs Str {a.strength} (else −10 ft)</span>
+                                ) : null}
+                              </span>
+                            )}
+                          </span>
                         </span>
                         <span className="row nowrap">
                           <span className="price">{formatCoins(it.costGp ?? 0)}</span>

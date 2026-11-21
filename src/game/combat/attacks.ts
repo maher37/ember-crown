@@ -2,8 +2,8 @@ import { weapons } from '../../data';
 import type { Effect, LeafEffect } from '../../data/schemas/common';
 import { getMonster } from '../creatures';
 import { getItem, magicWeaponBase } from '../items';
-import { resourceLeft } from '../hero';
-import { nextTurnRound } from './leaves';
+import { hasSubclass, resourceLeft } from '../hero';
+import { nextTurnRound, thunderbolt } from './leaves';
 import {
   abilityModifier,
   addCondition,
@@ -378,6 +378,23 @@ export function makeAttack(
       return { hit: false, critical: false, total: r0, natural: 0 };
     }
   }
+  // PHB: Light Domain, Warding Flare; Improved Flare (cleric 6) also shields allies [used automatically].
+  if (!dis.length && attacker.side !== target.side) {
+    const flarer = reactingCleric(
+      ctx,
+      target.side,
+      attacker,
+      'light',
+      'warding-flare',
+      (o) => o.id === target.id || classLevel(o, 'cleric') >= 6,
+    );
+    if (flarer) {
+      flarer.reactionUsed = true;
+      spendResource(flarer, 'warding-flare');
+      dis.push('Warding Flare');
+      say(s, 'you', `${flarer.name} flares with light: ${attacker.name} is dazzled (disadvantage)`);
+    }
+  }
   const cover = coverBetween(s, attacker.pos, target.pos, [attacker.id, target.id]);
   const h = heroOf(attacker);
   const critRange = h && h.classId === 'fighter' && h.level >= 3 ? 19 : 20;
@@ -422,6 +439,37 @@ export function makeAttack(
     } else sayAll(s, [r.log], attacker);
   } else sayAll(s, [r.log], attacker);
   const natural = r.roll?.natural ?? 0;
+  // PHB: War Domain, Guided Strike and War God's Blessing (cleric 6): +10 to an attack roll, chosen
+  // after seeing the roll. Used only when it turns a miss into a hit [inferred].
+  if (!hit && r.allowed && natural !== 1 && total + 10 >= r.targetAc) {
+    const ready = effectsWith(attacker, 'guided-strike')[0];
+    const self = heroOf(attacker);
+    const guide =
+      ready && self && resourceLeft(self, 'channel-divinity') > 0
+        ? attacker
+        : reactingCleric(
+            ctx,
+            attacker.side,
+            attacker,
+            'war',
+            'channel-divinity',
+            (o) => classLevel(o, 'cleric') >= 6,
+          );
+    if (guide) {
+      if (guide === attacker) removeEffect(attacker, ready!);
+      else guide.reactionUsed = true;
+      spendResource(guide, 'channel-divinity');
+      hit = true;
+      total += 10;
+      say(
+        s,
+        attacker.side === 'party' ? 'you' : 'foe',
+        guide === attacker
+          ? `Guided Strike: +10 → now ${total}, a HIT`
+          : `${guide.name} calls War God's Blessing on ${attacker.name}: +10 → now ${total}, a HIT`,
+      );
+    }
+  }
   // A spellcasting monster that knows Shield (Maelis, mages) raises it against a hit (PHB: Shield)
   // [used automatically].
   if (hit && !r.critical && target.monsterId && !target.reactionUsed && conscious(target)) {
@@ -620,6 +668,7 @@ export function applyHit(
     melee: opt.kind === 'melee',
     attacker,
   });
+  wrathOfTheStorm(ctx, attacker, target);
   // DMG: Mace of Disruption. A fiend or undead left with 25 HP or fewer: DC 15 Wis save or destroyed.
   if (disruption && conscious(target) && target.creature.hp <= 25) {
     const save = combatSave(ctx, target, 'wis', 15, { label: 'Wis (Mace of Disruption)' });
@@ -714,3 +763,63 @@ export function rollWeaponDamage(
 }
 
 export const isTarget = (c: Combatant) => conscious(c) && !hasCondition(c.creature, 'unconscious');
+
+/**
+ * A cleric of this domain on `side` who can still react and has a use of `resource` left, within
+ * 30 ft of `near` (the domain reactions all need the creature in sight within 30 ft).
+ */
+function reactingCleric(
+  ctx: Ctx,
+  side: Combatant['side'],
+  near: Combatant,
+  domain: string,
+  resource: string,
+  ok: (o: Combatant) => boolean,
+): Combatant | undefined {
+  return Object.values(ctx.s.combatants).find((o) => {
+    const h = heroOf(o);
+    return (
+      o.side === side &&
+      !!h &&
+      hasSubclass(h, 'cleric', domain) &&
+      !o.reactionUsed &&
+      conscious(o) &&
+      !isIncapacitated(o.creature) &&
+      distanceFeet(o.pos, near.pos) <= 30 &&
+      resourceLeft(h, resource) > 0 &&
+      ok(o)
+    );
+  });
+}
+
+/**
+ * PHB: Tempest Domain, Wrath of the Storm. When a creature within 5 ft hits the cleric, the
+ * cleric's reaction deals 2d8 lightning or thunder (Dex save for half) [used automatically].
+ */
+function wrathOfTheStorm(ctx: Ctx, attacker: Combatant, target: Combatant): void {
+  const h = heroOf(target);
+  if (!h || !hasSubclass(h, 'cleric', 'tempest') || attacker.side === target.side) return;
+  if (target.reactionUsed || !conscious(target) || isIncapacitated(target.creature)) return;
+  if (!conscious(attacker) || distanceFeet(attacker.pos, target.pos) > 5) return;
+  if (resourceLeft(h, 'wrath-of-the-storm') <= 0) return;
+  target.reactionUsed = true;
+  spendResource(target, 'wrath-of-the-storm');
+  const d = attacker.creature.defenses;
+  // Lightning unless the attacker shrugs it off, then thunder [inferred: the cleric's pick].
+  const type: DamageType =
+    d.resistances.includes('lightning') || d.immunities.includes('lightning')
+      ? 'thunder'
+      : 'lightning';
+  const dc = 8 + h.proficiencyBonus + abilityModifier(h.abilities.wis);
+  say(ctx.s, 'you', `${target.name} answers with the Wrath of the Storm (DC ${dc})`);
+  const sv = combatSave(ctx, attacker, 'dex', dc, { label: 'Dex (Wrath of the Storm)' });
+  const r = roll('2d8', ctx.rng);
+  const amount = sv.success ? Math.floor(r.total / 2) : r.total;
+  say(
+    ctx.s,
+    'dmg',
+    `Wrath of the Storm: ${r.text} ${type}${sv.success ? ` (halved: ${amount})` : ''}`,
+  );
+  dealDamage(ctx, attacker, [{ amount, type }], { attacker: target });
+  if (amount > 0) thunderbolt(ctx, target, attacker, type);
+}

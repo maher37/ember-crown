@@ -1,12 +1,19 @@
 // Healing outside a fight (playtest feedback): healing spells and Lay on Hands between battles.
 import { spells } from '../data';
 import { roll, type RandomSource } from '../rules';
-import { resourceLeft, slotsLeft, spellNumbers, type Hero } from './hero';
+import {
+  domainSpellsOf,
+  hasSubclass,
+  resourceLeft,
+  slotsLeft,
+  spellNumbers,
+  type Hero,
+} from './hero';
 import type { GameState } from './save';
 
 /** Healing spells this hero knows, with the slot levels they could use now. */
 export function healingSpells(h: Hero) {
-  return h.spells.flatMap((id) => {
+  return [...new Set([...h.spells, ...domainSpellsOf(h)])].flatMap((id) => {
     const sp = spells.find((s) => s.id === id);
     if (!sp || !sp.effects.some((e) => e.type === 'heal')) return [];
     const levels = slotsLeft(h).flatMap((n, i) => (n > 0 && i + 1 >= sp.level ? [i + 1] : []));
@@ -50,7 +57,8 @@ export function castHealing(
   if (heal.type !== 'heal') return { error: 'Not a healing spell.' };
   const mod = spellNumbers(caster)?.mod ?? 0;
   const extra = slotLevel - sp.level;
-  const life = caster.classId === 'cleric' ? 2 + slotLevel : 0;
+  // PHB: Life Domain, Disciple of Life.
+  const life = hasSubclass(caster, 'cleric', 'life') ? 2 + slotLevel : 0;
   const targets = choice.group
     ? g.party.filter((h) => !h.dead)
     : g.party.filter((h) => h.id === targetId && !h.dead);
@@ -76,11 +84,7 @@ export function castHealing(
     used[slotLevel - 1] = (used[slotLevel - 1] ?? 0) + 1;
     let out = { ...h, slotsUsed: used };
     // PHB: Blessed Healer (Life cleric 6): healing someone else heals you 2 + slot level.
-    if (
-      caster.classId === 'cleric' &&
-      caster.level >= 6 &&
-      targets.some((t) => t.id !== caster.id)
-    ) {
+    if (hasSubclass(caster, 'cleric', 'life', 6) && targets.some((t) => t.id !== caster.id)) {
       out = healHero(out, 2 + slotLevel);
       log.push(`Blessed Healer: ${caster.name} regains ${2 + slotLevel} HP.`);
     }

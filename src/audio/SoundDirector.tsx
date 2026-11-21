@@ -1,7 +1,7 @@
 import { useEffect, useRef } from 'react';
 import { useGame } from '../game/store';
 import { useSettings } from '../game/settings';
-import { ambienceFor, cuesForLog, cuesForMessages, moodFor } from './cues';
+import { ambienceFor, cuesForLog, cuesForMessages, intenseFor, moodFor } from './cues';
 import { sound } from './engine';
 
 /**
@@ -13,6 +13,8 @@ export function SoundDirector() {
   const location = useGame((s) => s.game?.location ?? null);
   const encounterId = useGame((s) => s.combat?.encounterId ?? s.encounterId);
   const campScene = useGame((s) => s.campScene);
+  const difficulty = useGame((s) => s.combat?.difficulty ?? null);
+  const settingsDifficulty = useSettings((s) => s.difficulty);
   const { music, ambience, effects, muted } = useSettings();
 
   useEffect(() => {
@@ -43,10 +45,17 @@ export function SoundDirector() {
   }, [music, ambience, effects, muted]);
 
   useEffect(() => {
-    const scene = { screen, location, encounterId, campScene };
+    const scene = {
+      screen,
+      location,
+      encounterId,
+      campScene,
+      difficulty: difficulty ?? settingsDifficulty,
+    };
+    sound.setIntensity(intenseFor(scene));
     sound.setMood(moodFor(scene));
     sound.setAmbience(ambienceFor(scene));
-  }, [screen, location, encounterId, campScene]);
+  }, [screen, location, encounterId, campScene, difficulty, settingsDifficulty]);
 
   // Effects that follow what happens: the combat log, journal pop-ups, dice checks, level-ups, travel.
   const seen = useRef({

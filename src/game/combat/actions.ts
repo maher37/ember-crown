@@ -3,7 +3,7 @@ import { getMonster } from '../creatures';
 import { getItem, heroAc } from '../items';
 import { deriveEquipment, setLabel, switchSet } from '../loadout';
 import { casterNumbers, spiritAttack } from './spells';
-import { resourceLeft, skillBonus, slotsLeft, type Hero } from '../hero';
+import { resourceLeft, skillBonus, slotsLeft, subclassOf, type Hero } from '../hero';
 import {
   abilityCheck,
   attackRoll,
@@ -48,7 +48,7 @@ import {
   reachable,
   terrainAt,
 } from './grid';
-import { nextTurnRound } from './leaves';
+import { ABILITY_LONG, hexAbilityOf, nextTurnRound } from './leaves';
 import { castProblem, castSpell, type CastRequest } from './spells';
 import { continuePlan, resolvePrompt } from './ai';
 import {
@@ -96,7 +96,11 @@ export type FeatureId =
   | 'heat-metal'
   | 'vampiric-touch'
   | 'wholeness-of-body'
-  | 'move-mark';
+  | 'move-mark'
+  | 'radiance-of-the-dawn'
+  | 'guided-strike'
+  | 'war-priest'
+  | 'destructive-wrath';
 
 export type PlayerAction =
   | { type: 'move'; to: Pos }
@@ -419,6 +423,7 @@ function shoveOrGrapple(
   };
   const mine = abilityCheck(c.creature, 'str', 0, rng, {
     label: 'Athletics',
+    disadvantage: hexedOn(c, 'str') ? ['Hex'] : [],
     bonuses: [
       { label: 'skill', value: bonus(c, 'athletics') - abilityModifier(c.creature.abilities.str) },
     ],
@@ -428,6 +433,8 @@ function shoveOrGrapple(
   const ab = SKILLS[skill];
   const theirs = abilityCheck(target.creature, ab, 0, rng, {
     label: skill === 'acrobatics' ? 'Acrobatics' : 'Athletics',
+    // PHB: Hex. Disadvantage on checks with the cursed ability.
+    disadvantage: hexedOn(target, ab) ? ['Hex'] : [],
     bonuses: [
       {
         label: 'skill',
@@ -541,7 +548,43 @@ export function featureList(c: Combatant, s?: CombatState): FeatureInfo[] {
       target: 'ally',
       blocked: bonus(res('bardic-inspiration')),
     });
-  if (lvl('cleric') >= 2) {
+  // Cleric domains (D4, Nov 21): each domain's own Channel Divinity and features.
+  const domain = lvl('cleric') ? subclassOf(h) : null;
+  if (domain === 'light' && lvl('cleric') >= 2)
+    out.push({
+      id: 'radiance-of-the-dawn',
+      name: 'Radiance of the Dawn',
+      cost: 'action',
+      detail: `enemies within 30 ft: Con save or 2d10+${h.level} radiant (half on a save) · Channel Divinity ${left(c, 'channel-divinity')}`,
+      blocked: action(res('channel-divinity')),
+    });
+  if (domain === 'war') {
+    out.push({
+      id: 'war-priest',
+      name: 'War Priest attack',
+      cost: 'bonus',
+      detail: `one more weapon attack after the Attack action · ${left(c, 'war-priest')} left`,
+      target: 'enemy',
+      blocked: !c.turn.attacked ? 'take the Attack action first' : bonus(res('war-priest')),
+    });
+    if (lvl('cleric') >= 2)
+      out.push({
+        id: 'guided-strike',
+        name: 'Guided Strike',
+        cost: 'free',
+        detail: `if an attack misses this turn by 10 or less, +10 to hit · Channel Divinity ${left(c, 'channel-divinity')}`,
+        blocked: hasEffect(c, 'guided-strike') ? 'already guided' : res('channel-divinity'),
+      });
+  }
+  if (domain === 'tempest' && lvl('cleric') >= 2)
+    out.push({
+      id: 'destructive-wrath',
+      name: 'Destructive Wrath',
+      cost: 'free',
+      detail: `your next lightning or thunder damage this turn is rolled at its maximum · Channel Divinity ${left(c, 'channel-divinity')}`,
+      blocked: hasEffect(c, 'destructive-wrath') ? 'already ready' : res('channel-divinity'),
+    });
+  if (lvl('cleric') >= 2 && domain === 'life')
     out.push({
       id: 'preserve-life',
       name: 'Preserve Life',
@@ -549,6 +592,7 @@ export function featureList(c: Combatant, s?: CombatState): FeatureInfo[] {
       detail: `share ${5 * h.level} HP of healing · Channel Divinity ${left(c, 'channel-divinity')}`,
       blocked: action(res('channel-divinity')),
     });
+  if (lvl('cleric') >= 2) {
     out.push({
       id: 'turn-undead',
       name: 'Turn Undead',
@@ -820,6 +864,61 @@ function feature(
       healCombatant(ctx, c, r.total, 'Second Wind', c);
       return null;
     }
+    case 'radiance-of-the-dawn': {
+      // PHB: Light Domain, Radiance of the Dawn. Hostiles within 30 ft: Con save, 2d10 + level radiant.
+      spendResource(c, 'channel-divinity');
+      me(`${c.name} channels Radiance of the Dawn!`);
+      const dc = 8 + h.proficiencyBonus + abilityModifier(h.abilities.wis);
+      for (const t of hostiles(s, c).filter((x) => distanceFeet(c.pos, x.pos) <= 30)) {
+        const sv = combatSave(ctx, t, 'con', dc, { label: 'Con (Radiance of the Dawn)' });
+        const r = roll(`2d10+${h.level}`, rng);
+        const amount = sv.success ? Math.floor(r.total / 2) : r.total;
+        say(
+          s,
+          'dmg',
+          `Radiance of the Dawn: ${r.text} radiant${sv.success ? ` (halved: ${amount})` : ''}`,
+        );
+        dealDamage(ctx, t, [{ amount, type: 'radiant' }], { attacker: c });
+      }
+      return null;
+    }
+    case 'guided-strike':
+      // PHB: War Domain, Guided Strike (+10 to an attack roll, chosen after seeing it). Readied here;
+      // Channel Divinity is spent only if a miss this turn needs it (attacks.ts).
+      addEffect(c, {
+        id: 'guided-strike',
+        name: 'Guided Strike',
+        sourceId: c.id,
+        tag: 'guided-strike',
+        expires: { turnOf: c.id, when: 'end', round: s.round },
+      });
+      me(`${c.name} readies a Guided Strike: the next miss this turn by 10 or less becomes a hit`);
+      return null;
+    case 'war-priest': {
+      // PHB: War Domain, War Priest. A bonus-action weapon attack after the Attack action.
+      const opt = attackOptions(c).find(
+        (o) => !o.unarmed && target && !attackBlocked(ctx, c, target, o),
+      );
+      if (!target || !opt) return 'No target in reach of a weapon.';
+      spendResource(c, 'war-priest');
+      me(`War Priest: ${c.name} strikes again`);
+      makeAttack(ctx, c, target, opt);
+      return null;
+    }
+    case 'destructive-wrath':
+      // PHB: Tempest Domain, Destructive Wrath (maximum lightning or thunder damage).
+      // Readied here; Channel Divinity is spent when the next such roll is made (leaves.ts).
+      addEffect(c, {
+        id: 'destructive-wrath',
+        name: 'Destructive Wrath',
+        sourceId: c.id,
+        tag: 'destructive-wrath',
+        expires: { turnOf: c.id, when: 'end', round: s.round },
+      });
+      me(
+        `${c.name} readies Destructive Wrath: the next lightning or thunder this turn hits at full force`,
+      );
+      return null;
     case 'action-surge':
       spendResource(c, 'action-surge');
       c.turn.extraActions += 1;
@@ -1124,14 +1223,18 @@ function feature(
       if (distanceFeet(c.pos, target.pos) > 90) return 'Too far (90 ft).';
       for (const x of Object.values(s.combatants))
         x.effects = x.effects.filter((e) => !(e.tag === tag && e.sourceId === c.id));
+      const hexAbility = spell === 'hex' ? hexAbilityOf(c) : undefined;
       addEffect(target, {
         id: tag,
         name: spell === 'hex' ? 'Hex' : "Hunter's Mark",
         sourceId: c.id,
         tag,
         concentration: spell,
+        ...(hexAbility ? { data: { ability: hexAbility } } : {}),
       });
-      me(`${c.name} moves ${spell === 'hex' ? 'the Hex' : "the Hunter's Mark"} to ${target.name}`);
+      me(
+        `${c.name} puts ${spell === 'hex' ? 'the Hex' : "the Hunter's Mark"} on ${target.name}${hexAbility ? ` (disadvantage on ${ABILITY_LONG[hexAbility]} checks)` : ''}`,
+      );
       return null;
     }
     case 'wholeness-of-body': {
@@ -1342,3 +1445,7 @@ export function targetsFor(state: CombatState, c: Combatant, opt: AttackOption):
 }
 
 export { continuePlan, get, isIncapacitated };
+
+/** Is this creature hexed on checks with this ability (PHB: Hex)? */
+const hexedOn = (c: Combatant, ability: string) =>
+  c.effects.some((e) => e.tag === 'hex-target' && e.data?.ability === ability);

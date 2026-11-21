@@ -37,7 +37,14 @@ export async function makeParty(page: Page) {
   // 3: a cleric, using point buy.
   await page.getByRole('radio', { name: 'Point buy' }).click();
   await expect(page.getByText(/points left/)).toBeVisible();
-  await customHero(page, 'Thorn', 'Cleric', ['History', 'Medicine']);
+  // (D4) Clerics choose a domain; War keeps the Life cleric's heavy armor.
+  await customHero(page, 'Thorn', 'Cleric', ['History', 'Medicine'], async () => {
+    await expect(page.getByRole('radio', { name: /Life Domain/ })).toHaveAttribute(
+      'aria-checked',
+      'true',
+    );
+    await page.getByRole('radio', { name: /War Domain/ }).click();
+  });
   // 4: a rogue with rolled scores and Expertise.
   await page.getByRole('radio', { name: 'Roll', exact: true }).click();
   await page.getByRole('button', { name: 'Roll 4d6' }).click();

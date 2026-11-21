@@ -66,6 +66,10 @@ export interface Hero extends Creature {
     magic: string[];
     loadout?: import('./loadout').Loadout;
   };
+  /** The chosen subclass when there's a choice (cleric domains); unset = the class default. */
+  subclassId?: string;
+  /** A Hex or Hunter's Mark still running after a fight, until this game hour (PHB: 1 hour). */
+  lingering?: { spell: string; until?: number };
   /** Clerics, druids and paladins may re-prepare spells (set after a long rest, cleared by a fight). */
   canPrepare?: boolean;
   /** Cantrips and leveled spells known or prepared. */
@@ -104,6 +108,8 @@ export interface HeroDraft {
   expertise: Skill[];
   fightingStyle: string | null;
   portrait: Portrait;
+  /** Cleric domain (or another subclass picked at level 1). */
+  subclassId?: string;
 }
 
 /**
@@ -334,8 +340,15 @@ export function buildHero(draft: HeroDraft, id: string): Hero {
   const abilities = finalAbilities(draft);
   const maxHp = levelOneHp(draft);
   const kit = cls.startingKit;
+  const subclassId = cls.subclasses ? (draft.subclassId ?? cls.subclass.id) : undefined;
+  // A Light cleric isn't trained in heavy armor: scale mail instead of the kit's chain mail.
+  const heavy = armorList.find((a) => a.id === kit.armor)?.category === 'heavy';
+  const kitArmor =
+    heavy && !armorProfsOf({ classId: cls.id, subclassId }).includes('heavy')
+      ? 'scale-mail'
+      : (kit.armor ?? null);
   const equipment = {
-    armor: kit.armor ?? null,
+    armor: kitArmor,
     shield: kit.shield,
     weapons: [...kit.weapons],
     magic: [] as string[],
@@ -376,6 +389,7 @@ export function buildHero(draft: HeroDraft, id: string): Hero {
     speed: sp.speed,
     portrait: { ...draft.portrait },
     equipment,
+    ...(subclassId ? { subclassId } : {}),
     ...defaultSpells(cls.id),
     invocations: [],
     slotsUsed: [],
@@ -423,11 +437,12 @@ export function slotsLeft(hero: Pick<Hero, 'classId' | 'level' | 'slotsUsed'>): 
 
 /** Max uses of a class resource at the hero's level. */
 export function resourceMax(
-  hero: Pick<Hero, 'classId' | 'level' | 'abilities'>,
+  hero: Pick<Hero, 'classId' | 'level' | 'abilities'> & { subclassId?: string },
   id: string,
 ): number {
   const r = getClass(hero.classId).resources.find((x) => x.id === id);
   if (!r) return 0;
+  if (r.subclass && r.subclass !== subclassOf(hero)) return 0;
   if (r.perLevel) return r.perLevel[Math.min(hero.level, 6) - 1] ?? 0;
   const cha = abilityModifier(hero.abilities.cha);
   switch (r.formula) {
@@ -437,6 +452,8 @@ export function resourceMax(
       return Math.max(1, 1 + cha);
     case '5-x-level':
       return 5 * hero.level;
+    case 'wis-mod-min-1':
+      return Math.max(1, abilityModifier(hero.abilities.wis));
     default:
       throw new Error(`Unknown resource formula "${r.formula}"`);
   }
@@ -513,3 +530,53 @@ export function spellNumbers(
     dc: 8 + mod + hero.proficiencyBonus,
   };
 }
+
+// ── Subclasses (cleric domains) ──
+
+/** The hero's subclass id: their pick, or the class's only one. */
+export const subclassOf = (hero: { classId: string; subclassId?: string }): string =>
+  hero.subclassId ?? getClass(hero.classId).subclass.id;
+
+/** The subclass option record, when the class offers a choice. */
+export const subclassDef = (hero: { classId: string; subclassId?: string }) =>
+  getClass(hero.classId).subclasses?.find((x) => x.id === subclassOf(hero));
+
+/** The subclass's display name ("Light Domain"). */
+export const subclassName = (hero: { classId: string; subclassId?: string }) =>
+  subclassDef(hero)?.name ?? getClass(hero.classId).subclass.name;
+
+/** Armor categories the hero is trained in (class plus subclass: a Life cleric adds heavy). */
+export const armorProfsOf = (hero: { classId: string; subclassId?: string }): string[] => [
+  ...getClass(hero.classId).armor,
+  ...(subclassDef(hero)?.armor ?? []),
+];
+
+/** Weapon proficiencies (class plus subclass: a War cleric adds martial weapons). */
+export const weaponProfsOf = (hero: { classId: string; subclassId?: string }): string[] => [
+  ...getClass(hero.classId).weapons,
+  ...(subclassDef(hero)?.weapons ?? []),
+];
+
+/** PHB: Domain Spells. Always prepared from these class levels on; they don't count against the limit. */
+export function domainSpellsOf(hero: {
+  classId: string;
+  subclassId?: string;
+  level: number;
+}): string[] {
+  const d = subclassDef(hero);
+  if (!d) return [];
+  return [
+    ...d.cantrips,
+    ...Object.entries(d.spells)
+      .filter(([lvl]) => Number(lvl) <= hero.level)
+      .flatMap(([, ids]) => ids),
+  ];
+}
+
+/** Does the hero have this subclass feature (by subclass id and class level)? */
+export const hasSubclass = (
+  hero: { classId: string; subclassId?: string; level: number },
+  classId: string,
+  subclassId: string,
+  level = 1,
+) => hero.classId === classId && subclassOf(hero) === subclassId && hero.level >= level;

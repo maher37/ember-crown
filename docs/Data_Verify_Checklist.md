@@ -4,7 +4,7 @@
 
 Each line was entered from memory or is marked ⚠ in the design docs. Check it against your PDFs. When a line is right (or fixed), remove its `verify` and `verifyNote` from the JSON and run `npm run verify-list` again.
 
-**325 items to check.**
+**332 items to check.**
 
 ## species.json
 
@@ -41,8 +41,15 @@ Each line was entered from memory or is marked ⚠ in the design docs. Check it 
 - [ ] **classes › Cleric**: Proficiencies and skill list from memory of the PHB. Hit die, saves and subclass level checked (✅).
 - [ ] **classes › Cleric**: Cantrips/spells known counts from memory of the PHB class table.
 - [ ] **classes › Cleric › Channel Divinity**: 1 use at L2-5, 2 at L6 (Rules_Scope §4 ✅ names; counts from memory).
+- [ ] **classes › Cleric › Warding Flare**: PHB: Wisdom modifier (minimum 1) uses, back on a long rest (from memory).
+- [ ] **classes › Cleric › War Priest**: PHB: Wisdom modifier (minimum 1) uses, back on a long rest (from memory).
+- [ ] **classes › Cleric › Wrath of the Storm**: PHB: Wisdom modifier (minimum 1) uses, back on a long rest (from memory).
 - [ ] **classes › Cleric › features › Domain Spells**: Life Domain spell list from memory.
 - [ ] **classes › Cleric**: One of the PHB starting-equipment options, from memory and simplified (no packs or gold yet).
+- [ ] **classes › Cleric › Life Domain**: Domain spells and features from memory of the PHB.
+- [ ] **classes › Cleric › Light Domain**: Domain spells from memory of the PHB; Daylight (5th level) isn't in the game's spell list yet.
+- [ ] **classes › Cleric › War Domain**: Domain spells from memory of the PHB; Magic Weapon and Crusader's Mantle aren't in the game's spell list yet.
+- [ ] **classes › Cleric › Tempest Domain**: Domain spells from memory of the PHB; Gust of Wind isn't in the game's spell list yet.
 - [ ] **classes › Druid**: Proficiencies and skill list from memory of the PHB. Hit die, saves and subclass level checked (✅).
 - [ ] **classes › Druid**: Cantrips/spells known counts from memory of the PHB class table.
 - [ ] **classes › Druid › Wild Shape**: Use counts from memory of the PHB class table (Rules_Scope CONFIRM LOCALLY).

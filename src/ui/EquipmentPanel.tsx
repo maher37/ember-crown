@@ -17,6 +17,7 @@ import {
 } from '../game/loadout';
 import { useGame } from '../game/store';
 import './Sheet.css';
+import { ItemIcon, RARITY_NAMES, rarityOf } from './ItemIcon';
 
 const WORN: SlotId[] = ['armor', 'cloak', 'neck', 'ring1', 'ring2', 'feet', 'trinket1', 'trinket2'];
 
@@ -80,9 +81,12 @@ export function EquipmentPanel({ heroId }: { heroId: string }) {
           title={id ? itemHowItWorks(id) : 'Empty: click to see what fits here'}
           onClick={() => setSelected(selected === slot ? null : slot)}
         >
-          <span className="slot-label">{SLOT_NAMES[slot]}</span>
-          <span className="slot-item">{id ? itemLabel(id) : 'empty'}</span>
-          {id && <span className="slot-kind small muted">{itemKindLine(id, hero)}</span>}
+          {id && <ItemIcon id={id} size={34} />}
+          <span className="slot-text">
+            <span className="slot-label">{SLOT_NAMES[slot]}</span>
+            <span className="slot-item">{id ? itemLabel(id) : 'empty'}</span>
+            {id && <span className="slot-kind small muted">{itemKindLine(id, hero)}</span>}
+          </span>
         </button>
         {id && (
           <button
@@ -167,14 +171,18 @@ export function EquipmentPanel({ heroId }: { heroId: string }) {
           <ul className="item-list">
             {pack.map(({ id, n, it }) => (
               <li key={id}>
-                <span>
-                  <span className="strong">
-                    {it!.name}
-                    {n > 1 ? ` ×${n}` : ''}
-                  </span>{' '}
-                  <span className="small faint">{itemKindLine(id, hero)}</span>
-                  <br />
-                  <span className="small muted">{itemHowItWorks(id)}</span>
+                <span className="item-row-main">
+                  <ItemIcon id={id} />
+                  <span>
+                    <span className="strong">
+                      {it!.name}
+                      {n > 1 ? ` ×${n}` : ''}
+                    </span>
+                    <RarityTag id={id} />{' '}
+                    <span className="small faint">{itemKindLine(id, hero)}</span>
+                    <br />
+                    <span className="small muted">{itemHowItWorks(id)}</span>
+                  </span>
                 </span>
                 <PackAction
                   hero={hero}
@@ -312,4 +320,11 @@ function gearUse(id: string): string {
   if (/alchemist|holy-water|acid/.test(id)) return 'throw it in a fight';
   if (id === 'healers-kit') return 'in a fight';
   return 'used in the story';
+}
+
+/** "Uncommon", "Rare" or "Unique" after a magic item's name. */
+export function RarityTag({ id }: { id: string }) {
+  const r = rarityOf(id);
+  if (r === 'mundane' || r === 'common') return null;
+  return <span className={`rarity-tag ${r}`}>{RARITY_NAMES[r]}</span>;
 }

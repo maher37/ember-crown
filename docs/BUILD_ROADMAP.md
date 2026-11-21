@@ -90,6 +90,13 @@ One milestone per Claude Code session (bigger ones may take two). Each milestone
 - Long rest any time; dialogue centered with styled lines; the sheet's boxes stand out.
 - `docs/Story_Review.md`: Baldur's Gate 1–3 and recommendations (the owner picks what to adopt).
 
+## M10c: Playtest round 4, Phase 1 (owner request, Nov 21)
+- Hex: choose the cursed ability (remembered), real disadvantage on those checks, and it carries into the next fight within an hour.
+- Battle music by foe (undead, beasts, fire creatures, humanoids, bosses), more intense on Hard.
+- Item icons with rarity frames (mundane, uncommon, rare, story treasure).
+- Cleric domains: Life, Light, War and Tempest (D4 revised).
+- **Next phases (owner to confirm the order):** 2) Ashford as a walkable town: blacksmith, town hall quest board, travelling merchant. 3) Exploring: Perception finds, chests, hidden merchants, finds that start side quests. 4) More subclasses for other classes. 5) Spell animations (M11).
+
 ## M11: Animations (phase 2)
 - A presentation-event system, then the effects list in `RPG_Game_Plan.md` §9d (projectiles, spell areas, damage-type colors, condition icons, downed state).
 - Includes the reduce-motion and reduce-flashing settings.
