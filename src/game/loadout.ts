@@ -4,7 +4,7 @@
 import { armor, magicItems, weapons } from '../data';
 import type { MagicItem, Weapon } from '../data/schemas/item';
 import { armorProficient, weaponProficient } from './gear';
-import { getClass, type Hero } from './hero';
+import { armorProfsOf, getClass, weaponProfsOf, type Hero } from './hero';
 
 export const SLOT_IDS = [
   'main1',
@@ -158,13 +158,13 @@ export function placeProblem(hero: Hero, lo: Loadout, slot: SlotId, id: string):
         .join(', ') || 'none'
     }).`;
   }
-  if (kind === 'shield' && !getClass(hero.classId).armor.includes('shields'))
+  if (kind === 'shield' && !armorProfsOf(hero).includes('shields'))
     return `${first} isn't trained with shields.`;
   if (kind === 'weapon') {
     const w = weaponFor(id, hero);
     if (!w) return `${name} can't be wielded.`;
     if (!weaponProficient(hero, w))
-      return `${first} isn't trained with the ${w.name.toLowerCase()} (${getClass(hero.classId).name}s use ${getClass(hero.classId).weapons.join(', ')}).`;
+      return `${first} isn't trained with the ${w.name.toLowerCase()} (${getClass(hero.classId).name}s use ${weaponProfsOf(hero).join(', ')}).`;
     const set: 1 | 2 = slot.endsWith('1') ? 1 : 2;
     const [main, off] = setSlots(set);
     if (slot === off) {

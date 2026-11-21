@@ -4,7 +4,14 @@ import type { Spell } from '../../data/schemas/spell';
 import { getMonster, monsterToCreature } from '../creatures';
 import { makeCombatant } from './turn';
 import { addZone, around, makeZone, silenced } from './zones';
-import { getClass, resourceLeft, slotsLeft, spellNumbers } from '../hero';
+import {
+  domainSpellsOf,
+  getClass,
+  hasSubclass,
+  resourceLeft,
+  slotsLeft,
+  spellNumbers,
+} from '../hero';
 import { abilityModifier, attackRoll, roll, startConcentration, type DiceRoll } from '../../rules';
 import {
   classLevel,
@@ -36,7 +43,14 @@ import {
   samePos,
   sphereCells,
 } from './grid';
-import { applyLeaf, giveCondition, HANDLED_SPECIALS, nextTurnRound, type LeafOpts } from './leaves';
+import {
+  applyLeaf,
+  giveCondition,
+  HANDLED_SPECIALS,
+  nextTurnRound,
+  wrathDice,
+  type LeafOpts,
+} from './leaves';
 import type { Combatant, Pos } from './types';
 
 export const getSpell = (id: string): Spell => {
@@ -148,7 +162,8 @@ export function spellChoices(c: Combatant, mm?: Metamagic): SpellChoice[] {
   const h = heroOf(c);
   if (!h || c.wildShape) return [];
   const left = slotsLeft(h);
-  const ids = [...h.cantrips, ...h.spells];
+  // PHB: Domain Spells are always prepared.
+  const ids = [...new Set([...h.cantrips, ...h.spells, ...domainSpellsOf(h)])];
   return ids.flatMap((id) => {
     const sp = spells.find((x) => x.id === id);
     if (!sp || !combatReady(sp) || sp.castingTime === 'reaction') return [];
@@ -334,7 +349,7 @@ export function castSpell(ctx: Ctx, caster: Combatant, req: CastRequest): void {
   const upcastDice = perLevel && extra ? multiplyDice(perLevel, extra) : undefined;
   const heals = (sp.effects as Effect[]).some((e) => e.type === 'heal');
   // PHB: Life Domain, Disciple of Life (+2 + the spell's level to healing spells of 1st level or higher).
-  const healBonus = heals && lvl > 0 && h?.classId === 'cleric' ? 2 + lvl : 0;
+  const healBonus = heals && lvl > 0 && h && hasSubclass(h, 'cleric', 'life') ? 2 + lvl : 0;
   // PHB: Eldritch Invocations, Agonizing Blast (+Cha to Eldritch Blast damage).
   const firesFire = (sp.effects as Effect[]).some((e) =>
     e.type === 'save'
@@ -434,7 +449,8 @@ export function castSpell(ctx: Ctx, caster: Combatant, req: CastRequest): void {
   if (tg.kind === 'area')
     for (const e of effects)
       if (e.type === 'save')
-        for (const x of e.onFail) if (x.type === 'damage') preRolled.set(x, rollArea(ctx, x, opts));
+        for (const x of e.onFail)
+          if (x.type === 'damage') preRolled.set(x, rollArea(ctx, x, opts, caster));
 
   for (const target of targets) {
     if (HUMANOID_ONLY.has(sp.id) && !isHumanoid(target)) {
@@ -488,7 +504,8 @@ export function castSpell(ctx: Ctx, caster: Combatant, req: CastRequest): void {
   if (
     heals &&
     lvl > 0 &&
-    classLevel(caster, 'cleric') >= 6 &&
+    !!heroOf(caster) &&
+    hasSubclass(heroOf(caster)!, 'cleric', 'life', 6) &&
     targets.some((t) => t.id !== caster.id)
   ) {
     say(s, 'you', `Blessed Healer: ${caster.name} also regains ${2 + lvl} HP`);
@@ -570,9 +587,15 @@ function coverOf(ctx: Ctx, from: Combatant, to: Combatant): 'none' | 'half' {
   return c === 'total' ? 'none' : c;
 }
 
-function rollArea(ctx: Ctx, e: Extract<LeafEffect, { type: 'damage' }>, opts: LeafOpts): DiceRoll {
-  const base = roll(e.dice, ctx.rng);
-  const up = opts.upcastDice ? roll(opts.upcastDice, ctx.rng) : null;
+function rollArea(
+  ctx: Ctx,
+  e: Extract<LeafEffect, { type: 'damage' }>,
+  opts: LeafOpts,
+  caster: Combatant,
+): DiceRoll {
+  const dice = wrathDice(ctx, caster, e.damageType);
+  const base = roll(e.dice, dice);
+  const up = opts.upcastDice ? roll(opts.upcastDice, dice) : null;
   const total = base.total + (up?.total ?? 0);
   return { ...base, total, text: up ? `${base.text}, upcast ${up.text} → ${total}` : base.text };
 }

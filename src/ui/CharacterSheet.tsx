@@ -14,6 +14,11 @@ import {
   resourceMax,
   skillBonus,
   spellNumbers,
+  armorProfsOf,
+  domainSpellsOf,
+  subclassName,
+  subclassOf,
+  weaponProfsOf,
   type Hero,
 } from '../game/hero';
 import { itemMods } from '../game/items';
@@ -94,11 +99,16 @@ function StatsTab({ hero }: { hero: Hero }) {
   const passive = 10 + skillBonus(hero, 'perception');
   const next = XP_THRESHOLDS[hero.level] ?? hero.xp;
   const prev = XP_THRESHOLDS[hero.level - 1] ?? 0;
-  const subclass = cls.subclass && hero.level >= cls.subclass.level ? cls.subclass.name : null;
+  const subclass =
+    cls.subclass && hero.level >= cls.subclass.level
+      ? (subclassName(hero) ?? cls.subclass.name)
+      : null;
   const attacks = attackOptions({ creature: hero } as unknown as Combatant);
   const features = cls.levels
     .filter((l) => l.level <= hero.level)
     .flatMap((l) => l.features.map((f) => ({ ...f, level: l.level })))
+    // Only the features of the hero's own domain (D4).
+    .filter((f) => !f.subclassId || f.subclassId === subclassOf(hero))
     .filter((f) => !/Ability Score Improvement/.test(f.name));
   const resources = cls.resources.filter((r) => resourceMax(hero, r.id) > 0);
 
@@ -306,8 +316,8 @@ function StatsTab({ hero }: { hero: Hero }) {
           <h3 className="eyebrow">Proficiencies and languages</h3>
           <p className="small">
             <span className="eyebrow-inline">Armor</span>{' '}
-            {cls.armor.length ? cls.armor.join(', ') : 'none'} ·{' '}
-            <span className="eyebrow-inline">Weapons</span> {cls.weapons.join(', ')}
+            {armorProfsOf(hero).length ? armorProfsOf(hero).join(', ') : 'none'} ·{' '}
+            <span className="eyebrow-inline">Weapons</span> {weaponProfsOf(hero).join(', ')}
             {bg.tools.length ? (
               <>
                 {' '}
@@ -361,7 +371,13 @@ function SpellsTab({ hero }: { hero: Hero }) {
     );
   const rules = spellRules(hero, hero.level)!;
   const slots = maxSlots(hero);
+  // PHB: Divine Domain spells are always prepared and don't count against the number prepared.
+  const domainIds = domainSpellsOf(hero);
+  const domain = domainIds
+    .map((id) => allSpells.find((s) => s.id === id))
+    .filter((s): s is NonNullable<typeof s> => !!s);
   const known = hero.spells
+    .filter((id) => !domainIds.includes(id))
     .map((id) => allSpells.find((s) => s.id === id))
     .filter((s): s is NonNullable<typeof s> => !!s);
   const leveled = known.filter((s) => s.level > 0).map((s) => s.id);
@@ -427,7 +443,9 @@ function SpellsTab({ hero }: { hero: Hero }) {
             <strong>{editing.length}</strong>
           </p>
           {[1, 2, 3].map((lvl) => {
-            const pool = rules.spellPool.filter((s) => s.level === lvl);
+            const pool = rules.spellPool.filter(
+              (s) => s.level === lvl && !domain.some((d) => d.id === s.id),
+            );
             if (!pool.length) return null;
             return (
               <div key={lvl}>
@@ -494,6 +512,54 @@ function SpellsTab({ hero }: { hero: Hero }) {
             </section>
           );
         })
+      )}
+      {domain.length > 0 && !editing && (
+        <section aria-label="Domain spells">
+          <h3 className="eyebrow">{subclassName(hero)} spells (always prepared)</h3>
+          <ul className="spell-list">
+            {domain.map((s) => (
+              <li key={s.id}>
+                <span className="strong">{s.name}</span>{' '}
+                <span className="faint small">
+                  {s.level ? ORDINAL[s.level] : 'cantrip'}
+                  {s.concentration ? ' · concentration' : ''}
+                </span>{' '}
+                <span className="small muted">{s.summary}</span>
+              </li>
+            ))}
+          </ul>
+        </section>
+      )}
+      {hero.spells.includes('hex') && (
+        <label className="setting-row hex-pick">
+          <span className="strong">Hex curses:</span>
+          <select
+            value={hero.choices['hex-ability']?.[0] ?? 'str'}
+            onChange={(e) => {
+              const g = useGame.getState().game!;
+              useGame.setState({
+                game: {
+                  ...g,
+                  party: g.party.map((x) =>
+                    x.id === hero.id
+                      ? { ...x, choices: { ...x.choices, 'hex-ability': [e.target.value] } }
+                      : x,
+                  ),
+                },
+              });
+            }}
+            aria-label="Ability Hex curses"
+          >
+            {ABILITIES.map((a) => (
+              <option key={a} value={a}>
+                {ABILITY_NAMES[a]}
+              </option>
+            ))}
+          </select>
+          <span className="small muted">
+            The target has disadvantage on checks with it (remembered; change it any time).
+          </span>
+        </label>
       )}
       {hero.invocations.length > 0 && (
         <p className="small">

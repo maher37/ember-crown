@@ -31,7 +31,7 @@ describe("Hex and Hunter's Mark move when the target drops (PHB)", () => {
     expect((r.state.combatants['hexa']!.creature as { slotsUsed: number[] }).slotsUsed.join()).toBe(
       slots,
     );
-    expect(texts(r.state)).toMatch(/moves the Hex to Wolf A/);
+    expect(texts(r.state)).toMatch(/puts the Hex on Wolf A \(disadvantage on Strength checks\)/);
   });
   it('is not offered while the marked creature still stands', () => {
     const w = L('warlock', 'Hexa', 3);

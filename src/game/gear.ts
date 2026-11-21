@@ -2,7 +2,7 @@
 // wearing or wielding things from the party's pack. Pure functions over the game state.
 import { armor, gear, magicItems, startingSupplies, weapons } from '../data';
 import type { Gear, Weapon } from '../data/schemas/item';
-import { getClass, getSpecies, type Hero } from './hero';
+import { armorProfsOf, getSpecies, weaponProfsOf, type Hero } from './hero';
 import { heroAc } from './items';
 import {
   autoSlot,
@@ -136,8 +136,11 @@ export function sell(g: GameState, id: string): { game: GameState; error?: strin
 // ------------------------------------------------------------------ proficiency
 
 /** PHB class tables (and species weapon training): can this hero use this weapon well? */
-export function weaponProficient(hero: Pick<Hero, 'classId' | 'speciesId'>, w: Weapon): boolean {
-  const names = getClass(hero.classId).weapons.map((x) => x.toLowerCase());
+export function weaponProficient(
+  hero: Pick<Hero, 'classId' | 'speciesId'> & { subclassId?: string },
+  w: Weapon,
+): boolean {
+  const names = weaponProfsOf(hero).map((x) => x.toLowerCase());
   if (names.includes(w.category)) return true;
   if (names.includes(`${w.name.toLowerCase()}s`)) return true;
   return getSpecies(hero.speciesId).traits.some((t) =>
@@ -145,11 +148,13 @@ export function weaponProficient(hero: Pick<Hero, 'classId' | 'speciesId'>, w: W
   );
 }
 
-export function armorProficient(hero: Pick<Hero, 'classId'>, id: string): boolean {
+export function armorProficient(
+  hero: Pick<Hero, 'classId'> & { subclassId?: string },
+  id: string,
+): boolean {
   const a = armor.find((x) => x.id === id);
   if (!a) return false;
-  const cats = getClass(hero.classId).armor;
-  return cats.includes(a.category === 'shield' ? 'shields' : a.category);
+  return armorProfsOf(hero).includes(a.category === 'shield' ? 'shields' : a.category);
 }
 
 /**

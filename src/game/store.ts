@@ -320,7 +320,13 @@ export const useGame = create<GameStore>()((set, get) => ({
     const party = game.party
       .filter((h) => !(enc.excludeOrigin && h.origin === enc.excludeOrigin))
       // The chance to re-prepare spells ends when a fight starts [inferred].
-      .map((h) => ({ ...h, canPrepare: false }));
+      .map((h) => ({ ...h, canPrepare: false }))
+      // A Hex or Hunter's Mark from the last fight, still within its hour: ready to place again.
+      .map((h) =>
+        h.lingering?.until !== undefined && game.clock <= h.lingering.until
+          ? { ...h, concentration: h.lingering.spell, lingering: undefined }
+          : { ...h, lingering: undefined },
+      );
     // Autosave before every fight (docs/BUILD_ROADMAP.md, M4).
     get().saveTo('autosave');
     const combat = startCombat({
@@ -366,7 +372,10 @@ export const useGame = create<GameStore>()((set, get) => ({
     const how = lost ? 'lost' : combat.outcome === 'parley' ? 'parley' : 'won';
     let next: GameState = {
       ...game,
-      party: result.party,
+      // A Hex or Hunter's Mark still held lasts an hour from now (PHB).
+      party: result.party.map((h) =>
+        h.lingering ? { ...h, lingering: { ...h.lingering, until: game.clock + 1 } } : h,
+      ),
       rngState: combat.rngState,
       inventory: result.inventory,
       flags: { ...game.flags, [`${how}:${combat.encounterId}`]: true },

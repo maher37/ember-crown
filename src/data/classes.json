@@ -305,7 +305,7 @@
       "hitDie": 8,
       "primaryAbilities": ["wis"],
       "saves": ["wis", "cha"],
-      "armor": ["light", "medium", "heavy", "shields"],
+      "armor": ["light", "medium", "shields"],
       "weapons": ["simple"],
       "skills": {
         "choose": 2,
@@ -334,6 +334,33 @@
           "perLevel": [0, 1, 1, 1, 1, 2],
           "verify": true,
           "verifyNote": "1 use at L2-5, 2 at L6 (Rules_Scope §4 ✅ names; counts from memory)."
+        },
+        {
+          "id": "warding-flare",
+          "name": "Warding Flare",
+          "formula": "wis-mod-min-1",
+          "recharge": "long-rest",
+          "subclass": "light",
+          "verify": true,
+          "verifyNote": "PHB: Wisdom modifier (minimum 1) uses, back on a long rest (from memory)."
+        },
+        {
+          "id": "war-priest",
+          "name": "War Priest",
+          "formula": "wis-mod-min-1",
+          "recharge": "long-rest",
+          "subclass": "war",
+          "verify": true,
+          "verifyNote": "PHB: Wisdom modifier (minimum 1) uses, back on a long rest (from memory)."
+        },
+        {
+          "id": "wrath-of-the-storm",
+          "name": "Wrath of the Storm",
+          "formula": "wis-mod-min-1",
+          "recharge": "long-rest",
+          "subclass": "tempest",
+          "verify": true,
+          "verifyNote": "PHB: Wisdom modifier (minimum 1) uses, back on a long rest (from memory)."
         }
       ],
       "levels": [
@@ -349,13 +376,15 @@
               "id": "life-bonus-proficiency",
               "name": "Bonus Proficiency",
               "summary": "Proficient with heavy armor.",
-              "subclass": true
+              "subclass": true,
+              "subclassId": "life"
             },
             {
               "id": "disciple-of-life",
               "name": "Disciple of Life",
               "summary": "Healing spells of 1st level or higher heal an extra 2 + the spell's level.",
-              "subclass": true
+              "subclass": true,
+              "subclassId": "life"
             },
             {
               "id": "life-domain-spells",
@@ -363,7 +392,32 @@
               "summary": "Always prepared: Bless, Cure Wounds (L1); Lesser Restoration, Spiritual Weapon (L3); Beacon of Hope, Revivify (L5).",
               "subclass": true,
               "verify": true,
-              "verifyNote": "Life Domain spell list from memory."
+              "verifyNote": "Life Domain spell list from memory.",
+              "subclassId": "life"
+            },
+            {
+              "id": "warding-flare",
+              "name": "Warding Flare",
+              "summary": "When a creature within 30 ft attacks you, a flash of light gives it disadvantage (a reaction; Wisdom modifier times per long rest). Used automatically.",
+              "uses": "warding-flare",
+              "subclass": true,
+              "subclassId": "light"
+            },
+            {
+              "id": "war-priest",
+              "name": "War Priest",
+              "summary": "After taking the Attack action, make one more weapon attack as a bonus action (Wisdom modifier times per long rest).",
+              "uses": "war-priest",
+              "subclass": true,
+              "subclassId": "war"
+            },
+            {
+              "id": "wrath-of-the-storm",
+              "name": "Wrath of the Storm",
+              "summary": "When a creature within 5 ft hits you, it makes a Dexterity save or takes 2d8 thunder damage (half on a success). A reaction, Wisdom modifier times per long rest; used automatically.",
+              "uses": "wrath-of-the-storm",
+              "subclass": true,
+              "subclassId": "tempest"
             }
           ]
         },
@@ -381,7 +435,32 @@
               "name": "Channel Divinity: Preserve Life",
               "summary": "Action: share out 5 × your cleric level in healing among creatures within 30 ft, up to half each one's HP maximum.",
               "uses": "channel-divinity",
-              "subclass": true
+              "subclass": true,
+              "subclassId": "life"
+            },
+            {
+              "id": "radiance-of-the-dawn",
+              "name": "Channel Divinity: Radiance of the Dawn",
+              "summary": "An action: every enemy within 30 ft makes a Constitution save or takes 2d10 + cleric level radiant damage (half on a success).",
+              "uses": "channel-divinity",
+              "subclass": true,
+              "subclassId": "light"
+            },
+            {
+              "id": "guided-strike",
+              "name": "Channel Divinity: Guided Strike",
+              "summary": "+10 to your next attack roll this turn.",
+              "uses": "channel-divinity",
+              "subclass": true,
+              "subclassId": "war"
+            },
+            {
+              "id": "destructive-wrath",
+              "name": "Channel Divinity: Destructive Wrath",
+              "summary": "Your next lightning or thunder damage this turn is rolled at its maximum.",
+              "uses": "channel-divinity",
+              "subclass": true,
+              "subclassId": "tempest"
             }
           ]
         },
@@ -427,7 +506,30 @@
               "id": "blessed-healer",
               "name": "Blessed Healer",
               "summary": "When your spell heals someone else, you regain 2 + the spell's level.",
-              "subclass": true
+              "subclass": true,
+              "subclassId": "life"
+            },
+            {
+              "id": "improved-flare",
+              "name": "Improved Flare",
+              "summary": "Warding Flare now also protects allies within 30 ft of you when they are attacked.",
+              "subclass": true,
+              "subclassId": "light"
+            },
+            {
+              "id": "war-gods-blessing",
+              "name": "Channel Divinity: War God's Blessing",
+              "summary": "When an ally within 30 ft misses an attack by 10 or less, your reaction gives them +10 (used automatically).",
+              "uses": "channel-divinity",
+              "subclass": true,
+              "subclassId": "war"
+            },
+            {
+              "id": "thunderbolt-strike",
+              "name": "Thunderbolt Strike",
+              "summary": "When you deal lightning damage to a Large or smaller creature, you can push it 10 ft away.",
+              "subclass": true,
+              "subclassId": "tempest"
             }
           ]
         }
@@ -440,7 +542,63 @@
         "weapons": ["mace", "light-crossbow"],
         "verify": true,
         "verifyNote": "One of the PHB starting-equipment options, from memory and simplified (no packs or gold yet)."
-      }
+      },
+      "subclasses": [
+        {
+          "id": "life",
+          "name": "Life Domain",
+          "summary": "The healer: heavy armor, stronger healing spells, and Preserve Life to share out healing.",
+          "armor": ["heavy"],
+          "spells": {
+            "1": ["bless", "cure-wounds"],
+            "3": ["lesser-restoration", "spiritual-weapon"],
+            "5": ["beacon-of-hope", "revivify"]
+          },
+          "verify": true,
+          "verifyNote": "Domain spells and features from memory of the PHB."
+        },
+        {
+          "id": "light",
+          "name": "Light Domain",
+          "summary": "Fire and radiance: a flare that spoils attacks against you, and a burst of dawnlight that burns every enemy nearby.",
+          "cantrips": ["light"],
+          "spells": {
+            "1": ["burning-hands", "faerie-fire"],
+            "3": ["flaming-sphere", "scorching-ray"],
+            "5": ["fireball"]
+          },
+          "verify": true,
+          "verifyNote": "Domain spells from memory of the PHB; Daylight (5th level) isn't in the game's spell list yet."
+        },
+        {
+          "id": "war",
+          "name": "War Domain",
+          "summary": "A front-line priest: heavy armor and martial weapons, extra attacks as a bonus action, and +10 to a crucial attack.",
+          "armor": ["heavy"],
+          "weapons": ["martial"],
+          "spells": {
+            "1": ["divine-favor", "shield-of-faith"],
+            "3": ["spiritual-weapon"],
+            "5": ["spirit-guardians"]
+          },
+          "verify": true,
+          "verifyNote": "Domain spells from memory of the PHB; Magic Weapon and Crusader's Mantle aren't in the game's spell list yet."
+        },
+        {
+          "id": "tempest",
+          "name": "Tempest Domain",
+          "summary": "Storm and thunder: heavy armor and martial weapons, lightning that answers anyone who hits you, and storms at full strength.",
+          "armor": ["heavy"],
+          "weapons": ["martial"],
+          "spells": {
+            "1": ["fog-cloud", "thunderwave"],
+            "3": ["shatter"],
+            "5": ["call-lightning", "sleet-storm"]
+          },
+          "verify": true,
+          "verifyNote": "Domain spells from memory of the PHB; Gust of Wind isn't in the game's spell list yet."
+        }
+      ]
     },
     {
       "id": "druid",

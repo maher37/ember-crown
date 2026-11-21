@@ -13,6 +13,8 @@ export const Resource = z
     /** e.g. "cha-mod-min-1", "5-x-level". */
     formula: z.string().min(1).optional(),
     recharge: z.enum(['short-rest', 'long-rest']),
+    /** Only heroes of this subclass have it (a domain's own uses, say). */
+    subclass: Id.optional(),
     ...Verify,
   })
   .strict()
@@ -73,6 +75,27 @@ export const ClassDef = z
     subclass: z
       .object({ id: Id, name: z.string().min(1), level: z.number().int().min(1).max(3) })
       .strict(),
+    /**
+     * When there's a choice of subclass (cleric domains): each option, its extra proficiencies,
+     * cantrips and always-prepared spells by class level. `subclass` above is the default.
+     */
+    subclasses: z
+      .array(
+        z
+          .object({
+            id: Id,
+            name: z.string().min(1),
+            summary: z.string().min(1),
+            armor: z.array(z.enum(['light', 'medium', 'heavy', 'shields'])).default([]),
+            weapons: z.array(z.string().min(1)).default([]),
+            cantrips: z.array(Id).default([]),
+            /** Class level → spells always prepared from then on (they don't count against the limit). */
+            spells: z.record(z.string(), z.array(Id)).default({}),
+            ...Verify,
+          })
+          .strict(),
+      )
+      .optional(),
     spellcasting: Spellcasting.optional(),
     resources: z.array(Resource).default([]),
     /** What a new level-1 hero of this class starts with. */
@@ -90,7 +113,9 @@ export const ClassDef = z
         z
           .object({
             level: z.number().int().min(1).max(6),
-            features: z.array(Feature.extend({ subclass: z.boolean().optional() })),
+            features: z.array(
+              Feature.extend({ subclass: z.boolean().optional(), subclassId: Id.optional() }),
+            ),
           })
           .strict(),
       )
