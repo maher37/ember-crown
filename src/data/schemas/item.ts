@@ -77,6 +77,12 @@ export const MagicItem = z
     summary: z.string().min(1),
     homebrew: z.boolean().default(false),
     costGp: z.number().min(0).optional(),
+    /** Where it is worn, for wondrous items (the Locket at the neck, the Boots on the feet). */
+    slot: z.enum(['neck', 'feet', 'trinket']).optional(),
+    /** In our own words: how it works in a fight and out of one (shown on the sheet). */
+    howItWorks: z.string().min(1).optional(),
+    /** Brannoc can get it from this act on (rare finds in the shop). */
+    shopAct: z.union([z.literal(1), z.literal(2), z.literal(3)]).optional(),
     ...Verify,
   })
   .strict();

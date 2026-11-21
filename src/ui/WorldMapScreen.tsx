@@ -10,6 +10,7 @@ import mapArt from './art/worldmap.svg?raw';
 import './World.css';
 import { SoundButton } from '../audio/SoundButton';
 import { GameMenuButton } from './GameMenu';
+import { ShopDialog } from './ShopDialog';
 
 const KIND_COLORS: Record<string, [string, string]> = {
   town: ['#f8f3e8', '#5a3b22'],
@@ -36,6 +37,7 @@ const DANGER: Record<string, [string, string]> = {
 export function WorldMapScreen() {
   const { game, travelTo, travelLog, goto, openCamp, enterPlace } = useGame();
   const [items, setItems] = useState(false);
+  const [shop, setShop] = useState(false);
   const [spellsOpen, setSpells] = useState(false);
   const g = game!;
   const here = currentPlace(g);
@@ -85,6 +87,15 @@ export function WorldMapScreen() {
           <button type="button" className="menu-secondary small-btn" onClick={() => goto('party')}>
             Party{g.party.some((h) => canLevelUp(h)) ? ' · level up!' : ''}
           </button>
+          {here.id === 'ashford' && (
+            <button
+              type="button"
+              className="menu-secondary small-btn"
+              onClick={() => setShop(true)}
+            >
+              Shop
+            </button>
+          )}
           <button type="button" className="menu-secondary small-btn" onClick={() => setItems(true)}>
             Inventory
           </button>
@@ -229,6 +240,7 @@ export function WorldMapScreen() {
         </aside>
       </div>
       {items && <InventoryDialog onClose={() => setItems(false)} />}
+      {shop && <ShopDialog onClose={() => setShop(false)} />}
       {spellsOpen && <SpellsDialog onClose={() => setSpells(false)} />}
     </div>
   );

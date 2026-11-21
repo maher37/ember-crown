@@ -284,14 +284,14 @@ export function ExploreScreen() {
           <button type="button" onClick={() => setDialog('spells')}>
             Spells
           </button>
-          <button type="button" onClick={() => openCamp('inn')}>
-            Short rest
+          <button type="button" onClick={() => setDialog('shop')}>
+            Shop
           </button>
           <button type="button" onClick={() => setDialog('journal')}>
             Journal
           </button>
           <button type="button" onClick={() => openCamp('inn')}>
-            Long rest
+            Rest
           </button>
           <button type="button" onClick={() => setDialog('save')}>
             Save

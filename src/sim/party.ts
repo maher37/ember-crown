@@ -1,6 +1,7 @@
 // Standard parties for the balance simulator: the same heroes a player might make, levelled to a
 // fight's expected level with the level-up defaults.
 import { readyParty } from '../game/combat';
+import { giveLoadouts } from '../game/loadout';
 import { buildHero, classSkillChoices, grantedSkills, newDraft, type Hero } from '../game/hero';
 
 /** A level-1 hero of a class, with the creator's defaults (standard array, first skills). */
@@ -35,8 +36,11 @@ export const SIM_PARTIES: Record<string, { label: string; classes: string[] }> =
 
 export function simParty(id: keyof typeof SIM_PARTIES | string, level: number): Hero[] {
   const p = SIM_PARTIES[id] ?? SIM_PARTIES['classic']!;
-  return readyParty(
-    p.classes.map((c, i) => simHero(c, ['Ana', 'Bram', 'Cass', 'Dov'][i]!)),
-    level,
-  );
+  return giveLoadouts(
+    readyParty(
+      p.classes.map((c, i) => simHero(c, ['Ana', 'Bram', 'Cass', 'Dov'][i]!)),
+      level,
+    ),
+    {},
+  ).party;
 }

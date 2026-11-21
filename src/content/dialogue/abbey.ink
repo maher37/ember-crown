@@ -141,5 +141,5 @@ The abbey's archive is a dry room above the flood line. In a locked chest is the
 ~ set_flag("act2_complete", true)
 ~ note("The abbey archives: the crown is Cindrath's soul-vessel, made to bind the dragon. Whoever wears it hears a loved voice that is really Cindrath. Maelis doesn't know.")
 ~ set_act(3)
-Act II ends here. Make camp tonight: a lantern moth is already on its way. (Act III's places now show on the map; their stories arrive in the next milestone.)
+Act II ends here. Make camp tonight: a lantern moth is already on its way. The high Greypeaks are open on the map. #style:card
 -> hub

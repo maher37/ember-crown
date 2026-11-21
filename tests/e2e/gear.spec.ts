@@ -17,10 +17,14 @@ test('equipment: buy at Brannoc’s, wear it from the sheet, and prepare a cleri
   await page.getByRole('button', { name: 'Character sheet: Edda Quill' }).click();
   const sheet = page.getByRole('article', { name: 'Edda Quill' });
   await sheet.getByRole('tab', { name: 'Equipment' }).click();
-  await sheet.getByRole('button', { name: 'Wear' }).first().click();
-  await expect(sheet.getByRole('region', { name: /wears and carries/ })).toContainText(
-    'Studded leather',
-  );
+  await sheet
+    .getByRole('listitem')
+    .filter({ hasText: 'Studded leather' })
+    .getByRole('button', { name: /^Equip: armor/ })
+    .click();
+  await expect(sheet.getByRole('group', { name: /^Armor: Studded leather/ })).toBeVisible();
+  // Her old leather armor went back in the pack.
+  await expect(sheet.getByRole('listitem').filter({ hasText: /^Leather/ })).toBeVisible();
 
   // Thorn (cleric) has just started the day: prepared spells can be changed.
   await page.getByRole('button', { name: /^Thorn/ }).click();

@@ -37,6 +37,7 @@ import { heroPortrait } from './heroLook';
 import { terrainFill, terrainName } from './mapStyle';
 import { foeInfo } from './foeInfo';
 import { useHitFx } from './combatFx';
+import { setLabel } from '../game/loadout';
 import { getItem } from '../game/items';
 import { getGear, isMagicItem } from '../game/gear';
 import { getMonster } from '../game/creatures';
@@ -110,7 +111,8 @@ export function CombatScreen() {
 
   const routes = useMemo(
     () =>
-      myTurn && mode.kind === 'idle' && !hasCondition(me.creature, 'prone')
+      // Movement squares show while aiming too: clicking one cancels the aim and moves (playtest).
+      myTurn && mode.kind !== 'spell' && !hasCondition(me.creature, 'prone')
         ? reachable(s, me, me.turn.movement)
         : new Map(),
     [s, me, myTurn, mode.kind],
@@ -275,7 +277,10 @@ export function CombatScreen() {
       });
       return;
     }
-    if (mode.kind === 'idle' && routes.has(posKey(p))) doAct({ type: 'move', to: p });
+    if (routes.has(posKey(p))) {
+      if (mode.kind !== 'idle') setMode({ kind: 'idle' });
+      doAct({ type: 'move', to: p });
+    }
   };
 
   const pickSpell = (spellId: string, level: number) => {
@@ -440,14 +445,17 @@ export function CombatScreen() {
 
       <div className="initiative" aria-label="Turn order">
         <span className="eyebrow muted-eyebrow">Initiative</span>
-        {s.order.map((id) => {
+        {/* Whoever is acting comes first; those who've gone move to the back (playtest). */}
+        {[...s.order.slice(s.turnIndex), ...s.order.slice(0, s.turnIndex)].map((id, i, all) => {
           const c = s.combatants[id]!;
           const down = c.gone || c.creature.dead || c.creature.hp === 0;
+          const nextRound = i === all.length - s.turnIndex && s.turnIndex > 0;
           return (
             <div
               key={id}
-              className={`chip ${id === me.id ? 'on' : ''} ${down ? 'down' : ''}`}
+              className={`chip ${id === me.id ? 'on' : ''} ${down ? 'down' : ''} ${nextRound ? 'next-round' : ''}`}
               aria-current={id === me.id ? 'true' : undefined}
+              title={nextRound ? `Round ${s.round + 1} starts here` : undefined}
             >
               <span className={`dot ${c.side}`} aria-hidden="true" />
               <span>{c.name}</span>
@@ -462,6 +470,13 @@ export function CombatScreen() {
           className="map"
           style={{ width: s.map.width * CELL, height: s.map.height * CELL }}
           onMouseLeave={() => setHover(null)}
+          onContextMenu={(e) => {
+            // Right-click cancels whatever is being aimed.
+            if (mode.kind !== 'idle') {
+              e.preventDefault();
+              setMode({ kind: 'idle' });
+            }
+          }}
         >
           <svg
             viewBox={`0 0 ${s.map.width * CELL} ${s.map.height * CELL}`}
@@ -616,65 +631,14 @@ export function CombatScreen() {
               </span>
             );
           })}
-          {hovered && (
-            <div
-              className={`tooltip ${hovered.side}`}
-              style={{
-                left: Math.min(hovered.pos.x * CELL + 50, s.map.width * CELL - 270),
-                top: Math.max(4, hovered.pos.y * CELL - 70),
-              }}
-              role="status"
-            >
-              <span className="strong">
-                {hovered.name} · AC {currentAc(hovered)} · HP{' '}
-                {hovered.wildShape?.hp ?? hovered.creature.hp}/
-                {hovered.wildShape?.maxHp ?? hovered.creature.maxHp}
-              </span>
-              {hovered.side === 'enemy' && myTurn && hoverOpt && (
-                <span>
-                  {hoverOpt.name}: {hitChance(hoverOpt.toHit, currentAc(hovered))}% to hit ·{' '}
-                  {hoverOpt.damage.map((d) => `${d.dice} ${d.type}`).join(' + ')}
-                </span>
-              )}
-              {info && (
-                <>
-                  <span className="foe-kind">{info.kind}</span>
-                  {info.defenses.map((d) => (
-                    <span key={d} className="muted">
-                      {d}
-                    </span>
-                  ))}
-                  {info.traits.length > 0 && (
-                    <span className="muted">Traits: {info.traits.join(', ')}</span>
-                  )}
-                  {info.edges.map((d) => (
-                    <span key={d} className="foe-edge">
-                      ★ {d}
-                    </span>
-                  ))}
-                </>
-              )}
-              {hovered.creature.conditions.length > 0 && (
-                <span className="muted">
-                  Conditions:{' '}
-                  {[...new Set(hovered.creature.conditions.map((x) => x.id))].join(', ')}
-                </span>
-              )}
-              {hovered.effects.length > 0 && (
-                <span className="muted">
-                  Under: {[...new Set(hovered.effects.map((e) => e.name))].join(', ')}
-                </span>
-              )}
-              <span className="muted">
-                Standing on: {terrainName(s.map.style, terrainAt(s.map, hovered.pos))}
-              </span>
-            </div>
-          )}
           {banner && myTurn && (
             <div className="banner" role="status">
               {banner}{' '}
+              {mode.kind !== 'spell' && (
+                <span className="muted small">Or click a blue square to move instead. </span>
+              )}
               <button type="button" className="link" onClick={() => setMode({ kind: 'idle' })}>
-                Cancel (Esc)
+                Cancel (Esc or right-click)
               </button>
               {mode.kind === 'spell' && mode.targets.length > 0 && (
                 <button
@@ -787,6 +751,53 @@ export function CombatScreen() {
               Dice: {settings.showRolls ? 'automatic, all shown' : 'automatic'}
             </span>
           </div>
+          {hovered && (
+            <div className={`tooltip inspect ${hovered.side}`} role="status">
+              <span className="strong">
+                {hovered.name} · AC {currentAc(hovered)} · HP{' '}
+                {hovered.wildShape?.hp ?? hovered.creature.hp}/
+                {hovered.wildShape?.maxHp ?? hovered.creature.maxHp}
+              </span>
+              {hovered.side === 'enemy' && myTurn && hoverOpt && (
+                <span>
+                  {hoverOpt.name}: {hitChance(hoverOpt.toHit, currentAc(hovered))}% to hit ·{' '}
+                  {hoverOpt.damage.map((d) => `${d.dice} ${d.type}`).join(' + ')}
+                </span>
+              )}
+              {info && (
+                <>
+                  <span className="foe-kind">{info.kind}</span>
+                  {info.defenses.map((d) => (
+                    <span key={d} className="muted">
+                      {d}
+                    </span>
+                  ))}
+                  {info.traits.length > 0 && (
+                    <span className="muted">Traits: {info.traits.join(', ')}</span>
+                  )}
+                  {info.edges.map((d) => (
+                    <span key={d} className="foe-edge">
+                      ★ {d}
+                    </span>
+                  ))}
+                </>
+              )}
+              {hovered.creature.conditions.length > 0 && (
+                <span className="muted">
+                  Conditions:{' '}
+                  {[...new Set(hovered.creature.conditions.map((x) => x.id))].join(', ')}
+                </span>
+              )}
+              {hovered.effects.length > 0 && (
+                <span className="muted">
+                  Under: {[...new Set(hovered.effects.map((e) => e.name))].join(', ')}
+                </span>
+              )}
+              <span className="muted">
+                Standing on: {terrainName(s.map.style, terrainAt(s.map, hovered.pos))}
+              </span>
+            </div>
+          )}
           <div className="log" role="log" aria-live="polite">
             {log.map((l, i) => (
               <div key={s.log.length - i} className={`log-${l.kind}`}>
@@ -839,7 +850,15 @@ export function CombatScreen() {
                 type="button"
                 className={i === 0 ? 'act primary-act' : 'act'}
                 disabled={!myTurn || (!actionLeft && me.turn.attacksLeft === 0)}
-                onClick={() => setMode({ kind: 'attack', optionId: o.id })}
+                aria-pressed={mode.kind === 'attack' && mode.optionId === o.id}
+                onClick={() =>
+                  // Clicking the same attack again puts it away.
+                  setMode(
+                    mode.kind === 'attack' && mode.optionId === o.id
+                      ? { kind: 'idle' }
+                      : { kind: 'attack', optionId: o.id },
+                  )
+                }
               >
                 <span className="act-name">Attack · {o.name}</span>
                 <span className="act-detail">
@@ -848,6 +867,25 @@ export function CombatScreen() {
                 </span>
               </button>
             ))}
+          {hero && hero.creature.equipment.loadout && (
+            <button
+              type="button"
+              className="act"
+              disabled={!myTurn || !!me.turn.swappedWeapons}
+              title="Free, once a turn"
+              onClick={() => doAct({ type: 'swap-weapons' })}
+            >
+              <span className="act-name">Switch weapons</span>
+              <span className="act-detail">
+                to{' '}
+                {setLabel(
+                  hero.creature.equipment.loadout,
+                  hero.creature.equipment.loadout.active === 1 ? 2 : 1,
+                )}{' '}
+                · free
+              </span>
+            </button>
+          )}
           {hero && hero.creature.classId === 'monk' && hero.creature.level >= 5 && (
             <label className="act smite">
               <span className="act-name">Stunning Strike</span>

@@ -34,7 +34,7 @@ Dialogue is written in [Ink](https://github.com/inkle/ink/blob/master/Documentat
 
 Each `.ink` file is one story (`src/game/dialogue.ts` → `STORIES`). Arriving at a map place opens its scene (`PLACE_SCENES`): Act I's `warren`, `mine` (the Old Mine), `mill`, `ashwood` and `cave` (the Steaming Cave), Act II's `bridge`, `marsh` (lizardfolk), `marrowmere`, `abbey`, `sallow` and `deserters`, and Act III's `pass`, `forge` (Vorrag), `caves` (Wix's clan) and `kiln` (the King's Kiln and the Crowning) start at their `arrive` knot; `ashford.ink` holds Ashford Hall and Edric's Errand, and `camp.ink` Maelis's visit to the camp and Corin's dream bargains; the tavern's hotspots open knots in `tavern.ink`; `road.ink` holds Wix's scene after the road ambush.
 
-Lines can switch the portrait with `#speaker:edric` (ids in `src/data/npcs.json`). Keep NPC lines to 3 sentences and choices to 5 (Story_Bible §10–11). `tests/unit/dialogue.test.ts` checks that every quest step and award the script names exists.
+Lines can switch the portrait with `#speaker:edric` (ids in `src/data/npcs.json`). Keep NPC lines to 3 sentences and choices to 5 (Story_Bible §10–11). `tests/unit/dialogue.test.ts` checks that every quest step and award the script names exists. Mark an act ending or a turning point with `#style:card` at the end of the line: it shows as a big centered card.
 
 ## Writing a place scene
 

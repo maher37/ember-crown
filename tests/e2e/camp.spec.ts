@@ -27,8 +27,12 @@ test('rest at the inn: short rest with Hit Dice, long rest once a day, and Corin
   await page.getByRole('button', { name: /Long rest/ }).click();
   await expect(page.getByText(/1 Nightal, 1492 DR · (Dawn|Morning)/).first()).toBeVisible();
   await page.getByRole('button', { name: /Wake the party/ }).click();
+  // House rule (owner): rest again whenever you like; another 8 hours pass.
   await page.getByRole('button', { name: /Long rest/ }).click();
-  await expect(page.getByText(/once per 24 hours/)).toBeVisible();
+  await expect(
+    page.getByText(/1 Nightal, 1492 DR · (Morning|Afternoon|Evening)/).first(),
+  ).toBeVisible();
+  await page.getByRole('button', { name: /Wake the party/ }).click();
 
   await page.getByRole('button', { name: /Break camp/ }).click();
   await expect(page.getByRole('heading', { name: 'The Drowned Lantern' })).toBeVisible();

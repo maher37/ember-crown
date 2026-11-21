@@ -839,3 +839,91 @@
     animation: none;
   }
 }
+
+/* Dialogue: centered in the space, and different kinds of lines look different (playtest). */
+.conversation {
+  justify-content: flex-start;
+}
+.conv-inner {
+  margin: auto 0;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: 12px 0;
+}
+.prose {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.prose .line {
+  animation: line-in 0.45s ease-out both;
+}
+.prose .line p {
+  margin: 0;
+}
+.prose .line.narration p {
+  color: #e6dcc6;
+}
+.prose .line.narration:first-child p::first-letter {
+  font-family: var(--font-heading);
+  font-size: 2.1em;
+  float: left;
+  line-height: 0.9;
+  margin: 4px 6px 0 0;
+  color: var(--gold);
+}
+.prose .line.spoken {
+  border-left: 3px solid var(--ember);
+  padding-left: 14px;
+}
+.prose .line.spoken p {
+  color: #fff8ea;
+  font-size: 20px;
+}
+.line-speaker {
+  display: block;
+  font-family: var(--font-heading);
+  font-size: 13px;
+  letter-spacing: 0.06em;
+  color: var(--ember-text);
+  margin-bottom: 2px;
+}
+.prose .line.card {
+  align-self: center;
+  text-align: center;
+  margin: 14px 0;
+  padding: 18px 28px;
+  border-top: 1px solid var(--gold);
+  border-bottom: 1px solid var(--gold);
+  background: radial-gradient(ellipse at center, rgba(232, 194, 122, 0.12), transparent 70%);
+}
+.prose .line.card p {
+  font-family: var(--font-heading);
+  font-size: 24px;
+  line-height: 1.4;
+  color: var(--gold);
+}
+@keyframes line-in {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .prose .line {
+    animation: none;
+  }
+}
+[data-reduce-motion='true'] .prose .line {
+  animation: none;
+}
+.prose .line.meta p {
+  font-family: var(--font-ui);
+  font-size: 13px;
+  color: var(--gold);
+}

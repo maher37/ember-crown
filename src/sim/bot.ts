@@ -146,6 +146,20 @@ function tryFeature(s: CombatState, me: Combatant, id: string): CombatState | nu
   return attempt(s, { type: 'feature', id: f.id } as PlayerAction);
 }
 
+function trySwap(s: CombatState, me: Combatant): CombatState | null {
+  const lo =
+    'classId' in me.creature
+      ? (
+          me.creature as {
+            equipment?: { loadout?: { active: 1 | 2; main1: string | null; main2: string | null } };
+          }
+        ).equipment?.loadout
+      : undefined;
+  if (!lo || me.turn.swappedWeapons) return null;
+  if (!(lo.active === 1 ? lo.main2 : lo.main1)) return null;
+  return attempt(s, { type: 'swap-weapons' });
+}
+
 function closeIn(s: CombatState, me: Combatant): CombatState | null {
   const nearest = foes(s).sort(
     (a, b) => distanceFeet(me.pos, a.pos) - distanceFeet(me.pos, b.pos),
@@ -188,6 +202,8 @@ export function simTurn(s: CombatState): CombatState {
     step(tryHeal) ||
     step(tryDamageSpell) ||
     step(tryAttack) ||
+    // Nothing in reach: try the other weapon set (a bow, say) before walking in.
+    (step(trySwap) && step(tryAttack)) ||
     (step(closeIn) && (step(tryDamageSpell) || step(tryAttack)));
   // Fighters: Action Surge for a second round of attacks.
   if (acted && step((st, me) => tryFeature(st, me, 'action-surge'))) step(tryAttack);

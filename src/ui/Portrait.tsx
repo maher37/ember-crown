@@ -29,6 +29,8 @@ interface Props extends PortraitData {
   bg?: string;
   label: string;
   gear?: PortraitGear;
+  /** How hurt they look: 0 fine, 1 scratched, 2 bloodied, 3 badly hurt (playtest feedback). */
+  wounds?: 0 | 1 | 2 | 3;
 }
 
 const STEEL = '#a9b1bc';
@@ -208,6 +210,7 @@ export function Portrait({
   bg = '#3a4558',
   label,
   gear,
+  wounds = 0,
 }: Props) {
   const [ids] = useState(() => ({
     rings: uid('rings'),
@@ -317,6 +320,38 @@ export function Portrait({
         strokeWidth="2"
         strokeLinecap="round"
       />
+      {wounds >= 1 && (
+        <g aria-hidden="true">
+          {/* A cut on the cheek and a smudge of dirt. */}
+          <path d="M56 104 l10 6" stroke="#9a2a20" strokeWidth="2" strokeLinecap="round" />
+          <ellipse cx="100" cy="112" rx="7" ry="4" fill="#5a4030" opacity="0.25" />
+        </g>
+      )}
+      {wounds >= 2 && (
+        <g aria-hidden="true">
+          {/* Blood from the brow, and a bruise under the eye. */}
+          <path
+            d="M88 70 C90 80 87 86 89 96 C90 100 92 100 92 96 C91 88 94 80 92 70 Z"
+            fill="#a3271c"
+            opacity="0.9"
+          />
+          <ellipse cx="66" cy="101" rx="8" ry="3.5" fill="#5a3a6a" opacity="0.35" />
+        </g>
+      )}
+      {wounds >= 3 && (
+        <g aria-hidden="true">
+          {/* Heavy eyelids, more blood, a grey pallor. */}
+          <path d="M59 94 C62 89 70 89 73 94 Z" fill={skin} />
+          <path d="M87 94 C90 89 98 89 101 94 Z" fill={skin} />
+          <path d="M59 94 H73 M87 94 H101" stroke="#3a2a20" strokeWidth="1.5" />
+          <path d="M52 118 C50 126 54 132 56 128 C57 124 55 120 52 118 Z" fill="#a3271c" />
+          <path
+            d="M46 88 C46 60 60 46 80 46 C100 46 114 60 114 88 C114 116 102 138 80 138 C58 138 46 116 46 88 Z"
+            fill="#6a7a8a"
+            opacity="0.18"
+          />
+        </g>
+      )}
       {scar && (
         <path
           d="M98 80 L106 104"
@@ -353,6 +388,16 @@ export function Portrait({
         />
       )}
       {helmet && <Helmet />}
+      {wounds >= 3 && !helmet && (
+        // A rough bandage around the head.
+        <path
+          d="M44 72 C60 62 100 62 116 72 L115 82 C100 72 60 72 45 82 Z"
+          fill="#e8e0cc"
+          stroke="#b8ac90"
+          strokeWidth="1"
+          aria-hidden="true"
+        />
+      )}
       {hooded && (
         <path
           d="M36 124 C32 70 54 42 80 42 C106 42 128 70 124 124 C120 82 104 58 80 58 C56 58 40 82 36 124 Z"

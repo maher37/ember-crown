@@ -55,6 +55,11 @@ Sold at Brannoc's stores (`src/data/gear.json`), PHB prices [CONFIRM: prices fro
 - **Alchemist's fire** (50 gp), **holy water** (25 gp), **acid** (25 gp): thrown in fights and used up.
 - All PHB armor and weapons, and Potions of Healing (50 gp), are also for sale.
 
+## Brannoc's rare finds (D25)
+Bought, not found, so they don't replace the story items above [inferred prices]:
+- **From Act II:** Longsword, Rapier, Mace, Longbow, Greataxe and Quarterstaff +1 (400 gp each); Shield +1 (400 gp); Potion of Greater Healing and Potion of Fire Resistance (150 gp).
+- **From Act III:** Ring of Protection (900 gp, attunement); Cloak of Protection (450 gp, attunement).
+
 ## Elite monsters (one per act, optional)
 | Act | Elite | Monster (MM) | Raw XP → adjusted | Difficulty | XP/PC | Where and how it's telegraphed | Fight notes |
 |---|---|---|---|---|---|---|---|

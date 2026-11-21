@@ -3,12 +3,13 @@ import { AbilityId, ConditionIdSchema, DamageTypeId, SkillId } from '../data/sch
 import { defaultInvocations, defaultSpells, type Hero } from './hero';
 import { startingPack } from './gear';
 import { heroSpeed } from './levelup';
+import { giveLoadouts } from './loadout';
 import type { QuestState } from './journal';
 import type { LetterState } from './letters';
 import { GAME_START } from './calendar';
 
 /** Bump when the save format changes, and add a migration below. Never break old saves. */
-export const SAVE_VERSION = 7;
+export const SAVE_VERSION = 8;
 
 export interface GameState {
   id: string;
@@ -56,6 +57,8 @@ const Scores = z.object({
   cha: z.number().int(),
 });
 const Hex = z.string().regex(/^#[0-9a-f]{6}$/i);
+
+const Slot = z.string().nullable();
 
 export const HeroSchema = z.object({
   id: z.string().min(1),
@@ -121,6 +124,23 @@ export const HeroSchema = z.object({
     shield: z.boolean(),
     weapons: z.array(z.string()),
     magic: z.array(z.string()),
+    loadout: z
+      .object({
+        main1: Slot,
+        off1: Slot,
+        main2: Slot,
+        off2: Slot,
+        armor: Slot,
+        cloak: Slot,
+        neck: Slot,
+        ring1: Slot,
+        ring2: Slot,
+        feet: Slot,
+        trinket1: Slot,
+        trinket2: Slot,
+        active: z.union([z.literal(1), z.literal(2)]),
+      })
+      .optional(),
   }),
   cantrips: z.array(z.string()),
   spells: z.array(z.string()),
@@ -230,6 +250,13 @@ export const MIGRATIONS: Record<number, (old: Record<string, unknown>) => Record
         ...old,
         game: { ...game, party, inventory, gold: (game.gold ?? 0) + pack.gold },
       };
+    },
+    // v7 → v8 (equipment slots): every hero gets slots and two weapon sets, filled from what
+    // they carried; anything that doesn't fit goes back in the party's pack.
+    7: (old) => {
+      const game = old.game as GameState;
+      const r = giveLoadouts(game.party, game.inventory);
+      return { ...old, game: { ...game, party: r.party, inventory: r.inventory } };
     },
   };
 

@@ -98,9 +98,13 @@
   margin-bottom: 10px;
 }
 .big-stat {
-  background: var(--panel);
-  border: 1px solid var(--border);
-  border-radius: 8px;
+  background: linear-gradient(180deg, #3e4b62, #303a4b);
+  border: 2px solid #6b7c99;
+  border-top: 3px solid var(--ember);
+  border-radius: 10px;
+  box-shadow:
+    0 3px 8px rgba(0, 0, 0, 0.35),
+    inset 0 1px 0 rgba(255, 255, 255, 0.08);
   padding: 6px 4px;
   text-align: center;
   display: flex;
@@ -114,8 +118,9 @@
   color: var(--muted);
 }
 .big-stat dd {
-  font: 700 20px var(--font-ui);
+  font: 800 22px var(--font-ui);
   color: var(--heading);
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
 }
 .sheet-cols {
   display: grid;
@@ -134,9 +139,12 @@
 .ability-box {
   min-width: 0;
   overflow: hidden;
-  background: var(--panel);
-  border: 1px solid var(--border);
-  border-radius: 8px;
+  background: linear-gradient(180deg, #3e4b62, #303a4b);
+  border: 2px solid #6b7c99;
+  border-radius: 10px;
+  box-shadow:
+    0 3px 8px rgba(0, 0, 0, 0.35),
+    inset 0 1px 0 rgba(255, 255, 255, 0.08);
   text-align: center;
   padding: 4px 0;
   display: flex;
@@ -331,4 +339,157 @@
 }
 .credits p {
   margin: 0 0 8px;
+}
+
+/* Equipment slots. */
+.equip-card {
+  background: var(--panel);
+  border: 1px solid var(--border-strong);
+  border-radius: 10px;
+  padding: 10px 12px;
+  margin-bottom: 10px;
+}
+.sets {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+.set {
+  border: 1px dashed var(--border);
+  border-radius: 8px;
+  padding: 6px;
+}
+.set.active {
+  border: 2px solid var(--ember);
+  background: rgba(232, 131, 58, 0.06);
+}
+.set-name {
+  display: block;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--muted);
+  margin-bottom: 4px;
+}
+.set.active .set-name {
+  color: var(--ember-text);
+}
+.set-slots,
+.worn-slots {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 6px;
+}
+.worn-slots {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+.slot {
+  position: relative;
+  min-width: 0;
+}
+.slot-main {
+  width: 100%;
+  min-height: 62px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 1px;
+  text-align: left;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 6px 22px 6px 8px;
+  color: var(--text);
+  cursor: pointer;
+  font: inherit;
+}
+.slot.filled .slot-main {
+  border-color: #8a6a3a;
+}
+.slot.selected .slot-main {
+  border-color: var(--ember);
+  box-shadow: 0 0 0 2px rgba(232, 131, 58, 0.35);
+}
+.slot-item {
+  font-weight: 600;
+  font-size: 13.5px;
+}
+.slot:not(.filled) .slot-item {
+  color: var(--faint);
+  font-weight: 400;
+  font-style: italic;
+}
+.slot-kind {
+  font-size: 11.5px;
+  line-height: 1.25;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
+}
+.slot-remove {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  width: 20px;
+  height: 20px;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  background: var(--ground);
+  color: var(--muted);
+  cursor: pointer;
+  line-height: 16px;
+  padding: 0;
+}
+.how-it-works {
+  background: #3a3222;
+  border: 1px solid var(--gold);
+  border-radius: 8px;
+  padding: 8px 10px;
+  margin: 0 0 10px;
+}
+.pack-actions {
+  gap: 6px;
+  align-items: center;
+}
+.link-btn {
+  background: none;
+  border: none;
+  padding: 0;
+  color: var(--ember-text);
+  text-decoration: underline;
+  cursor: pointer;
+  font: inherit;
+}
+
+.who-can {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 10px;
+  margin-top: 3px;
+  font-size: 12.5px;
+}
+.who.ok {
+  color: #8fd18a;
+}
+.who.no {
+  color: #e69a8a;
+}
+.who .why {
+  color: var(--muted);
+}
+
+/* Framed sections on the sheet (attacks, saves, skills, features). */
+.sheet-box {
+  background: rgba(20, 26, 36, 0.35);
+  border: 1px solid var(--border-strong);
+  border-radius: 10px;
+  padding: 2px 10px 8px;
+  margin-bottom: 10px;
+}
+.sheet-box .eyebrow {
+  margin-top: 8px;
+}
+.ab-mod {
+  font-size: 22px;
+  font-weight: 800;
 }
