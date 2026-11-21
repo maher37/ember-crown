@@ -12,6 +12,11 @@ const GROUPS: { title: string; toggles: { key: ToggleKey; label: string; note?: 
       { key: 'showRolls', label: 'Show every dice roll in the combat log' },
       { key: 'clickToRoll', label: 'Pause so I can click to roll my own dice' },
       { key: 'allowCombatSave', label: 'Allow saving during combat' },
+      {
+        key: 'kindDice',
+        label: 'Kind dice for your spells',
+        note: 'Your spells land a little more often (a miss is sometimes quietly rerolled).',
+      },
     ],
   },
   {

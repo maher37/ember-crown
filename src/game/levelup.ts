@@ -22,7 +22,9 @@ import {
   maxSlots,
   skillBonus,
   spellNumbers,
+  subclassDef,
   subclassOf,
+  SUBCLASS_TITLE,
   type Hero,
 } from './hero';
 
@@ -58,7 +60,7 @@ export interface LevelUpOptions {
   picks: PickGroup[];
   spells: SpellRules | null;
   /** The next level's headline features, for the "coming next" card. */
-  next: { level: number; names: string[] } | null;
+  next: { level: number; names: string[]; features: { name: string; summary: string }[] } | null;
 }
 
 export interface LevelUpPlan {
@@ -77,11 +79,20 @@ const SKILL_LABEL = (s: Skill) =>
 export function levelUpOptions(hero: Hero): LevelUpOptions {
   const cls = getClass(hero.classId);
   const newLevel = hero.level + 1;
-  // Only the features of the hero's own domain (D4).
-  const gained = cls.levels[newLevel - 1]!.features.filter(
-    (f) => !f.subclassId || f.subclassId === subclassOf(hero),
+  // Choosing a subclass now (D4, D29): its features are described on the choices instead.
+  const choosing = !!cls.subclasses && cls.subclasses.length > 1 && newLevel === cls.subclass.level;
+  // Only the features of the hero's own subclass.
+  const gained = cls.levels[newLevel - 1]!.features.filter((f) =>
+    choosing ? !f.subclassId : !f.subclassId || f.subclassId === subclassOf(hero),
   );
   const picks: PickGroup[] = [];
+  if (choosing)
+    picks.push({
+      id: 'subclass',
+      name: SUBCLASS_TITLE[cls.id] ?? 'Subclass',
+      count: 1,
+      options: cls.subclasses!.map((x) => ({ id: x.id, name: x.name, summary: x.summary })),
+    });
   for (const f of gained) {
     if (f.id === 'fighting-style' && f.options)
       picks.push({ id: 'fighting-style', name: 'Fighting Style', count: 1, options: f.options });
@@ -141,7 +152,17 @@ export function levelUpOptions(hero: Hero): LevelUpOptions {
     })),
     picks,
     spells: spellRules(hero, newLevel),
-    next: nextFeatures ? { level: newLevel + 1, names: nextFeatures.map((f) => f.name) } : null,
+    next: nextFeatures
+      ? {
+          level: newLevel + 1,
+          names: nextFeatures
+            .filter((f) => !f.subclassId || f.subclassId === subclassOf(hero))
+            .map((f) => f.name),
+          features: nextFeatures
+            .filter((f) => !f.subclassId || f.subclassId === subclassOf(hero))
+            .map((f) => ({ name: f.name, summary: f.summary })),
+        }
+      : null,
   };
 }
 
@@ -168,7 +189,11 @@ export function spellRules(
       : sc.style === 'spellbook'
         ? 6 + 2 * (level - 1)
         : Math.max(1, mod + (hero.classId === 'paladin' ? Math.floor(level / 2) : level));
-  const list = allSpells.filter((s) => s.classes.includes(cls.id as never));
+  // A warlock patron's expanded spells join the list (PHB: Expanded Spell List).
+  const expanded = subclassDef(hero)?.expanded ?? [];
+  const list = allSpells.filter(
+    (s) => s.classes.includes(cls.id as never) || expanded.includes(s.id),
+  );
   return {
     style: sc.style,
     cantrips: sc.cantripsKnown[level - 1]!,
@@ -334,6 +359,7 @@ export function applyLevelUp(hero: Hero, plan: LevelUpPlan): Hero {
       remaining: hero.hitDice.remaining + 1,
     },
     fightingStyle: picks['fighting-style']?.[0] ?? hero.fightingStyle,
+    ...(picks['subclass']?.[0] ? { subclassId: picks['subclass'][0] } : {}),
     invocations: [...hero.invocations, ...(picks['invocations'] ?? [])],
     expertise: [...hero.expertise, ...((picks['expertise'] ?? []) as Skill[])],
     skills: [...hero.skills, ...((picks['bonus-skills'] ?? []) as Skill[])],

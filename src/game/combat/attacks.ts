@@ -3,7 +3,7 @@ import type { Effect, LeafEffect } from '../../data/schemas/common';
 import { getMonster } from '../creatures';
 import { getItem, magicWeaponBase } from '../items';
 import { hasSubclass, resourceLeft } from '../hero';
-import { nextTurnRound, thunderbolt } from './leaves';
+import { nextTurnRound, pushPull, thunderbolt } from './leaves';
 import {
   abilityModifier,
   addCondition,
@@ -30,6 +30,7 @@ import {
   spendResource,
   spendSlot,
   type Ctx,
+  isSub,
 } from './core';
 import { conscious, coverBetween, distanceFeet, hasLineOfSight, isAdjacent } from './grid';
 import { applyLeaf } from './leaves';
@@ -292,6 +293,10 @@ export interface AttackExtras {
   disadvantage?: string[];
   /** Monk: Stunning Strike on a melee hit (1 ki). */
   stun?: boolean;
+  /** Battle Master: a maneuver on a hit (1 superiority die). */
+  maneuver?: 'trip' | 'push';
+  /** Extra damage dice already decided (a Riposte's superiority die). */
+  extraDamage?: DamagePart;
 }
 
 /** One attack, start to finish: roll, then damage and on-hit effects. Returns whether it hit. */
@@ -321,6 +326,8 @@ export function makeAttack(
   }
   if (hasEffect(target, 'dodge') && !isIncapacitated(target.creature)) dis.push('target Dodging');
   if (hasEffect(target, 'hidden')) dis.push('target hidden');
+  // PHB: Blur. Attacks against a blurred creature have disadvantage.
+  if (hasEffect(target, 'blurred')) dis.push('Blur');
   if (hasEffect(attacker, 'hidden')) adv.push('unseen attacker');
   if (hasEffect(target, 'outlined')) adv.push('Faerie Fire');
   if (hasEffect(target, 'reckless')) adv.push('target attacked recklessly');
@@ -332,6 +339,31 @@ export function makeAttack(
   if (mocked) dis.push('Vicious Mockery');
   const helped = effectsWith(attacker, 'help')[0];
   if (helped) adv.push('Help');
+  // PHB: Totem Warrior (Wolf). Allies of a raging wolf-totem barbarian have advantage on melee
+  // attacks against enemies within 5 ft of the barbarian.
+  if (
+    opt.kind === 'melee' &&
+    Object.values(s.combatants).some(
+      (o) =>
+        o.id !== attacker.id &&
+        o.side === attacker.side &&
+        isSub(o, 'barbarian', 'totem-wolf', 3) &&
+        hasEffect(o, 'rage') &&
+        conscious(o) &&
+        isAdjacent(o.pos, target.pos),
+    )
+  )
+    adv.push('Wolf totem');
+  // PHB: Vengeance, Vow of Enmity (advantage against the sworn foe).
+  if (attacker.effects.some((e) => e.tag === 'vow-of-enmity' && e.data?.targetId === target.id))
+    adv.push('Vow of Enmity');
+  // PHB: Great Old One, Entropic Ward: advantage on the next attack after the ward made a foe miss.
+  const entropic = attacker.effects.find(
+    (e) => e.tag === 'entropic-edge' && e.data?.targetId === target.id,
+  );
+  if (entropic) adv.push('Entropic Ward');
+  // PHB: Assassin, Assassinate. Advantage against a creature that hasn't taken a turn yet.
+  if (isSub(attacker, 'rogue', 'assassin', 3) && notActedYet(s, target)) adv.push('Assassinate');
   // MM: Pack Tactics.
   if (
     attacker.monsterId &&
@@ -395,9 +427,26 @@ export function makeAttack(
       say(s, 'you', `${flarer.name} flares with light: ${attacker.name} is dazzled (disadvantage)`);
     }
   }
+  // PHB: Great Old One, Entropic Ward (warlock 6). Reaction: disadvantage on an attack against you
+  // [used automatically].
+  let ward = false;
+  if (
+    !dis.length &&
+    attacker.side !== target.side &&
+    isSub(target, 'warlock', 'great-old-one', 6) &&
+    !target.reactionUsed &&
+    canReact(target) &&
+    resourceLeft(heroOf(target)!, 'entropic-ward') > 0
+  ) {
+    target.reactionUsed = true;
+    spendResource(target, 'entropic-ward');
+    dis.push('Entropic Ward');
+    ward = true;
+    say(s, 'you', `${target.name} twists fate with an Entropic Ward`);
+  }
   const cover = coverBetween(s, attacker.pos, target.pos, [attacker.id, target.id]);
-  const h = heroOf(attacker);
-  const critRange = h && h.classId === 'fighter' && h.level >= 3 ? 19 : 20;
+  // PHB: Champion, Improved Critical (fighter 3).
+  const critRange = isSub(attacker, 'fighter', 'champion', 3) ? 19 : 20;
   const shown = { ...target.creature, ac: currentAc(target) };
   const r = attackRoll(attacker.creature, shown, rng, {
     attackBonus: opt.toHit,
@@ -413,6 +462,7 @@ export function makeAttack(
   // One-shot effects are used up by the attack.
   for (const e of [guided, mocked, helped])
     if (e) removeEffect(e === guided ? target : attacker, e);
+  if (entropic) removeEffect(attacker, entropic);
   attacker.effects = attacker.effects.filter((e) => e.tag !== 'hidden');
 
   let hit = r.hit;
@@ -470,6 +520,84 @@ export function makeAttack(
       );
     }
   }
+  // PHB: Battle Master, Precision Attack. Add a superiority die to an attack roll that missed
+  // [used automatically, only when it turns the miss into a hit].
+  if (
+    !hit &&
+    r.allowed &&
+    natural !== 1 &&
+    isSub(attacker, 'fighter', 'battle-master', 3) &&
+    resourceLeft(heroOf(attacker)!, 'superiority-dice') > 0 &&
+    total + 8 >= r.targetAc
+  ) {
+    const die = roll('1d8', rng);
+    spendResource(attacker, 'superiority-dice');
+    if (total + die.total >= r.targetAc) {
+      hit = true;
+      total += die.total;
+      say(s, 'you', `Precision Attack: ${die.text} → now ${total}, a HIT`);
+    } else say(s, 'you', `Precision Attack: ${die.text} → ${total + die.total}, still a miss`);
+  }
+  // PHB: Valor bard, Combat Inspiration. An inspired creature adds its die to AC against a hit
+  // [used automatically when the hit was close enough for the die to matter].
+  if (
+    hit &&
+    !r.critical &&
+    target.inspiration &&
+    total < currentAc(target) + target.inspiration &&
+    Object.values(s.combatants).some(
+      (o) => o.side === target.side && isSub(o, 'bard', 'valor', 3) && !o.creature.dead,
+    )
+  ) {
+    const die = roll(`1d${target.inspiration}`, rng);
+    target.inspiration = undefined;
+    const ac = currentAc(target) + die.total;
+    say(
+      s,
+      'you',
+      `${target.name} uses Combat Inspiration: ${die.text} → AC ${ac}${total < ac ? ', a MISS' : ', still a hit'}`,
+    );
+    if (total < ac) hit = false;
+  }
+  // PHB: Assassin, Assassinate. Any hit against a surprised creature is a critical hit.
+  const assassinCrit =
+    hit && !!target.surprised && isSub(attacker, 'rogue', 'assassin', 3) && !r.critical;
+  if (assassinCrit) say(s, 'you', `Assassinate: a strike from nowhere, a CRITICAL HIT`);
+  // PHB: Great Old One, Entropic Ward: a miss gives the warlock advantage on their next attack.
+  if (ward && !hit)
+    target.effects.push({
+      id: 'entropic-edge',
+      name: 'Entropic Ward',
+      sourceId: target.id,
+      tag: 'entropic-edge',
+      data: { targetId: attacker.id },
+      expires: { turnOf: target.id, when: 'end', round: nextTurnRound(s, target.id) },
+    });
+  // PHB: Battle Master, Riposte. When a creature misses you with a melee attack, use your reaction
+  // to attack it, adding a superiority die to the damage [used automatically].
+  if (
+    !hit &&
+    opt.kind === 'melee' &&
+    attacker.side !== target.side &&
+    isSub(target, 'fighter', 'battle-master', 3) &&
+    !target.reactionUsed &&
+    canReact(target) &&
+    conscious(attacker) &&
+    resourceLeft(heroOf(target)!, 'superiority-dice') > 0
+  ) {
+    const back = attackOptions(target).find(
+      (o) => o.kind === 'melee' && !o.unarmed && !attackBlocked(ctx, target, attacker, o),
+    );
+    if (back) {
+      target.reactionUsed = true;
+      spendResource(target, 'superiority-dice');
+      say(s, 'you', `${target.name} ripostes!`);
+      const die = roll('1d8', rng);
+      makeAttack(ctx, target, attacker, back, {
+        extraDamage: { dice: String(die.total), type: back.damage[0]!.type },
+      });
+    }
+  }
   // A spellcasting monster that knows Shield (Maelis, mages) raises it against a hit (PHB: Shield)
   // [used automatically].
   if (hit && !r.critical && target.monsterId && !target.reactionUsed && conscious(target)) {
@@ -517,8 +645,9 @@ export function makeAttack(
       return { hit: false, critical: false, total, natural };
     }
   }
-  if (!hit || extras.rollOnly) return { hit, critical: r.critical && hit, total, natural };
-  return { ...applyHit(ctx, attacker, target, opt, r.critical, extras), total, natural };
+  const critical = (r.critical || assassinCrit) && hit;
+  if (!hit || extras.rollOnly) return { hit, critical, total, natural };
+  return { ...applyHit(ctx, attacker, target, opt, critical, extras), total, natural };
 }
 
 /** Damage and everything else that happens on a hit. */
@@ -565,6 +694,8 @@ export function applyHit(
   for (const e of target.effects) {
     if (e.sourceId !== attacker.id) continue;
     if (e.tag === 'hex-target') parts.push({ dice: '1d6', type: 'necrotic' });
+    // PHB: Bestow Curse (the extra-damage option): +1d8 necrotic from the curser's attacks.
+    if (e.tag === 'cursed') parts.push({ dice: '1d8', type: 'necrotic' });
     if (e.tag === 'hunters-mark-target' && opt.weaponId)
       parts.push({ dice: '1d6', type: parts[0]!.type });
   }
@@ -608,6 +739,23 @@ export function applyHit(
   ) {
     parts.push({ dice: '1d8', type: parts[0]!.type });
     attacker.turn.colossusUsed = true;
+  }
+  // Riposte's superiority die, already rolled.
+  if (extras.extraDamage) parts.push(extras.extraDamage);
+  // PHB: Battle Master, Trip Attack / Pushing Attack. A superiority die on the damage, then a
+  // Strength save (Large or smaller) or the target is knocked prone / pushed 15 ft.
+  let maneuver: 'trip' | 'push' | null = null;
+  if (
+    extras.maneuver &&
+    h &&
+    isSub(attacker, 'fighter', 'battle-master', 3) &&
+    resourceLeft(h, 'superiority-dice') > 0
+  ) {
+    spendResource(attacker, 'superiority-dice');
+    const die = roll('1d8', ctx.rng);
+    parts.push({ dice: String(die.total), type: parts[0]!.type });
+    maneuver = extras.maneuver;
+    say(s, 'you', `${maneuver === 'trip' ? 'Trip Attack' : 'Pushing Attack'}: +${die.text}`);
   }
   // PHB: Divine Smite. 2d8 radiant, +1d8 per slot level above 1st, +1d8 vs undead or fiends.
   if (extras.smiteLevel && opt.kind === 'melee' && opt.weaponId) {
@@ -681,6 +829,26 @@ export function applyHit(
     attacker,
   });
   wrathOfTheStorm(ctx, attacker, target);
+  if (maneuver && h && conscious(target) && !target.creature.dead) {
+    const size = target.monsterId ? getMonster(target.monsterId).size : 'Medium';
+    if (size === 'Huge')
+      say(s, 'info', `${target.name} is too big to ${maneuver === 'trip' ? 'trip' : 'push'}`);
+    else {
+      const dc =
+        8 +
+        h.proficiencyBonus +
+        Math.max(abilityModifier(h.abilities.str), abilityModifier(h.abilities.dex));
+      const sv = combatSave(ctx, target, 'str', dc, {
+        label: `Str (${maneuver === 'trip' ? 'Trip Attack' : 'Pushing Attack'})`,
+      });
+      if (!sv.success) {
+        if (maneuver === 'trip') {
+          target.creature = addCondition(target.creature, { id: 'prone' });
+          say(s, 'dmg', `${target.name} is knocked prone`);
+        } else pushPull(ctx, attacker, target, 15);
+      }
+    }
+  }
   // DMG: Mace of Disruption. A fiend or undead left with 25 HP or fewer: DC 15 Wis save or destroyed.
   if (disruption && conscious(target) && target.creature.hp <= 25) {
     const save = combatSave(ctx, target, 'wis', 15, { label: 'Wis (Mace of Disruption)' });
@@ -834,4 +1002,15 @@ function wrathOfTheStorm(ctx: Ctx, attacker: Combatant, target: Combatant): void
   );
   dealDamage(ctx, attacker, [{ amount, type }], { attacker: target });
   if (amount > 0) thunderbolt(ctx, target, attacker, type);
+}
+
+/** Hasn't taken a turn yet this fight (round 1, later in the order, or surprised). */
+function notActedYet(s: Ctx['s'], c: Combatant): boolean {
+  if (s.round > 1) return false;
+  return !!c.surprised || s.order.indexOf(c.id) > s.turnIndex;
+}
+
+/** Can take a reaction right now (conscious, not incapacitated, not stopped from reacting). */
+function canReact(c: Combatant): boolean {
+  return conscious(c) && !isIncapacitated(c.creature) && !hasEffect(c, 'no-reactions');
 }

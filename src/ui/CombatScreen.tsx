@@ -1,3 +1,5 @@
+import { hasSubclass, resourceLeft as heroResourceLeft } from '../game/hero';
+import { heroOf } from '../game/combat/core';
 import { useEffect, useMemo, useState } from 'react';
 import { difficulties } from '../data';
 import {
@@ -62,7 +64,9 @@ type Mode =
   | { kind: 'shove'; mode: 'prone' | 'push' }
   | { kind: 'grapple' };
 
-const isHero = (c: Combatant): c is Combatant & { creature: Hero } => c.side === 'party';
+/** A hero (not a monster ally the player controls, like the militia, Ser Ida or conjured wolves). */
+const isHero = (c: Combatant): c is Combatant & { creature: Hero } =>
+  c.side === 'party' && !!heroOf(c);
 
 /** Grid combat, rebuilt from docs/mockups/Combat.dc.html. */
 export function CombatScreen() {
@@ -76,11 +80,13 @@ export function CombatScreen() {
   const [smite, setSmite] = useState(0);
   const [mm, setMm] = useState<Metamagic | ''>('');
   const [stun, setStun] = useState(false);
+  const [maneuver, setManeuver] = useState<'' | 'trip' | 'push'>('');
   const [inspect, setInspect] = useState<string | null>(null);
   const s = combat!;
   const fx = useHitFx(s);
   const me = s.combatants[s.order[s.turnIndex]!]!;
   const myTurn = me.side === 'party' && !s.outcome && !s.prompt;
+  const myLevel = heroOf(me)?.level ?? 1;
 
   // Enemy turns play out one at a time so the log can be followed.
   useEffect(() => {
@@ -199,7 +205,7 @@ export function CombatScreen() {
     if (mode.kind === 'spell') {
       const sp = spells.find((x) => x.spell.id === mode.spellId)?.spell;
       if (!sp) return new Set<string>();
-      const t = targeting(sp, mode.level, mode.mm);
+      const t = targeting(sp, mode.level, mode.mm, myLevel);
       if (t.kind !== 'creatures') return new Set<string>();
       return new Set(
         all
@@ -216,16 +222,17 @@ export function CombatScreen() {
       );
     }
     return new Set<string>();
-  }, [s, me, myTurn, mode, options, spells]);
+  }, [s, me, myTurn, mode, options, spells, myLevel]);
 
   const areaPreview = useMemo(() => {
     if (mode.kind !== 'spell' || !hover) return new Set<string>();
     const sp = spells.find((x) => x.spell.id === mode.spellId)?.spell;
     if (!sp) return new Set<string>();
-    if (targeting(sp, mode.level).kind === 'point') return new Set([posKey(hover)]);
-    if (targeting(sp, mode.level).kind !== 'area') return new Set<string>();
+    if (targeting(sp, mode.level, undefined, myLevel).kind === 'point')
+      return new Set([posKey(hover)]);
+    if (targeting(sp, mode.level, undefined, myLevel).kind !== 'area') return new Set<string>();
     return new Set(areaCells({ s, rng: new SeededRng(1) }, me, sp, hover).map(posKey));
-  }, [mode, hover, spells, s, me]);
+  }, [mode, hover, spells, s, me, myLevel]);
 
   const clickToken = (c: Combatant) => {
     if (!myTurn) return;
@@ -239,6 +246,7 @@ export function CombatScreen() {
               optionId: mode.optionId,
               smiteLevel: smite || undefined,
               stun: stun || undefined,
+              maneuver: maneuver || undefined,
             },
       );
     else if (mode.kind === 'help') doAct({ type: 'help', allyId: c.id });
@@ -248,7 +256,7 @@ export function CombatScreen() {
     else if (mode.kind === 'item') doAct({ type: 'use-item', itemId: mode.itemId, targetId: c.id });
     else if (mode.kind === 'spell') {
       const sp = spells.find((x) => x.spell.id === mode.spellId)!.spell;
-      const t = targeting(sp, mode.level, mode.mm);
+      const t = targeting(sp, mode.level, mode.mm, myLevel);
       if (t.kind === 'area') return clickCell(c.pos);
       if (t.kind !== 'creatures') return;
       if (!t.repeat && mode.targets.includes(c.id))
@@ -288,7 +296,7 @@ export function CombatScreen() {
     setMenu(null);
     const sp = spells.find((x) => x.spell.id === spellId)!.spell;
     const meta = mm || undefined;
-    const t = targeting(sp, level, meta);
+    const t = targeting(sp, level, meta, myLevel);
     if (t.kind === 'self' || (t.kind === 'area' && sp.area!.shape === 'aura'))
       doAct({ type: 'cast', spellId, slotLevel: level, metamagic: meta });
     else setMode({ kind: 'spell', spellId, level, targets: [], mm: meta });
@@ -898,6 +906,23 @@ export function CombatScreen() {
                   aria-label="Stunning Strike on the next melee hit (1 ki)"
                 />{' '}
                 1 ki on a hit
+              </span>
+            </label>
+          )}
+          {hero && hasSubclass(hero.creature, 'fighter', 'battle-master', 3) && (
+            <label className="act smite">
+              <span className="act-name">Maneuver</span>
+              <select
+                value={maneuver}
+                onChange={(e) => setManeuver(e.target.value as '' | 'trip' | 'push')}
+                aria-label="Maneuver on the next hit"
+              >
+                <option value="">off</option>
+                <option value="trip">Trip (prone)</option>
+                <option value="push">Push 15 ft</option>
+              </select>
+              <span className="act-detail">
+                {heroResourceLeft(hero.creature, 'superiority-dice')} superiority dice
               </span>
             </label>
           )}

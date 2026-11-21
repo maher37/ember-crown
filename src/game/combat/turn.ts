@@ -1,7 +1,7 @@
 import type { DifficultyId } from '../../data/schemas/difficulty';
 import type { Encounter } from '../../data/schemas/encounter';
 import { getMonster, monsterToCreature } from '../creatures';
-import type { Hero } from '../hero';
+import { hasSubclass, type Hero } from '../hero';
 import { hasItem, hasSpecial } from '../items';
 import {
   abilityCheck,
@@ -34,6 +34,7 @@ import {
   spendSlot,
   type Ctx,
   dealDamage,
+  isSub,
 } from './core';
 import { conscious, distanceFeet, moveCost, parseMap } from './grid';
 import { enterSquare, startOfTurnZones, zoneSlows } from './zones';
@@ -324,6 +325,8 @@ export function passivePerception(c: Combatant): number {
 
 /** Speed this turn: conditions, exhaustion, Ray of Frost and similar. */
 export function speedNow(c: Combatant): number {
+  // PHB: Vengeance, Abjure Enemy: the frightened creature's speed is 0.
+  if (hasEffect(c, 'rooted') && hasCondition(c.creature, 'frightened')) return 0;
   let base = c.wildShape ? getMonster(c.wildShape.monsterId).speed.walk : c.speed;
   // PHB: Fly gives a 60-ft flying speed.
   if (hasEffect(c, 'flying')) base = Math.max(base, 60);
@@ -594,7 +597,12 @@ export function moveAlong(
         if (s.difficulty === 'easy') continue;
         h.reactionUsed = true;
         say(s, 'foe', `${h.name} makes an opportunity attack!`);
-        makeAttack(ctx, h, mover, opt, { opportunity: true });
+        // PHB: Totem Warrior (Eagle). Opportunity attacks against a raging eagle have disadvantage.
+        const eagle = isSub(mover, 'barbarian', 'totem-eagle', 3) && hasEffect(mover, 'rage');
+        makeAttack(ctx, h, mover, opt, {
+          opportunity: true,
+          disadvantage: eagle ? ['Eagle totem'] : [],
+        });
         if (!conscious(mover)) return { result: 'stopped', rest: [] };
       }
     }
@@ -615,6 +623,8 @@ export function usesExtraAttack(c: Combatant): number {
   // PHB: Extra Attack (barbarian, fighter, monk, paladin, ranger at level 5).
   const h = heroOf(c);
   if (!h) return 1;
+  // PHB: Valor bard, Extra Attack (bard 6).
+  if (hasSubclass(h, 'bard', 'valor', 6)) return 2;
   return ['barbarian', 'fighter', 'monk', 'paladin', 'ranger'].includes(h.classId) && h.level >= 5
     ? 2
     : 1;

@@ -25,6 +25,11 @@ export interface Settings {
   reduceMotion: boolean;
   /** No bright flashes when something is hit (and, from M11, from spell effects). */
   reduceFlashing: boolean;
+  /**
+   * Kind dice (owner's request, Nov 21): when a party spell misses, or an enemy saves against
+   * one, the dice are quietly rerolled half the time. About 20% more spells land.
+   */
+  kindDice: boolean;
 }
 
 export const defaultSettings: Settings = {
@@ -38,12 +43,13 @@ export const defaultSettings: Settings = {
   muted: false,
   reduceMotion: false,
   reduceFlashing: false,
+  kindDice: true,
 };
 
 export type VolumeKey = 'music' | 'ambience' | 'effects';
 
 export type ToggleKey =
-  'showRolls' | 'clickToRoll' | 'allowCombatSave' | 'reduceMotion' | 'reduceFlashing';
+  'showRolls' | 'clickToRoll' | 'allowCombatSave' | 'reduceMotion' | 'reduceFlashing' | 'kindDice';
 
 interface SettingsStore extends Settings {
   setDifficulty: (d: DifficultyId) => void;
@@ -81,6 +87,7 @@ export const useSettings = create<SettingsStore>()(
         muted,
         reduceMotion,
         reduceFlashing,
+        kindDice,
       }) => ({
         difficulty,
         showRolls,
@@ -92,6 +99,7 @@ export const useSettings = create<SettingsStore>()(
         muted,
         reduceMotion,
         reduceFlashing,
+        kindDice,
       }),
     },
   ),

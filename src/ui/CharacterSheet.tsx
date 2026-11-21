@@ -1,3 +1,4 @@
+import { SpellTip } from './Tip';
 import { useState } from 'react';
 import { spells as allSpells } from '../data';
 import { attackOptions } from '../game/combat/attacks';
@@ -476,18 +477,25 @@ function SpellsTab({ hero }: { hero: Hero }) {
                   {pool.map((s) => {
                     const on = editing.includes(s.id);
                     return (
-                      <button
+                      <SpellTip
                         key={s.id}
-                        type="button"
-                        aria-pressed={on}
-                        className={`spell-pick${on ? ' on' : ''}`}
-                        title={s.summary}
-                        onClick={() =>
-                          setEditing(on ? editing.filter((x) => x !== s.id) : [...editing, s.id])
+                        spell={s}
+                        wrap={
+                          <button
+                            type="button"
+                            aria-pressed={on}
+                            className={`spell-pick${on ? ' on' : ''}`}
+                            aria-description={s.summary}
+                            onClick={() =>
+                              setEditing(
+                                on ? editing.filter((x) => x !== s.id) : [...editing, s.id],
+                              )
+                            }
+                          >
+                            {s.name}
+                          </button>
                         }
-                      >
-                        {s.name}
-                      </button>
+                      />
                     );
                   })}
                 </div>
