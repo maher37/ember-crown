@@ -104,6 +104,13 @@ One milestone per Claude Code session (bigger ones may take two). Each milestone
 - Story (D28): the ember-kiss and Cindrath's gifts, more callbacks (townsfolk, Brannoc, letters), and Maelis in person at the mill and above Ashfall Pass.
 - Still to come: more subclasses for other classes (Phase 4), spell animations (M11).
 
+## M10e: Playtest round 5 (owner request, Nov 21)
+- Fixed: the convoy fight froze on a militia ally's turn; Eldritch Blast's second beam at level 5; Hex on spell attacks.
+- Tooltips for spells and features (level-up, spell preparation); item rewards say what they do.
+- 13 more spells; kind dice for party spells (D30).
+- Seven new subclasses (D29). Next: Moon druid, Shadow monk, Beast Master ranger, Wild Magic sorcerer.
+- Open: should Medium be harder? (D31)
+
 ## M11: Animations (phase 2)
 - A presentation-event system, then the effects list in `RPG_Game_Plan.md` §9d (projectiles, spell areas, damage-type colors, condition icons, downed state).
 - Includes the reduce-motion and reduce-flashing settings.

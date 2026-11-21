@@ -71,6 +71,8 @@ export interface Hero extends Creature {
   subclassId?: string;
   /** A Hex or Hunter's Mark still running after a fight, until this game hour (PHB: 1 hour). */
   lingering?: { spell: string; until?: number };
+  /** Abjuration wizard: the Arcane Ward's hit points (undefined until made after a long rest). */
+  arcaneWard?: number;
   /** Clerics, druids and paladins may re-prepare spells (set after a long rest, cleared by a fight). */
   canPrepare?: boolean;
   /** Cantrips and leveled spells known or prepared. */
@@ -341,7 +343,10 @@ export function buildHero(draft: HeroDraft, id: string): Hero {
   const abilities = finalAbilities(draft);
   const maxHp = levelOneHp(draft);
   const kit = cls.startingKit;
-  const subclassId = cls.subclasses ? (draft.subclassId ?? cls.subclass.id) : undefined;
+  // Chosen in the creator only for classes that pick at 1st level (clerics, warlocks); the rest
+  // choose at level-up.
+  const subclassId =
+    cls.subclasses && cls.subclass.level === 1 ? (draft.subclassId ?? cls.subclass.id) : undefined;
   // A Light cleric isn't trained in heavy armor: scale mail instead of the kit's chain mail.
   const heavy = armorList.find((a) => a.id === kit.armor)?.category === 'heavy';
   const kitArmor =
@@ -549,7 +554,23 @@ export function spellNumbers(
   };
 }
 
-// ── Subclasses (cleric domains) ──
+// ── Subclasses (cleric domains, and a second choice for most classes: D4, D29) ──
+
+/** What each class calls its subclass. */
+export const SUBCLASS_TITLE: Record<string, string> = {
+  barbarian: 'Primal Path',
+  bard: 'Bard College',
+  cleric: 'Divine Domain',
+  druid: 'Druid Circle',
+  fighter: 'Martial Archetype',
+  monk: 'Monastic Tradition',
+  paladin: 'Sacred Oath',
+  ranger: 'Ranger Archetype',
+  rogue: 'Roguish Archetype',
+  sorcerer: 'Sorcerous Origin',
+  warlock: 'Otherworldly Patron',
+  wizard: 'Arcane Tradition',
+};
 
 /** The hero's subclass id: their pick, or the class's only one. */
 export const subclassOf = (hero: { classId: string; subclassId?: string }): string =>

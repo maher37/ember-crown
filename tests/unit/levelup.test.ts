@@ -42,7 +42,8 @@ describe('level-up options', () => {
     expect(o.averageHp).toBe(6);
     expect(o.features.map((f) => f.name)).toEqual(['Action Surge']);
     expect(o.asi).toBe(false);
-    expect(o.next).toEqual({ level: 3, names: ['Improved Critical'] });
+    expect(o.next).toMatchObject({ level: 3, names: ['Improved Critical'] });
+    expect(o.next!.features[0]!.summary).toMatch(/19 or 20/);
   });
 
   it('a warlock at level 2 picks two invocations', () => {

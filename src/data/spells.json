@@ -2928,6 +2928,414 @@
       },
       "verify": true,
       "verifyNote": "From memory of the PHB (Rules_Scope §5 summary): check damage dice, save, range, duration and school."
+    },
+    {
+      "id": "resistance",
+      "name": "Resistance",
+      "level": 0,
+      "school": "abjuration",
+      "castingTime": "action",
+      "range": "touch",
+      "concentration": true,
+      "duration": {
+        "minutes": 1
+      },
+      "components": "V, S, M",
+      "classes": ["cleric", "druid"],
+      "summary": "Touch a willing creature: it adds 1d4 to its saving throws for the next minute (concentration).",
+      "effects": [
+        {
+          "type": "modifier",
+          "target": "save",
+          "value": "1d4",
+          "duration": {
+            "minutes": 1
+          }
+        }
+      ],
+      "verify": true,
+      "verifyNote": "Added Nov 21 (owner asked for more spells), from memory of the PHB: check dice, saves, range and duration."
+    },
+    {
+      "id": "false-life",
+      "name": "False Life",
+      "level": 1,
+      "school": "necromancy",
+      "castingTime": "action",
+      "range": "self",
+      "duration": {
+        "hours": 1
+      },
+      "components": "V, S, M",
+      "classes": ["sorcerer", "wizard"],
+      "summary": "Borrow a little death: gain 1d4 + 4 temporary hit points for an hour.",
+      "effects": [
+        {
+          "type": "tempHp",
+          "dice": "1d4+4"
+        }
+      ],
+      "concentration": false,
+      "verify": true,
+      "verifyNote": "Added Nov 21 (owner asked for more spells), from memory of the PHB: check dice, saves, range and duration."
+    },
+    {
+      "id": "ray-of-sickness",
+      "name": "Ray of Sickness",
+      "level": 1,
+      "school": "necromancy",
+      "castingTime": "action",
+      "range": {
+        "feet": 60
+      },
+      "duration": "instant",
+      "classes": ["sorcerer", "wizard"],
+      "summary": "A sickly green ray: ranged spell attack, 2d8 poison, and a Con save or the target is poisoned until the end of your next turn.",
+      "effects": [
+        {
+          "type": "attack",
+          "kind": "ranged",
+          "onHit": [
+            {
+              "type": "damage",
+              "dice": "2d8",
+              "damageType": "poison"
+            },
+            {
+              "type": "save",
+              "ability": "con",
+              "onFail": [
+                {
+                  "type": "condition",
+                  "condition": "poisoned",
+                  "duration": "until-end-of-next-turn"
+                }
+              ],
+              "onSuccess": "none"
+            }
+          ]
+        }
+      ],
+      "upcast": {
+        "dicePerLevel": "1d8"
+      },
+      "concentration": false,
+      "components": "V, S",
+      "verify": true,
+      "verifyNote": "Added Nov 21 (owner asked for more spells), from memory of the PHB: check dice, saves, range and duration."
+    },
+    {
+      "id": "tashas-hideous-laughter",
+      "name": "Tasha's Hideous Laughter",
+      "level": 1,
+      "school": "enchantment",
+      "castingTime": "action",
+      "range": {
+        "feet": 30
+      },
+      "concentration": true,
+      "duration": {
+        "minutes": 1
+      },
+      "components": "V, S, M",
+      "classes": ["bard", "wizard"],
+      "summary": "A creature finds everything hilarious: Wis save or it falls prone and can do nothing but laugh. It repeats the save at the end of each of its turns.",
+      "effects": [
+        {
+          "type": "save",
+          "ability": "wis",
+          "onFail": [
+            {
+              "type": "condition",
+              "condition": "prone"
+            },
+            {
+              "type": "condition",
+              "condition": "incapacitated",
+              "duration": {
+                "minutes": 1
+              },
+              "repeatSave": "wis"
+            }
+          ],
+          "onSuccess": "none"
+        }
+      ],
+      "verify": true,
+      "verifyNote": "Added Nov 21 (owner asked for more spells), from memory of the PHB: check dice, saves, range and duration."
+    },
+    {
+      "id": "searing-smite",
+      "name": "Searing Smite",
+      "level": 1,
+      "school": "evocation",
+      "castingTime": "bonus",
+      "range": "self",
+      "concentration": true,
+      "duration": {
+        "minutes": 1
+      },
+      "components": "V",
+      "classes": ["paladin"],
+      "summary": "Your next weapon hit flares with white-hot flame: +1d6 fire. (The PHB also sets the target burning; this game applies only the hit.)",
+      "effects": [
+        {
+          "type": "special",
+          "id": "next-hit-bonus",
+          "note": "1d6 fire"
+        }
+      ],
+      "upcast": {
+        "dicePerLevel": "1d6"
+      },
+      "verify": true,
+      "verifyNote": "Added Nov 21 (owner asked for more spells), from memory of the PHB: check dice, saves, range and duration."
+    },
+    {
+      "id": "blindness-deafness",
+      "name": "Blindness/Deafness",
+      "level": 2,
+      "school": "necromancy",
+      "castingTime": "action",
+      "range": {
+        "feet": 30
+      },
+      "duration": {
+        "minutes": 1
+      },
+      "components": "V",
+      "classes": ["bard", "cleric", "sorcerer", "wizard"],
+      "summary": "Con save or the target is blinded for a minute (attacks against it have advantage; its own have disadvantage). It repeats the save at the end of each of its turns.",
+      "effects": [
+        {
+          "type": "save",
+          "ability": "con",
+          "onFail": [
+            {
+              "type": "condition",
+              "condition": "blinded",
+              "duration": {
+                "minutes": 1
+              },
+              "repeatSave": "con"
+            }
+          ],
+          "onSuccess": "none"
+        }
+      ],
+      "upcast": {
+        "targetsPerLevel": 1
+      },
+      "concentration": false,
+      "verify": true,
+      "verifyNote": "Added Nov 21 (owner asked for more spells), from memory of the PHB: check dice, saves, range and duration."
+    },
+    {
+      "id": "blur",
+      "name": "Blur",
+      "level": 2,
+      "school": "illusion",
+      "castingTime": "action",
+      "range": "self",
+      "concentration": true,
+      "duration": {
+        "minutes": 1
+      },
+      "components": "V",
+      "classes": ["sorcerer", "wizard"],
+      "summary": "Your body shimmers and blurs: attacks against you have disadvantage for a minute (concentration).",
+      "effects": [
+        {
+          "type": "special",
+          "id": "blur"
+        }
+      ],
+      "verify": true,
+      "verifyNote": "Added Nov 21 (owner asked for more spells), from memory of the PHB: check dice, saves, range and duration."
+    },
+    {
+      "id": "enlarge-reduce",
+      "name": "Enlarge/Reduce",
+      "level": 2,
+      "school": "transmutation",
+      "castingTime": "action",
+      "range": {
+        "feet": 30
+      },
+      "concentration": true,
+      "duration": {
+        "minutes": 1
+      },
+      "components": "V, S, M",
+      "classes": ["sorcerer", "wizard"],
+      "summary": "Make an ally grow to twice their size: their weapon hits deal +1d4 damage for a minute. (This game uses the Enlarge half only.)",
+      "effects": [
+        {
+          "type": "modifier",
+          "target": "damage",
+          "value": "1d4",
+          "duration": {
+            "minutes": 1
+          }
+        }
+      ],
+      "verify": true,
+      "verifyNote": "Added Nov 21 (owner asked for more spells), from memory of the PHB: check dice, saves, range and duration."
+    },
+    {
+      "id": "magic-weapon",
+      "name": "Magic Weapon",
+      "level": 2,
+      "school": "transmutation",
+      "castingTime": "bonus",
+      "range": "touch",
+      "concentration": true,
+      "duration": {
+        "hours": 1
+      },
+      "classes": ["paladin", "wizard"],
+      "summary": "A weapon becomes magical: its wielder gets +1 to attack and damage rolls for an hour.",
+      "effects": [
+        {
+          "type": "modifier",
+          "target": "attack",
+          "value": 1,
+          "duration": {
+            "hours": 1
+          }
+        },
+        {
+          "type": "modifier",
+          "target": "damage",
+          "value": 1,
+          "duration": {
+            "hours": 1
+          }
+        }
+      ],
+      "components": "V, S",
+      "verify": true,
+      "verifyNote": "Added Nov 21 (owner asked for more spells), from memory of the PHB: check dice, saves, range and duration."
+    },
+    {
+      "id": "gust-of-wind",
+      "name": "Gust of Wind",
+      "level": 2,
+      "school": "evocation",
+      "castingTime": "action",
+      "range": "self",
+      "area": {
+        "shape": "line",
+        "size": 60,
+        "width": 10
+      },
+      "concentration": true,
+      "duration": {
+        "minutes": 1
+      },
+      "components": "V, S, M",
+      "classes": ["druid", "sorcerer", "wizard"],
+      "summary": "A line of strong wind, 60 ft long: each creature in it makes a Str save or is pushed 15 ft away. (This game uses the first blast only.)",
+      "effects": [
+        {
+          "type": "save",
+          "ability": "str",
+          "onFail": [
+            {
+              "type": "move",
+              "kind": "push",
+              "feet": 15
+            }
+          ],
+          "onSuccess": "none"
+        }
+      ],
+      "verify": true,
+      "verifyNote": "Added Nov 21 (owner asked for more spells), from memory of the PHB: check dice, saves, range and duration."
+    },
+    {
+      "id": "protection-from-energy",
+      "name": "Protection from Energy",
+      "level": 3,
+      "school": "abjuration",
+      "castingTime": "action",
+      "range": "touch",
+      "concentration": true,
+      "duration": {
+        "hours": 1
+      },
+      "classes": ["cleric", "druid", "ranger", "sorcerer", "wizard"],
+      "summary": "Touch a creature: it resists fire for an hour (concentration). (The PHB lets you pick acid, cold, fire, lightning or thunder; this game always uses fire, the mountain's danger.)",
+      "effects": [
+        {
+          "type": "special",
+          "id": "resistance-to",
+          "note": "fire"
+        }
+      ],
+      "components": "V, S",
+      "verify": true,
+      "verifyNote": "Added Nov 21 (owner asked for more spells), from memory of the PHB: check dice, saves, range and duration."
+    },
+    {
+      "id": "bestow-curse",
+      "name": "Bestow Curse",
+      "level": 3,
+      "school": "necromancy",
+      "castingTime": "action",
+      "range": "touch",
+      "concentration": true,
+      "duration": {
+        "minutes": 1
+      },
+      "classes": ["bard", "cleric", "wizard"],
+      "summary": "Touch a creature: Wis save or it's cursed, and your attacks and spells against it deal +1d8 necrotic. (This game uses that one of the curse's options.)",
+      "effects": [
+        {
+          "type": "save",
+          "ability": "wis",
+          "onFail": [
+            {
+              "type": "special",
+              "id": "bestow-curse"
+            }
+          ],
+          "onSuccess": "none"
+        }
+      ],
+      "components": "V, S",
+      "verify": true,
+      "verifyNote": "Added Nov 21 (owner asked for more spells), from memory of the PHB: check dice, saves, range and duration."
+    },
+    {
+      "id": "daylight",
+      "name": "Daylight",
+      "level": 3,
+      "school": "evocation",
+      "castingTime": "action",
+      "range": {
+        "feet": 60
+      },
+      "area": {
+        "shape": "sphere",
+        "size": 60
+      },
+      "duration": {
+        "hours": 1
+      },
+      "classes": ["cleric", "druid", "paladin", "ranger", "sorcerer"],
+      "summary": "A 60-ft sphere of bright light for an hour that dispels magical darkness. (Used in scenes and exploring.)",
+      "effects": [
+        {
+          "type": "special",
+          "id": "dispel-darkness"
+        }
+      ],
+      "utility": true,
+      "concentration": false,
+      "components": "V, S",
+      "verify": true,
+      "verifyNote": "Added Nov 21 (owner asked for more spells), from memory of the PHB: check dice, saves, range and duration."
     }
   ]
 }

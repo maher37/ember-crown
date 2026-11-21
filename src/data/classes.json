@@ -96,7 +96,35 @@
               "id": "frenzy",
               "name": "Frenzy",
               "summary": "While raging, you can make one melee attack as a bonus action each turn. When the rage ends you gain a level of exhaustion.",
-              "subclass": true
+              "subclass": true,
+              "subclassId": "berserker"
+            },
+            {
+              "id": "totem-bear-spirit",
+              "name": "Totem Spirit: Bear",
+              "summary": "While raging, resistance to all damage except psychic.",
+              "subclass": true,
+              "subclassId": "totem-bear",
+              "verify": true,
+              "verifyNote": "Added Nov 21 (owner asked for more subclasses), from memory of the PHB; check the details."
+            },
+            {
+              "id": "totem-wolf-spirit",
+              "name": "Totem Spirit: Wolf",
+              "summary": "While you're raging, allies have advantage on melee attack rolls against any enemy within 5 ft of you.",
+              "subclass": true,
+              "subclassId": "totem-wolf",
+              "verify": true,
+              "verifyNote": "Added Nov 21 (owner asked for more subclasses), from memory of the PHB; check the details."
+            },
+            {
+              "id": "totem-eagle-spirit",
+              "name": "Totem Spirit: Eagle",
+              "summary": "While raging, opportunity attacks against you have disadvantage, and you can Dash as a bonus action.",
+              "subclass": true,
+              "subclassId": "totem-eagle",
+              "verify": true,
+              "verifyNote": "Added Nov 21 (owner asked for more subclasses), from memory of the PHB; check the details."
             }
           ]
         },
@@ -132,7 +160,35 @@
               "id": "mindless-rage",
               "name": "Mindless Rage",
               "summary": "Can't be charmed or frightened while raging.",
-              "subclass": true
+              "subclass": true,
+              "subclassId": "berserker"
+            },
+            {
+              "id": "totem-bear-aspect",
+              "name": "Aspect of the Beast",
+              "summary": "A gift of your totem outside fights (strength, sight or tracking). Story flavor in this game.",
+              "subclass": true,
+              "subclassId": "totem-bear",
+              "verify": true,
+              "verifyNote": "Added Nov 21 (owner asked for more subclasses), from memory of the PHB; check the details."
+            },
+            {
+              "id": "totem-wolf-aspect",
+              "name": "Aspect of the Beast",
+              "summary": "A gift of your totem outside fights (strength, sight or tracking). Story flavor in this game.",
+              "subclass": true,
+              "subclassId": "totem-wolf",
+              "verify": true,
+              "verifyNote": "Added Nov 21 (owner asked for more subclasses), from memory of the PHB; check the details."
+            },
+            {
+              "id": "totem-eagle-aspect",
+              "name": "Aspect of the Beast",
+              "summary": "A gift of your totem outside fights (strength, sight or tracking). Story flavor in this game.",
+              "subclass": true,
+              "subclassId": "totem-eagle",
+              "verify": true,
+              "verifyNote": "Added Nov 21 (owner asked for more subclasses), from memory of the PHB; check the details."
             }
           ]
         }
@@ -144,7 +200,35 @@
         "weapons": ["greataxe", "handaxe", "handaxe", "javelin"],
         "verify": true,
         "verifyNote": "One of the PHB starting-equipment options, from memory and simplified (no packs or gold yet)."
-      }
+      },
+      "subclasses": [
+        {
+          "id": "berserker",
+          "name": "Path of the Berserker",
+          "summary": "Frenzy: while raging, a bonus-action attack every turn (one level of exhaustion afterwards). At 6th level, rage makes you immune to charm and fear."
+        },
+        {
+          "id": "totem-bear",
+          "name": "Totem Warrior: Bear",
+          "summary": "While raging you resist all damage except psychic. The toughest barbarian there is.",
+          "verify": true,
+          "verifyNote": "Added Nov 21 (owner asked for more subclasses), from memory of the PHB; check the details."
+        },
+        {
+          "id": "totem-wolf",
+          "name": "Totem Warrior: Wolf",
+          "summary": "While you rage, your friends have advantage on melee attacks against any enemy within 5 ft of you.",
+          "verify": true,
+          "verifyNote": "Added Nov 21 (owner asked for more subclasses), from memory of the PHB; check the details."
+        },
+        {
+          "id": "totem-eagle",
+          "name": "Totem Warrior: Eagle",
+          "summary": "While raging you can Dash as a bonus action, and enemies have disadvantage on opportunity attacks against you.",
+          "verify": true,
+          "verifyNote": "Added Nov 21 (owner asked for more subclasses), from memory of the PHB; check the details."
+        }
+      ]
     },
     {
       "id": "bard",
@@ -235,14 +319,34 @@
                   "type": "skillChoice",
                   "count": 3
                 }
-              ]
+              ],
+              "subclassId": "lore"
             },
             {
               "id": "cutting-words",
               "name": "Cutting Words",
               "summary": "Reaction: spend a Bardic Inspiration die and subtract it from a visible enemy's attack, check or damage roll.",
               "subclass": true,
-              "uses": "bardic-inspiration"
+              "uses": "bardic-inspiration",
+              "subclassId": "lore"
+            },
+            {
+              "id": "valor-proficiencies",
+              "name": "Bonus Proficiencies",
+              "summary": "Medium armor, shields and martial weapons.",
+              "subclass": true,
+              "subclassId": "valor",
+              "verify": true,
+              "verifyNote": "Added Nov 21 (owner asked for more subclasses), from memory of the PHB; check the details."
+            },
+            {
+              "id": "combat-inspiration",
+              "name": "Combat Inspiration",
+              "summary": "An inspired ally can roll their Bardic Inspiration die and add it to their AC against an attack that would hit them (used automatically when it turns a hit into a miss).",
+              "subclass": true,
+              "subclassId": "valor",
+              "verify": true,
+              "verifyNote": "Added Nov 21 (owner asked for more subclasses), from memory of the PHB; check the details."
             }
           ]
         },
@@ -284,7 +388,17 @@
               "name": "Additional Magical Secrets",
               "summary": "Learn two spells from any class's list; they count as bard spells.",
               "subclass": true,
-              "choose": 2
+              "choose": 2,
+              "subclassId": "lore"
+            },
+            {
+              "id": "valor-extra-attack",
+              "name": "Extra Attack",
+              "summary": "Attack twice when you take the Attack action.",
+              "subclass": true,
+              "subclassId": "valor",
+              "verify": true,
+              "verifyNote": "Added Nov 21 (owner asked for more subclasses), from memory of the PHB; check the details."
             }
           ]
         }
@@ -297,7 +411,23 @@
         "weapons": ["rapier", "dagger"],
         "verify": true,
         "verifyNote": "One of the PHB starting-equipment options, from memory and simplified (no packs or gold yet)."
-      }
+      },
+      "subclasses": [
+        {
+          "id": "lore",
+          "name": "College of Lore",
+          "summary": "Three extra skills, Cutting Words (spend inspiration to spoil an enemy's roll), and two spells from any class at 6th level."
+        },
+        {
+          "id": "valor",
+          "name": "College of Valor",
+          "summary": "A fighting bard: medium armor, shields and martial weapons; your inspiration can also turn aside a blow; a second attack at 6th level.",
+          "armor": ["medium", "shields"],
+          "weapons": ["martial"],
+          "verify": true,
+          "verifyNote": "Added Nov 21 (owner asked for more subclasses), from memory of the PHB; check the details."
+        }
+      ]
     },
     {
       "id": "cleric",
@@ -565,7 +695,7 @@
           "spells": {
             "1": ["burning-hands", "faerie-fire"],
             "3": ["flaming-sphere", "scorching-ray"],
-            "5": ["fireball"]
+            "5": ["daylight", "fireball"]
           },
           "verify": true,
           "verifyNote": "Domain spells from memory of the PHB; Daylight (5th level) isn't in the game's spell list yet."
@@ -578,7 +708,7 @@
           "weapons": ["martial"],
           "spells": {
             "1": ["divine-favor", "shield-of-faith"],
-            "3": ["spiritual-weapon"],
+            "3": ["magic-weapon", "spiritual-weapon"],
             "5": ["spirit-guardians"]
           },
           "verify": true,
@@ -592,7 +722,7 @@
           "weapons": ["martial"],
           "spells": {
             "1": ["fog-cloud", "thunderwave"],
-            "3": ["shatter"],
+            "3": ["gust-of-wind", "shatter"],
             "5": ["call-lightning", "sleet-storm"]
           },
           "verify": true,
@@ -813,6 +943,15 @@
           "perLevel": [0, 1, 1, 1, 1, 1],
           "verify": true,
           "verifyNote": "Rules_Scope §4."
+        },
+        {
+          "id": "superiority-dice",
+          "name": "Superiority dice",
+          "perLevel": [0, 0, 4, 4, 4, 4],
+          "recharge": "short-rest",
+          "subclass": "battle-master",
+          "verify": true,
+          "verifyNote": "Added Nov 21 (owner asked for more subclasses), from memory of the PHB; check the details."
         }
       ],
       "levels": [
@@ -883,7 +1022,17 @@
               "id": "improved-critical",
               "name": "Improved Critical",
               "summary": "Weapon attacks crit on a 19 or 20.",
-              "subclass": true
+              "subclass": true,
+              "subclassId": "champion"
+            },
+            {
+              "id": "combat-superiority",
+              "name": "Combat Superiority",
+              "summary": "Four superiority dice (d8), back on a short rest. Maneuvers: Trip Attack and Pushing Attack (add the die to a hit's damage; Str save or prone / pushed 15 ft), Precision Attack (add the die to an attack that missed, used automatically if it turns the miss into a hit), Riposte (reaction: when a creature misses you in melee, attack it and add the die).",
+              "subclass": true,
+              "subclassId": "battle-master",
+              "verify": true,
+              "verifyNote": "Added Nov 21 (owner asked for more subclasses), from memory of the PHB; check the details."
             }
           ]
         },
@@ -926,7 +1075,21 @@
         "weapons": ["longsword", "handaxe", "handaxe"],
         "verify": true,
         "verifyNote": "One of the PHB starting-equipment options, from memory and simplified (no packs or gold yet)."
-      }
+      },
+      "subclasses": [
+        {
+          "id": "champion",
+          "name": "Champion",
+          "summary": "Simple and deadly: your weapon attacks score critical hits on a 19 or 20."
+        },
+        {
+          "id": "battle-master",
+          "name": "Battle Master",
+          "summary": "Four superiority dice (d8) a short rest to power maneuvers: trip, push, or riposte a miss, and turn your own near-misses into hits.",
+          "verify": true,
+          "verifyNote": "Added Nov 21 (owner asked for more subclasses), from memory of the PHB; check the details."
+        }
+      ]
     },
     {
       "id": "monk",
@@ -1218,14 +1381,16 @@
               "name": "Channel Divinity: Sacred Weapon",
               "summary": "Action: for 1 minute add your Cha modifier to attack rolls with one weapon, which also sheds light.",
               "uses": "channel-divinity",
-              "subclass": true
+              "subclass": true,
+              "subclassId": "devotion"
             },
             {
               "id": "turn-the-unholy",
               "name": "Channel Divinity: Turn the Unholy",
               "summary": "Action: fiends and undead within 30 ft make a Wis save or are turned for 1 minute.",
               "uses": "channel-divinity",
-              "subclass": true
+              "subclass": true,
+              "subclassId": "devotion"
             },
             {
               "id": "devotion-oath-spells",
@@ -1233,7 +1398,37 @@
               "summary": "Always prepared: Protection from Evil and Good, Sanctuary (L3); Lesser Restoration, Zone of Truth (L5).",
               "subclass": true,
               "verify": true,
-              "verifyNote": "Devotion oath spell list from memory."
+              "verifyNote": "Devotion oath spell list from memory.",
+              "subclassId": "devotion"
+            },
+            {
+              "id": "vow-of-enmity",
+              "name": "Channel Divinity: Vow of Enmity",
+              "summary": "Bonus action: for 1 minute you have advantage on attack rolls against one creature within 10 ft.",
+              "uses": "channel-divinity",
+              "subclass": true,
+              "subclassId": "vengeance",
+              "verify": true,
+              "verifyNote": "Added Nov 21 (owner asked for more subclasses), from memory of the PHB; check the details."
+            },
+            {
+              "id": "abjure-enemy",
+              "name": "Channel Divinity: Abjure Enemy",
+              "summary": "Action: one creature within 60 ft makes a Wis save or is frightened and can't move for 1 minute (repeating the save each turn).",
+              "uses": "channel-divinity",
+              "subclass": true,
+              "subclassId": "vengeance",
+              "verify": true,
+              "verifyNote": "Added Nov 21 (owner asked for more subclasses), from memory of the PHB; check the details."
+            },
+            {
+              "id": "vengeance-oath-spells",
+              "name": "Oath Spells",
+              "summary": "Always prepared: Bane, Hunter's Mark (L3); Hold Person, Misty Step (L5).",
+              "subclass": true,
+              "subclassId": "vengeance",
+              "verify": true,
+              "verifyNote": "Added Nov 21 (owner asked for more subclasses), from memory of the PHB; check the details."
             }
           ]
         },
@@ -1281,7 +1476,29 @@
         "weapons": ["longsword", "javelin"],
         "verify": true,
         "verifyNote": "One of the PHB starting-equipment options, from memory and simplified (no packs or gold yet)."
-      }
+      },
+      "subclasses": [
+        {
+          "id": "devotion",
+          "name": "Oath of Devotion",
+          "summary": "Honesty, courage and mercy: Sacred Weapon (+Cha to hit) and Turn the Unholy.",
+          "spells": {
+            "3": ["protection-from-evil-and-good", "sanctuary"],
+            "5": ["lesser-restoration"]
+          }
+        },
+        {
+          "id": "vengeance",
+          "name": "Oath of Vengeance",
+          "summary": "Punish the wicked: swear a Vow of Enmity (advantage on every attack against one foe) or Abjure an Enemy (frighten it and freeze it in place).",
+          "spells": {
+            "3": ["bane", "hunters-mark"],
+            "5": ["hold-person", "misty-step"]
+          },
+          "verify": true,
+          "verifyNote": "Added Nov 21 (owner asked for more subclasses), from memory of the PHB; check the details."
+        }
+      ]
     },
     {
       "id": "ranger",
@@ -1530,13 +1747,33 @@
               "id": "fast-hands",
               "name": "Fast Hands",
               "summary": "Cunning Action can also use an object, pick a lock or disarm a trap.",
-              "subclass": true
+              "subclass": true,
+              "subclassId": "thief"
             },
             {
               "id": "second-story-work",
               "name": "Second-Story Work",
               "summary": "Climbing costs no extra movement; longer running jumps.",
-              "subclass": true
+              "subclass": true,
+              "subclassId": "thief"
+            },
+            {
+              "id": "assassinate",
+              "name": "Assassinate",
+              "summary": "Advantage on attack rolls against any creature that hasn't taken a turn in the fight yet, and any hit against a surprised creature is a critical hit.",
+              "subclass": true,
+              "subclassId": "assassin",
+              "verify": true,
+              "verifyNote": "Added Nov 21 (owner asked for more subclasses), from memory of the PHB; check the details."
+            },
+            {
+              "id": "assassin-proficiencies",
+              "name": "Bonus Proficiencies",
+              "summary": "The disguise kit and the poisoner's kit (story checks).",
+              "subclass": true,
+              "subclassId": "assassin",
+              "verify": true,
+              "verifyNote": "Added Nov 21 (owner asked for more subclasses), from memory of the PHB; check the details."
             }
           ]
         },
@@ -1585,7 +1822,21 @@
         "weapons": ["rapier", "shortbow", "dagger", "dagger"],
         "verify": true,
         "verifyNote": "One of the PHB starting-equipment options, from memory and simplified (no packs or gold yet)."
-      }
+      },
+      "subclasses": [
+        {
+          "id": "thief",
+          "name": "Thief",
+          "summary": "Fast Hands (use an object or item as a bonus action) and Second-Story Work (climbing and jumping)."
+        },
+        {
+          "id": "assassin",
+          "name": "Assassin",
+          "summary": "Strike first: advantage against anyone who hasn't acted yet in a fight, and every hit on a surprised creature is a critical hit.",
+          "verify": true,
+          "verifyNote": "Added Nov 21 (owner asked for more subclasses), from memory of the PHB; check the details."
+        }
+      ]
     },
     {
       "id": "sorcerer",
@@ -1801,7 +2052,17 @@
           "recharge": "short-rest",
           "perLevel": [0, 0, 0, 0, 0, 1],
           "verify": true,
-          "verifyNote": "Use counts from memory of the PHB class table (Rules_Scope CONFIRM LOCALLY)."
+          "verifyNote": "Use counts from memory of the PHB class table (Rules_Scope CONFIRM LOCALLY).",
+          "subclass": "fiend"
+        },
+        {
+          "id": "entropic-ward",
+          "name": "Entropic Ward",
+          "perLevel": [0, 0, 0, 0, 0, 1],
+          "recharge": "short-rest",
+          "subclass": "great-old-one",
+          "verify": true,
+          "verifyNote": "Added Nov 21 (owner asked for more subclasses), from memory of the PHB; check the details."
         }
       ],
       "levels": [
@@ -1817,7 +2078,8 @@
               "id": "dark-ones-blessing",
               "name": "Dark One's Blessing",
               "summary": "When you drop a hostile creature to 0 HP, gain temporary HP equal to Cha modifier + warlock level.",
-              "subclass": true
+              "subclass": true,
+              "subclassId": "fiend"
             },
             {
               "id": "fiend-expanded-spells",
@@ -1825,7 +2087,26 @@
               "summary": "Adds Burning Hands, Command (1st); Blindness/Deafness, Scorching Ray (2nd); Fireball, Stinking Cloud (3rd) to your choices.",
               "subclass": true,
               "verify": true,
-              "verifyNote": "Fiend expanded list from memory."
+              "verifyNote": "Fiend expanded list from memory.",
+              "subclassId": "fiend"
+            },
+            {
+              "id": "awakened-mind",
+              "name": "Awakened Mind",
+              "summary": "Speak telepathically with any creature you can see within 30 ft (story options).",
+              "subclass": true,
+              "subclassId": "great-old-one",
+              "verify": true,
+              "verifyNote": "Added Nov 21 (owner asked for more subclasses), from memory of the PHB; check the details."
+            },
+            {
+              "id": "goo-expanded-spells",
+              "name": "Expanded Spell List",
+              "summary": "Dissonant Whispers and Tasha's Hideous Laughter join your warlock spell list.",
+              "subclass": true,
+              "subclassId": "great-old-one",
+              "verify": true,
+              "verifyNote": "Added Nov 21 (owner asked for more subclasses), from memory of the PHB; check the details."
             }
           ]
         },
@@ -1945,7 +2226,17 @@
               "name": "Dark One's Own Luck",
               "summary": "Add a d10 to an ability check or save after seeing the roll. Once per short or long rest.",
               "subclass": true,
-              "uses": "dark-ones-own-luck"
+              "uses": "dark-ones-own-luck",
+              "subclassId": "fiend"
+            },
+            {
+              "id": "entropic-ward",
+              "name": "Entropic Ward",
+              "summary": "Reaction, once per short rest: give an attack against you disadvantage. If it misses, your next attack against that creature has advantage (used automatically).",
+              "subclass": true,
+              "subclassId": "great-old-one",
+              "verify": true,
+              "verifyNote": "Added Nov 21 (owner asked for more subclasses), from memory of the PHB; check the details."
             }
           ]
         }
@@ -1958,7 +2249,22 @@
         "weapons": ["light-crossbow", "dagger", "dagger"],
         "verify": true,
         "verifyNote": "One of the PHB starting-equipment options, from memory and simplified (no packs or gold yet)."
-      }
+      },
+      "subclasses": [
+        {
+          "id": "fiend",
+          "name": "The Fiend",
+          "summary": "Fire and hunger: temporary HP when you drop an enemy, and the Dark One's own luck on a failed save."
+        },
+        {
+          "id": "great-old-one",
+          "name": "The Great Old One",
+          "summary": "A patron from beyond the stars: speak mind to mind, and at 6th level warp an attacker's luck so it misses and you strike back with advantage.",
+          "verify": true,
+          "verifyNote": "Added Nov 21 (owner asked for more subclasses), from memory of the PHB; check the details.",
+          "expanded": ["dissonant-whispers", "tashas-hideous-laughter"]
+        }
+      ]
     },
     {
       "id": "wizard",
@@ -2021,13 +2327,24 @@
               "id": "evocation-savant",
               "name": "Evocation Savant",
               "summary": "Copying evocation spells costs half the time and gold.",
-              "subclass": true
+              "subclass": true,
+              "subclassId": "evocation"
             },
             {
               "id": "sculpt-spells",
               "name": "Sculpt Spells",
               "summary": "Choose up to 1 + spell level creatures in your evocation area: they automatically save and take no damage.",
-              "subclass": true
+              "subclass": true,
+              "subclassId": "evocation"
+            },
+            {
+              "id": "arcane-ward",
+              "name": "Arcane Ward",
+              "summary": "When you cast an abjuration spell of 1st level or higher (Shield, Mage Armor, Counterspell, Protection from Energy…), a ward with 2 × wizard level + Int modifier HP surrounds you; damage hits the ward first. Casting more abjuration spells restores 2 HP per spell level. It fades after a long rest.",
+              "subclass": true,
+              "subclassId": "abjuration",
+              "verify": true,
+              "verifyNote": "Added Nov 21 (owner asked for more subclasses), from memory of the PHB; check the details."
             }
           ]
         },
@@ -2068,7 +2385,17 @@
               "id": "potent-cantrip",
               "name": "Potent Cantrip",
               "summary": "Creatures that succeed on a save against your cantrip still take half damage.",
-              "subclass": true
+              "subclass": true,
+              "subclassId": "evocation"
+            },
+            {
+              "id": "projected-ward",
+              "name": "Projected Ward",
+              "summary": "Reaction: when a creature you can see within 30 ft takes damage, your Arcane Ward takes it instead (used automatically).",
+              "subclass": true,
+              "subclassId": "abjuration",
+              "verify": true,
+              "verifyNote": "Added Nov 21 (owner asked for more subclasses), from memory of the PHB; check the details."
             }
           ]
         }
@@ -2080,7 +2407,21 @@
         "weapons": ["quarterstaff", "dagger"],
         "verify": true,
         "verifyNote": "One of the PHB starting-equipment options, from memory and simplified (no packs or gold yet)."
-      }
+      },
+      "subclasses": [
+        {
+          "id": "evocation",
+          "name": "School of Evocation",
+          "summary": "Blast without hurting friends: Sculpt Spells keeps allies safe in your areas, and at 6th level your cantrips still hurt on a save."
+        },
+        {
+          "id": "abjuration",
+          "name": "School of Abjuration",
+          "summary": "A protector: casting a protective (abjuration) spell raises an Arcane Ward that soaks up damage for you, and at 6th level for your friends.",
+          "verify": true,
+          "verifyNote": "Added Nov 21 (owner asked for more subclasses), from memory of the PHB; check the details."
+        }
+      ]
     }
   ]
 }

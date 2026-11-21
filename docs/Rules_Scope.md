@@ -103,9 +103,23 @@ Warlock (pact magic; recharges on a short rest): L1: one 1st-level slot; L2: two
 
 | Domain | Proficiencies and domain spells (always prepared) | L1 | L2 (Channel Divinity) | L6 |
 |---|---|---|---|---|
-| **Light** | No heavy armor. *Light*; *burning hands*, *faerie fire*; *flaming sphere*, *scorching ray*; *fireball* (*daylight* not in the game) | Warding Flare: reaction, an attacker within 30 ft has disadvantage (Wis mod uses per long rest) | Radiance of the Dawn: enemies within 30 ft make a Con save, 2d10 + cleric level radiant, half on a success | Improved Flare: Warding Flare also protects allies |
-| **War** | Heavy armor, martial weapons. *Divine favor*, *shield of faith*; *spiritual weapon* (*magic weapon* not in the game); *spirit guardians* (*crusader's mantle* not in the game) | War Priest: a bonus-action weapon attack after the Attack action (Wis mod uses per long rest) | Guided Strike: +10 to one of your attack rolls | War God's Blessing: reaction, +10 to an ally's attack roll within 30 ft (uses Channel Divinity) |
-| **Tempest** | Heavy armor, martial weapons. *Fog cloud*, *thunderwave*; *shatter* (*gust of wind* not in the game); *call lightning*, *sleet storm* | Wrath of the Storm: reaction when hit from 5 ft, 2d8 lightning or thunder, Dex save for half (Wis mod uses per long rest) | Destructive Wrath: lightning or thunder damage rolled at its maximum | Thunderbolt Strike: your lightning damage pushes a Large or smaller creature 10 ft |
+| **Light** | No heavy armor. *Light*; *burning hands*, *faerie fire*; *flaming sphere*, *scorching ray*; *fireball* *daylight* (exploring only) | Warding Flare: reaction, an attacker within 30 ft has disadvantage (Wis mod uses per long rest) | Radiance of the Dawn: enemies within 30 ft make a Con save, 2d10 + cleric level radiant, half on a success | Improved Flare: Warding Flare also protects allies |
+| **War** | Heavy armor, martial weapons. *Divine favor*, *shield of faith*; *spiritual weapon*, *magic weapon*; *spirit guardians* (*crusader's mantle* not in the game) | War Priest: a bonus-action weapon attack after the Attack action (Wis mod uses per long rest) | Guided Strike: +10 to one of your attack rolls | War God's Blessing: reaction, +10 to an ally's attack roll within 30 ft (uses Channel Divinity) |
+| **Tempest** | Heavy armor, martial weapons. *Fog cloud*, *thunderwave*; *shatter*, *gust of wind*; *call lightning*, *sleet storm* | Wrath of the Storm: reaction when hit from 5 ft, 2d8 lightning or thunder, Dex save for half (Wis mod uses per long rest) | Destructive Wrath: lightning or thunder damage rolled at its maximum | Thunderbolt Strike: your lightning damage pushes a Large or smaller creature 10 ft |
+
+**More subclasses (D29, Nov 21).** Chosen on the level-up screen at the subclass level (3rd; 2nd for wizards; 1st in the creator for clerics and warlocks). The original subclass above stays the default. From memory of the PHB [CONFIRM LOCALLY]:
+
+| Class | New subclass | What it does here (to 6th level) |
+|---|---|---|
+| Barbarian | Totem Warrior: Bear, Wolf or Eagle (three separate picks) | Bear: while raging, resistance to all damage but psychic. Wolf: while raging, allies have advantage on melee attacks against enemies within 5 ft of you. Eagle: while raging, Dash as a bonus action, and opportunity attacks against you have disadvantage. 6th: Aspect of the Beast (story flavor). |
+| Bard | College of Valor | Medium armor, shields, martial weapons; Combat Inspiration (an inspired ally adds the die to AC against a hit); Extra Attack at 6th. |
+| Fighter | Battle Master | 4 superiority dice (d8), back on a short rest. Trip Attack, Pushing Attack (chosen before the attack), Precision Attack and Riposte (used automatically). |
+| Paladin | Oath of Vengeance | Channel Divinity: Vow of Enmity (bonus action, advantage on attacks against one foe) or Abjure Enemy (Wis save or frightened with speed 0). Oath spells: *bane*, *hunter's mark*; *hold person*, *misty step*. |
+| Rogue | Assassin | Assassinate: advantage against creatures that haven't acted yet; hits on surprised creatures are critical hits. |
+| Warlock | The Great Old One | Awakened Mind (story), *dissonant whispers* and *Tasha's hideous laughter* on the list; Entropic Ward at 6th. |
+| Wizard | School of Abjuration | Arcane Ward: abjuration spells raise and recharge a ward (2 × level + Int HP) that takes damage first; Projected Ward at 6th protects allies within 30 ft. |
+
+Still to come: Circle of the Moon (druid), Way of Shadow (monk), Beast Master (ranger), Wild Magic (sorcerer).
 
 **Corin Varrow (origin)** is a Draconic Bloodline sorcerer with red (fire) ancestry. The Ember bargains in Story_Bible.md §9 add homebrew boons on top of these features.
 
@@ -207,6 +221,9 @@ Warlock (pact magic; recharges on a short rest): L1: one 1st-level slot; L2: two
 
 **Paladins and rangers** only reach 2nd-level spells by level 6. **Spell schools** (needed for the animation color plan) come from the PHB entries during data entry.
 
+### Added Nov 21 (owner asked for more spells; from memory, ⚠ check)
+Resistance (cantrip; cleric, druid); False Life, Ray of Sickness, Searing Smite, Tasha's Hideous Laughter (1st); Blindness/Deafness, Blur, Enlarge/Reduce (enlarge only), Gust of Wind (first blast only), Magic Weapon (2nd); Bestow Curse (the +1d8 necrotic option), Daylight (exploring only), Protection from Energy (fire only) (3rd). Utility spells with no story use (Augury, Speak with Dead, Tongues…) are still left out.
+
 ## 6. Items and treasure (sketch; details in a future Items.md)
 - **Healing potions:** Potion of Healing heals 2d4 + 2. Drinking one is an action in RAW; consider the BG3-style bonus-action house rule.
 - **Magic items:** plan 2–4 memorable items per act, using the DMG's magic-item rarity by level (Ch. 7). Story items already named: the fire-resistance shield (Act II), the forge-quenched weapon (Act III), and Mother Sallow's bargain reward.
@@ -286,6 +303,9 @@ Warlock (pact magic; recharges on a short rest): L1: one 1st-level slot; L2: two
 - [ ] (Proposed, Nov 21) Merchants: Odo's wagon is in Ashford on market days (days 1–4 of each tenday, and festival days), with three items from his list that change each visit and a limit of two purchases a visit. Hidden merchants sell one item, ever. Keepers buy back only their own trade, at half price.
 - [ ] (Proposed, Nov 21) Wand of the War Mage: +1 (or +2) to spell attack rolls while attuned (its "ignores half cover" is not used yet). Items that need a spellcaster's attunement can't be equipped by a class without Spellcasting.
 - [ ] (Proposed, Nov 21) The ember-kiss (Story_Review #1, homebrew): Cindrath's gifts are party-wide flags. Fire resistance in every fight; once a turn a hero's weapon hit adds 1d4 fire; or each hero starts a fight with temporary HP equal to their level. Each gift taken adds +1 to the finale speech DC.
+- [x] (Owner's choice, Nov 21) Kind dice, a setting that's on by default: when a party spell misses, or an enemy succeeds on a save against one, the dice are rerolled half the time and only the roll that counts is logged. About 20% more spells land. Monsters' spells are never helped.
+- [x] (Fixed, Nov 21) Eldritch Blast fires 2 beams at character level 5 (each its own attack; the summary always said so, the code didn't). Hex's +1d6 necrotic now applies to spell attacks too (each beam), as the PHB says ("whenever you hit it with an attack").
+- [ ] (Proposed, Nov 21) Subclass simplifications: the three Totem Warrior spirits are separate choices; a Battle Master knows all four maneuvers the game has (PHB: choose three of more); Combat Inspiration, Precision Attack, Riposte, Entropic Ward and Projected Ward are used automatically when they'd help; the Arcane Ward is created by the first abjuration spell of 1st level or higher after a long rest.
 - [x] (Verified, Nov 21) Hold Person (paralyzed): attacks against the target have advantage, and any hit from within 5 ft is a critical hit; the engine already did this (rules/attack.ts) and the spell's description now says so.
 
 ## CONFIRM LOCALLY

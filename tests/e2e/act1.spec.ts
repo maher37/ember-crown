@@ -32,7 +32,9 @@ test('Act I: a scene starts the tavern brawl and picks up after it; potions; a m
   await pick(page, /Will you trust us with the letter now/);
   await expect(page.getByText('Quest complete: Lantern Night')).toBeVisible();
   await pick(page, /supplies for the road/);
-  await expect(page.getByText('Received: Potion of Healing ×4')).toBeVisible();
+  // The item card in the scene says what it is and what it does (and the journal flash too).
+  await expect(page.getByRole('status').getByText('Received: Potion of Healing ×4')).toBeVisible();
+  await expect(page.locator('.line.item-card')).toContainText(/Potion of Healing[\s\S]*heal/);
   await pick(page, /\d\. Back to the tavern\./);
   await leave(page);
   await page.getByRole('button', { name: 'Inventory' }).click();

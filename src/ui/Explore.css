@@ -997,3 +997,28 @@
 .hunt-btn {
   margin: 0;
 }
+
+/* What an item does: on a reward choice, and when the party receives it in a scene. */
+.choice-item {
+  display: flex;
+  gap: 8px;
+  align-items: flex-start;
+  flex-basis: 100%;
+  margin-top: 6px;
+  padding-left: 26px;
+  color: #c3ccd9;
+  font-weight: 400;
+}
+.prose .line.item-card {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  padding: 8px 12px;
+  border: 1px solid #51607a;
+  border-radius: 6px;
+  background: #323d4f;
+  font-family: Inter, sans-serif;
+}
+.choice:has(.choice-item) {
+  flex-wrap: wrap;
+}

@@ -1,3 +1,6 @@
+import { isMagicItem, lookupItem } from '../game/gear';
+import { itemHowItWorks, RarityTag } from './EquipmentPanel';
+import { ItemIcon } from './ItemIcon';
 import { useEffect } from 'react';
 import { npcById } from '../game/dialogue';
 import { placeMapFor } from '../game/placeMaps';
@@ -82,6 +85,24 @@ export function DialogueScreen() {
                     : spoken
                       ? 'spoken'
                       : 'narration';
+              if (l.item)
+                return (
+                  <div
+                    key={i}
+                    className="line item-card"
+                    style={{ animationDelay: `${Math.min(i, 6) * 0.12}s` }}
+                  >
+                    <ItemIcon id={l.item} />
+                    <span>
+                      <span className="strong">{l.text}</span>
+                      <RarityTag id={l.item} />
+                      <span className="small muted"> {lookupItem(l.item)?.summary}</span>
+                      {isMagicItem(l.item) && (
+                        <span className="small faint"> {itemHowItWorks(l.item)}</span>
+                      )}
+                    </span>
+                  </div>
+                );
               return (
                 <div
                   key={i}
@@ -145,6 +166,18 @@ export function DialogueScreen() {
                     </span>
                   )}
                   <span>{ch.text}</span>
+                  {ch.item && (
+                    <span className="choice-item">
+                      <ItemIcon id={ch.item} size={28} />
+                      <span className="small">
+                        <span className="strong">{lookupItem(ch.item)?.name}</span>
+                        <RarityTag id={ch.item} /> {lookupItem(ch.item)?.summary}{' '}
+                        {isMagicItem(ch.item) && (
+                          <span className="faint">{itemHowItWorks(ch.item)}</span>
+                        )}
+                      </span>
+                    </span>
+                  )}
                   {ch.fight && (
                     <span className="tag fight" aria-label="starts combat">
                       ⚔ (starts combat)

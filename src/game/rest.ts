@@ -136,7 +136,8 @@ export function takeLongRest(game: GameState, rng: RandomSource): RestResult {
   const party = game.party.map((orig) => {
     if (orig.dead) return orig;
     // MM: Life Drain lasts until a long rest.
-    let h = orig;
+    // PHB: Arcane Ward fades; the next abjuration spell makes a fresh one.
+    let h: Hero = orig.arcaneWard !== undefined ? { ...orig, arcaneWard: undefined } : orig;
     if (h.maxHpDrain) {
       log.push(`${h.name}'s drained life returns (+${h.maxHpDrain} maximum HP).`);
       h = { ...h, maxHp: h.maxHp + h.maxHpDrain, maxHpDrain: 0 };

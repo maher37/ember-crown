@@ -21,6 +21,7 @@ import {
 } from './combat';
 import { Conversation, PLACE_SCENES } from './dialogue';
 import { placeMapFor } from './placeMaps';
+import { useSettings } from './settings';
 import { claimBounty, getBounty, markHunted, takeBounty } from './bounties';
 import { openFind, searchArea, spotFinds, type OpenHow, type OpenResult } from './finds';
 import { buyAt, sellAt, applyService } from './shops';
@@ -357,7 +358,8 @@ export const useGame = create<GameStore>()((set, get) => ({
       formation,
       mageArmor,
       inventory: game.inventory,
-      flags: game.flags,
+      // Kind dice (a setting, on by default): read by the spell code.
+      flags: { ...game.flags, kind_dice: useSettings.getState().kindDice },
     });
     set({ combat, screen: 'combat' });
   },
