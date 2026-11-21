@@ -570,6 +570,18 @@ export function applyHit(
   }
   if (hasEffect(attacker, 'divine-favor') && opt.weaponId)
     parts.push({ dice: '1d4', type: 'radiant' });
+  // Story_Review #1: "let our blows burn". Once a turn, a marked hero's weapon hit adds 1d4 fire.
+  if (h && s.flags?.['kindled_strike'] && opt.weaponId && !hasEffect(attacker, 'kindled-burned')) {
+    parts.push({ dice: '1d4', type: 'fire' });
+    attacker.effects.push({
+      id: 'kindled-burned',
+      name: 'Kindled strike used',
+      sourceId: attacker.id,
+      tag: 'kindled-burned',
+      expires: { turnOf: attacker.id, when: 'end', round: s.round },
+    });
+    say(s, 'you', `The ember-mark flares: +1d4 fire`);
+  }
   // DMG: Mace of Disruption. +2d6 radiant against fiends and undead.
   const tm = target.monsterId ? getMonster(target.monsterId) : undefined;
   const disruption =

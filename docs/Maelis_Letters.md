@@ -67,6 +67,9 @@
 >
 > I don't want Ashford to burn. I want it to wake one morning and find the forges warm, the debt turned to ash, and the name on the ledger's last page read aloud in the square.
 >
+> [IF the missing miners were rescued] Ulric says you brought the Tullow boys up out of the warren. The Hall will thank the Grey Company for it. I'm telling you so that somebody thanks you.
+> [IF Wix travels with the party] I hear you've a goblin following you about. Feed it. Things that are fed stay loyal; it's the one rule the Guild never learned.
+>
 > You'll pass Marrowmere on the way to the abbey. Don't go in at night.
 >
 > — M.V.
@@ -85,6 +88,8 @@
 > There is a voice I've been following. I believe it's my family's: the first Varrow, the one the songs lie about. It speaks in the forge-cant my father used to swear in. Lately it sounds pleased in a way I don't like.
 >
 > When I was small I used to hope someone would stop me before I did something unforgivable, like breaking a window or stealing a pie. Nobody ever did, and I learned that hoping to be stopped is just a way of not deciding. So I have decided.
+>
+> [IF the party told her Lysa's words at the mill] You told me what Mother said, at the kitchen table. I read it back to myself every night now. I can't decide whether it's a kindness or a knife.
 >
 > But I am sorry about Marrowmere. Burn what's left, if you can. The dead should be cold.
 >
@@ -120,6 +125,8 @@
 >
 > [IF party holds the Crown Truth] You've been in the archives, so you'll tell me the voice is the dragon. I have thought of that, at three in the morning, more often than you'd believe. And then it says something only my father could have known, and I think: what kind of dragon remembers how a man took his tea?
 > [ELSE] The voice says you'll try to stop me at the Kiln. It says it fondly, the way you'd talk about the weather.
+>
+> [IF the party took any of Cindrath's gifts] I've watched the rings on your palms widen, in my dreams. Be careful what you take from it. It gave me a great deal, and I have paid for every gift.
 >
 > The last shard is in the King's Kiln, under Varrow's own feet. I'm going to put the crown on. When the forges light, Ashford will be warm and free, and it will know my father's name.
 >

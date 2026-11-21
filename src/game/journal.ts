@@ -90,3 +90,17 @@ export function partyLevel(game: GameState): { level: number; xp: number } {
   const xp = Math.min(...living.map((h) => h.xp));
   return { level: Math.min(...living.map((h) => h.level)), xp };
 }
+
+/**
+ * Story_Review #1: the ember-kiss. Which of Cindrath's three dream offers is due (1 after the
+ * mine, 2 after the abbey, 3 once through Ashfall Pass), or null. Lantern Night marks everyone;
+ * saves from before the mark count as marked once Lantern Night is done.
+ */
+export function kindledOfferDue(g: GameState): 1 | 2 | 3 | null {
+  const marked = !!g.flags['ember_marked'] || g.quests['lantern-night']?.status === 'done';
+  if (!marked || g.flags['ending'] || Number(g.flags['kindled'] ?? 0) >= 3) return null;
+  if (g.flags['act1_complete'] && !g.flags['kindled_offer_1']) return 1;
+  if (g.flags['act2_complete'] && !g.flags['kindled_offer_2']) return 2;
+  if (g.flags['pass_cleared'] && !g.flags['kindled_offer_3']) return 3;
+  return null;
+}

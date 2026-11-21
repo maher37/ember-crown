@@ -676,6 +676,176 @@
       "shopAct": 3,
       "verify": true,
       "verifyNote": "Price is our own. A second cloak for the shop (Scald's hoard has the first)."
+    },
+    {
+      "id": "wand-of-the-war-mage-1",
+      "name": "Wand of the War Mage +1",
+      "base": "DMG: Wand of the War Mage",
+      "kind": "wondrous",
+      "rarity": "uncommon",
+      "attunement": "spellcaster",
+      "consumable": false,
+      "effects": [
+        {
+          "type": "modifier",
+          "target": "spell-attack",
+          "value": 1
+        }
+      ],
+      "summary": "+1 to spell attack rolls.",
+      "howItWorks": "Carried as a charm (needs a spellcaster's attunement): +1 to every spell attack roll (Fire Bolt, Guiding Bolt, Eldritch Blast, Scorching Ray…).",
+      "slot": "trinket",
+      "costGp": 300,
+      "shopAct": 1,
+      "verify": true,
+      "verifyNote": "Name from the DMG; effect summarized from memory, price our own (XGtE puts uncommon items at 101–500 gp, rare at 501–5,000)."
+    },
+    {
+      "id": "wand-of-the-war-mage-2",
+      "name": "Wand of the War Mage +2",
+      "base": "DMG: Wand of the War Mage",
+      "kind": "wondrous",
+      "rarity": "rare",
+      "attunement": "spellcaster",
+      "consumable": false,
+      "effects": [
+        {
+          "type": "modifier",
+          "target": "spell-attack",
+          "value": 2
+        }
+      ],
+      "summary": "+2 to spell attack rolls.",
+      "howItWorks": "Carried as a charm (needs a spellcaster's attunement): +2 to every spell attack roll.",
+      "slot": "trinket",
+      "costGp": 1200,
+      "shopAct": 3,
+      "verify": true,
+      "verifyNote": "Name from the DMG; effect summarized from memory, price our own (XGtE puts uncommon items at 101–500 gp, rare at 501–5,000)."
+    },
+    {
+      "id": "pearl-of-power",
+      "name": "Pearl of Power",
+      "base": "DMG: Pearl of Power",
+      "kind": "wondrous",
+      "rarity": "uncommon",
+      "attunement": "spellcaster",
+      "consumable": false,
+      "effects": [
+        {
+          "type": "special",
+          "id": "regain-slot",
+          "note": "up to 3rd level, once per day"
+        }
+      ],
+      "summary": "Once per day, regain one spent spell slot of 3rd level or lower.",
+      "howItWorks": "A charm (needs a spellcaster's attunement). Once per long rest, use it from the Inventory to get back one spent spell slot (3rd level or lower).",
+      "slot": "trinket",
+      "costGp": 450,
+      "shopAct": 2,
+      "verify": true,
+      "verifyNote": "Name from the DMG; effect summarized from memory, price our own (XGtE puts uncommon items at 101–500 gp, rare at 501–5,000)."
+    },
+    {
+      "id": "sentinel-shield",
+      "name": "Sentinel Shield",
+      "base": "DMG: Sentinel Shield",
+      "kind": "shield",
+      "rarity": "uncommon",
+      "attunement": false,
+      "consumable": false,
+      "effects": [
+        {
+          "type": "special",
+          "id": "initiative-advantage"
+        },
+        {
+          "type": "special",
+          "id": "perception-advantage"
+        }
+      ],
+      "summary": "Advantage on initiative and on Wisdom (Perception) checks. Also a normal +2 shield.",
+      "howItWorks": "Carry it in the off hand: a normal +2 shield, plus advantage on initiative and on Perception checks (searching included).",
+      "costGp": 450,
+      "shopAct": 1,
+      "verify": true,
+      "verifyNote": "Name from the DMG; effect summarized from memory, price our own (XGtE puts uncommon items at 101–500 gp, rare at 501–5,000)."
+    },
+    {
+      "id": "periapt-of-wound-closure",
+      "name": "Periapt of Wound Closure",
+      "base": "DMG: Periapt of Wound Closure",
+      "kind": "wondrous",
+      "rarity": "uncommon",
+      "attunement": true,
+      "consumable": false,
+      "effects": [
+        {
+          "type": "special",
+          "id": "auto-stabilize"
+        },
+        {
+          "type": "special",
+          "id": "double-hit-dice-healing"
+        }
+      ],
+      "summary": "While dying you stabilize at the start of your turn; healing from Hit Dice is doubled.",
+      "howItWorks": "Worn at the neck (needs attunement). If the wearer is dying, they stabilize by themselves at the start of their turn. Hit Dice spent in a short rest heal twice as much.",
+      "slot": "neck",
+      "costGp": 400,
+      "shopAct": 1,
+      "verify": true,
+      "verifyNote": "Name from the DMG; effect summarized from memory, price our own (XGtE puts uncommon items at 101–500 gp, rare at 501–5,000)."
+    },
+    {
+      "id": "boots-of-elvenkind",
+      "name": "Boots of Elvenkind",
+      "base": "DMG: Boots of Elvenkind",
+      "kind": "wondrous",
+      "rarity": "uncommon",
+      "attunement": false,
+      "consumable": false,
+      "effects": [
+        {
+          "type": "special",
+          "id": "stealth-advantage-quiet"
+        }
+      ],
+      "summary": "Silent steps; advantage on Stealth checks that rely on moving quietly.",
+      "howItWorks": "Worn on the feet: advantage on Stealth checks that rely on moving quietly (the story's sneaking checks).",
+      "slot": "feet",
+      "costGp": 300,
+      "shopAct": 1,
+      "verify": true,
+      "verifyNote": "Name from the DMG; effect summarized from memory, price our own (XGtE puts uncommon items at 101–500 gp, rare at 501–5,000)."
+    },
+    {
+      "id": "stone-of-good-luck",
+      "name": "Stone of Good Luck",
+      "base": "DMG: Stone of Good Luck (Luckstone)",
+      "kind": "wondrous",
+      "rarity": "uncommon",
+      "attunement": true,
+      "consumable": false,
+      "effects": [
+        {
+          "type": "modifier",
+          "target": "check",
+          "value": 1
+        },
+        {
+          "type": "modifier",
+          "target": "save",
+          "value": 1
+        }
+      ],
+      "summary": "+1 to ability checks and saving throws.",
+      "howItWorks": "A charm (needs attunement): +1 to every ability check and saving throw.",
+      "slot": "trinket",
+      "costGp": 450,
+      "shopAct": 2,
+      "verify": true,
+      "verifyNote": "Name from the DMG; effect summarized from memory, price our own (XGtE puts uncommon items at 101–500 gp, rare at 501–5,000)."
     }
   ]
 }

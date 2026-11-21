@@ -55,7 +55,19 @@ Sold at Brannoc's stores (`src/data/gear.json`), PHB prices [CONFIRM: prices fro
 - **Alchemist's fire** (50 gp), **holy water** (25 gp), **acid** (25 gp): thrown in fights and used up.
 - All PHB armor and weapons, and Potions of Healing (50 gp), are also for sale.
 
-## Brannoc's rare finds (D25)
+## Ashford's shops (D26)
+Bought, not found [inferred prices; XGtE puts uncommon items at 101–500 gp and rare at 501–5,000]. Each shop is data in `src/data/shops.json`.
+- **Brannoc:** adventuring gear and Potions of Healing.
+- **Stonemantle Forge (Hulda):** every PHB weapon, armor and shield; from Act II the +1 weapons and Shield +1 (400 gp); a Sentinel Shield in Act III (450 gp).
+- **Quillon's Curios (Sabeth):** Wand of the War Mage +1 (300 gp, spellcaster) from Act I; Potions of Greater Healing and Fire Resistance, Pearl of Power (450 gp, spellcaster) and a Stone of Good Luck (450 gp) from Act II; Cloak and Ring of Protection and a Wand of the War Mage +2 (1,200 gp) in Act III.
+- **The Dawn Shrine (Sister Aubra):** holy water, healing potions, and services (healing, restoration, raising the dead).
+- **Odo's wagon (market days):** three of: Periapt of Wound Closure, Boots of Elvenkind, healing potions, alchemist's fire; from Act II Greater Healing and Fire Resistance potions, a Stone of Good Luck, a Sentinel Shield, a rapier or longbow +1; a Wand of the War Mage +2 in Act III. Two purchases a visit.
+- **Hidden merchants (one purchase each):** Nib the goblin pedlar in the Ashwood (Act I), Ssessk the lizardfolk trader in the hunting grounds (Act II), Brokk the exiled smith at the Great Forge (Act III).
+
+## Things to find while exploring (D27)
+22 finds in `src/data/finds.json`: chests, caches, bodies and buried things, sized to each act (Act I: 3–75 gp and potions; Act II: 18–150 gp; Act III: 30–250 gp plus a Periapt of Wound Closure in the Kiln-Wardens' strongroom). Three of them start short side quests: the Smuggler's Note (Ashwood → Varrow's Mill), the Sergeant's Key (hunting grounds → Marrowmere) and the Kiln-Wardens' Strongroom (Ashfall Pass → the Great Forge).
+
+## Brannoc's rare finds (D25, replaced by D26)
 Bought, not found, so they don't replace the story items above [inferred prices]:
 - **From Act II:** Longsword, Rapier, Mace, Longbow, Greataxe and Quarterstaff +1 (400 gp each); Shield +1 (400 gp); Potion of Greater Healing and Potion of Fire Resistance (150 gp).
 - **From Act III:** Ring of Protection (900 gp, attunement); Cloak of Protection (450 gp, attunement).

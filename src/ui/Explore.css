@@ -927,3 +927,73 @@
   font-size: 13px;
   color: var(--gold);
 }
+
+/* Ashford's streets: shops, people, the Hall's board, the tavern door. */
+.place-map .hotspot.shop {
+  border-color: #e8c27a;
+  border-radius: 10px;
+}
+.place-map .hotspot.npc {
+  border-color: #7fb3e6;
+}
+.place-map .hotspot.door {
+  border-color: #e8833a;
+  border-radius: 10px;
+}
+.place-map .hotspot.board {
+  border-color: #f3ead6;
+  border-radius: 6px;
+}
+.place-map .hotspot.away {
+  opacity: 0.6;
+  border-style: dashed;
+}
+
+/* Exploring here: finds, the search button, bounties to hunt. */
+.finds-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 10px 12px;
+  border: 1px solid var(--border, #51607a);
+  border-radius: 6px;
+  background: var(--card, #323d4f);
+}
+.finds-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 6px;
+}
+.finds-list li {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+.finds-list li.done {
+  opacity: 0.6;
+}
+.find-glyph {
+  width: 22px;
+  text-align: center;
+  color: #e8c27a;
+}
+.find-label {
+  flex: 1 1 120px;
+  font-size: 13px;
+}
+.finds-log {
+  border-top: 1px solid var(--border, #51607a);
+  padding-top: 6px;
+  display: grid;
+  gap: 3px;
+  color: #c3ccd9;
+}
+.finds-log .roll {
+  color: #e8a060;
+}
+.hunt-btn {
+  margin: 0;
+}

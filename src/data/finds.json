@@ -1,0 +1,456 @@
+{
+  "verify": true,
+  "verifyNote": "Finds, DCs and rewards are our own (DMG DCs: easy 10, medium 15, hard 20; treasure sized to each act) [inferred].",
+  "finds": [
+    {
+      "id": "ashford-well",
+      "place": "ashford",
+      "label": "A loose cobble by the well",
+      "kind": "cache",
+      "dc": 15,
+      "notice": "One cobble by the well sits a little proud of the others, and it rocks underfoot.",
+      "text": "Underneath, a child's tin of treasures: three gold pieces, a copper whistle and a very dead beetle. You leave the beetle.",
+      "loot": {
+        "gold": 3,
+        "items": []
+      }
+    },
+    {
+      "id": "ashwood-satchel",
+      "place": "ashwood",
+      "label": "Fresh-turned earth under a charred oak",
+      "kind": "buried",
+      "dc": 13,
+      "notice": "The earth under a charred oak has been dug and patted flat, a day or two ago at most.",
+      "text": "An oilskin satchel: twelve gold pieces and a smudged note. \"Rest is under the third millstone at Varrow's. Don't let the dead see you.\"",
+      "loot": {
+        "gold": 12,
+        "items": []
+      },
+      "setsFlag": "smuggler_note",
+      "startsQuest": "smugglers-cache",
+      "completes": {
+        "quest": "smugglers-cache",
+        "step": "note"
+      }
+    },
+    {
+      "id": "mill-millstone",
+      "place": "mill",
+      "label": "The third millstone",
+      "kind": "chest",
+      "dc": null,
+      "requires": [["smuggler_note"]],
+      "notice": "Three old millstones lean against the mill wall. The third has been moved recently; there are drag marks.",
+      "text": "Under it, a tarred strongbox: a smuggler's stash of coin, two healing draughts and a flask of alchemist's fire.",
+      "lock": {
+        "dc": 13
+      },
+      "trap": {
+        "dc": 12,
+        "name": "a poisoned needle in the lock",
+        "save": "con",
+        "saveDc": 11,
+        "dice": "1d10",
+        "type": "poison"
+      },
+      "loot": {
+        "gold": 75,
+        "items": [
+          {
+            "id": "potion-of-healing",
+            "qty": 2
+          },
+          {
+            "id": "alchemists-fire",
+            "qty": 1
+          }
+        ]
+      },
+      "completes": {
+        "quest": "smugglers-cache",
+        "step": "cache"
+      }
+    },
+    {
+      "id": "mill-pantry",
+      "place": "mill",
+      "label": "The Varrows' pantry chest",
+      "kind": "chest",
+      "dc": 14,
+      "notice": "Behind a collapsed shelf in the mill kitchen, the corner of an iron-bound chest.",
+      "text": "The Varrows' old pantry chest. The food is long gone, but a purse and a good lantern were packed away under the linen.",
+      "lock": {
+        "dc": 12
+      },
+      "loot": {
+        "gold": 15,
+        "items": [
+          {
+            "id": "lantern",
+            "qty": 1
+          }
+        ]
+      }
+    },
+    {
+      "id": "ashwood-herbs",
+      "place": "ashwood",
+      "label": "A forager's hollow",
+      "kind": "herbs",
+      "dc": 12,
+      "notice": "A hollow tree with a waxed cloth tucked inside, the kind herb-gatherers use to keep things dry.",
+      "text": "Someone's forest store: a stoppered healing draught and a bundle of bandages good enough for a healer's kit.",
+      "loot": {
+        "items": [
+          {
+            "id": "potion-of-healing",
+            "qty": 1
+          },
+          {
+            "id": "healers-kit",
+            "qty": 1
+          }
+        ]
+      }
+    },
+    {
+      "id": "ashwood-nib",
+      "place": "ashwood",
+      "label": "Nib's hidden camp",
+      "kind": "merchant",
+      "dc": 14,
+      "notice": "A thin thread of cookfire smoke rises where nobody should be camping.",
+      "text": "A goblin in three stolen coats squeaks, then recovers and spreads a blanket of wares.",
+      "shop": "nib",
+      "loot": {
+        "items": []
+      }
+    },
+    {
+      "id": "mine-prospector",
+      "place": "old-mine",
+      "label": "A dead prospector's pack",
+      "kind": "body",
+      "dc": 12,
+      "notice": "Off the path, a pack strap sticks out of the scree.",
+      "text": "A prospector who never made it home. His pack holds a few coins and a healer's kit; you say a word for him.",
+      "loot": {
+        "gold": 8,
+        "items": [
+          {
+            "id": "healers-kit",
+            "qty": 1
+          }
+        ]
+      }
+    },
+    {
+      "id": "warren-stash",
+      "place": "warren",
+      "label": "A goblin's private stash",
+      "kind": "cache",
+      "dc": 14,
+      "notice": "One stone in the warren wall has been rubbed smooth by a lot of nervous fingers.",
+      "text": "Behind it, a goblin's secret savings: coins of four kingdoms and a vial of acid it was clearly saving for someone it disliked.",
+      "loot": {
+        "gold": 20,
+        "items": [
+          {
+            "id": "acid-vial",
+            "qty": 1
+          }
+        ]
+      }
+    },
+    {
+      "id": "cave-skeleton",
+      "place": "steaming-cave",
+      "label": "A scorched adventurer",
+      "kind": "body",
+      "dc": 15,
+      "notice": "Under a drift of ash near the cave mouth: the glint of a belt buckle.",
+      "text": "Whoever this was, they came looking for the dragon too. Their purse and potions survived the fire better than they did.",
+      "loot": {
+        "gold": 40,
+        "items": [
+          {
+            "id": "potion-of-healing",
+            "qty": 1
+          },
+          {
+            "id": "alchemists-fire",
+            "qty": 1
+          }
+        ]
+      }
+    },
+    {
+      "id": "bridge-tollbox",
+      "place": "toll-bridge",
+      "label": "The Grey Company's toll box",
+      "kind": "chest",
+      "dc": null,
+      "requires": [["bridge_crossed"]],
+      "act": 2,
+      "notice": "The toll box is still chained to the bridge post. Nobody's minding it now.",
+      "text": "A month of Ashford's tolls. Somebody should give it back. Somebody probably won't.",
+      "lock": {
+        "dc": 15
+      },
+      "loot": {
+        "gold": 60,
+        "items": []
+      }
+    },
+    {
+      "id": "reeds-sergeant",
+      "place": "lizardfolk-grounds",
+      "label": "A drowned sergeant",
+      "kind": "body",
+      "dc": 14,
+      "act": 2,
+      "notice": "Something grey and Grey-Company-coloured lies face-down among the reeds.",
+      "text": "A Grey Company sergeant, long drowned. His purse holds eighteen gold, and around his neck hangs a key on a tag: \"M'mere chapel. Strongbox. Mine.\"",
+      "loot": {
+        "gold": 18,
+        "items": []
+      },
+      "setsFlag": "sergeant_key",
+      "startsQuest": "sergeants-key",
+      "completes": {
+        "quest": "sergeants-key",
+        "step": "badge"
+      }
+    },
+    {
+      "id": "marrowmere-strongbox",
+      "place": "marrowmere",
+      "label": "The sergeant's strongbox",
+      "kind": "chest",
+      "dc": null,
+      "requires": [["sergeant_key"]],
+      "act": 2,
+      "notice": "Under the chapel's sunken pews, an iron strongbox. The sergeant's key fits.",
+      "text": "The key turns. Inside: wages he never spent, and a potion he never drank.",
+      "trap": {
+        "dc": 13,
+        "name": "a rusted spring-blade",
+        "save": "dex",
+        "saveDc": 13,
+        "dice": "2d6",
+        "type": "slashing"
+      },
+      "loot": {
+        "gold": 150,
+        "items": [
+          {
+            "id": "potion-of-greater-healing",
+            "qty": 1
+          }
+        ]
+      },
+      "completes": {
+        "quest": "sergeants-key",
+        "step": "strongbox"
+      }
+    },
+    {
+      "id": "marrowmere-boat",
+      "place": "marrowmere",
+      "label": "A sunken rowboat",
+      "kind": "body",
+      "dc": 12,
+      "act": 2,
+      "notice": "A rowboat lies half-sunk in the shallows, its locker still shut.",
+      "text": "In the boat's locker, wrapped in oilcloth: a potion that smells of cold iron.",
+      "loot": {
+        "items": [
+          {
+            "id": "potion-of-fire-resistance",
+            "qty": 1
+          }
+        ]
+      }
+    },
+    {
+      "id": "reeds-ssessk",
+      "place": "lizardfolk-grounds",
+      "label": "Ssessk's shell-trade",
+      "kind": "merchant",
+      "dc": 13,
+      "act": 2,
+      "notice": "Shells strung on a line between two stilts clack in the wind: a trader's sign.",
+      "text": "A lizardfolk trader watches you from a raft piled with drowned people's things.",
+      "shop": "ssessk",
+      "loot": {
+        "items": []
+      }
+    },
+    {
+      "id": "abbey-reliquary",
+      "place": "abbey",
+      "label": "A hidden reliquary",
+      "kind": "cache",
+      "dc": 15,
+      "act": 2,
+      "notice": "A fallen statue of a saint has a hollow behind its plinth.",
+      "text": "The abbey's emergency fund, hidden by a sensible monk, and two flasks of holy water.",
+      "loot": {
+        "gold": 50,
+        "items": [
+          {
+            "id": "holy-water",
+            "qty": 2
+          }
+        ]
+      }
+    },
+    {
+      "id": "sallow-jar",
+      "place": "sallow",
+      "label": "A jar on the high shelf",
+      "kind": "cache",
+      "dc": 16,
+      "act": 2,
+      "notice": "Among the jars of teeth on Mother Sallow's shelf, one rattles like coins.",
+      "text": "It is coins. Also one tooth. You don't take the tooth.",
+      "loot": {
+        "gold": 45,
+        "items": [
+          {
+            "id": "potion-of-healing",
+            "qty": 1
+          }
+        ]
+      }
+    },
+    {
+      "id": "deserters-paychest",
+      "place": "deserters-camp",
+      "label": "A buried pay-chest",
+      "kind": "buried",
+      "dc": 13,
+      "act": 2,
+      "notice": "The ground under the deserters' fire-pit has been dug and burned over to hide it.",
+      "text": "The pay the Grey Company owed them, taken back on the way out. Is it stealing if it was theirs?",
+      "lock": {
+        "dc": 14
+      },
+      "loot": {
+        "gold": 90,
+        "items": []
+      }
+    },
+    {
+      "id": "pass-runestone",
+      "place": "ashfall-pass",
+      "label": "An Ammarindar rune-stone",
+      "kind": "note",
+      "dc": 15,
+      "act": 3,
+      "notice": "A carved stone pokes out of the ash, dwarven runes still sharp.",
+      "text": "You brush off the ash. The runes say: \"Strongroom of the Kiln-Wardens. Above the forge. Speak the King's name.\"",
+      "setsFlag": "vault_runes",
+      "startsQuest": "wardens-vault",
+      "completes": {
+        "quest": "wardens-vault",
+        "step": "rune"
+      },
+      "loot": {
+        "items": []
+      }
+    },
+    {
+      "id": "forge-vault",
+      "place": "great-forge",
+      "label": "The Kiln-Wardens' strongroom",
+      "kind": "chest",
+      "dc": null,
+      "requires": [["vault_runes"]],
+      "act": 3,
+      "notice": "Above the forge floor, a rune-locked door. It hums when you say \"Varrow\".",
+      "text": "The Kiln-Wardens kept their pay and their healers' charms here. Three centuries of dust, and the gold is still gold.",
+      "lock": {
+        "dc": 17
+      },
+      "trap": {
+        "dc": 15,
+        "name": "a fire glyph on the threshold",
+        "save": "dex",
+        "saveDc": 14,
+        "dice": "3d6",
+        "type": "fire"
+      },
+      "loot": {
+        "gold": 250,
+        "items": [
+          {
+            "id": "periapt-of-wound-closure",
+            "qty": 1
+          },
+          {
+            "id": "potion-of-greater-healing",
+            "qty": 1
+          }
+        ]
+      },
+      "completes": {
+        "quest": "wardens-vault",
+        "step": "vault"
+      }
+    },
+    {
+      "id": "pass-climber",
+      "place": "ashfall-pass",
+      "label": "A frozen climber",
+      "kind": "body",
+      "dc": 13,
+      "act": 3,
+      "notice": "A climber's rope trails off the path and into a drift.",
+      "text": "A climber from Ashford who tried to see what the mountain was doing. You take his purse to his family, or at least that's the plan.",
+      "loot": {
+        "gold": 30,
+        "items": [
+          {
+            "id": "potion-of-healing",
+            "qty": 2
+          }
+        ]
+      }
+    },
+    {
+      "id": "forge-brokk",
+      "place": "great-forge",
+      "label": "Brokk's forge-cache",
+      "kind": "merchant",
+      "dc": 14,
+      "act": 3,
+      "notice": "Fresh charcoal and a hammer that is not three hundred years old: someone works this forge.",
+      "text": "A grey-bearded dwarf straightens from a hidden anvil and grins without much warmth.",
+      "shop": "brokk",
+      "loot": {
+        "items": []
+      }
+    },
+    {
+      "id": "caves-trophies",
+      "place": "wix-caves",
+      "label": "A goblin trophy shelf",
+      "kind": "cache",
+      "dc": 14,
+      "act": 3,
+      "notice": "High on the cave wall, a shelf of 'very important' goblin treasures.",
+      "text": "Most of it is buttons. Some of it is gold. Wix says you can take the gold, but not the good buttons.",
+      "loot": {
+        "gold": 60,
+        "items": [
+          {
+            "id": "acid-vial",
+            "qty": 2
+          }
+        ]
+      }
+    }
+  ]
+}

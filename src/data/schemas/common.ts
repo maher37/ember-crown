@@ -93,7 +93,17 @@ const Condition = z
 const Modifier = z
   .object({
     type: z.literal('modifier'),
-    target: z.enum(['attack', 'save', 'check', 'ac', 'damage', 'speed', 'initiative']),
+    target: z.enum([
+      'attack',
+      'save',
+      'check',
+      'ac',
+      'damage',
+      'speed',
+      'initiative',
+      'spell-attack',
+      'spell-dc',
+    ]),
     /** A flat value, or dice ("1d4"; "-1d4" for Bane). */
     value: z.union([z.number().int(), Dice, z.string().regex(/^-\d*d\d+$/)]),
     duration: Duration.optional(),

@@ -97,6 +97,13 @@ One milestone per Claude Code session (bigger ones may take two). Each milestone
 - Cleric domains: Life, Light, War and Tempest (D4 revised).
 - **Next phases (owner to confirm the order):** 2) Ashford as a walkable town: blacksmith, town hall quest board, travelling merchant. 3) Exploring: Perception finds, chests, hidden merchants, finds that start side quests. 4) More subclasses for other classes. 5) Spell animations (M11).
 
+## M10d: Playtest round 4, Phases 2–3 (owner request, Nov 21)
+- Quest markers on the world map (a "!" where each active quest leads next) and places in the journal.
+- Ashford as a walkable town (D26): the forge, the magic shop, the temple, the market-day wagon, the Hall's notice board with bounties, and townsfolk who remember what you did.
+- Exploring (D27): finds noticed by passive Perception or a search, chests with locks and traps, hidden merchants, and finds that start short quests.
+- Story (D28): the ember-kiss and Cindrath's gifts, more callbacks (townsfolk, Brannoc, letters), and Maelis in person at the mill and above Ashfall Pass.
+- Still to come: more subclasses for other classes (Phase 4), spell animations (M11).
+
 ## M11: Animations (phase 2)
 - A presentation-event system, then the effects list in `RPG_Game_Plan.md` §9d (projectiles, spell areas, damage-type colors, condition icons, downed state).
 - Includes the reduce-motion and reduce-flashing settings.

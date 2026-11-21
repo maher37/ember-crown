@@ -10,7 +10,18 @@ export const Quest = z
     summary: z.string().min(1),
     /** XP per character when the quest completes (docs/Encounters_and_XP.md). */
     xp: z.number().int().min(0),
-    steps: z.array(z.object({ id: Id, text: z.string().min(1) }).strict()).min(1),
+    steps: z
+      .array(
+        z
+          .object({
+            id: Id,
+            text: z.string().min(1),
+            /** Where on the world map this step happens (for the quest marker). */
+            place: Id.optional(),
+          })
+          .strict(),
+      )
+      .min(1),
     /** The quest completes when all of these steps are done. */
     completeWhen: z.array(Id).min(1),
     /** Quest that starts when this one completes. */
@@ -97,8 +108,16 @@ export const MapSpot = z
     label: z.string().min(1),
     /** One or two characters on the marker. */
     glyph: z.string().min(1).max(2),
-    /** area: a stage of the place's story; search: something to find; quest: a meeting; exit. */
-    kind: z.enum(['area', 'search', 'quest', 'exit']),
+    /**
+     * area: a stage of the place's story; search: something to find; quest: a meeting; exit;
+     * town spots: shop (opens `shop`), npc (a person to talk to), door (into the tavern),
+     * board (the Hall's notice board).
+     */
+    kind: z.enum(['area', 'search', 'quest', 'exit', 'shop', 'npc', 'door', 'board']),
+    /** For shop spots: the shops.json id. */
+    shop: Id.optional(),
+    /** The story this spot's knot is in, if not the map's own. */
+    story: z.string().min(1).optional(),
     /** The stitch in the place's story to start ("arrive.seam"). Not for exits. */
     knot: z.string().min(1).optional(),
     x: z.number(),
@@ -125,9 +144,9 @@ export const PlaceMap = z
     subtitle: z.string().min(1),
     /** Its Ink story (src/content/dialogue/<story>.ink). */
     story: z.string().min(1),
-    /** The quest whose steps show beside the map. */
-    quest: Id,
-    art: z.enum(['mine', 'kiln']),
+    /** The quest whose steps show beside the map (none: the active main quests show). */
+    quest: Id.optional(),
+    art: z.enum(['mine', 'kiln', 'town']),
     /** Where the party stands on arrival. */
     start: z.tuple([z.number(), z.number()]),
     spots: z.array(MapSpot).min(2),

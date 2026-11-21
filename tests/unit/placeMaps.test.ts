@@ -45,17 +45,24 @@ describe('place map data', () => {
         places.some((p) => p.id === m.id),
         m.id,
       ).toBe(true);
-      expect(
-        quests.some((q) => q.id === m.quest),
-        m.quest,
-      ).toBe(true);
+      if (m.quest)
+        expect(
+          quests.some((q) => q.id === m.quest),
+          m.quest,
+        ).toBe(true);
       expect(m.spots.filter((s) => s.kind === 'exit')).toHaveLength(1);
       for (const s of m.spots) {
-        if (s.kind === 'exit') continue;
+        if (s.kind === 'exit' || s.kind === 'door' || s.kind === 'board') continue;
+        if (s.kind === 'shop') {
+          expect(s.shop, s.id).toBeTruthy();
+          continue;
+        }
         expect(s.knot, s.id).toBeTruthy();
         expect(
           () =>
-            new Conversation(m.story, game(), new ScriptedRng(Array(40).fill(10))).start(s.knot!),
+            new Conversation(s.story ?? m.story, game(), new ScriptedRng(Array(40).fill(10))).start(
+              s.knot!,
+            ),
           `${m.id}.${s.id}`,
         ).not.toThrow();
         // Spots sit on the 900×492 map, clear of the edges.

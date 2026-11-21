@@ -20,6 +20,7 @@ EXTERNAL give_gold(n)
 EXTERNAL gold()
 EXTERNAL regain_slot()
 EXTERNAL ember()
+EXTERNAL kindled()
 
 VAR passed = false
 
@@ -56,6 +57,29 @@ Late in the watch, a red light comes through the trees, steady and unhurried. Ma
     She stands and picks up her lantern. "Good night. Keep warm." At the edge of the firelight she turns. "If you're right about the voice, I'd rather hear it from you than from a hag."
     ~ note("Maelis came to the camp in person. It was an honest conversation.")
     -> END
+
+// ── The kindled dream (Story_Review #1): once an act, Cindrath offers every marked hero a gift ──
+=== kindled_dream ===
+#speaker:cindrath
+All of you dream the same dream. A red room, warm all the way through, and the marks on your palms glowing like coals. A voice like a banked fire speaks, fondly. "Kindled. You carry a little of me already. Let me make it worth carrying."
+{kindled() > 0: "You took my gifts before," it says. "You'll find they've grown."}
++ {not flag("kindled_resist")} [Accept: let fire not burn us. (The mark deepens.)]
+    ~ set_flag("kindled_resist", true)
+    -> took
++ {not flag("kindled_strike")} [Accept: let our blows burn. (The mark deepens.)]
+    ~ set_flag("kindled_strike", true)
+    -> took
++ {not flag("kindled_vigor")} [Accept: let the warmth keep us standing. (The mark deepens.)]
+    ~ set_flag("kindled_vigor", true)
+    -> took
++ [Refuse.]
+    ~ set_flag("kindled_refused", true)
+    "Another night, then," the voice says, not at all offended. You all wake cold, and the marks ache for an hour.
+    -> END
+= took
+~ set_flag("kindled", kindled() + 1)
+You wake warm. The rings on your palms are a little wider than they were, and for a moment everyone's eyes catch the firelight like a cat's. (Kindled {kindled()} of 3: the voice will be harder to argue with when it matters.)
+-> END
 
 // ── Corin's dream bargain (Story_Bible §9: the Ember meter) ──
 === bargain ===

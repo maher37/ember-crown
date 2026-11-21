@@ -109,17 +109,19 @@ export function DialogueScreen() {
                   ? 'To battle (prepare)'
                   : c.travel === 'epilogue'
                     ? 'Afterwards…'
-                    : c.travel?.startsWith('scene:')
-                      ? 'Go on'
-                      : c.travel
-                        ? 'Set out'
-                        : afterDialogue === 'place'
-                          ? 'Go on'
-                          : game!.location === 'drowned-lantern'
-                            ? 'Back to the tavern'
-                            : placeMapFor(game!.location)
-                              ? `Back to ${placeMapFor(game!.location)!.title}`
-                              : 'Back to the map'}
+                    : c.travel === 'town'
+                      ? 'Into the street'
+                      : c.travel?.startsWith('scene:')
+                        ? 'Go on'
+                        : c.travel
+                          ? 'Set out'
+                          : afterDialogue === 'place'
+                            ? 'Go on'
+                            : game!.location === 'drowned-lantern'
+                              ? 'Back to the tavern'
+                              : placeMapFor(game!.location)
+                                ? `Back to ${placeMapFor(game!.location)!.title}`
+                                : 'Back to the map'}
               </span>
             </button>
           ) : (

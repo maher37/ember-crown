@@ -262,15 +262,16 @@ function PackAction({
     : `${it.name} isn't worn or wielded.`;
   return (
     <span className="row nowrap pack-actions">
-      {id === 'bog-pearl' && (
-        <button
-          type="button"
-          className="menu-secondary small-btn"
-          onClick={() => setMsg(spendPearl(hero.id) ?? '')}
-        >
-          Recover a slot
-        </button>
-      )}
+      {isMagicItem(id) &&
+        getItem(id).effects.some((e) => e.type === 'special' && e.id === 'regain-slot') && (
+          <button
+            type="button"
+            className="menu-secondary small-btn"
+            onClick={() => setMsg(spendPearl(hero.id, id) ?? '')}
+          >
+            Recover a slot
+          </button>
+        )}
       {id === 'staff-of-healing' && (
         <>
           <select

@@ -35,6 +35,10 @@ import { SpellFile } from './schemas/spell';
 import speciesJson from './species.json';
 import spellsJson from './spells.json';
 import weaponsJson from './weapons.json';
+import shopsJson from './shops.json';
+import bountiesJson from './bounties.json';
+import findsJson from './finds.json';
+import { BountyFile, FindFile, ShopFile } from './schemas/town';
 
 export { dataFiles } from './files';
 
@@ -67,6 +71,9 @@ export const awards = questFile.awards;
 export const npcs = NpcFile.parse(npcsJson).npcs;
 export const places = PlaceFile.parse(placesJson).places;
 export const placeMaps = PlaceMapFile.parse(placeMapsJson).maps;
+export const shops = ShopFile.parse(shopsJson).shops;
+export const bounties = BountyFile.parse(bountiesJson).bounties;
+export const finds = FindFile.parse(findsJson).finds;
 export const wix = WixFile.parse(wixJson);
 export const epilogue = EpilogueFile.parse(epilogueJson);
 const letterFile = LetterFile.parse(lettersJson);
@@ -94,6 +101,9 @@ export const gameData = {
   npcs,
   places,
   placeMaps,
+  shops,
+  bounties,
+  finds,
   letters,
   roadTables,
 };

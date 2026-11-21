@@ -36,6 +36,10 @@ import { SpellFile } from './schemas/spell';
 import speciesJson from './species.json';
 import spellsJson from './spells.json';
 import weaponsJson from './weapons.json';
+import shopsJson from './shops.json';
+import bountiesJson from './bounties.json';
+import findsJson from './finds.json';
+import { BountyFile, FindFile, ShopFile } from './schemas/town';
 
 /**
  * Every JSON content file, paired with the zod schema that checks it.
@@ -58,6 +62,9 @@ export const dataFiles = [
   { name: 'quests.json', schema: QuestFile, raw: questsJson },
   { name: 'npcs.json', schema: NpcFile, raw: npcsJson },
   { name: 'places.json', schema: PlaceFile, raw: placesJson },
+  { name: 'shops.json', schema: ShopFile, raw: shopsJson },
+  { name: 'bounties.json', schema: BountyFile, raw: bountiesJson },
+  { name: 'finds.json', schema: FindFile, raw: findsJson },
   { name: 'wix.json', schema: WixFile, raw: wixJson },
   { name: 'letters.json', schema: LetterFile, raw: lettersJson },
   { name: 'epilogue.json', schema: EpilogueFile, raw: epilogueJson },

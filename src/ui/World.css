@@ -158,6 +158,13 @@
   display: flex;
   flex-direction: column;
   gap: 12px;
+  /* As tall as the map; scrolls when the place card, finds and log don't fit. */
+  max-height: 624px;
+  overflow-y: auto;
+}
+.world-aside .travel-log {
+  min-height: 90px;
+  flex-shrink: 0;
 }
 .place-card {
   background: var(--panel);
@@ -580,4 +587,71 @@
   height: 100%;
   background: #e8c27a;
   transition: width 0.5s;
+}
+
+/* Quest markers: where an active quest leads next. */
+.quest-pin {
+  position: absolute;
+  top: -14px;
+  right: -12px;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font:
+    800 12px/1 Inter,
+    sans-serif;
+  color: #2b1a0c;
+  background: var(--gold, #e8c27a);
+  border: 2px solid #2b1a0c;
+  animation: quest-bob 1.6s ease-in-out infinite;
+  pointer-events: none;
+}
+.quest-pin.side {
+  background: #a9d2f2;
+}
+@keyframes quest-bob {
+  50% {
+    transform: translateY(-3px);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .quest-pin {
+    animation: none;
+  }
+}
+[data-reduce-motion='true'] .quest-pin {
+  animation: none;
+}
+.quest-pin-inline {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: var(--gold, #e8c27a);
+  color: #2b1a0c;
+  font:
+    800 11px/1 Inter,
+    sans-serif;
+  flex: none;
+}
+.quest-here {
+  list-style: none;
+  margin: 6px 0 2px;
+  padding: 0;
+  display: grid;
+  gap: 4px;
+  font-size: 13px;
+}
+.quest-here li {
+  display: flex;
+  gap: 6px;
+  align-items: flex-start;
+}
+.quest-here li.side .quest-pin-inline {
+  background: #a9d2f2;
 }
