@@ -1,6 +1,7 @@
 import { gear } from '../../data';
 import { getMonster } from '../creatures';
-import { getItem } from '../items';
+import { getItem, heroAc } from '../items';
+import { deriveEquipment, setLabel, switchSet } from '../loadout';
 import { casterNumbers, spiritAttack } from './spells';
 import { resourceLeft, skillBonus, slotsLeft, type Hero } from '../hero';
 import {
@@ -110,6 +111,8 @@ export type PlayerAction =
   | { type: 'end-turn' }
   | { type: 'use-item'; itemId: string; targetId: string }
   | { type: 'parley' }
+  /** Switch weapon sets (main and off hand): free, once a turn. */
+  | { type: 'swap-weapons' }
   | { type: 'react'; accept: boolean };
 
 export interface ActResult {
@@ -262,6 +265,25 @@ function perform(ctx: Ctx, c: Combatant, a: PlayerAction): string | null | undef
       return applyItem(ctx, c, a.itemId, a.targetId);
     case 'parley':
       return parley(ctx, c);
+    case 'swap-weapons': {
+      // PHB: you can draw or stow a weapon for free once a turn; we let that switch the whole set
+      // [inferred: like Baldur's Gate's weapon sets].
+      const h = heroOf(c);
+      if (!h) return 'Only heroes switch weapon sets.';
+      const lo = h.equipment.loadout;
+      if (!lo) return 'No second weapon set.';
+      if (c.turn.swappedWeapons) return 'Already switched weapons this turn.';
+      c.turn.swappedWeapons = true;
+      const next = { ...h, equipment: deriveEquipment(switchSet(lo)) };
+      next.ac = heroAc(next);
+      c.creature = next;
+      say(
+        s,
+        'you',
+        `${c.name} switches to ${setLabel(next.equipment.loadout!, next.equipment.loadout!.active)}`,
+      );
+      return null;
+    }
   }
 }
 

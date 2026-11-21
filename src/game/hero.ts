@@ -55,7 +55,17 @@ export interface Hero extends Creature {
   fightingStyle: string | null;
   speed: number;
   portrait: Portrait;
-  equipment: { armor: string | null; shield: boolean; weapons: string[]; magic: string[] };
+  /**
+   * What the hero wears and wields. `loadout` (the slots) is the source of truth; `armor`,
+   * `shield`, `weapons` and `magic` are worked out from it (src/game/loadout.ts) for the rules.
+   */
+  equipment: {
+    armor: string | null;
+    shield: boolean;
+    weapons: string[];
+    magic: string[];
+    loadout?: import('./loadout').Loadout;
+  };
   /** Clerics, druids and paladins may re-prepare spells (set after a long rest, cleared by a fight). */
   canPrepare?: boolean;
   /** Cantrips and leveled spells known or prepared. */

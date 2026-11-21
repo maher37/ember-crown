@@ -44,6 +44,14 @@ export function heroPortrait(hero: Hero, label = `Portrait of ${hero.name}`) {
     ears: ELF_EARS.has(hero.speciesId) ? ('elf' as const) : ('human' as const),
     cloth: CLASS_COPY[hero.classId]!.cloth,
     gear: portraitGear(hero),
+    wounds: woundsOf(hero),
     label,
   };
+}
+
+/** How hurt a hero looks, from their HP: 0 above 3/4, 1 above half, 2 above 1/4, else 3. */
+export function woundsOf(hero: Pick<Hero, 'hp' | 'maxHp' | 'dead'>): 0 | 1 | 2 | 3 {
+  if (hero.dead || hero.hp <= 0) return 3;
+  const f = hero.hp / Math.max(1, hero.maxHp);
+  return f > 0.75 ? 0 : f > 0.5 ? 1 : f > 0.25 ? 2 : 3;
 }

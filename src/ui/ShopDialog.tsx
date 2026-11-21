@@ -1,21 +1,27 @@
 import { useState } from 'react';
-import { armor, weapons } from '../data';
+import { armor } from '../data';
 import {
-  armorProficient,
   formatCoins,
+  isMagicItem,
   lookupItem,
+  RARE_FINDS,
   sellPrice,
-  SHOP_STOCK,
-  weaponProficient,
+  shopStock,
   type CatalogItem,
 } from '../game/gear';
+import { emptyLoadout, placeProblem, slotKindOf, type SlotId } from '../game/loadout';
+import { itemHowItWorks } from './EquipmentPanel';
 import { useGame } from '../game/store';
 import { Modal } from './ExploreDialogs';
 import './Sheet.css';
 
 const SECTIONS: { name: string; match: (it: CatalogItem) => boolean }[] = [
+  {
+    name: 'Rare finds (magic)',
+    match: (it) => it.type === 'magic' && it.id !== 'potion-of-healing' && !/potion/.test(it.id),
+  },
+  { name: 'Potions', match: (it) => it.type === 'magic' && /potion/.test(it.id) },
   { name: 'Adventuring gear', match: (it) => it.type === 'gear' },
-  { name: 'Potions', match: (it) => it.type === 'magic' },
   { name: 'Armor and shields', match: (it) => it.type === 'armor' || it.type === 'shield' },
   { name: 'Weapons', match: (it) => it.type === 'weapon' },
 ];
@@ -26,17 +32,33 @@ export function ShopDialog({ onClose }: { onClose: () => void }) {
   const g = game!;
   const [tab, setTab] = useState<'buy' | 'sell'>('buy');
   const [msg, setMsg] = useState('');
-  const stock = SHOP_STOCK.map((id) => lookupItem(id)!).filter(Boolean);
+  const stock = shopStock(g.act)
+    .map((id) => lookupItem(id)!)
+    .filter(Boolean);
+  const coming = RARE_FINDS.filter((m) => m.shopAct! > g.act);
   const first = (name: string) => name.split(' ')[0]!;
-  /** Which heroes are trained to use a piece of armor or a weapon. */
+  /**
+   * For things you wear or wield: each hero, and whether they can use it (and why not).
+   * PHB: proficiency, two hands, light off-hand weapons.
+   */
   const whoCanUse = (it: CatalogItem) => {
-    if (it.type === 'armor' || it.type === 'shield')
-      return g.party.filter((h) => armorProficient(h, it.id)).map((h) => first(h.name));
-    if (it.type === 'weapon') {
-      const w = weapons.find((x) => x.id === it.id)!;
-      return g.party.filter((h) => weaponProficient(h, w)).map((h) => first(h.name));
-    }
-    return null;
+    const kind = slotKindOf(it.id);
+    if (!kind) return null;
+    return g.party.map((h) => {
+      const lo = emptyLoadout();
+      const slot =
+        kind === 'shield'
+          ? 'off1'
+          : kind === 'weapon'
+            ? 'main1'
+            : kind === 'ring'
+              ? 'ring1'
+              : kind === 'trinket'
+                ? 'trinket1'
+                : (kind as SlotId);
+      const why = placeProblem(h, lo, slot, it.id);
+      return { name: first(h.name), ok: !why, why: why ?? '' };
+    });
   };
   const sellable = Object.entries(g.inventory).filter(([id, n]) => n > 0 && sellPrice(id) !== null);
 
@@ -66,6 +88,12 @@ export function ShopDialog({ onClose }: { onClose: () => void }) {
           gear back at half.
         </p>
         <div className="journal-scroll shop-list">
+          {tab === 'buy' && coming.length > 0 && (
+            <p className="small muted">
+              More rare finds arrive later in the story ({coming.length} items, from Act{' '}
+              {Math.min(...coming.map((m) => m.shopAct!))}).
+            </p>
+          )}
           {tab === 'buy' ? (
             SECTIONS.map((sec) => (
               <section key={sec.name} aria-label={sec.name}>
@@ -82,13 +110,24 @@ export function ShopDialog({ onClose }: { onClose: () => void }) {
                           <span className="strong">{it.name}</span>{' '}
                           {owned > 0 && <span className="small muted">(have {owned}) </span>}
                           <span className="small muted">{it.summary}</span>
+                          {isMagicItem(it.id) && (
+                            <span className="small faint"> {itemHowItWorks(it.id)}</span>
+                          )}
                           {users && (
-                            <span className="small users">
-                              {' '}
-                              {users.length
-                                ? `Trained: ${users.join(', ')}`
-                                : 'No one in the party is trained with this.'}
-                              {a?.strength ? ` · Str ${a.strength}` : ''}
+                            <span className="who-can">
+                              {users.map((u) => (
+                                <span
+                                  key={u.name}
+                                  className={`who ${u.ok ? 'ok' : 'no'}`}
+                                  title={u.ok ? `${u.name} can use it` : u.why}
+                                >
+                                  {u.ok ? '✓' : '✗'} {u.name}
+                                  {!u.ok && <span className="why"> · {shortWhy(u.why)}</span>}
+                                </span>
+                              ))}
+                              {a?.strength ? (
+                                <span className="who">needs Str {a.strength} (else −10 ft)</span>
+                              ) : null}
                             </span>
                           )}
                         </span>
@@ -155,4 +194,12 @@ export function ShopDialog({ onClose }: { onClose: () => void }) {
       </div>
     </Modal>
   );
+}
+
+/** The reason, shortened for the shop list ("not trained", "needs both hands"…). */
+function shortWhy(why: string): string {
+  if (/isn't trained/.test(why)) return 'not trained';
+  if (/both hands/.test(why)) return 'needs both hands';
+  if (/light weapon/.test(why)) return 'not light';
+  return why.replace(/\.$/, '');
 }

@@ -4,7 +4,7 @@
 
 Each line was entered from memory or is marked ⚠ in the design docs. Check it against your PDFs. When a line is right (or fixed), remove its `verify` and `verifyNote` from the JSON and run `npm run verify-list` again.
 
-**316 items to check.**
+**325 items to check.**
 
 ## species.json
 
@@ -281,6 +281,15 @@ Each line was entered from memory or is marked ⚠ in the design docs. Check it 
 - [ ] **items › The Drowned Lantern**: Name found in the DMG tables (✅); effect summarized from memory (Items.md CONFIRM LOCALLY).
 - [ ] **items › Wix's Clan Gift**: Name found in the DMG tables (✅); effect summarized from memory (Items.md CONFIRM LOCALLY).
 - [ ] **items › Dragon Slayer**: Name found in the DMG tables (✅); effect summarized from memory (Items.md CONFIRM LOCALLY).
+- [ ] **items › Longsword +1**: Price is our own (XGtE puts uncommon items at 101–500 gp).
+- [ ] **items › Rapier +1**: Price is our own (XGtE puts uncommon items at 101–500 gp).
+- [ ] **items › Mace +1**: Price is our own (XGtE puts uncommon items at 101–500 gp).
+- [ ] **items › Longbow +1**: Price is our own (XGtE puts uncommon items at 101–500 gp).
+- [ ] **items › Greataxe +1**: Price is our own (XGtE puts uncommon items at 101–500 gp).
+- [ ] **items › Quarterstaff +1**: Price is our own (XGtE puts uncommon items at 101–500 gp).
+- [ ] **items › Shield +1**: Price is our own (XGtE: uncommon 101–500 gp).
+- [ ] **items › Ring of Protection**: Price is our own (XGtE: rare 501–5,000 gp; kept low for a small economy).
+- [ ] **items › Cloak of Protection**: Price is our own. A second cloak for the shop (Scald's hoard has the first).
 
 ## encounters.json
 

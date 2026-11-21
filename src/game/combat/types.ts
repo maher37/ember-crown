@@ -64,6 +64,8 @@ export interface TurnState {
   hasteAction?: boolean;
   /** The haste action is the one being used. */
   inHasteAction?: boolean;
+  /** Weapon sets were switched this turn (free, once a turn). */
+  swappedWeapons?: boolean;
 }
 
 export interface Combatant {

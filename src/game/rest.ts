@@ -112,8 +112,16 @@ export function finishShortRest(game: GameState, spentBy: string[], rng: RandomS
   return { game: { ...game, party }, log };
 }
 
-/** PHB: Long Rest. Only one long rest in any 24-hour period (measured from the start). */
-export const canLongRest = (game: GameState) => rulesCanLongRest(game.clock, game.lastLongRest);
+/**
+ * PHB: Long Rest allows one per 24 hours (rulesCanLongRest). House rule (owner, Nov 21): the party
+ * may long rest whenever they like, in town or in the open; it still takes 8 hours, and the road
+ * can still interrupt it.
+ */
+export const canLongRest = (game: GameState) => {
+  void rulesCanLongRest;
+  void game;
+  return true;
+};
 
 /**
  * PHB: Long Rest. Eight hours. Heroes with at least 1 HP regain all HP, half their Hit Dice, every

@@ -84,6 +84,12 @@ One milestone per Claude Code session (bigger ones may take two). Each milestone
 - Bug pass, settings screen, credits. **Done**, plus floating damage numbers, hit flashes, the party on the Prepare screen, and the review's layout fixes.
 - **Prompt:** `Do Milestone M10 from docs/BUILD_ROADMAP.md.`
 
+## M10b: Playtest round 3 (owner request, Nov 21)
+- Equipment slots (two weapon sets, worn slots), a shop with rare finds and who-can-use reasons, item descriptions.
+- Fights: rotating initiative, bloodied portraits, click a square to cancel and move, enemy details in the side panel.
+- Long rest any time; dialogue centered with styled lines; the sheet's boxes stand out.
+- `docs/Story_Review.md`: Baldur's Gate 1–3 and recommendations (the owner picks what to adopt).
+
 ## M11: Animations (phase 2)
 - A presentation-event system, then the effects list in `RPG_Game_Plan.md` §9d (projectiles, spell areas, damage-type colors, condition icons, downed state).
 - Includes the reduce-motion and reduce-flashing settings.

@@ -136,11 +136,12 @@ describe('long rest', () => {
     expect(r.game.lastLongRest).toBe(GAME_START);
   });
 
-  it('only once per 24 hours', () => {
+  it('house rule (owner, Nov 21): a long rest any time, each still 8 hours', () => {
     const r = takeLongRest(game(), dice());
-    expect(canLongRest(r.game)).toBe(false);
-    expect(() => takeLongRest(r.game, dice())).toThrow(/24 hours/);
-    expect(canLongRest({ ...r.game, clock: GAME_START + 24 })).toBe(true);
+    expect(canLongRest(r.game)).toBe(true);
+    const again = takeLongRest(r.game, dice());
+    expect(again.game.clock).toBe(r.game.clock + 8);
+    void GAME_START;
   });
 
   it('a stable hero at 0 HP wakes with 1 HP but gets no other benefit (PHB)', () => {

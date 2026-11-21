@@ -4,6 +4,19 @@ import { armor, gear, magicItems, startingSupplies, weapons } from '../data';
 import type { Gear, Weapon } from '../data/schemas/item';
 import { getClass, getSpecies, type Hero } from './hero';
 import { heroAc } from './items';
+import {
+  autoSlot,
+  clearSlot,
+  loadoutFromLegacy,
+  loadoutOf,
+  placeItem,
+  setSlots,
+  slotKindOf,
+  switchSet,
+  withLoadout,
+  type Loadout,
+  type SlotId,
+} from './loadout';
 import { heroSpeed } from './levelup';
 import type { GameState } from './save';
 
@@ -73,17 +86,29 @@ export const SHOP_STOCK: string[] = [
   ...weapons.map((w) => w.id),
 ];
 
+/** Brannoc's rare finds: magic items that turn up as the story goes (magicItems.json `shopAct`). */
+export const RARE_FINDS = magicItems.filter(
+  (m) => m.shopAct !== undefined && m.costGp !== undefined,
+);
+
+/** Everything for sale in this act. */
+export const shopStock = (act: number): string[] => [
+  ...SHOP_STOCK,
+  ...RARE_FINDS.filter((m) => m.shopAct! <= act).map((m) => m.id),
+];
+
 /** PHB: Selling Treasure. Equipment and potions sell for half their price; story items don't sell. */
 export const sellPrice = (id: string): number | null => {
   const it = lookupItem(id);
   if (!it || it.costGp === undefined) return null;
-  if (it.type === 'magic' && !SHOP_STOCK.includes(id)) return null;
+  if (it.type === 'magic' && !SHOP_STOCK.includes(id) && !RARE_FINDS.some((m) => m.id === id))
+    return null;
   return Math.floor((it.costGp / 2) * 100) / 100;
 };
 
 export function buy(g: GameState, id: string): { game: GameState; error?: string } {
   const it = lookupItem(id);
-  if (!it || !SHOP_STOCK.includes(id) || it.costGp === undefined)
+  if (!it || !shopStock(g.act).includes(id) || it.costGp === undefined)
     return { game: g, error: 'Not for sale.' };
   if (g.gold + 1e-9 < it.costGp) return { game: g, error: `Not enough gold for ${it.name}.` };
   return {
@@ -127,33 +152,15 @@ export function armorProficient(hero: Pick<Hero, 'classId'>, id: string): boolea
   return cats.includes(a.category === 'shield' ? 'shields' : a.category);
 }
 
-/** At most this many weapons carried ready for a fight [inferred: keeps the combat bar tidy]. */
-export const MAX_WEAPONS = 6;
-
 /**
- * Why this hero can't take up this item right now, or null if they can. Heroes only use armor,
- * shields and weapons they're trained with [inferred simplification: the PHB allows it with
- * penalties].
+ * Why this hero can't take up this item right now, or null if they can: the first slot it could
+ * go in, with the reason it can't (proficiency, two hands, light off-hand weapons).
  */
 export function equipProblem(hero: Hero, id: string): string | null {
-  const it = lookupItem(id);
-  if (!it) return 'Unknown item.';
-  if (it.type === 'armor' || it.type === 'shield') {
-    if (!armorProficient(hero, id))
-      return `${hero.name} isn't trained in ${it.type === 'shield' ? 'shields' : `${armor.find((a) => a.id === id)!.category} armor`}.`;
-    if (it.type === 'shield' && hero.equipment.shield)
-      return `${hero.name} already carries a shield.`;
-    return null;
-  }
-  if (it.type === 'weapon') {
-    const w = weapons.find((x) => x.id === id)!;
-    if (!weaponProficient(hero, w))
-      return `${hero.name} isn't trained with the ${w.name.toLowerCase()}.`;
-    if (hero.equipment.weapons.length >= MAX_WEAPONS)
-      return `${hero.name} already carries ${MAX_WEAPONS} weapons. Put one away first.`;
-    return null;
-  }
-  return `${it.name} isn't worn or wielded.`;
+  const lo = loadoutOf(hero);
+  const slot = autoSlot(hero, lo, id);
+  if (!slot) return `${lookupItem(id)?.name ?? id} isn't worn or wielded.`;
+  return placeItem(hero, lo, slot, id).error ?? null;
 }
 
 const refresh = (h: Hero): Hero => {
@@ -164,29 +171,74 @@ const refresh = (h: Hero): Hero => {
 };
 
 const take = (inv: Record<string, number>, id: string) => ({ ...inv, [id]: (inv[id] ?? 0) - 1 });
-const put = (inv: Record<string, number>, id: string) => ({ ...inv, [id]: (inv[id] ?? 0) + 1 });
+const putAll = (inv: Record<string, number>, ids: string[]) => {
+  const out = { ...inv };
+  for (const id of ids) out[id] = (out[id] ?? 0) + 1;
+  return out;
+};
 
-/** Take armor, a shield or a weapon from the pack and wear or wield it (worn armor goes back in the pack). */
+/** A hero's loadout, converting an older hero (anything that doesn't fit goes to the pack). */
+function heroLoadout(g: GameState, hero: Hero): { lo: Loadout; inventory: Record<string, number> } {
+  if (hero.equipment.loadout) return { lo: hero.equipment.loadout, inventory: g.inventory };
+  const r = loadoutFromLegacy(hero);
+  return { lo: r.loadout, inventory: putAll(g.inventory, r.leftovers) };
+}
+
+function commit(
+  g: GameState,
+  hero: Hero,
+  lo: Loadout,
+  inventory: Record<string, number>,
+): GameState {
+  const next = withLoadout(hero, lo, refresh);
+  return { ...g, inventory, party: g.party.map((h) => (h.id === hero.id ? next : h)) };
+}
+
+/** Take an item from the pack and put it in a slot (or the natural slot for it). */
+export function equipToSlot(
+  g: GameState,
+  heroId: string,
+  id: string,
+  slot?: SlotId,
+): { game: GameState; error?: string; note?: string } {
+  const hero = g.party.find((h) => h.id === heroId);
+  if (!hero) return { game: g, error: 'No such hero.' };
+  if ((g.inventory[id] ?? 0) < 1) return { game: g, error: 'That isn\u2019t in the pack.' };
+  const { lo, inventory } = heroLoadout(g, hero);
+  const where = slot ?? autoSlot(hero, lo, id);
+  if (!where) return { game: g, error: `${lookupItem(id)?.name ?? id} isn't worn or wielded.` };
+  const r = placeItem(hero, lo, where, id);
+  if (r.error) return { game: g, error: r.error };
+  return { game: commit(g, hero, r.loadout, putAll(take(inventory, id), r.toPack)), note: r.note };
+}
+
+/** Empty a slot; its item goes back in the pack. */
+export function unequipSlot(g: GameState, heroId: string, slot: SlotId): GameState {
+  const hero = g.party.find((h) => h.id === heroId);
+  if (!hero) return g;
+  const { lo, inventory } = heroLoadout(g, hero);
+  const r = clearSlot(lo, slot);
+  return commit(g, hero, r.loadout, putAll(inventory, r.toPack));
+}
+
+/** Switch between weapon set 1 and 2 (free outside fights; once a turn in a fight). */
+export function switchWeapons(g: GameState, heroId: string): GameState {
+  const hero = g.party.find((h) => h.id === heroId);
+  if (!hero) return g;
+  const { lo, inventory } = heroLoadout(g, hero);
+  return commit(g, hero, switchSet(lo), inventory);
+}
+
+/** Refresh AC and speed for a hero whose loadout changed (combat uses it too). */
+export const refreshHero = refresh;
+
+/** Wear or wield an item from the pack, in its natural slot. */
 export function equipGear(
   g: GameState,
   heroId: string,
   id: string,
 ): { game: GameState; error?: string } {
-  const hero = g.party.find((h) => h.id === heroId);
-  if (!hero) return { game: g, error: 'No such hero.' };
-  if ((g.inventory[id] ?? 0) < 1) return { game: g, error: 'That isn’t in the pack.' };
-  const problem = equipProblem(hero, id);
-  if (problem) return { game: g, error: problem };
-  const it = lookupItem(id)!;
-  let inventory = take(g.inventory, id);
-  let equipment = hero.equipment;
-  if (it.type === 'armor') {
-    if (equipment.armor) inventory = put(inventory, equipment.armor);
-    equipment = { ...equipment, armor: id };
-  } else if (it.type === 'shield') equipment = { ...equipment, shield: true };
-  else equipment = { ...equipment, weapons: [...equipment.weapons, id] };
-  const party = g.party.map((h) => (h.id === heroId ? refresh({ ...h, equipment }) : h));
-  return { game: { ...g, party, inventory } };
+  return equipToSlot(g, heroId, id);
 }
 
 /** Put worn armor, a shield or one weapon back in the pack. */
@@ -197,22 +249,19 @@ export function unequipGear(
 ): GameState {
   const hero = g.party.find((h) => h.id === heroId);
   if (!hero) return g;
-  let inventory = g.inventory;
-  let equipment = hero.equipment;
-  if ('armor' in slot && equipment.armor) {
-    inventory = put(inventory, equipment.armor);
-    equipment = { ...equipment, armor: null };
-  } else if ('shield' in slot && equipment.shield) {
-    inventory = put(inventory, 'shield');
-    equipment = { ...equipment, shield: false };
-  } else if ('weapon' in slot) {
-    const i = equipment.weapons.indexOf(slot.weapon);
-    if (i < 0) return g;
-    inventory = put(inventory, slot.weapon);
-    equipment = { ...equipment, weapons: equipment.weapons.filter((_, j) => j !== i) };
-  } else return g;
-  const party = g.party.map((h) => (h.id === heroId ? refresh({ ...h, equipment }) : h));
-  return { ...g, party, inventory };
+  const lo = loadoutOf(hero);
+  const [main, off] = setSlots(lo.active);
+  const where: SlotId | undefined =
+    'armor' in slot
+      ? 'armor'
+      : 'shield' in slot
+        ? ([off, main] as SlotId[]).find(
+            (s) => lo[s] === 'shield' || slotKindOf(lo[s] ?? '') === 'shield',
+          )
+        : ([main, off, 'main1', 'off1', 'main2', 'off2'] as SlotId[]).find(
+            (s) => lo[s] === slot.weapon,
+          );
+  return where ? unequipSlot(g, heroId, where) : g;
 }
 
 /** Stealth checks at disadvantage in noisy armor (PHB armor table). */

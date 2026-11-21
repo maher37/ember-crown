@@ -210,6 +210,8 @@ export interface ChoiceView {
 export interface DialogueLine {
   speaker: string;
   text: string;
+  /** How to show it: a big centered card for act endings and turning points (#style:card). */
+  style?: 'card';
 }
 
 /**
@@ -402,8 +404,15 @@ export class Conversation {
     const s = this.story;
     while (s.canContinue) {
       const text = s.Continue()?.trim() ?? '';
-      for (const t of s.currentTags ?? []) if (t.startsWith('speaker:')) this.speaker = t.slice(8);
-      if (text) this.lines.push({ speaker: this.speaker, text });
+      const tags = s.currentTags ?? [];
+      for (const t of tags) if (t.startsWith('speaker:')) this.speaker = t.slice(8);
+      const card = tags.includes('style:card');
+      if (text)
+        this.lines.push({
+          speaker: this.speaker,
+          text,
+          ...(card ? { style: 'card' as const } : {}),
+        });
     }
     this.game = { ...this.game, ink: { ...this.game.ink, [this.storyId]: s.state.ToJson() } };
   }

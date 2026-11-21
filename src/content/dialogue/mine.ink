@@ -202,7 +202,7 @@ When you climb back out into the evening, someone is waiting at the mine mouth: 
 ~ note("Maelis Varrow, the hooded woman from Lantern Night, met you at the mine mouth. The Grey Company is marching to the Marsh of Chelimber for the second shard.")
 ~ set_act(2)
 #speaker:mine
-Act I ends here. The marsh roads are open on the map.
+Act I ends here. The marsh roads are open on the map. #style:card
 -> END
 
 // ── Things to find (search spots on the mine map) ──

@@ -17,7 +17,8 @@
       "consumable": true,
       "costGp": 50,
       "verify": true,
-      "verifyNote": "Healing amount from Items.md; 50 gp price from memory."
+      "verifyNote": "Healing amount from Items.md; 50 gp price from memory.",
+      "howItWorks": "Drink it (an action, or a bonus action for a rogue's Fast Hands), or pour it into an adjacent ally: they regain 2d4 + 2 HP. Outside fights, drink it from the Inventory."
     },
     {
       "id": "potion-of-greater-healing",
@@ -34,7 +35,10 @@
         }
       ],
       "consumable": true,
-      "act": 2
+      "act": 2,
+      "howItWorks": "Like a Potion of Healing, but stronger: 4d4 + 4 HP.",
+      "shopAct": 2,
+      "costGp": 150
     },
     {
       "id": "deepdelver",
@@ -58,7 +62,8 @@
       ],
       "baseWeapon": "warhammer",
       "act": 1,
-      "source": "Ulric's sunken shrine, in an Ammarindar dwarf's tomb niche"
+      "source": "Ulric's sunken shrine, in an Ammarindar dwarf's tomb niche",
+      "howItWorks": "A dwarven warhammer, magic (+1 to hit and damage). Wield it in a hand like any warhammer; it counts as magical against creatures that resist ordinary weapons."
     },
     {
       "id": "lysas-locket",
@@ -81,7 +86,9 @@
       "act": 1,
       "source": "The Mill at Night: Lysa Varrow's ghost",
       "verify": true,
-      "verifyNote": "Name found in the DMG tables (✅); effect summarized from memory (Items.md CONFIRM LOCALLY)."
+      "verifyNote": "Name found in the DMG tables (✅); effect summarized from memory (Items.md CONFIRM LOCALLY).",
+      "howItWorks": "Worn at the neck (needs attunement). If the wearer is dying, they stabilize by themselves at the start of their turn. Hit Dice spent in a short rest heal twice as much.",
+      "slot": "neck"
     },
     {
       "id": "luck-stone",
@@ -106,7 +113,9 @@
       "act": 1,
       "source": "The Goblin Who Stayed: Wix's clan",
       "verify": true,
-      "verifyNote": "Name found in the DMG tables (✅); effect summarized from memory (Items.md CONFIRM LOCALLY)."
+      "verifyNote": "Name found in the DMG tables (✅); effect summarized from memory (Items.md CONFIRM LOCALLY).",
+      "howItWorks": "A charm (needs attunement): +1 to every ability check and saving throw.",
+      "slot": "trinket"
     },
     {
       "id": "cloak-of-protection",
@@ -131,7 +140,8 @@
       "act": 1,
       "source": "Scald's hoard (elite)",
       "verify": true,
-      "verifyNote": "Name found in the DMG tables (✅); effect summarized from memory (Items.md CONFIRM LOCALLY)."
+      "verifyNote": "Name found in the DMG tables (✅); effect summarized from memory (Items.md CONFIRM LOCALLY).",
+      "howItWorks": "Worn on the shoulders (needs attunement): +1 AC and +1 to every saving throw."
     },
     {
       "id": "potion-of-fire-resistance",
@@ -152,7 +162,10 @@
       "act": 1,
       "source": "Scald's hoard (elite)",
       "verify": true,
-      "verifyNote": "Name found in the DMG tables (✅); effect summarized from memory (Items.md CONFIRM LOCALLY)."
+      "verifyNote": "Name found in the DMG tables (✅); effect summarized from memory (Items.md CONFIRM LOCALLY).",
+      "howItWorks": "Drink it in a fight: the drinker takes half damage from fire until the fight ends.",
+      "shopAct": 2,
+      "costGp": 150
     },
     {
       "id": "bog-pearl",
@@ -172,7 +185,9 @@
       "act": 2,
       "source": "Mother Sallow's Bargain",
       "verify": true,
-      "verifyNote": "Name found in the DMG tables (✅); effect summarized from memory (Items.md CONFIRM LOCALLY)."
+      "verifyNote": "Name found in the DMG tables (✅); effect summarized from memory (Items.md CONFIRM LOCALLY).",
+      "howItWorks": "A charm (needs a spellcaster's attunement). Once per long rest, use it from the Inventory to get back one spent spell slot (3rd level or lower).",
+      "slot": "trinket"
     },
     {
       "id": "mayors-boots",
@@ -191,7 +206,9 @@
       "act": 2,
       "source": "Edric's Errand",
       "verify": true,
-      "verifyNote": "Name found in the DMG tables (✅); effect summarized from memory (Items.md CONFIRM LOCALLY)."
+      "verifyNote": "Name found in the DMG tables (✅); effect summarized from memory (Items.md CONFIRM LOCALLY).",
+      "howItWorks": "Worn on the feet: soft, silent steps. Advantage on Stealth checks that rely on moving quietly (the story's sneaking checks).",
+      "slot": "feet"
     },
     {
       "id": "kells-shield",
@@ -214,7 +231,8 @@
       "act": 2,
       "source": "Deserters' Bounty",
       "verify": true,
-      "verifyNote": "Name found in the DMG tables (✅); effect summarized from memory (Items.md CONFIRM LOCALLY)."
+      "verifyNote": "Name found in the DMG tables (✅); effect summarized from memory (Items.md CONFIRM LOCALLY).",
+      "howItWorks": "Carry it in the off hand: a normal +2 shield, plus advantage on initiative and on Perception checks."
     },
     {
       "id": "shield-of-the-morninglord",
@@ -240,7 +258,8 @@
       "act": 2,
       "source": "The Fallen Paladin's Shield",
       "verify": true,
-      "verifyNote": "Homebrew (Items.md): \"uncommon-plus\"; stored as uncommon."
+      "verifyNote": "Homebrew (Items.md): \"uncommon-plus\"; stored as uncommon.",
+      "howItWorks": "Carry it in the off hand: +2 like any shield and +1 more AC, and the bearer resists fire damage."
     },
     {
       "id": "mace-of-disruption",
@@ -265,7 +284,8 @@
       "act": 2,
       "source": "The Drowned Abbot (elite)",
       "verify": true,
-      "verifyNote": "Name found in the DMG tables (✅); effect summarized from memory (Items.md CONFIRM LOCALLY)."
+      "verifyNote": "Name found in the DMG tables (✅); effect summarized from memory (Items.md CONFIRM LOCALLY).",
+      "howItWorks": "A mace (needs attunement). Against undead and fiends it deals 2d6 extra radiant damage, and a weak undead hit by it may be destroyed outright."
     },
     {
       "id": "staff-of-healing",
@@ -285,7 +305,8 @@
       "act": 2,
       "source": "The Drowned Abbot (elite)",
       "verify": true,
-      "verifyNote": "Name found in the DMG tables (✅); effect summarized from memory (Items.md CONFIRM LOCALLY)."
+      "verifyNote": "Name found in the DMG tables (✅); effect summarized from memory (Items.md CONFIRM LOCALLY).",
+      "howItWorks": "Held in the main hand (needs a bard's, cleric's or druid's attunement). Outside fights, spend its charges on Cure Wounds from the Inventory; it gets some back each long rest."
     },
     {
       "id": "kiln-quenched-weapon",
@@ -309,7 +330,8 @@
       ],
       "baseWeapon": "any",
       "act": 3,
-      "source": "The Cold Forge"
+      "source": "The Cold Forge",
+      "howItWorks": "A weapon quenched in King Varrow's forge: +1 to hit and damage, magical. It takes the form of a weapon its wielder is trained with."
     },
     {
       "id": "honor-guards-ring",
@@ -334,7 +356,8 @@
       "act": 3,
       "source": "Ser Ida's Unfinished Oath",
       "verify": true,
-      "verifyNote": "Name found in the DMG tables (✅); effect summarized from memory (Items.md CONFIRM LOCALLY)."
+      "verifyNote": "Name found in the DMG tables (✅); effect summarized from memory (Items.md CONFIRM LOCALLY).",
+      "howItWorks": "Worn on a finger (needs attunement): +1 AC and +1 to every saving throw. King Varrow's own ring."
     },
     {
       "id": "drowned-lantern",
@@ -353,7 +376,9 @@
       "act": 3,
       "source": "Last Boats from Ashford",
       "verify": true,
-      "verifyNote": "Name found in the DMG tables (✅); effect summarized from memory (Items.md CONFIRM LOCALLY)."
+      "verifyNote": "Name found in the DMG tables (✅); effect summarized from memory (Items.md CONFIRM LOCALLY).",
+      "howItWorks": "A charm. Its light shows what is invisible, and carrying it into the finale unlocks a special line.",
+      "slot": "trinket"
     },
     {
       "id": "wixs-clan-gift",
@@ -372,7 +397,9 @@
       "act": 3,
       "source": "Wix's Homecoming",
       "verify": true,
-      "verifyNote": "Name found in the DMG tables (✅); effect summarized from memory (Items.md CONFIRM LOCALLY)."
+      "verifyNote": "Name found in the DMG tables (✅); effect summarized from memory (Items.md CONFIRM LOCALLY).",
+      "howItWorks": "A lumpy bag from Wix's clan. It doesn't do anything in fights yet (it will summon a random small beast).",
+      "slot": "trinket"
     },
     {
       "id": "dragon-slayer",
@@ -403,7 +430,252 @@
       "act": 3,
       "source": "Vorrag the Kiln-Smith (elite)",
       "verify": true,
-      "verifyNote": "Name found in the DMG tables (✅); effect summarized from memory (Items.md CONFIRM LOCALLY)."
+      "verifyNote": "Name found in the DMG tables (✅); effect summarized from memory (Items.md CONFIRM LOCALLY).",
+      "howItWorks": "A longsword or greatsword (whichever its wielder prefers): +1 to hit and damage, and 3d6 extra damage against dragons, including the ember-wraith."
+    },
+    {
+      "id": "longsword-plus-1",
+      "name": "Longsword +1",
+      "base": "DMG: Weapon, +1",
+      "kind": "weapon",
+      "rarity": "uncommon",
+      "attunement": false,
+      "baseWeapon": "longsword",
+      "consumable": false,
+      "effects": [
+        {
+          "type": "modifier",
+          "target": "attack",
+          "value": 1
+        },
+        {
+          "type": "modifier",
+          "target": "damage",
+          "value": 1
+        }
+      ],
+      "summary": "+1 to attack and damage rolls; counts as magical.",
+      "howItWorks": "A finely made longsword: +1 to hit and damage, and magical against creatures that resist ordinary weapons.",
+      "costGp": 400,
+      "shopAct": 2,
+      "verify": true,
+      "verifyNote": "Price is our own (XGtE puts uncommon items at 101–500 gp)."
+    },
+    {
+      "id": "rapier-plus-1",
+      "name": "Rapier +1",
+      "base": "DMG: Weapon, +1",
+      "kind": "weapon",
+      "rarity": "uncommon",
+      "attunement": false,
+      "baseWeapon": "rapier",
+      "consumable": false,
+      "effects": [
+        {
+          "type": "modifier",
+          "target": "attack",
+          "value": 1
+        },
+        {
+          "type": "modifier",
+          "target": "damage",
+          "value": 1
+        }
+      ],
+      "summary": "+1 to attack and damage rolls; counts as magical.",
+      "howItWorks": "A finely made rapier: +1 to hit and damage, and magical against creatures that resist ordinary weapons.",
+      "costGp": 400,
+      "shopAct": 2,
+      "verify": true,
+      "verifyNote": "Price is our own (XGtE puts uncommon items at 101–500 gp)."
+    },
+    {
+      "id": "mace-plus-1",
+      "name": "Mace +1",
+      "base": "DMG: Weapon, +1",
+      "kind": "weapon",
+      "rarity": "uncommon",
+      "attunement": false,
+      "baseWeapon": "mace",
+      "consumable": false,
+      "effects": [
+        {
+          "type": "modifier",
+          "target": "attack",
+          "value": 1
+        },
+        {
+          "type": "modifier",
+          "target": "damage",
+          "value": 1
+        }
+      ],
+      "summary": "+1 to attack and damage rolls; counts as magical.",
+      "howItWorks": "A finely made mace: +1 to hit and damage, and magical against creatures that resist ordinary weapons.",
+      "costGp": 400,
+      "shopAct": 2,
+      "verify": true,
+      "verifyNote": "Price is our own (XGtE puts uncommon items at 101–500 gp)."
+    },
+    {
+      "id": "longbow-plus-1",
+      "name": "Longbow +1",
+      "base": "DMG: Weapon, +1",
+      "kind": "weapon",
+      "rarity": "uncommon",
+      "attunement": false,
+      "baseWeapon": "longbow",
+      "consumable": false,
+      "effects": [
+        {
+          "type": "modifier",
+          "target": "attack",
+          "value": 1
+        },
+        {
+          "type": "modifier",
+          "target": "damage",
+          "value": 1
+        }
+      ],
+      "summary": "+1 to attack and damage rolls; counts as magical.",
+      "howItWorks": "A finely made longbow: +1 to hit and damage, and magical against creatures that resist ordinary weapons.",
+      "costGp": 400,
+      "shopAct": 2,
+      "verify": true,
+      "verifyNote": "Price is our own (XGtE puts uncommon items at 101–500 gp)."
+    },
+    {
+      "id": "greataxe-plus-1",
+      "name": "Greataxe +1",
+      "base": "DMG: Weapon, +1",
+      "kind": "weapon",
+      "rarity": "uncommon",
+      "attunement": false,
+      "baseWeapon": "greataxe",
+      "consumable": false,
+      "effects": [
+        {
+          "type": "modifier",
+          "target": "attack",
+          "value": 1
+        },
+        {
+          "type": "modifier",
+          "target": "damage",
+          "value": 1
+        }
+      ],
+      "summary": "+1 to attack and damage rolls; counts as magical.",
+      "howItWorks": "A finely made greataxe: +1 to hit and damage, and magical against creatures that resist ordinary weapons.",
+      "costGp": 400,
+      "shopAct": 2,
+      "verify": true,
+      "verifyNote": "Price is our own (XGtE puts uncommon items at 101–500 gp)."
+    },
+    {
+      "id": "quarterstaff-plus-1",
+      "name": "Quarterstaff +1",
+      "base": "DMG: Weapon, +1",
+      "kind": "weapon",
+      "rarity": "uncommon",
+      "attunement": false,
+      "baseWeapon": "quarterstaff",
+      "consumable": false,
+      "effects": [
+        {
+          "type": "modifier",
+          "target": "attack",
+          "value": 1
+        },
+        {
+          "type": "modifier",
+          "target": "damage",
+          "value": 1
+        }
+      ],
+      "summary": "+1 to attack and damage rolls; counts as magical.",
+      "howItWorks": "A finely made quarterstaff: +1 to hit and damage, and magical against creatures that resist ordinary weapons.",
+      "costGp": 400,
+      "shopAct": 2,
+      "verify": true,
+      "verifyNote": "Price is our own (XGtE puts uncommon items at 101–500 gp)."
+    },
+    {
+      "id": "shield-plus-1",
+      "name": "Shield +1",
+      "base": "DMG: Armor, +1 (shield)",
+      "kind": "shield",
+      "rarity": "uncommon",
+      "attunement": false,
+      "consumable": false,
+      "effects": [
+        {
+          "type": "modifier",
+          "target": "ac",
+          "value": 1
+        }
+      ],
+      "summary": "A shield with +1 more AC (+3 in all).",
+      "howItWorks": "Carry it in the off hand: +2 like any shield and +1 more AC.",
+      "costGp": 400,
+      "shopAct": 2,
+      "verify": true,
+      "verifyNote": "Price is our own (XGtE: uncommon 101–500 gp)."
+    },
+    {
+      "id": "ring-of-protection",
+      "name": "Ring of Protection",
+      "base": "DMG: Ring of Protection",
+      "kind": "ring",
+      "rarity": "rare",
+      "attunement": true,
+      "consumable": false,
+      "effects": [
+        {
+          "type": "modifier",
+          "target": "ac",
+          "value": 1
+        },
+        {
+          "type": "modifier",
+          "target": "save",
+          "value": 1
+        }
+      ],
+      "summary": "+1 AC and +1 to saving throws.",
+      "howItWorks": "Worn on a finger (needs attunement): +1 AC and +1 to every saving throw.",
+      "costGp": 900,
+      "shopAct": 3,
+      "verify": true,
+      "verifyNote": "Price is our own (XGtE: rare 501–5,000 gp; kept low for a small economy)."
+    },
+    {
+      "id": "cloak-of-protection-shop",
+      "name": "Cloak of Protection",
+      "base": "DMG: Cloak of Protection",
+      "kind": "cloak",
+      "rarity": "uncommon",
+      "attunement": true,
+      "consumable": false,
+      "effects": [
+        {
+          "type": "modifier",
+          "target": "ac",
+          "value": 1
+        },
+        {
+          "type": "modifier",
+          "target": "save",
+          "value": 1
+        }
+      ],
+      "summary": "+1 AC and +1 to all saving throws.",
+      "howItWorks": "Worn on the shoulders (needs attunement): +1 AC and +1 to every saving throw.",
+      "costGp": 450,
+      "shopAct": 3,
+      "verify": true,
+      "verifyNote": "Price is our own. A second cloak for the shop (Scald's hoard has the first)."
     }
   ]
 }

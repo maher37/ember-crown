@@ -847,3 +847,40 @@ button.cell {
   animation: none;
   outline: 3px solid #ff8a5a;
 }
+
+/* Initiative: the acting creature leads; a marker shows where the next round starts. */
+.chip.on {
+  height: 38px;
+  font-size: 13px;
+  font-weight: 700;
+  box-shadow: 0 0 0 3px rgba(127, 179, 230, 0.25);
+}
+.chip.next-round {
+  margin-left: 22px;
+  position: relative;
+}
+.chip.next-round::before {
+  content: '↻';
+  position: absolute;
+  left: -18px;
+  color: var(--muted);
+  font-size: 14px;
+}
+
+/* The creature you point at: shown in the side panel, over the log, so it never hides tokens. */
+.combat-aside {
+  position: relative;
+}
+.tooltip.inspect {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: auto;
+  max-height: 62%;
+  overflow: hidden;
+  font-size: 13px;
+  padding: 10px 12px;
+  box-shadow: 0 -8px 24px rgba(0, 0, 0, 0.45);
+  z-index: 5;
+}

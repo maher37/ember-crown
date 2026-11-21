@@ -281,3 +281,8 @@ Warlock (pact magic; recharges on a short rest): L1: one 1st-level slot; L2: two
 - [ ] (Proposed, M10) Balance tuning from the simulator: the toll bridge is 3 thugs on Medium (the scout joins on Hard); two Ashford militia fight beside you at the evacuation convoy (one hell hound on Easy); the dire-wolf road encounter is 2 wolves on Medium (1 on Easy, 4 on Hard). XP awards are unchanged.
 - [ ] (Proposed, M10) Comfort settings: Reduce motion (no background animation, the party jumps instead of walking, rests run fast; also follows the system setting) and Reduce flashing (a small shake instead of a flash when someone is hit).
 
+- [x] (Owner's choice, Nov 21) Long rests any time (RAW: once per 24 hours); still 8 hours each, and the road can interrupt one in the wild.
+- [ ] (Proposed, Nov 21) Weapon sets: switching between set 1 and set 2 is free once a turn in a fight (RAW: one free draw or stow per turn; we let it swap both hands, like Baldur's Gate).
+- [ ] (Proposed, Nov 21) The off hand takes a shield or a light weapon (Two-Weapon Fighting); a two-handed weapon empties it.
+- [ ] (Proposed, Nov 21) Brannoc's rare finds: +1 weapons and a +1 shield (400 gp) and Potions of Greater Healing and Fire Resistance (150 gp) from Act II; a Ring of Protection (900 gp) and a Cloak of Protection (450 gp) from Act III [inferred prices; XGtE gives ranges].
+

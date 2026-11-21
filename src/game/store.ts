@@ -21,9 +21,19 @@ import {
 } from './combat';
 import { Conversation, PLACE_SCENES } from './dialogue';
 import { placeMapFor } from './placeMaps';
-import { buy, equipGear, isMagicItem, sell, startingPack, unequipGear } from './gear';
+import {
+  buy,
+  equipToSlot,
+  isMagicItem,
+  sell,
+  startingPack,
+  switchWeapons,
+  unequipGear,
+  unequipSlot,
+} from './gear';
 import { prepareProblem, prepareSpells } from './spellPrep';
-import { equip, getItem, unequip } from './items';
+import { giveLoadouts, type SlotId as GearSlot } from './loadout';
+import { getItem } from './items';
 import { castHealing, layOnHands } from './healing';
 import { withFormation } from './formation';
 import type { Hero } from './hero';
@@ -118,6 +128,12 @@ interface GameStore {
     heroId: string,
     slot: { armor: true } | { shield: true } | { weapon: string },
   ) => void;
+  /** Put an item from the pack in a given slot (or its natural one). Returns an error, if any. */
+  equipToHeroSlot: (heroId: string, itemId: string, slot?: GearSlot) => string | undefined;
+  /** Empty a slot (the item goes back in the pack). */
+  clearHeroSlot: (heroId: string, slot: GearSlot) => void;
+  /** Switch a hero between weapon set 1 and 2 (outside fights). */
+  switchHeroWeapons: (heroId: string) => void;
   /** Brannoc's shop. Return an error, if any. */
   buyItem: (itemId: string) => string | undefined;
   sellItem: (itemId: string) => string | undefined;
@@ -259,7 +275,7 @@ export const useGame = create<GameStore>()((set, get) => ({
       createdAt: new Date().toISOString(),
       seed,
       rngState,
-      party: pendingParty.map((h) => ({ ...h, canPrepare: true })),
+      party: giveLoadouts(pendingParty, {}).party.map((h) => ({ ...h, canPrepare: true })),
       act: 1,
       location: 'drowned-lantern',
       playSeconds: 0,
@@ -269,7 +285,7 @@ export const useGame = create<GameStore>()((set, get) => ({
       ink: {},
       clock: GAME_START,
       lastLongRest: null,
-      inventory: startingPack(pendingParty).items,
+      inventory: giveLoadouts(pendingParty, startingPack(pendingParty).items).inventory,
       gold: startingPack(pendingParty).gold,
       letters: pendingParty.some((h) => h.origin === 'corin')
         ? [{ id: 'letter-0', read: false }]
@@ -468,47 +484,72 @@ export const useGame = create<GameStore>()((set, get) => ({
   },
 
   equipItem: (heroId, itemId) => {
-    const { game, shortRest } = get();
+    const { game } = get();
     if (!game) return 'No game';
     if ((game.inventory[itemId] ?? 0) < 1) return 'That item is not in the pack.';
-    if (!isMagicItem(itemId)) {
-      // Armor, a shield or a weapon: wear or wield it (worn armor goes back in the pack).
-      const r = equipGear(game, heroId, itemId);
-      if (!r.error) set({ game: r.game });
-      return r.error;
-    }
-    const item = getItem(itemId);
-    // Items.md: attuning happens during a short rest.
-    if (item.attunement && !shortRest)
-      return `Attuning to ${item.name} takes a short rest (Camp → Short rest).`;
-    const hero = game.party.find((h) => h.id === heroId)!;
-    const r = equip(hero, itemId);
-    if (r.error) return r.error;
-    set({
-      game: {
-        ...game,
-        party: game.party.map((h) => (h.id === heroId ? r.hero : h)),
-        inventory: { ...game.inventory, [itemId]: game.inventory[itemId]! - 1 },
-      },
-    });
-    return undefined;
+    return get().equipToHeroSlot(heroId, itemId);
   },
 
   unequipItem: (heroId, itemId) => {
     const { game } = get();
     if (!game) return;
-    set({
-      game: {
-        ...game,
-        party: game.party.map((h) => (h.id === heroId ? unequip(h, itemId) : h)),
-        inventory: { ...game.inventory, [itemId]: (game.inventory[itemId] ?? 0) + 1 },
-      },
-    });
+    const hero = game.party.find((h) => h.id === heroId);
+    const lo = hero?.equipment.loadout;
+    const slot = lo
+      ? (Object.keys(lo) as (keyof typeof lo)[]).find((k) => k !== 'active' && lo[k] === itemId)
+      : undefined;
+    if (slot && slot !== 'active') get().clearHeroSlot(heroId, slot);
+    else if (hero)
+      // An older hero without slots: take it off the magic list.
+      set({
+        game: {
+          ...game,
+          party: game.party.map((h) =>
+            h.id === heroId
+              ? {
+                  ...h,
+                  equipment: {
+                    ...h.equipment,
+                    magic: h.equipment.magic.filter((x) => x !== itemId),
+                  },
+                }
+              : h,
+          ),
+          inventory: { ...game.inventory, [itemId]: (game.inventory[itemId] ?? 0) + 1 },
+        },
+      });
   },
 
   unequipGear: (heroId, slot) => {
     const { game } = get();
     if (game) set({ game: unequipGear(game, heroId, slot) });
+  },
+
+  equipToHeroSlot: (heroId, itemId, slot) => {
+    const { game, shortRest } = get();
+    if (!game) return 'No game';
+    if (isMagicItem(itemId)) {
+      const item = getItem(itemId);
+      // Items.md: attuning happens during a short rest.
+      if (item.attunement && !shortRest)
+        return `Attuning to ${item.name} takes a short rest (Camp → Short rest).`;
+    }
+    const r = equipToSlot(game, heroId, itemId, slot);
+    if (!r.error) {
+      set({ game: r.game });
+      if (r.note) get().toast([r.note]);
+    }
+    return r.error;
+  },
+
+  clearHeroSlot: (heroId, slot) => {
+    const { game } = get();
+    if (game) set({ game: unequipSlot(game, heroId, slot) });
+  },
+
+  switchHeroWeapons: (heroId) => {
+    const { game } = get();
+    if (game) set({ game: switchWeapons(game, heroId) });
   },
 
   buyItem: (itemId) => {

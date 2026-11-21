@@ -3,6 +3,7 @@ import { spells as allSpells } from '../data';
 import { attackOptions } from '../game/combat/attacks';
 import type { Combatant } from '../game/combat/types';
 import { itemName } from '../game/gear';
+import { setLabel } from '../game/loadout';
 import {
   armorSlows,
   getBackground,
@@ -170,24 +171,26 @@ function StatsTab({ hero }: { hero: Hero }) {
               </div>
             ))}
           </div>
-          <h3 className="eyebrow">Saving throws</h3>
-          <ul className="check-list">
-            {ABILITIES.map((a) => (
-              <li key={a}>
-                <span
-                  className={`dot${hero.saveProficiencies.includes(a) ? ' on' : ''}`}
-                  aria-hidden="true"
-                />
-                <span className="num">{signed(save(a))}</span>
-                <span>
-                  {ABILITY_NAMES[a]}
-                  {hero.saveProficiencies.includes(a) && (
-                    <span className="sr-only"> (proficient)</span>
-                  )}
-                </span>
-              </li>
-            ))}
-          </ul>
+          <div className="sheet-box">
+            <h3 className="eyebrow">Saving throws</h3>
+            <ul className="check-list">
+              {ABILITIES.map((a) => (
+                <li key={a}>
+                  <span
+                    className={`dot${hero.saveProficiencies.includes(a) ? ' on' : ''}`}
+                    aria-hidden="true"
+                  />
+                  <span className="num">{signed(save(a))}</span>
+                  <span>
+                    {ABILITY_NAMES[a]}
+                    {hero.saveProficiencies.includes(a) && (
+                      <span className="sr-only"> (proficient)</span>
+                    )}
+                  </span>
+                </li>
+              ))}
+            </ul>
+          </div>
           {hero.conditions.length > 0 && (
             <p className="small">
               <span className="eyebrow-inline">Conditions</span>{' '}
@@ -198,61 +201,72 @@ function StatsTab({ hero }: { hero: Hero }) {
         </section>
 
         <section className="sheet-col-skills" aria-label="Skills">
-          <h3 className="eyebrow">Skills</h3>
-          <ul className="check-list">
-            {SKILL_IDS.map((s) => {
-              const exp = hero.expertise.includes(s);
-              const prof = hero.skills.includes(s);
-              return (
-                <li key={s}>
-                  <span
-                    className={`dot${prof ? ' on' : ''}${exp ? ' exp' : ''}`}
-                    aria-hidden="true"
-                  />
-                  <span className="num">{signed(skillBonus(hero, s))}</span>
-                  <span>
-                    {SKILL_NAMES[s]} <span className="faint">({SKILLS[s].toUpperCase()})</span>
-                    {exp ? (
-                      <span className="sr-only"> (expertise)</span>
-                    ) : prof ? (
-                      <span className="sr-only"> (proficient)</span>
-                    ) : null}
-                  </span>
-                </li>
-              );
-            })}
-          </ul>
+          <div className="sheet-box">
+            <h3 className="eyebrow">Skills</h3>
+            <ul className="check-list">
+              {SKILL_IDS.map((s) => {
+                const exp = hero.expertise.includes(s);
+                const prof = hero.skills.includes(s);
+                return (
+                  <li key={s}>
+                    <span
+                      className={`dot${prof ? ' on' : ''}${exp ? ' exp' : ''}`}
+                      aria-hidden="true"
+                    />
+                    <span className="num">{signed(skillBonus(hero, s))}</span>
+                    <span>
+                      {SKILL_NAMES[s]} <span className="faint">({SKILLS[s].toUpperCase()})</span>
+                      {exp ? (
+                        <span className="sr-only"> (expertise)</span>
+                      ) : prof ? (
+                        <span className="sr-only"> (proficient)</span>
+                      ) : null}
+                    </span>
+                  </li>
+                );
+              })}
+            </ul>
+          </div>
           <p className="small faint">● proficient · ◆ expertise (double proficiency)</p>
         </section>
 
         <section className="sheet-col-more" aria-label="Attacks, features and proficiencies">
-          <h3 className="eyebrow">Attacks</h3>
-          <table className="attacks">
-            <thead>
-              <tr>
-                <th>Weapon</th>
-                <th>To hit</th>
-                <th>Damage</th>
-                <th>Range</th>
-              </tr>
-            </thead>
-            <tbody>
-              {attacks.map((o) => (
-                <tr key={o.id}>
-                  <td>{o.name}</td>
-                  <td>{signed(o.toHit)}</td>
-                  <td>{o.damage.map((d) => `${d.dice} ${d.type}`).join(' + ')}</td>
-                  <td>
-                    {o.kind === 'melee'
-                      ? `${o.reach} ft`
-                      : o.range
-                        ? `${o.range[0]}/${o.range[1]} ft`
-                        : ''}
-                  </td>
+          <div className="sheet-box">
+            <h3 className="eyebrow">Attacks</h3>
+            <table className="attacks">
+              <thead>
+                <tr>
+                  <th>Weapon</th>
+                  <th>To hit</th>
+                  <th>Damage</th>
+                  <th>Range</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+              <tbody>
+                {attacks.map((o) => (
+                  <tr key={o.id}>
+                    <td>{o.name}</td>
+                    <td>{signed(o.toHit)}</td>
+                    <td>{o.damage.map((d) => `${d.dice} ${d.type}`).join(' + ')}</td>
+                    <td>
+                      {o.kind === 'melee'
+                        ? `${o.reach} ft`
+                        : o.range
+                          ? `${o.range[0]}/${o.range[1]} ft`
+                          : ''}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+            {hero.equipment.loadout && (
+              <p className="small muted">
+                Other weapon set:{' '}
+                {setLabel(hero.equipment.loadout, hero.equipment.loadout.active === 1 ? 2 : 1)}{' '}
+                (switch in a fight, or on the Equipment tab).
+              </p>
+            )}
+          </div>
           {resources.length > 0 && (
             <>
               <h3 className="eyebrow">Class resources</h3>
@@ -263,30 +277,32 @@ function StatsTab({ hero }: { hero: Hero }) {
               </p>
             </>
           )}
-          <h3 className="eyebrow">Features and traits</h3>
-          <ul className="feature-list">
-            {features.map((f) => (
-              <li key={`${f.level}-${f.id}`}>
-                <span className="strong">{f.name}</span>{' '}
-                <span className="faint small">
-                  ({cls.name} {f.level})
-                </span>{' '}
-                <span className="small muted">{featureNote(hero, f.id) ?? f.summary}</span>
+          <div className="sheet-box">
+            <h3 className="eyebrow">Features and traits</h3>
+            <ul className="feature-list">
+              {features.map((f) => (
+                <li key={`${f.level}-${f.id}`}>
+                  <span className="strong">{f.name}</span>{' '}
+                  <span className="faint small">
+                    ({cls.name} {f.level})
+                  </span>{' '}
+                  <span className="small muted">{featureNote(hero, f.id) ?? f.summary}</span>
+                </li>
+              ))}
+              {sp.traits.map((t) => (
+                <li key={t.id}>
+                  <span className="strong">{t.name}</span>{' '}
+                  <span className="faint small">({sp.name})</span>{' '}
+                  <span className="small muted">{t.summary}</span>
+                </li>
+              ))}
+              <li>
+                <span className="strong">{bg.feature.name}</span>{' '}
+                <span className="faint small">({bg.name})</span>{' '}
+                <span className="small muted">{bg.feature.summary}</span>
               </li>
-            ))}
-            {sp.traits.map((t) => (
-              <li key={t.id}>
-                <span className="strong">{t.name}</span>{' '}
-                <span className="faint small">({sp.name})</span>{' '}
-                <span className="small muted">{t.summary}</span>
-              </li>
-            ))}
-            <li>
-              <span className="strong">{bg.feature.name}</span>{' '}
-              <span className="faint small">({bg.name})</span>{' '}
-              <span className="small muted">{bg.feature.summary}</span>
-            </li>
-          </ul>
+            </ul>
+          </div>
           <h3 className="eyebrow">Proficiencies and languages</h3>
           <p className="small">
             <span className="eyebrow-inline">Armor</span>{' '}

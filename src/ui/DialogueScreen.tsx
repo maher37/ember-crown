@@ -60,76 +60,99 @@ export function DialogueScreen() {
         </div>
       </div>
       <section aria-label="Conversation" className="conversation">
-        {c.lastCheck && (
-          <div className={`check-result ${c.lastCheck.success ? 'ok' : 'fail'}`} role="status">
-            {c.lastCheck.text.replace('→ FAIL', '→ FAILURE')}
+        <div className="conv-inner">
+          {c.lastCheck && (
+            <div className={`check-result ${c.lastCheck.success ? 'ok' : 'fail'}`} role="status">
+              {c.lastCheck.text.replace('→ FAIL', '→ FAILURE')}
+            </div>
+          )}
+          <div className="prose" aria-live="polite">
+            {c.lines.map((l, i) => {
+              const prev = c.lines[i - 1];
+              const who = npcById(l.speaker);
+              // A name tag when a person (not a place) starts speaking.
+              const showName =
+                !!who?.portrait && !isPlaceSpeaker(l.speaker) && prev?.speaker !== l.speaker;
+              const spoken = /^["“]/.test(l.text) || /["”]$/.test(l.text);
+              const kind =
+                l.style === 'card'
+                  ? 'card'
+                  : l.text.startsWith('[')
+                    ? 'meta'
+                    : spoken
+                      ? 'spoken'
+                      : 'narration';
+              return (
+                <div
+                  key={i}
+                  className={`line ${kind}`}
+                  style={{ animationDelay: `${Math.min(i, 6) * 0.12}s` }}
+                >
+                  {showName && kind !== 'card' && <span className="line-speaker">{who!.name}</span>}
+                  <p>{l.text}</p>
+                </div>
+              );
+            })}
           </div>
-        )}
-        <div className="prose" aria-live="polite">
-          {c.lines.map((l, i) => (
-            <p key={i} className={l.text.startsWith('[') ? 'meta' : ''}>
-              {l.text}
-            </p>
-          ))}
+          {c.messages.length > 0 && (
+            <div className="journal-flash" role="status">
+              {c.messages.map((m) => (
+                <span key={m}>{m}</span>
+              ))}
+            </div>
+          )}
+          {c.ended ? (
+            <button type="button" className="choice leave" autoFocus onClick={leaveDialogue}>
+              <span className="num">↵</span>
+              <span>
+                {c.fight
+                  ? 'To battle (prepare)'
+                  : c.travel === 'epilogue'
+                    ? 'Afterwards…'
+                    : c.travel?.startsWith('scene:')
+                      ? 'Go on'
+                      : c.travel
+                        ? 'Set out'
+                        : afterDialogue === 'place'
+                          ? 'Go on'
+                          : game!.location === 'drowned-lantern'
+                            ? 'Back to the tavern'
+                            : placeMapFor(game!.location)
+                              ? `Back to ${placeMapFor(game!.location)!.title}`
+                              : 'Back to the map'}
+              </span>
+            </button>
+          ) : (
+            <div className="choices">
+              {choices.map((ch, i) => (
+                <button
+                  key={ch.index}
+                  type="button"
+                  className="choice"
+                  autoFocus={i === 0}
+                  onClick={() => choose(ch.index)}
+                >
+                  <span className="num">{i + 1}.</span>
+                  {ch.as && <span className="tag as">[{ch.as.label}]</span>}
+                  {ch.gear && <span className="tag gear">{ch.gear}</span>}
+                  {ch.check && (
+                    <span className="tag check">
+                      {ch.check.skillName} DC {ch.check.dc} · {ch.check.heroName}{' '}
+                      {ch.check.bonus >= 0 ? '+' : ''}
+                      {ch.check.bonus}
+                    </span>
+                  )}
+                  <span>{ch.text}</span>
+                  {ch.fight && (
+                    <span className="tag fight" aria-label="starts combat">
+                      ⚔ (starts combat)
+                    </span>
+                  )}
+                </button>
+              ))}
+            </div>
+          )}
         </div>
-        {c.messages.length > 0 && (
-          <div className="journal-flash" role="status">
-            {c.messages.map((m) => (
-              <span key={m}>{m}</span>
-            ))}
-          </div>
-        )}
-        {c.ended ? (
-          <button type="button" className="choice leave" autoFocus onClick={leaveDialogue}>
-            <span className="num">↵</span>
-            <span>
-              {c.fight
-                ? 'To battle (prepare)'
-                : c.travel === 'epilogue'
-                  ? 'Afterwards…'
-                  : c.travel?.startsWith('scene:')
-                    ? 'Go on'
-                    : c.travel
-                      ? 'Set out'
-                      : afterDialogue === 'place'
-                        ? 'Go on'
-                        : game!.location === 'drowned-lantern'
-                          ? 'Back to the tavern'
-                          : placeMapFor(game!.location)
-                            ? `Back to ${placeMapFor(game!.location)!.title}`
-                            : 'Back to the map'}
-            </span>
-          </button>
-        ) : (
-          <div className="choices">
-            {choices.map((ch, i) => (
-              <button
-                key={ch.index}
-                type="button"
-                className="choice"
-                autoFocus={i === 0}
-                onClick={() => choose(ch.index)}
-              >
-                <span className="num">{i + 1}.</span>
-                {ch.as && <span className="tag as">[{ch.as.label}]</span>}
-                {ch.gear && <span className="tag gear">{ch.gear}</span>}
-                {ch.check && (
-                  <span className="tag check">
-                    {ch.check.skillName} DC {ch.check.dc} · {ch.check.heroName}{' '}
-                    {ch.check.bonus >= 0 ? '+' : ''}
-                    {ch.check.bonus}
-                  </span>
-                )}
-                <span>{ch.text}</span>
-                {ch.fight && (
-                  <span className="tag fight" aria-label="starts combat">
-                    ⚔ (starts combat)
-                  </span>
-                )}
-              </button>
-            ))}
-          </div>
-        )}
       </section>
       <div className="speaker-bar">
         <div className="leader-portrait">
