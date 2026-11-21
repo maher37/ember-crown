@@ -125,6 +125,7 @@ export const HeroSchema = z.object({
   canPrepare: z.boolean().optional(),
   subclassId: z.string().optional(),
   lingering: z.object({ spell: z.string(), until: z.number().optional() }).optional(),
+  arcaneWard: z.number().int().min(0).optional(),
   equipment: z.object({
     armor: z.string().nullable(),
     shield: z.boolean(),

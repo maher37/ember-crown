@@ -9,15 +9,16 @@ import {
   type DiceRoll,
   type RandomSource,
 } from '../../rules';
+import { spells as spellList } from '../../data';
 import { getMonster } from '../creatures';
 import { hasSubclass, resourceLeft } from '../hero';
 import {
   addEffect,
-  classLevel,
   combatSave,
   dealDamage,
   endConcentrationEffects,
   effectsWith,
+  isSub,
   healCombatant,
   heroOf,
   removeEffect,
@@ -243,7 +244,7 @@ export function applyLeaf(
       return;
     }
     case 'special':
-      applySpecial(ctx, source, target, e.id, opts);
+      applySpecial(ctx, source, target, e.id, opts, e.note);
       return;
   }
 }
@@ -267,7 +268,7 @@ export function giveCondition(
   // PHB: Berserker, Mindless Rage (level 6). Can't be charmed or frightened while raging.
   if (
     (id === 'charmed' || id === 'frightened') &&
-    classLevel(target, 'barbarian') >= 6 &&
+    isSub(target, 'barbarian', 'berserker', 6) &&
     target.effects.some((e) => e.tag === 'rage')
   ) {
     say(ctx.s, 'you', `${target.name}'s Mindless Rage shrugs off being ${id}`);
@@ -353,6 +354,10 @@ export const HANDLED_SPECIALS = new Set([
   'shillelagh',
   'fly-speed',
   'max-hp-reduction',
+  'blur',
+  'resistance-to',
+  'bestow-curse',
+  'dispel-darkness',
 ]);
 
 /** Effects that come from spells, for Dispel Magic. */
@@ -376,6 +381,8 @@ const SPELL_TAGS = new Set([
   'call-lightning',
   'heat-metal',
   'vampiric-touch',
+  'blurred',
+  'cursed',
 ]);
 
 function applySpecial(
@@ -384,6 +391,7 @@ function applySpecial(
   target: Combatant,
   id: string,
   opts: LeafOpts,
+  note?: string,
 ): void {
   const { s } = ctx;
   const name = opts.spellName ?? id;
@@ -559,19 +567,62 @@ function applySpecial(
       return;
     }
     case 'next-hit-bonus': {
-      // PHB: Branding Smite. The next weapon hit deals +2d6 radiant (+1d6 per slot level above 2nd).
-      const n = 2 + Math.max(0, (opts.slotLevel ?? 2) - 2);
+      // PHB: Branding Smite (+2d6 radiant) and Searing Smite (+1d6 fire): the next weapon hit
+      // deals extra damage, one more die per slot level above the spell's.
+      const m = /^(\d+)d(\d+) (\w+)/.exec(note ?? '2d6 radiant')!;
+      const base = spellList.find((x) => x.id === opts.spellId)?.level ?? 2;
+      const n = Number(m[1]) + Math.max(0, (opts.slotLevel ?? base) - base);
       addEffect(source, {
-        id: 'branding-smite',
+        id: opts.spellId ?? 'branding-smite',
         name,
         sourceId: source.id,
         tag: 'next-hit',
         concentration: opts.concentration,
-        data: { dice: `${n}d6`, type: 'radiant' },
+        data: { dice: `${n}d${m[2]}`, type: m[3]! },
       });
-      say(s, 'you', `${source.name}'s weapon brands with light`);
+      say(
+        s,
+        'you',
+        m[3] === 'fire'
+          ? `${source.name}'s weapon glows white-hot`
+          : `${source.name}'s weapon brands with light`,
+      );
       return;
     }
+    case 'blur':
+      // PHB: Blur. Attacks against you have disadvantage (concentration).
+      addEffect(target, {
+        id: 'blur',
+        name,
+        sourceId: source.id,
+        tag: 'blurred',
+        concentration: opts.concentration,
+      });
+      say(s, 'you', `${target.name}'s outline blurs and shimmers`);
+      return;
+    case 'resistance-to':
+      // PHB: Protection from Energy. Resistance to one damage type (fire, here).
+      addEffect(target, {
+        id: 'protection-from-energy',
+        name,
+        sourceId: source.id,
+        tag: 'resistance',
+        data: { type: note ?? 'fire' },
+        concentration: opts.concentration,
+      });
+      say(s, 'you', `${target.name} is warded against ${note ?? 'fire'}`);
+      return;
+    case 'bestow-curse':
+      // PHB: Bestow Curse (one option): the caster's attacks and spells deal +1d8 necrotic to the target.
+      addEffect(target, {
+        id: 'bestow-curse',
+        name,
+        sourceId: source.id,
+        tag: 'cursed',
+        concentration: opts.concentration,
+      });
+      say(s, 'dmg', `${target.name} is cursed`);
+      return;
     case 'mirror-image':
       addEffect(target, {
         id: 'mirror-image',

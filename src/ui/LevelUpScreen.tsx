@@ -1,3 +1,4 @@
+import { SpellTip, Tip } from './Tip';
 import { useMemo, useState } from 'react';
 import { getClass, getSpecies } from '../game/hero';
 import {
@@ -159,6 +160,16 @@ export function LevelUpScreen() {
           <div className="feature-cards">
             <div className="feature-card gained">
               <span className="eyebrow">Gained at level {opts.newLevel}</span>
+              {opts.picks.some((p) => p.id === 'subclass') && (
+                <div>
+                  <span className="strong">
+                    {opts.picks.find((p) => p.id === 'subclass')!.name}
+                  </span>{' '}
+                  <span className="small muted">
+                    Choose below; each one says what it gives you.
+                  </span>
+                </div>
+              )}
               {opts.features.map((f) => (
                 <div key={f.id}>
                   <span className="strong">{f.name}</span>{' '}
@@ -169,7 +180,22 @@ export function LevelUpScreen() {
             {opts.next && (
               <div className="feature-card">
                 <span className="eyebrow muted-eyebrow">Coming at level {opts.next.level}</span>
-                <span className="small">{opts.next.names.join(' · ')}</span>
+                <span className="small next-features">
+                  {opts.next.features.map((f) => (
+                    <Tip
+                      key={f.name}
+                      title={f.name}
+                      meta={`Level ${opts.next!.level}`}
+                      wrap={
+                        <span tabIndex={0} className="tip-target">
+                          {f.name}
+                        </span>
+                      }
+                    >
+                      {f.summary}
+                    </Tip>
+                  ))}
+                </span>
               </div>
             )}
           </div>
@@ -296,16 +322,21 @@ export function LevelUpScreen() {
                   </h3>
                   <div className="spell-grid">
                     {rules.cantripPool.map((s) => (
-                      <button
+                      <SpellTip
                         key={s.id}
-                        type="button"
-                        className={`pill ${plan.cantrips.includes(s.id) ? 'on' : ''}`}
-                        aria-pressed={plan.cantrips.includes(s.id)}
-                        title={s.summary}
-                        onClick={() => toggle('cantrips', s.id, rules.cantrips)}
-                      >
-                        {s.name}
-                      </button>
+                        spell={s}
+                        wrap={
+                          <button
+                            type="button"
+                            className={`pill ${plan.cantrips.includes(s.id) ? 'on' : ''}`}
+                            aria-pressed={plan.cantrips.includes(s.id)}
+                            aria-description={s.summary}
+                            onClick={() => toggle('cantrips', s.id, rules.cantrips)}
+                          >
+                            {s.name}
+                          </button>
+                        }
+                      />
                     ))}
                   </div>
                 </>
@@ -317,16 +348,21 @@ export function LevelUpScreen() {
                   </h3>
                   <div className="spell-grid">
                     {rules.spellPool.map((s) => (
-                      <button
+                      <SpellTip
                         key={s.id}
-                        type="button"
-                        className={`pill ${plan.spells.includes(s.id) ? 'on' : ''}`}
-                        aria-pressed={plan.spells.includes(s.id)}
-                        title={s.summary}
-                        onClick={() => toggle('spells', s.id, rules.spells)}
-                      >
-                        {s.name} <span className="faint">{s.level}</span>
-                      </button>
+                        spell={s}
+                        wrap={
+                          <button
+                            type="button"
+                            className={`pill ${plan.spells.includes(s.id) ? 'on' : ''}`}
+                            aria-pressed={plan.spells.includes(s.id)}
+                            aria-description={s.summary}
+                            onClick={() => toggle('spells', s.id, rules.spells)}
+                          >
+                            {s.name} <span className="faint">{s.level}</span>
+                          </button>
+                        }
+                      />
                     ))}
                   </div>
                 </>

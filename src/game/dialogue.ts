@@ -207,6 +207,8 @@ export interface ChoiceView {
   fight?: boolean;
   /** A choice opened by a piece of gear (#gear:rope): the gear's name. */
   gear?: string;
+  /** A choice that gives an item (#item:mace-of-disruption): its id, so the screen can say what it does. */
+  item?: string;
 }
 
 export interface DialogueLine {
@@ -214,6 +216,8 @@ export interface DialogueLine {
   text: string;
   /** How to show it: a big centered card for act endings and turning points (#style:card). */
   style?: 'card';
+  /** An item the party just received (shown with what it does). */
+  item?: string;
 }
 
 /**
@@ -278,9 +282,15 @@ export class Conversation {
     s.BindExternalFunction('fight', (encounterId: string, resume: string) => {
       this.fight = { encounterId, resume };
     });
-    s.BindExternalFunction('give_item', (id: string, qty: number) =>
-      apply(giveItem(this.game, id, qty)),
-    );
+    s.BindExternalFunction('give_item', (id: string, qty: number) => {
+      apply(giveItem(this.game, id, qty));
+      // Say what it is and what it does, right in the scene.
+      this.lines.push({
+        speaker: this.speaker,
+        text: `Received: ${itemName(id)}${qty > 1 ? ` ×${qty}` : ''}`,
+        item: id,
+      });
+    });
     s.BindExternalFunction('give_gold', (n: number) => {
       this.game = { ...this.game, gold: Math.max(0, (this.game.gold ?? 0) + n) };
       this.messages.push(n >= 0 ? `Received ${n} gp` : `Paid ${-n} gp`);
@@ -436,6 +446,8 @@ export class Conversation {
       if (tags.includes('fight')) view.fight = true;
       const gearTag = tags.find((t) => t.startsWith('gear:'));
       if (gearTag) view.gear = itemName(gearTag.slice(5));
+      const itemTag = tags.find((t) => t.startsWith('item:'));
+      if (itemTag) view.item = itemTag.slice(5);
       const hero = as ? alive(this.game).find((h) => matches(h, as)) : undefined;
       if (as && hero) view.as = { label: tagLabel(as), heroName: hero.name.split(' ')[0]! };
       if (check) {

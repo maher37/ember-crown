@@ -91,6 +91,8 @@ export const ClassDef = z
             cantrips: z.array(Id).default([]),
             /** Class level → spells always prepared from then on (they don't count against the limit). */
             spells: z.record(z.string(), z.array(Id)).default({}),
+            /** Spells added to the class's list to choose from (a warlock patron's expanded list). */
+            expanded: z.array(Id).default([]),
             ...Verify,
           })
           .strict(),

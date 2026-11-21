@@ -109,10 +109,10 @@ Behind a door stamped with a scratched-out sun, water laps at the top step. Some
 = abbot_reward
 #speaker:abbey
 The Drowned Abbot comes apart like wet paper. On his tomb lie two relics of the old abbey: a flanged mace that hums near the dead, and a staff of white ash wound with sun-gold. You can carry only one out through the water.
-+ [Take the mace (Mace of Disruption).]
++ [Take the mace (Mace of Disruption). #item:mace-of-disruption]
     ~ give_item("mace-of-disruption", 1)
     -> hub
-+ [Take the staff (Staff of Healing).]
++ [Take the staff (Staff of Healing). #item:staff-of-healing]
     ~ give_item("staff-of-healing", 1)
     -> hub
 

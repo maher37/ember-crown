@@ -1,3 +1,4 @@
+import { SUBCLASS_TITLE } from '../game/hero';
 import { useMemo, useState } from 'react';
 import { backgrounds, classes } from '../data';
 import {
@@ -691,10 +692,10 @@ function StepTwo({
             </div>
           </>
         )}
-        {cls.subclasses && (
+        {cls.subclasses && cls.subclass.level === 1 && (
           <>
-            <h2 className="eyebrow">Divine domain</h2>
-            <div className="style-list" role="radiogroup" aria-label="Divine domain">
+            <h2 className="eyebrow">{SUBCLASS_TITLE[cls.id]}</h2>
+            <div className="style-list" role="radiogroup" aria-label={SUBCLASS_TITLE[cls.id]}>
               {cls.subclasses.map((o) => {
                 const on = (draft.subclassId ?? cls.subclass.id) === o.id;
                 return (

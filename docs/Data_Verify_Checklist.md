@@ -4,7 +4,7 @@
 
 Each line was entered from memory or is marked ⚠ in the design docs. Check it against your PDFs. When a line is right (or fixed), remove its `verify` and `verifyNote` from the JSON and run `npm run verify-list` again.
 
-**342 items to check.**
+**386 items to check.**
 
 ## species.json
 
@@ -33,11 +33,24 @@ Each line was entered from memory or is marked ⚠ in the design docs. Check it 
 
 - [ ] **classes › Barbarian**: Proficiencies and skill list from memory of the PHB. Hit die, saves and subclass level checked (✅).
 - [ ] **classes › Barbarian › Rage**: Rages 2/2/3/3/3/4 (Rules_Scope §4 gives L1, L3 and L6; L2, L4, L5 from memory).
+- [ ] **classes › Barbarian › features › Totem Spirit: Bear**: Added Nov 21 (owner asked for more subclasses), from memory of the PHB; check the details.
+- [ ] **classes › Barbarian › features › Totem Spirit: Wolf**: Added Nov 21 (owner asked for more subclasses), from memory of the PHB; check the details.
+- [ ] **classes › Barbarian › features › Totem Spirit: Eagle**: Added Nov 21 (owner asked for more subclasses), from memory of the PHB; check the details.
+- [ ] **classes › Barbarian › features › Aspect of the Beast**: Added Nov 21 (owner asked for more subclasses), from memory of the PHB; check the details.
+- [ ] **classes › Barbarian › features › Aspect of the Beast**: Added Nov 21 (owner asked for more subclasses), from memory of the PHB; check the details.
+- [ ] **classes › Barbarian › features › Aspect of the Beast**: Added Nov 21 (owner asked for more subclasses), from memory of the PHB; check the details.
 - [ ] **classes › Barbarian**: One of the PHB starting-equipment options, from memory and simplified (no packs or gold yet).
+- [ ] **classes › Barbarian › Totem Warrior: Bear**: Added Nov 21 (owner asked for more subclasses), from memory of the PHB; check the details.
+- [ ] **classes › Barbarian › Totem Warrior: Wolf**: Added Nov 21 (owner asked for more subclasses), from memory of the PHB; check the details.
+- [ ] **classes › Barbarian › Totem Warrior: Eagle**: Added Nov 21 (owner asked for more subclasses), from memory of the PHB; check the details.
 - [ ] **classes › Bard**: Proficiencies and skill list from memory of the PHB. Hit die, saves and subclass level checked (✅).
 - [ ] **classes › Bard**: Cantrips/spells known counts from memory of the PHB class table.
 - [ ] **classes › Bard › Bardic Inspiration**: Uses = Cha modifier (min 1). Recharges on a short rest from level 5 (Font of Inspiration).
+- [ ] **classes › Bard › features › Bonus Proficiencies**: Added Nov 21 (owner asked for more subclasses), from memory of the PHB; check the details.
+- [ ] **classes › Bard › features › Combat Inspiration**: Added Nov 21 (owner asked for more subclasses), from memory of the PHB; check the details.
+- [ ] **classes › Bard › features › Extra Attack**: Added Nov 21 (owner asked for more subclasses), from memory of the PHB; check the details.
 - [ ] **classes › Bard**: One of the PHB starting-equipment options, from memory and simplified (no packs or gold yet).
+- [ ] **classes › Bard › College of Valor**: Added Nov 21 (owner asked for more subclasses), from memory of the PHB; check the details.
 - [ ] **classes › Cleric**: Proficiencies and skill list from memory of the PHB. Hit die, saves and subclass level checked (✅).
 - [ ] **classes › Cleric**: Cantrips/spells known counts from memory of the PHB class table.
 - [ ] **classes › Cleric › Channel Divinity**: 1 use at L2-5, 2 at L6 (Rules_Scope §4 ✅ names; counts from memory).
@@ -61,7 +74,10 @@ Each line was entered from memory or is marked ⚠ in the design docs. Check it 
 - [ ] **classes › Fighter**: Proficiencies and skill list from memory of the PHB. Hit die, saves and subclass level checked (✅).
 - [ ] **classes › Fighter › Second Wind**: Rules_Scope §4.
 - [ ] **classes › Fighter › Action Surge**: Rules_Scope §4.
+- [ ] **classes › Fighter › Superiority dice**: Added Nov 21 (owner asked for more subclasses), from memory of the PHB; check the details.
+- [ ] **classes › Fighter › features › Combat Superiority**: Added Nov 21 (owner asked for more subclasses), from memory of the PHB; check the details.
 - [ ] **classes › Fighter**: One of the PHB starting-equipment options, from memory and simplified (no packs or gold yet).
+- [ ] **classes › Fighter › Battle Master**: Added Nov 21 (owner asked for more subclasses), from memory of the PHB; check the details.
 - [ ] **classes › Monk**: Proficiencies and skill list from memory of the PHB. Hit die, saves and subclass level checked (✅).
 - [ ] **classes › Monk › Ki**: Ki = monk level from L2 (Rules_Scope §4).
 - [ ] **classes › Monk › Wholeness of Body**: PHB Open Hand 6: once per long rest, heal 3 × monk level (from memory).
@@ -72,12 +88,19 @@ Each line was entered from memory or is marked ⚠ in the design docs. Check it 
 - [ ] **classes › Paladin › Lay on Hands pool**: Pool of 5 × level HP (Rules_Scope §4).
 - [ ] **classes › Paladin › Channel Divinity**: Use counts from memory of the PHB class table (Rules_Scope CONFIRM LOCALLY).
 - [ ] **classes › Paladin › features › Oath Spells**: Devotion oath spell list from memory.
+- [ ] **classes › Paladin › features › Channel Divinity: Vow of Enmity**: Added Nov 21 (owner asked for more subclasses), from memory of the PHB; check the details.
+- [ ] **classes › Paladin › features › Channel Divinity: Abjure Enemy**: Added Nov 21 (owner asked for more subclasses), from memory of the PHB; check the details.
+- [ ] **classes › Paladin › features › Oath Spells**: Added Nov 21 (owner asked for more subclasses), from memory of the PHB; check the details.
 - [ ] **classes › Paladin**: One of the PHB starting-equipment options, from memory and simplified (no packs or gold yet).
+- [ ] **classes › Paladin › Oath of Vengeance**: Added Nov 21 (owner asked for more subclasses), from memory of the PHB; check the details.
 - [ ] **classes › Ranger**: Proficiencies and skill list from memory of the PHB. Hit die, saves and subclass level checked (✅).
 - [ ] **classes › Ranger**: Cantrips/spells known counts from memory of the PHB class table.
 - [ ] **classes › Ranger**: One of the PHB starting-equipment options, from memory and simplified (no packs or gold yet).
 - [ ] **classes › Rogue**: Proficiencies and skill list from memory of the PHB. Hit die, saves and subclass level checked (✅).
+- [ ] **classes › Rogue › features › Assassinate**: Added Nov 21 (owner asked for more subclasses), from memory of the PHB; check the details.
+- [ ] **classes › Rogue › features › Bonus Proficiencies**: Added Nov 21 (owner asked for more subclasses), from memory of the PHB; check the details.
 - [ ] **classes › Rogue**: One of the PHB starting-equipment options, from memory and simplified (no packs or gold yet).
+- [ ] **classes › Rogue › Assassin**: Added Nov 21 (owner asked for more subclasses), from memory of the PHB; check the details.
 - [ ] **classes › Sorcerer**: Proficiencies and skill list from memory of the PHB. Hit die, saves and subclass level checked (✅).
 - [ ] **classes › Sorcerer**: Cantrips/spells known counts from memory of the PHB class table.
 - [ ] **classes › Sorcerer › Sorcery Points**: Sorcery points = level from L2 (Rules_Scope §4).
@@ -85,13 +108,21 @@ Each line was entered from memory or is marked ⚠ in the design docs. Check it 
 - [ ] **classes › Warlock**: Proficiencies and skill list from memory of the PHB. Hit die, saves and subclass level checked (✅).
 - [ ] **classes › Warlock**: Cantrips/spells known counts from memory of the PHB class table.
 - [ ] **classes › Warlock › Dark One's Own Luck**: Use counts from memory of the PHB class table (Rules_Scope CONFIRM LOCALLY).
+- [ ] **classes › Warlock › Entropic Ward**: Added Nov 21 (owner asked for more subclasses), from memory of the PHB; check the details.
 - [ ] **classes › Warlock › features › Expanded Spell List**: Fiend expanded list from memory.
+- [ ] **classes › Warlock › features › Awakened Mind**: Added Nov 21 (owner asked for more subclasses), from memory of the PHB; check the details.
+- [ ] **classes › Warlock › features › Expanded Spell List**: Added Nov 21 (owner asked for more subclasses), from memory of the PHB; check the details.
 - [ ] **classes › Warlock › features › Eldritch Invocations**: Curated invocation list; prerequisites from memory.
+- [ ] **classes › Warlock › features › Entropic Ward**: Added Nov 21 (owner asked for more subclasses), from memory of the PHB; check the details.
 - [ ] **classes › Warlock**: One of the PHB starting-equipment options, from memory and simplified (no packs or gold yet).
+- [ ] **classes › Warlock › The Great Old One**: Added Nov 21 (owner asked for more subclasses), from memory of the PHB; check the details.
 - [ ] **classes › Wizard**: Proficiencies and skill list from memory of the PHB. Hit die, saves and subclass level checked (✅).
 - [ ] **classes › Wizard**: Cantrips/spells known counts from memory of the PHB class table.
 - [ ] **classes › Wizard › Arcane Recovery**: Use counts from memory of the PHB class table (Rules_Scope CONFIRM LOCALLY).
+- [ ] **classes › Wizard › features › Arcane Ward**: Added Nov 21 (owner asked for more subclasses), from memory of the PHB; check the details.
+- [ ] **classes › Wizard › features › Projected Ward**: Added Nov 21 (owner asked for more subclasses), from memory of the PHB; check the details.
 - [ ] **classes › Wizard**: One of the PHB starting-equipment options, from memory and simplified (no packs or gold yet).
+- [ ] **classes › Wizard › School of Abjuration**: Added Nov 21 (owner asked for more subclasses), from memory of the PHB; check the details.
 
 ## spells.json
 
@@ -191,6 +222,19 @@ Each line was entered from memory or is marked ⚠ in the design docs. Check it 
 - [ ] **spells › Greater Invisibility**: From memory of the PHB (Rules_Scope §5 summary): check damage dice, save, range, duration and school.
 - [ ] **spells › Ice Storm**: From memory of the PHB (Rules_Scope §5 summary): check damage dice, save, range, duration and school.
 - [ ] **spells › Cone of Cold**: From memory of the PHB (Rules_Scope §5 summary): check damage dice, save, range, duration and school.
+- [ ] **spells › Resistance**: Added Nov 21 (owner asked for more spells), from memory of the PHB: check dice, saves, range and duration.
+- [ ] **spells › False Life**: Added Nov 21 (owner asked for more spells), from memory of the PHB: check dice, saves, range and duration.
+- [ ] **spells › Ray of Sickness**: Added Nov 21 (owner asked for more spells), from memory of the PHB: check dice, saves, range and duration.
+- [ ] **spells › Tasha's Hideous Laughter**: Added Nov 21 (owner asked for more spells), from memory of the PHB: check dice, saves, range and duration.
+- [ ] **spells › Searing Smite**: Added Nov 21 (owner asked for more spells), from memory of the PHB: check dice, saves, range and duration.
+- [ ] **spells › Blindness/Deafness**: Added Nov 21 (owner asked for more spells), from memory of the PHB: check dice, saves, range and duration.
+- [ ] **spells › Blur**: Added Nov 21 (owner asked for more spells), from memory of the PHB: check dice, saves, range and duration.
+- [ ] **spells › Enlarge/Reduce**: Added Nov 21 (owner asked for more spells), from memory of the PHB: check dice, saves, range and duration.
+- [ ] **spells › Magic Weapon**: Added Nov 21 (owner asked for more spells), from memory of the PHB: check dice, saves, range and duration.
+- [ ] **spells › Gust of Wind**: Added Nov 21 (owner asked for more spells), from memory of the PHB: check dice, saves, range and duration.
+- [ ] **spells › Protection from Energy**: Added Nov 21 (owner asked for more spells), from memory of the PHB: check dice, saves, range and duration.
+- [ ] **spells › Bestow Curse**: Added Nov 21 (owner asked for more spells), from memory of the PHB: check dice, saves, range and duration.
+- [ ] **spells › Daylight**: Added Nov 21 (owner asked for more spells), from memory of the PHB: check dice, saves, range and duration.
 
 ## monsters.json
 

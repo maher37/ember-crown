@@ -1,3 +1,4 @@
+import { heroOf } from '../game/combat/core';
 // A party "player" for the balance simulator: it heals the dying, casts its best damage spell or
 // cantrip, uses simple class features, and otherwise attacks or closes in. Enemies use the game's
 // own AI. It plays reasonably, not brilliantly, so real players should do a little better [inferred].
@@ -59,7 +60,7 @@ function tryHeal(s: CombatState, me: Combatant): CombatState | null {
     if (ch.blocked || !heals(ch.spell) || ch.spell.level === 0) continue;
     const lvl = ch.levels[0];
     if (lvl === undefined) continue;
-    const t = targeting(ch.spell, lvl);
+    const t = targeting(ch.spell, lvl, undefined, heroOf(me)?.level ?? 1);
     if (t.kind !== 'creatures') continue;
     for (const d of down) {
       if (distanceFeet(me.pos, d.pos) > t.rangeFeet) continue;
@@ -91,7 +92,7 @@ function tryDamageSpell(s: CombatState, me: Combatant): CombatState | null {
   for (const ch of choices) {
     // Leveled spells: highest slot available, but keep cantrips at 0.
     const lvl = ch.spell.level === 0 ? 0 : ch.levels.at(-1)!;
-    const t = targeting(ch.spell, lvl);
+    const t = targeting(ch.spell, lvl, undefined, heroOf(me)?.level ?? 1);
     if (t.kind === 'creatures') {
       const inRange = enemies
         .filter((e) => distanceFeet(me.pos, e.pos) <= t.rangeFeet)

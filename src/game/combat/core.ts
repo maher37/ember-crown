@@ -1,9 +1,10 @@
 import { getMonster } from '../creatures';
-import { getClass, resourceLeft, type Hero } from '../hero';
+import { getClass, hasSubclass, resourceLeft, type Hero } from '../hero';
 import { itemMods } from '../items';
 import {
   abilityModifier,
   adjustForDefenses,
+  DAMAGE_TYPES,
   applyDamage,
   grantTempHp,
   heal as rulesHeal,
@@ -45,6 +46,11 @@ export function produce(state: CombatState, fn: (ctx: Ctx) => void): CombatState
 
 export const isHero = (c: Creature): c is Hero => c.kind === 'pc' && 'classId' in c;
 export const heroOf = (c: Combatant): Hero | null => (isHero(c.creature) ? c.creature : null);
+/** Is this combatant a hero of this subclass, at this class level or more? (D4, D29) */
+export const isSub = (c: Combatant, classId: string, subclassId: string, level = 1) => {
+  const h = heroOf(c);
+  return !!h && hasSubclass(h, classId, subclassId, level);
+};
 export const classLevel = (c: Combatant, classId: string) => {
   const h = heroOf(c);
   return h && h.classId === classId ? h.level : 0;
@@ -121,6 +127,9 @@ export function currentAc(c: Combatant): number {
 /** The creature as the rules see it for damage: Wild Shape stats, Rage resistance. */
 function damageView(c: Combatant): Creature {
   const extra: DamageType[] = hasEffect(c, 'rage') ? ['bludgeoning', 'piercing', 'slashing'] : [];
+  // PHB: Totem Warrior (Bear). While raging, resistance to all damage except psychic.
+  if (hasEffect(c, 'rage') && isSub(c, 'barbarian', 'totem-bear', 3))
+    extra.push(...DAMAGE_TYPES.filter((t) => t !== 'psychic'));
   // Potion of Resistance and similar: resistance to one damage type while the effect lasts.
   for (const e of effectsWith(c, 'resistance')) extra.push(String(e.data?.type) as DamageType);
   const d = c.creature.defenses;
@@ -180,13 +189,35 @@ export function dealDamage(
       return { ...p, amount };
     });
   }
-  const out = applyDamage(damageView(target), parts, rng, {
+  // PHB: Abjuration, Arcane Ward (and Projected Ward at 6th level, for an ally within 30 ft):
+  // the ward takes the damage first. It works like extra temporary HP in front of the real ones.
+  const warder = wardFor(s, target);
+  const wardHp = warder ? ((warder.creature as Hero).arcaneWard ?? 0) : 0;
+  const view = damageView(target);
+  const out = applyDamage(wardHp ? { ...view, tempHp: view.tempHp + wardHp } : view, parts, rng, {
     critical: opts.critical,
     melee: knockOut || opts.melee,
     knockOut,
   });
+  let after = out.creature;
+  let wardLeft = wardHp;
+  if (wardHp) {
+    const used = Math.min(wardHp, view.tempHp + wardHp - out.creature.tempHp);
+    wardLeft = wardHp - used;
+    after = { ...after, tempHp: Math.max(0, after.tempHp - wardLeft) };
+    if (used > 0)
+      say(
+        s,
+        'you',
+        `${warder!.id === target.id ? '' : `${warder!.name}'s `}Arcane Ward absorbs ${used} (${wardLeft} left)`,
+      );
+  }
   // Keep the real defenses (Rage resistance is not permanent).
-  target.creature = { ...out.creature, defenses: before.defenses };
+  target.creature = { ...after, defenses: before.defenses };
+  if (warder && wardLeft !== wardHp) {
+    warder.creature = { ...warder.creature, arcaneWard: wardLeft } as Hero;
+    if (warder.id !== target.id) warder.reactionUsed = true;
+  }
   // Finale (homebrew): Shard-Bound. Damage to a crown shard is also dealt to the ember-wraith.
   if (
     out.damageTaken > 0 &&
@@ -234,7 +265,7 @@ export function dealDamage(
   const killer = opts.attacker;
   if (killer && before.hp > 0 && target.creature.hp === 0 && target.side !== killer.side) {
     const lvl = classLevel(killer, 'warlock');
-    if (lvl) {
+    if (lvl && isSub(killer, 'warlock', 'fiend')) {
       const amount = Math.max(1, abilityModifier(killer.creature.abilities.cha) + lvl);
       killer.creature = grantTempHp(killer.creature, amount);
       say(s, 'you', `Dark One's Blessing: ${killer.name} gains ${amount} temporary HP`);
@@ -445,3 +476,47 @@ export function addEffect(c: Combatant, e: ActiveEffect): void {
 }
 
 export { canAct as able, conscious };
+
+/** Whose Arcane Ward protects this creature: its own, or (Projected Ward) an abjurer's nearby. */
+function wardFor(s: CombatState, target: Combatant): Combatant | null {
+  const own = heroOf(target);
+  if (own && (own.arcaneWard ?? 0) > 0) return target;
+  if (target.side !== 'party') return null;
+  return (
+    Object.values(s.combatants).find((o) => {
+      const h = heroOf(o);
+      return (
+        o.id !== target.id &&
+        o.side === target.side &&
+        !!h &&
+        hasSubclass(h, 'wizard', 'abjuration', 6) &&
+        (h.arcaneWard ?? 0) > 0 &&
+        !o.reactionUsed &&
+        conscious(o) &&
+        !isIncapacitated(o.creature) &&
+        distanceFeet(o.pos, target.pos) <= 30
+      );
+    }) ?? null
+  );
+}
+
+/**
+ * PHB: Abjuration, Arcane Ward. Casting an abjuration spell of 1st level or higher makes the ward
+ * (2 × wizard level + Int modifier HP) the first time after a long rest, and later heals it by
+ * twice the spell's level.
+ */
+export function chargeWard(s: CombatState, caster: Combatant, spellLevel: number): void {
+  const h = heroOf(caster);
+  if (!h || spellLevel < 1 || !hasSubclass(h, 'wizard', 'abjuration', 2)) return;
+  const max = 2 * h.level + abilityModifier(h.abilities.int);
+  const now = h.arcaneWard;
+  const next = now === undefined ? max : Math.min(max, now + 2 * spellLevel);
+  caster.creature = { ...h, arcaneWard: next };
+  say(
+    s,
+    'you',
+    now === undefined
+      ? `An Arcane Ward shimmers around ${caster.name} (${next} HP)`
+      : `${caster.name}'s Arcane Ward strengthens (${next}/${max} HP)`,
+  );
+}

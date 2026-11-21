@@ -38,6 +38,7 @@ import {
   sayAll,
   spendResource,
   type Ctx,
+  isSub,
 } from './core';
 import {
   conscious,
@@ -48,7 +49,7 @@ import {
   reachable,
   terrainAt,
 } from './grid';
-import { ABILITY_LONG, hexAbilityOf, nextTurnRound } from './leaves';
+import { ABILITY_LONG, giveCondition, hexAbilityOf, nextTurnRound } from './leaves';
 import { castProblem, castSpell, type CastRequest } from './spells';
 import { continuePlan, resolvePrompt } from './ai';
 import {
@@ -100,11 +101,21 @@ export type FeatureId =
   | 'radiance-of-the-dawn'
   | 'guided-strike'
   | 'war-priest'
-  | 'destructive-wrath';
+  | 'destructive-wrath'
+  | 'eagle-dash'
+  | 'vow-of-enmity'
+  | 'abjure-enemy';
 
 export type PlayerAction =
   | { type: 'move'; to: Pos }
-  | { type: 'attack'; targetId: string; optionId: string; smiteLevel?: number; stun?: boolean }
+  | {
+      type: 'attack';
+      targetId: string;
+      optionId: string;
+      smiteLevel?: number;
+      stun?: boolean;
+      maneuver?: 'trip' | 'push';
+    }
   | { type: 'offhand'; targetId: string; optionId: string }
   | ({ type: 'cast' } & CastRequest)
   | { type: 'dash' | 'disengage' | 'dodge' | 'hide' | 'stand' }
@@ -329,6 +340,7 @@ function doAttack(
   makeAttack(ctx, c, target, opt, {
     smiteLevel: a.smiteLevel,
     stun: a.type === 'attack' ? a.stun : undefined,
+    maneuver: a.type === 'attack' ? a.maneuver : undefined,
   });
   return null;
 }
@@ -710,7 +722,7 @@ export function featureList(c: Combatant, s?: CombatState): FeatureInfo[] {
     });
   }
   // ── Level 3 subclass features ──
-  if (lvl('barbarian') >= 3) {
+  if (lvl('barbarian') >= 3 && isSub(c, 'barbarian', 'berserker')) {
     if (!hasEffect(c, 'rage'))
       out.push({
         id: 'rage-frenzy',
@@ -746,7 +758,7 @@ export function featureList(c: Combatant, s?: CombatState): FeatureInfo[] {
     flurry('flurry-push', 'Flurry: push 15 ft', 'two strikes; each hit: Str save or pushed');
     flurry('flurry-no-reactions', 'Flurry: no reactions', 'two strikes; each hit stops reactions');
   }
-  if (lvl('paladin') >= 3) {
+  if (lvl('paladin') >= 3 && isSub(c, 'paladin', 'devotion')) {
     out.push({
       id: 'sacred-weapon',
       name: 'Sacred Weapon',
@@ -772,6 +784,34 @@ export function featureList(c: Combatant, s?: CombatState): FeatureInfo[] {
       blocked:
         t.attacked && !t.hordeUsed ? undefined : t.hordeUsed ? 'once per turn' : 'attack first',
     });
+  // PHB: Totem Warrior (Eagle). While raging, Dash as a bonus action.
+  if (isSub(c, 'barbarian', 'totem-eagle', 3) && hasEffect(c, 'rage'))
+    out.push({
+      id: 'eagle-dash',
+      name: 'Eagle Dash',
+      cost: 'bonus',
+      detail: `+${speedNow(c)} ft of movement this turn`,
+      blocked: bonus(),
+    });
+  // PHB: Oath of Vengeance. Channel Divinity: Vow of Enmity, Abjure Enemy.
+  if (isSub(c, 'paladin', 'vengeance', 3)) {
+    out.push({
+      id: 'vow-of-enmity',
+      name: 'Vow of Enmity',
+      cost: 'bonus',
+      detail: `advantage on attacks against one foe within 10 ft for 1 minute · Channel Divinity ${left(c, 'channel-divinity')}`,
+      target: 'enemy',
+      blocked: bonus(res('channel-divinity')),
+    });
+    out.push({
+      id: 'abjure-enemy',
+      name: 'Abjure Enemy',
+      cost: 'action',
+      detail: `one foe within 60 ft: Wis save or frightened and unable to move · Channel Divinity ${left(c, 'channel-divinity')}`,
+      target: 'enemy',
+      blocked: action(res('channel-divinity')),
+    });
+  }
   if (lvl('monk') >= 6)
     out.push({
       id: 'wholeness-of-body',
@@ -903,6 +943,45 @@ function feature(
       spendResource(c, 'war-priest');
       me(`War Priest: ${c.name} strikes again`);
       makeAttack(ctx, c, target, opt);
+      return null;
+    }
+    case 'eagle-dash':
+      c.turn.movement += speedNow(c);
+      me(`${c.name} runs like a stooping eagle (+${speedNow(c)} ft)`);
+      return null;
+    case 'vow-of-enmity': {
+      if (!target || target.side === c.side) return 'Choose an enemy.';
+      if (distanceFeet(c.pos, target.pos) > 10) return 'Too far away (10 ft).';
+      spendResource(c, 'channel-divinity');
+      c.effects = c.effects.filter((e) => e.tag !== 'vow-of-enmity');
+      addEffect(c, {
+        id: 'vow-of-enmity',
+        name: 'Vow of Enmity',
+        sourceId: c.id,
+        tag: 'vow-of-enmity',
+        data: { targetId: target.id },
+        expires: { turnOf: c.id, when: 'start', round: s.round + 10 },
+      });
+      me(`${c.name} swears a Vow of Enmity against ${target.name}`);
+      return null;
+    }
+    case 'abjure-enemy': {
+      if (!target || target.side === c.side) return 'Choose an enemy.';
+      if (distanceFeet(c.pos, target.pos) > 60) return 'Too far away (60 ft).';
+      spendResource(c, 'channel-divinity');
+      const dc = 8 + h.proficiencyBonus + abilityModifier(h.abilities.cha);
+      me(`${c.name} abjures ${target.name} (DC ${dc})`);
+      const r = combatSave(ctx, target, 'wis', dc, { against: 'frightened', magic: true });
+      if (!r.success) {
+        giveCondition(ctx, c, target, 'frightened', { minutes: 1 }, undefined, 'wis', dc);
+        if (hasCondition(target.creature, 'frightened'))
+          addEffect(target, {
+            id: 'abjure-enemy',
+            name: 'Abjured (speed 0)',
+            sourceId: c.id,
+            tag: 'rooted',
+          });
+      }
       return null;
     }
     case 'destructive-wrath':
@@ -1382,7 +1461,7 @@ function applyItem(ctx: Ctx, c: Combatant, itemId: string, targetId: string): st
   if (!target || target.side !== c.side) return 'Choose yourself or an ally.';
   if (target.id !== c.id && distanceFeet(c.pos, target.pos) > 5) return 'You must be next to them.';
   // PHB: Thief, Fast Hands. Use an object with Cunning Action (a bonus action).
-  const fast = classLevel(c, 'rogue') >= 3 && !c.turn.bonusUsed;
+  const fast = isSub(c, 'rogue', 'thief', 3) && !c.turn.bonusUsed;
   if (fast) c.turn.bonusUsed = true;
   else if (!spendAction(c, true)) return 'No action left.';
   s.inventory = { ...s.inventory, [itemId]: s.inventory[itemId]! - 1 };

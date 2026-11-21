@@ -6,7 +6,6 @@ import {
   active,
   addEffect,
   canAct,
-  classLevel,
   spendResource,
   combatSave,
   currentAc,
@@ -17,6 +16,8 @@ import {
   say,
   spendSlot,
   type Ctx,
+  isSub,
+  chargeWard,
 } from './core';
 import {
   coneCells,
@@ -681,7 +682,7 @@ function attackStep(ctx: Ctx, me: Combatant, step: Extract<PlanStep, { type: 'at
       return (
         bh &&
         p.side !== me.side &&
-        classLevel(p, 'bard') >= 3 &&
+        isSub(p, 'bard', 'lore', 3) &&
         resourceLeft(bh, 'bardic-inspiration') > 0 &&
         !p.reactionUsed &&
         canAct(p) &&
@@ -830,6 +831,7 @@ export function resolvePrompt(ctx: Ctx, accept: boolean): void {
         expires: { turnOf: reactor.id, when: 'start', round: nextTurnRound(s, reactor.id) },
       });
       say(s, 'you', `${reactor.name} casts Shield (+5 AC)`);
+      chargeWard(s, reactor, lvl);
     }
   } else if (p.kind === 'counterspell') {
     if (accept && step?.type === 'cast') {

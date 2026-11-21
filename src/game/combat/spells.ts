@@ -26,6 +26,8 @@ import {
   spendResource,
   spendSlot,
   type Ctx,
+  isSub,
+  chargeWard,
 } from './core';
 import {
   blocksMovement,
@@ -122,8 +124,13 @@ export function metamagicFits(sp: Spell, slotLevel: number, mm: Metamagic): stri
   return sp.range === 'self' ? 'only for spells with a range' : null;
 }
 
-export function targeting(sp: Spell, slotLevel: number, mm?: Metamagic): Targeting {
-  const t = baseTargeting(sp, slotLevel);
+export function targeting(
+  sp: Spell,
+  slotLevel: number,
+  mm?: Metamagic,
+  casterLevel = 1,
+): Targeting {
+  const t = baseTargeting(sp, slotLevel, casterLevel);
   // PHB: Distant Spell doubles the range (touch becomes 30 ft); Twinned adds a second target.
   if (mm === 'distant' && t.kind !== 'self')
     return { ...t, rangeFeet: sp.range === 'touch' ? 30 : t.rangeFeet * 2 };
@@ -131,8 +138,14 @@ export function targeting(sp: Spell, slotLevel: number, mm?: Metamagic): Targeti
   return t;
 }
 
-function baseTargeting(sp: Spell, slotLevel: number): Targeting {
+/** PHB: Eldritch Blast. More beams at character levels 5, 11 and 17 (each its own attack). */
+export const eldritchBeams = (casterLevel: number) =>
+  1 + (casterLevel >= 5 ? 1 : 0) + (casterLevel >= 11 ? 1 : 0) + (casterLevel >= 17 ? 1 : 0);
+
+function baseTargeting(sp: Spell, slotLevel: number, casterLevel = 1): Targeting {
   const extra = Math.max(0, slotLevel - sp.level);
+  if (sp.id === 'eldritch-blast' && eldritchBeams(casterLevel) > 1)
+    return { kind: 'creatures', count: eldritchBeams(casterLevel), rangeFeet: 120, repeat: true };
   if (sp.area)
     return { kind: 'area', shape: sp.area.shape, size: sp.area.size, rangeFeet: rangeFeet(sp) };
   if (sp.id === 'magic-missile')
@@ -252,7 +265,7 @@ export function castProblem(ctx: Ctx, caster: Combatant, req: CastRequest): stri
   if (choice.blocked) return choice.blocked;
   if (!choice.levels.includes(req.slotLevel)) return 'no slot of that level';
   const sp = choice.spell;
-  const t = targeting(sp, req.slotLevel, req.metamagic);
+  const t = targeting(sp, req.slotLevel, req.metamagic, heroOf(caster)?.level ?? 1);
   // PHB: Silence. No spells with a verbal component inside it.
   if (silenced(ctx.s, caster) && /\bV\b/.test(sp.components ?? 'V'))
     return "you can't speak inside the Silence";
@@ -329,6 +342,7 @@ export function castSpell(ctx: Ctx, caster: Combatant, req: CastRequest): void {
   }
   if (mm) spendResource(caster, 'sorcery-points', metamagicCost(lvl, mm));
   if (lvl > 0) spendSlot(caster, lvl);
+  if (sp.school === 'abjuration') chargeWard(s, caster, lvl);
   caster.effects = caster.effects.filter((e) => e.tag !== 'hidden');
   say(
     s,
@@ -381,7 +395,7 @@ export function castSpell(ctx: Ctx, caster: Combatant, req: CastRequest): void {
   if (specialsIn(effects).includes('hp-pool-condition'))
     return hpPool(ctx, caster, sp, req, upcastDice);
 
-  const tg = targeting(sp, lvl, mm);
+  const tg = targeting(sp, lvl, mm, h?.level ?? 1);
   // Lasting areas: Spirit Guardians, Moonbeam, Flaming Sphere, Hunger of Hadar, Spike Growth,
   // Silence, Darkness. They do nothing on the turn they're cast (PHB) [except as written].
   const lasting = specialsIn(effects).find((x) =>
@@ -428,7 +442,7 @@ export function castSpell(ctx: Ctx, caster: Combatant, req: CastRequest): void {
     );
     if (sp.area!.shape === 'aura') targets = targets.filter((c) => c.side !== caster.side);
     // PHB: Evocation, Sculpt Spells. Up to 1 + the spell's level allies are spared.
-    if (classLevel(caster, 'wizard') >= 2 && sp.school === 'evocation') {
+    if (isSub(caster, 'wizard', 'evocation', 2) && sp.school === 'evocation') {
       const spared = targets.filter((c) => c.side === caster.side).slice(0, 1 + lvl);
       if (spared.length)
         say(s, 'you', `Sculpt Spells shields ${spared.map((c) => c.name).join(', ')}`);
@@ -459,17 +473,45 @@ export function castSpell(ctx: Ctx, caster: Combatant, req: CastRequest): void {
     }
     for (const e of effects) {
       if (e.type === 'attack') {
+        // A ray or beam aimed at something already dead goes nowhere.
+        if (target.creature.dead) continue;
         const adv = sp.id === 'shocking-grasp' && wearsMetal(target) ? ['metal armor'] : [];
-        const r = attackRoll(caster.creature, { ...target.creature, ac: currentAc(target) }, rng, {
-          attackBonus: nums.attack,
-          melee: e.kind === 'melee',
-          within5ft: distanceFeet(caster.pos, target.pos) <= 5,
-          cover: coverOf(ctx, caster, target),
-          advantage: adv,
-          label: sp.name,
-        });
+        const swing = () =>
+          attackRoll(caster.creature, { ...target.creature, ac: currentAc(target) }, rng, {
+            attackBonus: nums.attack,
+            melee: e.kind === 'melee',
+            within5ft: distanceFeet(caster.pos, target.pos) <= 5,
+            cover: coverOf(ctx, caster, target),
+            advantage: adv,
+            label: sp.name,
+          });
+        let r = swing();
+        // Kind dice (owner's choice, a setting): a party spell that misses is rerolled half the
+        // time, and only the roll that counts is logged.
+        if (!r.hit && kindDice(s, caster) && rng.die(2) === 1) r = swing();
         sayAll(s, [r.log], caster);
-        if (r.hit) for (const x of e.onHit) applyLeaf(ctx, caster, target, x, opts, r.critical);
+        if (r.hit) {
+          for (const x of e.onHit) applyLeaf(ctx, caster, target, x, opts, r.critical);
+          // PHB: Hex. +1d6 necrotic whenever the caster hits the cursed creature with an attack,
+          // spell attacks included (each Eldritch Blast beam).
+          for (const [tag, dice, label] of [
+            ['hex-target', '1d6', 'Hex'],
+            // PHB: Bestow Curse. +1d8 necrotic from the curser's attacks and spells.
+            ['cursed', '1d8', 'Bestow Curse'],
+          ] as const)
+            if (
+              target.effects.some((x) => x.tag === tag && x.sourceId === caster.id) &&
+              !target.creature.dead
+            )
+              applyLeaf(
+                ctx,
+                caster,
+                target,
+                { type: 'damage', dice, damageType: 'necrotic' },
+                { ...opts, spellName: label, damageBonus: 0, upcastDice: undefined },
+                r.critical,
+              );
+        }
       } else if (e.type === 'save') {
         const cover =
           specialsIn(effects).includes('ignores-cover') || tg.kind === 'area'
@@ -481,11 +523,13 @@ export function castSpell(ctx: Ctx, caster: Combatant, req: CastRequest): void {
             {
               success: true,
             })
-          : combatSave(ctx, target, e.ability, nums.dc, {
-              magic: true,
-              cover,
-              against: condition?.type === 'condition' ? condition.condition : undefined,
-            });
+          : kindSave(ctx, caster, target, () =>
+              combatSave(ctx, target, e.ability, nums.dc, {
+                magic: true,
+                cover,
+                against: condition?.type === 'condition' ? condition.condition : undefined,
+              }),
+            );
         const leafOpts = { ...opts, preRolled };
         if (!res.success) for (const x of e.onFail) applyLeaf(ctx, caster, target, x, leafOpts);
         else if (e.onSuccess === 'half') {
@@ -493,7 +537,7 @@ export function castSpell(ctx: Ctx, caster: Combatant, req: CastRequest): void {
             if (x.type === 'damage') applyLeaf(ctx, caster, target, x, { ...leafOpts, half: true });
         }
         // PHB: Evocation, Potent Cantrip (level 6). A cantrip save still deals half damage.
-        else if (sp.level === 0 && classLevel(caster, 'wizard') >= 6) {
+        else if (sp.level === 0 && isSub(caster, 'wizard', 'evocation', 6)) {
           for (const x of e.onFail)
             if (x.type === 'damage') applyLeaf(ctx, caster, target, x, { ...leafOpts, half: true });
         }
@@ -696,3 +740,26 @@ function hpPool(
 }
 
 export const spellClassAbility = (classId: string) => getClass(classId).spellcasting?.ability;
+
+/** Kind dice is on, and this is a hero's spell (never a monster's). */
+function kindDice(s: Ctx['s'], caster: Combatant): boolean {
+  return !!s.flags?.['kind_dice'] && caster.side === 'party' && !!heroOf(caster);
+}
+
+/**
+ * Kind dice for saving throws against a hero's spell: a save that succeeds is made again half
+ * the time. combatSave logs as it goes, so the first try's log line is taken back out.
+ */
+function kindSave<T extends { success: boolean }>(
+  ctx: Ctx,
+  caster: Combatant,
+  target: Combatant,
+  save: () => T,
+): T {
+  const before = ctx.s.log.length;
+  const r = save();
+  if (!r.success || target.side === caster.side || !kindDice(ctx.s, caster) || ctx.rng.die(2) !== 1)
+    return r;
+  ctx.s.log.splice(before);
+  return save();
+}
