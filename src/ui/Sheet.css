@@ -596,8 +596,6 @@
   padding: 0;
   display: grid;
   gap: 12px;
-  max-height: 60vh;
-  overflow-y: auto;
 }
 .notice {
   display: grid;

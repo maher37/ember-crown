@@ -19,24 +19,32 @@ export type NoticeState = 'new' | 'taken' | 'hunted' | 'done';
 
 /** What the board shows: this act's notices (and any still running from earlier acts). */
 export function boardNotices(g: GameState): { bounty: Bounty; state: NoticeState }[] {
-  return bounties
-    .filter((b) => {
-      const q = g.quests[b.quest];
-      if (q) return true;
-      return b.act === g.act && holds(g, b.requires) && !(b.setsFlag && g.flags[b.setsFlag]);
-    })
-    .map((b) => {
-      const q = g.quests[b.quest];
-      const state: NoticeState = !q
-        ? 'new'
-        : q.status === 'done'
-          ? 'done'
-          : q.steps.includes('hunt')
-            ? 'hunted'
-            : 'taken';
-      return { bounty: b, state };
-    });
+  return (
+    bounties
+      .filter((b) => {
+        const q = g.quests[b.quest];
+        if (q) return true;
+        return b.act === g.act && holds(g, b.requires) && !(b.setsFlag && g.flags[b.setsFlag]);
+      })
+      .map((b) => {
+        const q = g.quests[b.quest];
+        const state: NoticeState = !q
+          ? 'new'
+          : q.status === 'done'
+            ? 'done'
+            : q.steps.includes('hunt')
+              ? 'hunted'
+              : 'taken';
+        return { bounty: b, state };
+      })
+      // Playtest Nov 22: the board shows only what you can take or are doing. Paid notices come
+      // down (the journal keeps them), and the ones you can act on come first.
+      .filter((n) => n.state !== 'done')
+      .sort((a, b) => BOARD_ORDER[a.state] - BOARD_ORDER[b.state])
+  );
 }
+
+const BOARD_ORDER: Record<NoticeState, number> = { hunted: 0, new: 1, taken: 2, done: 3 };
 
 /** Take a notice off the board: the quest starts (and a story flag, for an existing side quest). */
 export function takeBounty(g: GameState, questId: string): { game: GameState; messages: string[] } {
