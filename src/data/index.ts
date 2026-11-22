@@ -39,6 +39,8 @@ import shopsJson from './shops.json';
 import bountiesJson from './bounties.json';
 import findsJson from './finds.json';
 import { BountyFile, FindFile, ShopFile } from './schemas/town';
+import originsJson from './origins.json';
+import { OriginFile } from './schemas/origin';
 
 export { dataFiles } from './files';
 
@@ -80,6 +82,7 @@ const letterFile = LetterFile.parse(lettersJson);
 export const letters = letterFile.letters;
 export const letterReplies = letterFile.replies;
 export const trustDcBonus = letterFile.trustDcBonus;
+export const origins = OriginFile.parse(originsJson).origins;
 
 export const gameData = {
   difficulties,
@@ -106,5 +109,6 @@ export const gameData = {
   finds,
   letters,
   roadTables,
+  origins,
 };
 export type GameData = typeof gameData;

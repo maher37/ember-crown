@@ -1,5 +1,6 @@
 import { z } from 'zod';
 import { AbilityId, ConditionIdSchema, DamageTypeId, SkillId } from '../data/schemas/common';
+import { ORIGIN_IDS } from '../data/schemas/origin';
 import { defaultInvocations, defaultSpells, type Hero } from './hero';
 import { startingPack } from './gear';
 import { heroSpeed } from './levelup';
@@ -103,7 +104,8 @@ export const HeroSchema = z.object({
     immunities: z.array(DamageTypeId),
   }),
   concentration: z.string().nullable(),
-  origin: z.enum(['custom', 'corin']),
+  // New origin ids widen this list; old saves (custom/corin) still load unchanged.
+  origin: z.enum(['custom', ...ORIGIN_IDS]),
   speciesId: z.string().min(1),
   classId: z.string().min(1),
   backgroundId: z.string().min(1),

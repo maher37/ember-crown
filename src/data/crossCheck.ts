@@ -88,6 +88,22 @@ export function crossCheck(d: GameData): { errors: string[]; warnings: string[] 
           errors.push(`class ${c.id}: feature ${f.id} uses unknown resource "${f.uses}"`);
   }
 
+  // Origin heroes name real species, classes, subclasses and backgrounds (D33).
+  const speciesIds = ids(d.species);
+  const backgroundIds = ids(d.backgrounds);
+  for (const o of d.origins) {
+    if (!speciesIds.has(o.speciesId))
+      errors.push(`origin ${o.id}: unknown species "${o.speciesId}"`);
+    if (!backgroundIds.has(o.backgroundId))
+      errors.push(`origin ${o.id}: unknown background "${o.backgroundId}"`);
+    const c = d.classes.find((x) => x.id === o.classId);
+    if (!c) errors.push(`origin ${o.id}: unknown class "${o.classId}"`);
+    else if (o.subclassId && !c.subclasses?.some((s) => s.id === o.subclassId))
+      errors.push(`origin ${o.id}: class ${c.id} has no subclass "${o.subclassId}"`);
+    else if (o.subclassId && c.subclass.level !== 1)
+      errors.push(`origin ${o.id}: ${c.id} picks its subclass at level ${c.subclass.level}, not 1`);
+  }
+
   // Monsters: spell ids, consistency of HP and attack numbers.
   for (const m of d.monsters) {
     for (const list of Object.values(m.spellcasting?.spells ?? {}))

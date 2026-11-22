@@ -25,10 +25,15 @@ export async function makeParty(page: Page) {
   await expect(page.getByRole('heading', { name: 'Create your party' })).toBeVisible();
 
   // 1: Corin, the origin character.
-  await page.getByRole('radio', { name: 'Origin: Corin Varrow' }).click();
+  await page.getByRole('radio', { name: 'Origin hero', exact: true }).click();
+  await page.getByRole('radio', { name: /^Corin Varrow/ }).click();
   await finishStepTwo(page, ['Arcana', 'Insight']);
   await expect(page.getByText('Party member 2 of 4')).toBeVisible();
-  await expect(page.getByRole('radio', { name: 'Origin: Corin Varrow' })).toBeDisabled();
+  // (D33) Corin is taken; the other origin heroes are still offered.
+  await page.getByRole('radio', { name: 'Origin hero', exact: true }).click();
+  await expect(page.getByRole('radio', { name: /^Corin Varrow/ })).toBeDisabled();
+  await expect(page.getByRole('radio', { name: /^Harl Deepdelve/ })).toBeEnabled();
+  await page.getByRole('radio', { name: 'Custom hero' }).click();
 
   // 2: a fighter with a fighting style.
   await customHero(page, 'Mira Ashgrove', 'Fighter', ['Athletics', 'Perception'], () =>

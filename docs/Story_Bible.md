@@ -294,6 +294,32 @@ Epilogue slides also report on Brannoc, Edric, Ulric, Wynn's granddaughter, Kell
 
 ---
 
+## 9b. Three more origin heroes (D33, approved Nov 22)
+
+Premade like Corin: fixed name, species, class and look; abilities and background can still be chosen. Their backstory text lives in `src/data/origins.json` and shows on the character sheet. Each can join the party once, alongside Corin or each other. **Not built yet:** their own `[Name]` dialogue options, unique scenes and endings (later PRs, one hero each).
+
+### Harl Deepdelve: hill dwarf cleric of Moradin (Life Domain), Acolyte
+- Tended Moradin's shrine at the Old Mine for thirty years. On the day of the Collapse he dug three men out by hand and read the rites over the thirty-one who died.
+- Knew Hadric Varrow as a careful foreman and never believed the town's story, but kept quiet. The silence has gone sour.
+- Came back because the rock over the sealed Deep Seam has turned warm.
+- **Wants:** to reconsecrate the mine shrine and speak the true names of the dead.
+- **Story hooks for later:** the Collapse, Hadric, Brannoc and Ulric (old shift faces), `[Dwarf]` stonework in the Kiln.
+
+### Nessa Thorne: human warlock (the Fiend), Noble
+- From a fallen Waterdeep house. Signed a contract with a devil she calls the Auditor to get her brother out of debtors' prison; her soul is the collateral.
+- Now a notary for the Coinwright Guild, sent to put a value on Ashford's debt. The Auditor wants the Ember Crown and hints it would settle her account.
+- **Wants:** to find something worth more than her soul and buy the contract back.
+- **Story hooks for later:** Captain Kell and the Guild, Tarrow's books, Sabeth Quillon (another Waterdhavian), Mother Sallow's bargains.
+
+### Rhessa Kalvaar: red dragonborn fighter, Soldier
+- Six years a sergeant in the Grey Company under Captain Kell. Quit when the Guild wouldn't pay her dead squad's families and Kell let it go.
+- Red scales in a town that curses a red dragon's name; children make warding signs at her.
+- Since entering the Greypeaks she has heard a warm voice in her sleep calling her "daughter".
+- **Wants:** her dead squad's pay, and to know whether her blood belongs to Cindrath.
+- **Story hooks for later:** Kell's rivalry and respect, Cindrath's dreams and gifts, the town's fear of red scales.
+
+---
+
 ## 10. Dialogue rules (decided)
 
 - **Skill checks use the party member with the best bonus** for that skill, and the UI says who rolls ("Insight DC 12 · Thorn +3").

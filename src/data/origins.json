@@ -1,0 +1,98 @@
+{
+  "origins": [
+    {
+      "id": "corin",
+      "name": "Corin Varrow",
+      "title": "the last king's blood",
+      "speciesId": "human",
+      "classId": "sorcerer",
+      "backgroundId": "urchin",
+      "portrait": {
+        "skin": "#d9a982",
+        "hair": "#1e1712",
+        "eyes": "#9a8a3a",
+        "hairStyle": "short",
+        "beard": false,
+        "scar": false
+      },
+      "pitch": "Home for the first time in eight years because his sister asked. His magic is the dragon's ember in the Varrow blood. Unique scenes, [Corin] dialogue choices, the Ember bargains and his own endings.",
+      "backstory": [
+        "Maelis Varrow's younger brother, twenty-four, with his mother's amber eyes. At fourteen he watched Ashford spit on his father's grave, and he left on the next river barge.",
+        "He grew up downriver as a street mage and sellsword called Corin Ash. He is charming and guarded, and funny so nobody sees how angry he is. He hasn't spoken to his sister in eight years.",
+        "Then her letter came, the first since he left: come home for Lantern Night. He was in the Drowned Lantern when Edric fell through the door."
+      ],
+      "wants": "To see his sister again, and to learn what she means by making the town sorry."
+    },
+    {
+      "id": "harl",
+      "name": "Harl Deepdelve",
+      "title": "the priest who stayed quiet",
+      "speciesId": "hill-dwarf",
+      "classId": "cleric",
+      "subclassId": "life",
+      "backgroundId": "acolyte",
+      "portrait": {
+        "skin": "#c99a74",
+        "hair": "#a0522d",
+        "eyes": "#6b4a2b",
+        "hairStyle": "short",
+        "beard": true,
+        "scar": false
+      },
+      "pitch": "Moradin's priest at the Old Mine shrine, back because the sealed Deep Seam has turned warm.",
+      "backstory": [
+        "For thirty years Harl tended Moradin's shrine at the mouth of the Old Mine and blessed every shift that went down. On the day of the Collapse he dug three men out with his bare hands, then read the rites over the thirty-one who stayed below.",
+        "He knew Hadric Varrow as a careful foreman and never believed the town's story about him. He kept quiet anyway, for the widows' sake he told himself, and the silence has gone sour in him.",
+        "He left for the dwarf halls in the west and came back this autumn, because the rock over the sealed Deep Seam has started to feel warm under his palm."
+      ],
+      "wants": "To reconsecrate the mine shrine and speak the true names of the dead."
+    },
+    {
+      "id": "nessa",
+      "name": "Nessa Thorne",
+      "title": "the soul in escrow",
+      "speciesId": "human",
+      "classId": "warlock",
+      "subclassId": "fiend",
+      "backgroundId": "noble",
+      "portrait": {
+        "skin": "#f1c9a5",
+        "hair": "#1e1712",
+        "eyes": "#4a6fa5",
+        "hairStyle": "long",
+        "beard": false,
+        "scar": false
+      },
+      "pitch": "A Coinwright Guild notary from a fallen Waterdeep house, sent to value Ashford's debt. A devil holds her soul as collateral, and he wants the crown.",
+      "backstory": [
+        "The Thornes were an old Waterdeep house with more name than money. When the money ran out, Nessa's younger brother was dragged off to debtors' prison, and Nessa signed a contract with a devil she calls the Auditor. Her brother walked free. Her soul is the collateral.",
+        "Since then she has worked as a notary for the Coinwright Guild, the lenders who hold Ashford's debt. She reads contracts the way other people read faces. The Guild sent her up the Grayflow to put a value on the town.",
+        "The Auditor has a different errand for her. He wants the Ember Crown, and he has hinted that it would settle her account in full."
+      ],
+      "wants": "To find something worth more than her soul and buy her contract back."
+    },
+    {
+      "id": "rhessa",
+      "name": "Rhessa Kalvaar",
+      "title": "the dragon's daughter",
+      "speciesId": "dragonborn",
+      "classId": "fighter",
+      "backgroundId": "soldier",
+      "portrait": {
+        "skin": "#9a3b2a",
+        "hair": "#4e3224",
+        "eyes": "#d8a43a",
+        "hairStyle": "bald",
+        "beard": false,
+        "scar": true
+      },
+      "pitch": "A red-scaled sergeant who quit the Grey Company over her squad's unpaid dead, in a town that curses a red dragon's name.",
+      "backstory": [
+        "Rhessa served six years as a sergeant in the Grey Company under Captain Ruther Kell. When four of her squad died on a Guild contract, the Coinwright Guild refused to pay their families, and Kell let it go. She handed back her badge the same night.",
+        "Her scales are red, and Ashford has cursed a red dragon's name for two hundred years. Children make warding signs when she walks past.",
+        "Since she came into the Greypeaks she has heard a voice in her sleep, warm and patient. It calls her daughter."
+      ],
+      "wants": "Her dead squad's pay, and to know whether her blood belongs to Cindrath."
+    }
+  ]
+}
