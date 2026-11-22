@@ -75,7 +75,11 @@ The reeds part. Three lizardfolk hunters stand waist-deep in water that steams a
 -> heart
 = after_fight
 #speaker:marsh
-The last hunter splashes away into the reeds, hissing a warning to the others.
+{ flag("sneaked:f9-lizardfolk"):
+    The hunters' hissing fades behind you. They never knew you were there.
+- else:
+    The last hunter splashes away into the reeds, hissing a warning to the others.
+}
 -> heart
 = heart
 #speaker:marsh

@@ -91,6 +91,11 @@ A chain hangs across the only bridge over the Grayflow for twenty miles. Grey-cl
 ~ award("f8-talk")
 -> crossed
 = after_fight
+{ flag("sneaked:f8-toll-bridge"):
+    #speaker:bridge
+    Behind you, a voice drifts over the water: Kell, asking his men how long they have been watching an empty road.
+    -> crossed
+}
 #speaker:kell
 Kell steps back over his fallen men with his hands up and empty. "Enough. I count my dead, and I've counted enough for one morning." He lifts the chain himself.
 ~ set_flag("kell_hostile", true)

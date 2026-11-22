@@ -33,6 +33,10 @@
         [8, 7],
         [9, 6]
       ],
+      "sneak": {
+        "prompt": "The bridge's pilings stand in reeds and shadow. Someone light on their feet could scout a way across under the chain.",
+        "slipPast": "You cross beneath the bridge, hand over hand along the pilings, and climb out on the far bank while Kell's men watch the road."
+      },
       "enemies": [
         {
           "id": "thug-a",
@@ -109,6 +113,10 @@
         [2, 5],
         [0, 3]
       ],
+      "sneak": {
+        "prompt": "The reeds are tall and the hunters are watching the water. A careful scout might find a way through.",
+        "slipPast": "You wade through the reeds a step at a time, and the hunters never turn their heads."
+      },
       "enemies": [
         {
           "id": "liz-a",
@@ -653,6 +661,9 @@
         [2, 5],
         [0, 4]
       ],
+      "sneak": {
+        "prompt": "The deserters' fire is small and their sentry is tired. A scout could get close enough for you to strike first."
+      },
       "enemies": [
         {
           "id": "holm",
@@ -925,6 +936,10 @@
         [2, 5],
         [0, 3]
       ],
+      "sneak": {
+        "prompt": "Send a scout ahead to see if there's a way around them.",
+        "slipPast": "You leave the path and let the hunters go by."
+      },
       "enemies": [
         {
           "id": "liz-a",
@@ -993,6 +1008,10 @@
         [2, 5],
         [0, 3]
       ],
+      "sneak": {
+        "prompt": "Send a scout ahead to see if there's a way around them.",
+        "slipPast": "You wait for the swarms to drift off over the water, then go on."
+      },
       "enemies": [
         {
           "id": "swarm-a",
@@ -1053,6 +1072,10 @@
         [2, 5],
         [0, 3]
       ],
+      "sneak": {
+        "prompt": "Send a scout ahead to see if there's a way around them.",
+        "slipPast": "You find a way round the webs without touching a single strand."
+      },
       "enemies": [
         {
           "id": "spider-a",
@@ -1113,6 +1136,10 @@
         [2, 5],
         [0, 3]
       ],
+      "sneak": {
+        "prompt": "Send a scout ahead to see if there's a way around them.",
+        "slipPast": "The bog dead shamble past within a stone's throw, and never smell you."
+      },
       "enemies": [
         {
           "id": "z-a",
@@ -1189,6 +1216,10 @@
         [2, 5],
         [0, 3]
       ],
+      "sneak": {
+        "prompt": "Send a scout ahead to see if there's a way around them.",
+        "slipPast": "You let the patrol march by from the cover of the reeds."
+      },
       "enemies": [
         {
           "id": "b-a",
@@ -1272,6 +1303,10 @@
         [2, 5],
         [0, 3]
       ],
+      "sneak": {
+        "prompt": "Send a scout ahead to see if there's a way around them.",
+        "slipPast": "You skirt the sunken ruin and leave the centipedes to their nest."
+      },
       "enemies": [
         {
           "id": "c-a",
@@ -1340,6 +1375,10 @@
         [2, 5],
         [0, 3]
       ],
+      "sneak": {
+        "prompt": "Send a scout ahead to see if there's a way around them.",
+        "slipPast": "The ghouls sniff the steam and lope away the wrong way."
+      },
       "enemies": [
         {
           "id": "g-a",

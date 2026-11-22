@@ -9,6 +9,7 @@ import { useGame } from '../game/store';
 import { canLevelUp } from '../rules';
 import './Combat.css';
 import { SoundButton } from '../audio/SoundButton';
+import { SneakPanel } from './SneakPanel';
 
 // DMG encounter multipliers (docs/Encounters_and_XP.md §3).
 const multiplier = (n: number) => (n <= 1 ? 1 : n === 2 ? 1.5 : n <= 6 ? 2 : 2.5);
@@ -24,9 +25,11 @@ export function PrepareScreen() {
     backToCamp,
     talkPast,
     setFormation,
+    scouted,
   } = useGame();
   const [talkResult, setTalkResult] = useState<{ success: boolean; text: string } | null>(null);
   const onRoad = !!pendingArrival || backToCamp;
+  const scoutedHere = scouted?.encounterId === encounterId ? scouted : null;
   const settings = useSettings();
   const [difficulty, setDifficulty] = useState<DifficultyId>(settings.difficulty);
   const enc = getEncounter(encounterId!);
@@ -313,9 +316,14 @@ export function PrepareScreen() {
               </p>
             </div>
           )}
+          <SneakPanel enc={enc} difficulty={difficulty} />
           <p className="muted small">The game autosaves before the fight starts.</p>
           <button type="button" className="primary fight-btn" onClick={fight}>
-            Fight!
+            {scoutedHere
+              ? scoutedHere.success
+                ? 'Ambush! (they lose their first turn)'
+                : 'Fight! (spotted: your party is surprised)'
+              : 'Fight!'}
           </button>
         </section>
       </div>
