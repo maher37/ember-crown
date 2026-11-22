@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import type { Portrait as PortraitData } from '../game/hero';
 import { uid } from './scenes/parts';
+import { DragonBarbels, DragonFace, DragonFins, DragonHorns, DragonJaw } from './PortraitDragon';
 
 /** How a hero's armor reads in a portrait. */
 export type ArmorLook =
@@ -23,8 +24,25 @@ export interface PortraitGear {
   shieldColor?: string;
 }
 
+/** Head shape by species: human ears, pointed elf ears, or a dragonborn's horns and snout. */
+export type PortraitKind = 'human' | 'elf' | 'dragon';
+
+/**
+ * How tall the hero is drawn (playtest wish, Nov 22): `stocky` for dwarves (a bit shorter and
+ * broad), `small` for halflings and gnomes. The figure shrinks towards the bottom of the frame.
+ */
+export type Stature = 'medium' | 'stocky' | 'small';
+
+const STATURE_TRANSFORM: Record<Stature, string | undefined> = {
+  medium: undefined,
+  // [inferred sizes, tuned by eye] Dwarves keep most of their width.
+  stocky: 'translate(80 200) scale(0.95 0.84) translate(-80 -200)',
+  small: 'translate(80 200) scale(0.78) translate(-80 -200)',
+};
+
 interface Props extends PortraitData {
-  ears: 'human' | 'elf';
+  ears: PortraitKind;
+  stature?: Stature;
   cloth: string;
   bg?: string;
   label: string;
@@ -211,6 +229,7 @@ export function Portrait({
   label,
   gear,
   wounds = 0,
+  stature = 'medium',
 }: Props) {
   const [ids] = useState(() => ({
     rings: uid('rings'),
@@ -220,6 +239,8 @@ export function Portrait({
   const helmet = !!gear?.helmet;
   // A helmet replaces the hood (you can't wear both).
   const hooded = hairStyle === 'hood' && !helmet;
+  const dragon = ears === 'dragon';
+  const hasHair = hairStyle === 'short' || hairStyle === 'long';
   return (
     <svg
       viewBox="0 0 160 200"
@@ -231,180 +252,198 @@ export function Portrait({
     >
       <rect x="0" y="0" width="160" height="200" fill={bg} />
       <circle cx="80" cy="92" r="72" fill="#ffffff" opacity="0.05" />
-      {gear && gear.armor !== 'none' && (
-        <defs>
-          <pattern id={ids.rings} width="6" height="5" patternUnits="userSpaceOnUse">
-            <circle cx="3" cy="2.5" r="2" fill="none" stroke="#c3cad3" strokeWidth="1" />
-          </pattern>
-          <pattern id={ids.scales} width="10" height="8" patternUnits="userSpaceOnUse">
-            <path d="M0 0 Q5 9 10 0" fill="#7e8c78" stroke="#3e4a3a" strokeWidth="1" />
-          </pattern>
-          <linearGradient id={ids.shine} x1="0" y1="0" x2="1" y2="1">
-            <stop offset="0" stopColor="#ffffff" stopOpacity="0.25" />
-            <stop offset="1" stopColor="#000000" stopOpacity="0.2" />
-          </linearGradient>
-        </defs>
-      )}
-      {hooded && (
-        <>
+      <g transform={STATURE_TRANSFORM[stature]} data-stature={stature}>
+        {gear && gear.armor !== 'none' && (
+          <defs>
+            <pattern id={ids.rings} width="6" height="5" patternUnits="userSpaceOnUse">
+              <circle cx="3" cy="2.5" r="2" fill="none" stroke="#c3cad3" strokeWidth="1" />
+            </pattern>
+            <pattern id={ids.scales} width="10" height="8" patternUnits="userSpaceOnUse">
+              <path d="M0 0 Q5 9 10 0" fill="#7e8c78" stroke="#3e4a3a" strokeWidth="1" />
+            </pattern>
+            <linearGradient id={ids.shine} x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0" stopColor="#ffffff" stopOpacity="0.25" />
+              <stop offset="1" stopColor="#000000" stopOpacity="0.2" />
+            </linearGradient>
+          </defs>
+        )}
+        {hooded && (
+          <>
+            <path
+              d="M22 200 L26 104 C26 52 50 26 80 26 C110 26 134 52 134 104 L138 200 Z"
+              fill={cloth}
+            />
+            <path
+              d="M22 200 L26 104 C26 52 50 26 80 26 C110 26 134 52 134 104 L138 200 Z"
+              fill="#000000"
+              opacity="0.3"
+            />
+          </>
+        )}
+        {hairStyle === 'long' && !dragon && (
           <path
-            d="M22 200 L26 104 C26 52 50 26 80 26 C110 26 134 52 134 104 L138 200 Z"
+            d="M40 86 C36 52 56 38 80 38 C104 38 124 52 120 86 L127 160 C113 168 101 162 96 150 L64 150 C59 162 47 168 33 160 Z"
+            fill={hair}
+          />
+        )}
+        <path d="M12 200 C16 166 48 150 80 150 C112 150 144 166 148 200 Z" fill={cloth} />
+        <path
+          d="M58 152 L80 178 L102 152"
+          fill="none"
+          stroke="#000000"
+          strokeOpacity="0.3"
+          strokeWidth="3"
+        />
+        {gear && <ArmorLayer look={gear.armor} ids={ids} />}
+        <path d="M66 122 L66 152 C72 158 88 158 94 152 L94 122 Z" fill={skin} />
+        <path d="M66 134 C74 142 86 142 94 134 L94 122 L66 122 Z" fill="#000000" opacity="0.15" />
+        {dragon && <DragonHorns crest={hasHair && !helmet} color={hair} />}
+        {!hooded && dragon && <DragonFins color={hair} />}
+        {!hooded && ears === 'human' && (
+          <g>
+            <ellipse cx="45" cy="98" rx="7" ry="11" fill={skin} />
+            <ellipse cx="115" cy="98" rx="7" ry="11" fill={skin} />
+          </g>
+        )}
+        {!hooded && ears === 'elf' && (
+          <g>
+            <path d="M49 90 L20 66 L45 112 Z" fill={skin} />
+            <path d="M111 90 L140 66 L115 112 Z" fill={skin} />
+          </g>
+        )}
+        {dragon && <DragonJaw skin={skin} />}
+        <path
+          d="M46 88 C46 60 60 46 80 46 C100 46 114 60 114 88 C114 116 102 138 80 138 C58 138 46 116 46 88 Z"
+          fill={skin}
+        />
+        <path
+          d="M46 92 C48 116 60 136 80 138 C66 130 56 116 52 96 Z"
+          fill="#000000"
+          opacity="0.1"
+        />
+        {dragon ? (
+          <DragonFace eyes={eyes} />
+        ) : (
+          <>
+            <ellipse cx="66" cy="94" rx="6.5" ry="3.8" fill="#f4efe6" />
+            <ellipse cx="94" cy="94" rx="6.5" ry="3.8" fill="#f4efe6" />
+            <circle cx="66" cy="94" r="3" fill={eyes} />
+            <circle cx="94" cy="94" r="3" fill={eyes} />
+            <circle cx="66" cy="94" r="1.3" fill="#111111" />
+            <circle cx="94" cy="94" r="1.3" fill="#111111" />
+            <path
+              d="M58 86 C62 83 68 83 73 85"
+              fill="none"
+              stroke={hair}
+              strokeWidth="3"
+              strokeLinecap="round"
+            />
+            <path
+              d="M87 85 C92 83 98 83 102 86"
+              fill="none"
+              stroke={hair}
+              strokeWidth="3"
+              strokeLinecap="round"
+            />
+            <path
+              d="M80 96 C79 104 76 110 78 113 C80 115 84 114 85 112"
+              fill="none"
+              stroke="#000000"
+              strokeOpacity="0.3"
+              strokeWidth="2"
+              strokeLinecap="round"
+            />
+          </>
+        )}
+        {wounds >= 1 && (
+          <g aria-hidden="true">
+            {/* A cut on the cheek and a smudge of dirt. */}
+            <path d="M56 104 l10 6" stroke="#9a2a20" strokeWidth="2" strokeLinecap="round" />
+            <ellipse cx="100" cy="112" rx="7" ry="4" fill="#5a4030" opacity="0.25" />
+          </g>
+        )}
+        {wounds >= 2 && (
+          <g aria-hidden="true">
+            {/* Blood from the brow, and a bruise under the eye. */}
+            <path
+              d="M88 70 C90 80 87 86 89 96 C90 100 92 100 92 96 C91 88 94 80 92 70 Z"
+              fill="#a3271c"
+              opacity="0.9"
+            />
+            <ellipse cx="66" cy="101" rx="8" ry="3.5" fill="#5a3a6a" opacity="0.35" />
+          </g>
+        )}
+        {wounds >= 3 && (
+          <g aria-hidden="true">
+            {/* Heavy eyelids, more blood, a grey pallor. */}
+            <path d="M59 94 C62 89 70 89 73 94 Z" fill={skin} />
+            <path d="M87 94 C90 89 98 89 101 94 Z" fill={skin} />
+            <path d="M59 94 H73 M87 94 H101" stroke="#3a2a20" strokeWidth="1.5" />
+            <path d="M52 118 C50 126 54 132 56 128 C57 124 55 120 52 118 Z" fill="#a3271c" />
+            <path
+              d="M46 88 C46 60 60 46 80 46 C100 46 114 60 114 88 C114 116 102 138 80 138 C58 138 46 116 46 88 Z"
+              fill="#6a7a8a"
+              opacity="0.18"
+            />
+          </g>
+        )}
+        {scar && (
+          <path
+            d="M98 80 L106 104"
+            fill="none"
+            stroke="#8a3b2e"
+            strokeWidth="2"
+            strokeLinecap="round"
+            opacity="0.8"
+          />
+        )}
+        {beard && dragon && <DragonBarbels color={hair} />}
+        {beard && !dragon && (
+          <g>
+            <path
+              d="M47 100 C50 128 62 152 80 154 C98 152 110 128 113 100 C108 114 98 120 90 118 C86 116 74 116 70 118 C62 120 52 114 47 100 Z"
+              fill={hair}
+            />
+            <path
+              d="M63 119 C69 112 78 113 80 116 C82 113 91 112 97 119 C91 118 85 119 80 120 C75 119 69 118 63 119 Z"
+              fill={hair}
+            />
+          </g>
+        )}
+        {!dragon && (
+          <path
+            d="M71 123 C76 126 84 126 89 123"
+            fill="none"
+            stroke="#6b3328"
+            strokeWidth="2.5"
+            strokeLinecap="round"
+          />
+        )}
+        {hasHair && !helmet && !dragon && (
+          <path
+            d="M44 90 C40 56 58 40 80 40 C104 40 122 56 116 92 C112 76 106 66 96 62 C86 70 66 72 54 64 C48 72 46 80 44 90 Z"
+            fill={hair}
+          />
+        )}
+        {helmet && <Helmet />}
+        {wounds >= 3 && !helmet && (
+          // A rough bandage around the head.
+          <path
+            d="M44 72 C60 62 100 62 116 72 L115 82 C100 72 60 72 45 82 Z"
+            fill="#e8e0cc"
+            stroke="#b8ac90"
+            strokeWidth="1"
+            aria-hidden="true"
+          />
+        )}
+        {hooded && (
+          <path
+            d="M36 124 C32 70 54 42 80 42 C106 42 128 70 124 124 C120 82 104 58 80 58 C56 58 40 82 36 124 Z"
             fill={cloth}
           />
-          <path
-            d="M22 200 L26 104 C26 52 50 26 80 26 C110 26 134 52 134 104 L138 200 Z"
-            fill="#000000"
-            opacity="0.3"
-          />
-        </>
-      )}
-      {hairStyle === 'long' && (
-        <path
-          d="M40 86 C36 52 56 38 80 38 C104 38 124 52 120 86 L127 160 C113 168 101 162 96 150 L64 150 C59 162 47 168 33 160 Z"
-          fill={hair}
-        />
-      )}
-      <path d="M12 200 C16 166 48 150 80 150 C112 150 144 166 148 200 Z" fill={cloth} />
-      <path
-        d="M58 152 L80 178 L102 152"
-        fill="none"
-        stroke="#000000"
-        strokeOpacity="0.3"
-        strokeWidth="3"
-      />
-      {gear && <ArmorLayer look={gear.armor} ids={ids} />}
-      <path d="M66 122 L66 152 C72 158 88 158 94 152 L94 122 Z" fill={skin} />
-      <path d="M66 134 C74 142 86 142 94 134 L94 122 L66 122 Z" fill="#000000" opacity="0.15" />
-      {!hooded && ears === 'human' && (
-        <g>
-          <ellipse cx="45" cy="98" rx="7" ry="11" fill={skin} />
-          <ellipse cx="115" cy="98" rx="7" ry="11" fill={skin} />
-        </g>
-      )}
-      {!hooded && ears === 'elf' && (
-        <g>
-          <path d="M49 90 L20 66 L45 112 Z" fill={skin} />
-          <path d="M111 90 L140 66 L115 112 Z" fill={skin} />
-        </g>
-      )}
-      <path
-        d="M46 88 C46 60 60 46 80 46 C100 46 114 60 114 88 C114 116 102 138 80 138 C58 138 46 116 46 88 Z"
-        fill={skin}
-      />
-      <path d="M46 92 C48 116 60 136 80 138 C66 130 56 116 52 96 Z" fill="#000000" opacity="0.1" />
-      <ellipse cx="66" cy="94" rx="6.5" ry="3.8" fill="#f4efe6" />
-      <ellipse cx="94" cy="94" rx="6.5" ry="3.8" fill="#f4efe6" />
-      <circle cx="66" cy="94" r="3" fill={eyes} />
-      <circle cx="94" cy="94" r="3" fill={eyes} />
-      <circle cx="66" cy="94" r="1.3" fill="#111111" />
-      <circle cx="94" cy="94" r="1.3" fill="#111111" />
-      <path
-        d="M58 86 C62 83 68 83 73 85"
-        fill="none"
-        stroke={hair}
-        strokeWidth="3"
-        strokeLinecap="round"
-      />
-      <path
-        d="M87 85 C92 83 98 83 102 86"
-        fill="none"
-        stroke={hair}
-        strokeWidth="3"
-        strokeLinecap="round"
-      />
-      <path
-        d="M80 96 C79 104 76 110 78 113 C80 115 84 114 85 112"
-        fill="none"
-        stroke="#000000"
-        strokeOpacity="0.3"
-        strokeWidth="2"
-        strokeLinecap="round"
-      />
-      {wounds >= 1 && (
-        <g aria-hidden="true">
-          {/* A cut on the cheek and a smudge of dirt. */}
-          <path d="M56 104 l10 6" stroke="#9a2a20" strokeWidth="2" strokeLinecap="round" />
-          <ellipse cx="100" cy="112" rx="7" ry="4" fill="#5a4030" opacity="0.25" />
-        </g>
-      )}
-      {wounds >= 2 && (
-        <g aria-hidden="true">
-          {/* Blood from the brow, and a bruise under the eye. */}
-          <path
-            d="M88 70 C90 80 87 86 89 96 C90 100 92 100 92 96 C91 88 94 80 92 70 Z"
-            fill="#a3271c"
-            opacity="0.9"
-          />
-          <ellipse cx="66" cy="101" rx="8" ry="3.5" fill="#5a3a6a" opacity="0.35" />
-        </g>
-      )}
-      {wounds >= 3 && (
-        <g aria-hidden="true">
-          {/* Heavy eyelids, more blood, a grey pallor. */}
-          <path d="M59 94 C62 89 70 89 73 94 Z" fill={skin} />
-          <path d="M87 94 C90 89 98 89 101 94 Z" fill={skin} />
-          <path d="M59 94 H73 M87 94 H101" stroke="#3a2a20" strokeWidth="1.5" />
-          <path d="M52 118 C50 126 54 132 56 128 C57 124 55 120 52 118 Z" fill="#a3271c" />
-          <path
-            d="M46 88 C46 60 60 46 80 46 C100 46 114 60 114 88 C114 116 102 138 80 138 C58 138 46 116 46 88 Z"
-            fill="#6a7a8a"
-            opacity="0.18"
-          />
-        </g>
-      )}
-      {scar && (
-        <path
-          d="M98 80 L106 104"
-          fill="none"
-          stroke="#8a3b2e"
-          strokeWidth="2"
-          strokeLinecap="round"
-          opacity="0.8"
-        />
-      )}
-      {beard && (
-        <g>
-          <path
-            d="M47 100 C50 128 62 152 80 154 C98 152 110 128 113 100 C108 114 98 120 90 118 C86 116 74 116 70 118 C62 120 52 114 47 100 Z"
-            fill={hair}
-          />
-          <path
-            d="M63 119 C69 112 78 113 80 116 C82 113 91 112 97 119 C91 118 85 119 80 120 C75 119 69 118 63 119 Z"
-            fill={hair}
-          />
-        </g>
-      )}
-      <path
-        d="M71 123 C76 126 84 126 89 123"
-        fill="none"
-        stroke="#6b3328"
-        strokeWidth="2.5"
-        strokeLinecap="round"
-      />
-      {(hairStyle === 'short' || hairStyle === 'long') && !helmet && (
-        <path
-          d="M44 90 C40 56 58 40 80 40 C104 40 122 56 116 92 C112 76 106 66 96 62 C86 70 66 72 54 64 C48 72 46 80 44 90 Z"
-          fill={hair}
-        />
-      )}
-      {helmet && <Helmet />}
-      {wounds >= 3 && !helmet && (
-        // A rough bandage around the head.
-        <path
-          d="M44 72 C60 62 100 62 116 72 L115 82 C100 72 60 72 45 82 Z"
-          fill="#e8e0cc"
-          stroke="#b8ac90"
-          strokeWidth="1"
-          aria-hidden="true"
-        />
-      )}
-      {hooded && (
-        <path
-          d="M36 124 C32 70 54 42 80 42 C106 42 128 70 124 124 C120 82 104 58 80 58 C56 58 40 82 36 124 Z"
-          fill={cloth}
-        />
-      )}
-      {gear?.shield && <Shield color={gear.shieldColor ?? cloth} />}
+        )}
+        {gear?.shield && <Shield color={gear.shieldColor ?? cloth} />}
+      </g>
     </svg>
   );
 }
