@@ -49,6 +49,20 @@ Ashford Hall smells of beeswax and old paper. Mayor Oswin Tarrow comes down the 
     #speaker:hall
     Only Captain Voss of the Hall guard stays, hand on his sword, waiting for an order.
     -> exposed
++ {not flag("tarrow_exposed") && has("nessa")} [I valued this town for the Guild, Mayor. Your books don't balance. #as:nessa #check:investigation:12]
+    { passed:
+        Nessa doesn't raise her voice. She asks a clerk for the tithe book, turns three pages and lays her finger on a column: every month, the same sum, marked with a small hollow star, in the mayor's own hand. "The Guild pays you to collect. Someone else pays you to look away."
+        ~ set_flag("tarrow_exposed", true)
+        ~ set_flag("nessa_read_books", true)
+        ~ note("Nessa found the Hollow Star's monthly payments in Tarrow's own tithe book.")
+        #speaker:hall
+        The clerks stop writing. Only Captain Voss of the Hall guard stays, hand on his sword, waiting for an order.
+        -> exposed
+    - else:
+        The books are neat. Too neat; somebody has copied them fair. Tarrow watches Nessa turn the pages and stops smiling. "Captain Voss. Our guests are leaving, with or without what they carry."
+        ~ fight("f12-betrayal", "hall.after_fight")
+        -> END
+    }
 + [We found your receipt in Marrowmere. "For the bridge and the quiet." #check:insight:12]
     { passed:
         {roller()} watches his eyes go to the door, then to the captain. "He's going to call the guard."
@@ -91,7 +105,15 @@ Captain Voss is down. Tarrow has backed into his own fireplace, hands up.
 * [Ask: where is the Star digging now?]
     "The abbey on the marsh edge. Sister Venna runs it. The second shard is under the altar." He swallows. "She frightens me more than the Guild does."
     -> fate
-+ [Say it in the square, in front of everyone. #check:persuasion:12]
++ {has("nessa")} [You were told what to write. Now swear what's true, to a Guild notary. #as:nessa]
+    Nessa takes out her seal and a clean sheet. Tarrow dictates for an hour: the report, the Guild officer who ordered it, the sum he was paid. She signs it, seals it, and makes him sign twice. "Now it's on the Guild's own record," she says. "They can't unwrite their own paper."
+    Then she walks him out to the Hall steps, and he says it all again in the square. Nobody throws anything. Somebody starts to cry.
+    ~ set_flag("tarrow_confessed", true)
+    ~ set_flag("nessa_notarized", true)
+    ~ truth("collapse")
+    ~ note("Tarrow confessed in the square, and Nessa took his sworn statement under the Guild's seal: the Guild ordered the false report that blamed Hadric Varrow.")
+    -> decided
++ {not has("harl") || flag("tarrow_exposed")} [Say it in the square, in front of everyone. #check:persuasion:12]
     { passed || flag("tarrow_exposed"):
         It takes an hour. Tarrow stands on the Hall steps in the cold and says Hadric Varrow's name, and what he wrote, and why. Nobody throws anything. Somebody starts to cry.
         ~ set_flag("tarrow_confessed", true)

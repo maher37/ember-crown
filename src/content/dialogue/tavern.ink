@@ -346,6 +346,10 @@ A woman in a dark travelling cloak sits alone, a hooded lantern on the table. It
     "Not here, little brother." She presses a folded paper lantern into his palm and slips out into the rain.
     ~ set_flag("corin_met_maelis", true)
     -> leaves
++ {has("nessa")} [That flame smells like a signed contract. #as:nessa]
+    The woman looks at Nessa properly for the first time, and her eyes catch the light like a cat's. "Someone else holds your paper too," she says gently. "Read every line of it, notary. I didn't." She steps out into the rain.
+    ~ set_flag("nessa_met_maelis", true)
+    -> leaves
 + [Leave her be.]
     -> END
 = leaves

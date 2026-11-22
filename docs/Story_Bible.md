@@ -296,7 +296,7 @@ Epilogue slides also report on Brannoc, Edric, Ulric, Wynn's granddaughter, Kell
 
 ## 9b. Three more origin heroes (D33, approved Nov 22)
 
-Premade like Corin: fixed name, species, class and look; abilities and background can still be chosen. Their backstory text lives in `src/data/origins.json` and shows on the character sheet. Each can join the party once, alongside Corin or each other. **Built so far:** Harl and Vorna (below). **Not built yet:** Nessa's own `[Nessa]` dialogue options, scenes and epilogue slides (a later PR).
+Premade like Corin: fixed name, species, class and look; abilities and background can still be chosen. Their backstory text lives in `src/data/origins.json` and shows on the character sheet. Each can join the party once, alongside Corin or each other. **Built:** Harl, Vorna and Nessa each have their own `[Name]` choices and scenes (below).
 
 ### Harl Deepdelve: hill dwarf cleric of Moradin (Life Domain), Acolyte
 - Tended Moradin's shrine at the Old Mine for thirty years. On the day of the Collapse he dug three men out by hand and read the rites over the thirty-one who died.
@@ -318,7 +318,15 @@ Premade like Corin: fixed name, species, class and look; abilities and backgroun
 - From a fallen Waterdeep house. Signed a contract with a devil she calls the Auditor to get her brother out of debtors' prison; her soul is the collateral.
 - Now a notary for the Coinwright Guild, sent to put a value on Ashford's debt. The Auditor wants the Ember Crown and hints it would settle her account.
 - **Wants:** to find something worth more than her soul and buy the contract back.
-- **Story hooks for later:** Captain Kell and the Guild, Tarrow's books, Sabeth Quillon (another Waterdhavian), Mother Sallow's bargains.
+- **Built (her own story):**
+  - *Tavern:* the hooded woman (Maelis) recognises a fellow signer: "Read every line of it, notary. I didn't."
+  - *Toll bridge:* Nessa certifies the Grey Company's unpaid wages under the Guild seal; Kell lets the party cross.
+  - *Ashford Hall:* she reads Tarrow's tithe book (Investigation) to expose him, and can take his sworn confession under the Guild seal (the Collapse Truth, and the Guild writes off part of Ashford's debt in the epilogue).
+  - *Mother Sallow:* the hag takes "reading the contract" as her price and finds **clause nine**: the Auditor must accept a soul worth more than Nessa's in its place.
+  - *Ashfall Pass:* the Auditor stops time for a courtesy call. He wants the crown, or the dragon inside it. Nessa can find clause nine herself here if Sallow didn't.
+  - *Ridge with Maelis:* two people who signed bargains compare notes.
+  - *The Kiln (lamp-lit or lamp-snuffed endings):* with clause nine, as Cindrath dies the Auditor offers the swap. Nessa can trade the dragon's soul and go free, or refuse. Epilogue slides follow each choice.
+- **Not built yet:** Sabeth Quillon (the shop has no dialogue scene).
 
 ### Vorna Kalvaar: red dragonborn fighter, Soldier
 - (Renamed from Rhessa on Nov 22 so she doesn't rhyme with Nessa.)

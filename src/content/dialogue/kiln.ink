@@ -415,9 +415,9 @@ Corin sets the crown on his own head. For one long moment his eyes burn gold, an
 -> finish
 = lit_end
 #speaker:kiln
-Cindrath comes apart in a storm of sparks, screaming, and the stone closes over her for good.
+Cindrath comes apart in a storm of sparks, screaming, and the stone begins to close over her for good.
 ~ set_flag("ending", "lamp-lit")
--> finish
+-> nessa_price
 
 = refused
 #speaker:maelis
@@ -446,7 +446,33 @@ Maelis lies at the edge of the circle. The half-made crown rolls to a stop at yo
 #speaker:kiln
 Cindrath goes out like a snuffed lamp. In Maelis's coat you find a letter she never finished.
 ~ set_flag("ending", "lamp-snuffed")
+-> nessa_price
+
+// ── Nessa Thorne (D33): clause nine. A soul worth more than hers, going to waste ──
+= nessa_price
+{ has("nessa") && flag("nessa_clause"):
+    -> auditor_claim
+}
 -> finish
+= auditor_claim
+#speaker:kiln
+Before the last spark can sink into the stone, everything stops. The sparks hang in the air like a swarm of red bees, and a thin man in a grey coat steps out from behind a pillar that wasn't there a moment ago.
+#speaker:auditor
+"Miss Thorne. That is a great deal of soul going to waste." He opens his ledger at a clean page and holds out a pen. "Clause nine. Do you wish to substitute?"
++ [Substitute. Take the dragon, and tear up my contract. #as:nessa]
+    Nessa signs. The sparks pour into the ledger like water down a drain, and Cindrath's last scream goes somewhere much hotter and much further away.
+    #speaker:auditor
+    The Auditor countersigns, tears Nessa's contract in half and hands her both pieces. "Account settled. Pleasure doing business, Miss Thorne." Then he is gone, and the Kiln is only a cave again.
+    ~ set_flag("nessa_free", true)
+    ~ note("Nessa traded Cindrath's soul to the Auditor under clause nine. Her contract is torn in half. She is free.")
+    -> finish
++ [No. Nothing goes to the Hells on my signature. Not even her. #as:nessa]
+    The Auditor looks at her for a long moment, and his pen hovers. "How very expensive of you," he says, and closes the ledger.
+    #speaker:kiln
+    The sparks sink into the stone and go out. The contract in Nessa's satchel is exactly as heavy as it was.
+    ~ set_flag("nessa_refused_trade", true)
+    ~ note("At the Kiln, Nessa refused to trade Cindrath's soul for her own. Her contract still stands.")
+    -> finish
 
 = queen
 #speaker:kiln
@@ -479,6 +505,9 @@ Cindrath goes out of him at last, and there's nothing left to come back.
 -> finish
 
 = finish
+{ has("nessa") && not flag("nessa_free"):
+    ~ set_flag("nessa_bound", true)
+}
 ~ quest_step("kings-kiln", "crowning")
 ~ travel("epilogue")
 -> END

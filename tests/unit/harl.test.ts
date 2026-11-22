@@ -207,7 +207,7 @@ describe('[Harl] in Acts II and III', () => {
 });
 
 describe('Harl with the other origin heroes', () => {
-  it('never more than 5 choices with Harl and Vorna together (Story_Bible §10)', () => {
+  it('never more than 5 choices with Harl, Vorna and Nessa together (Story_Bible §10)', () => {
     const vorna = buildHero(
       {
         ...originDraft('vorna'),
@@ -217,7 +217,11 @@ describe('Harl with the other origin heroes', () => {
       'vorna',
     );
     const base = game();
-    const all = { ...base, party: [base.party[0]!, vorna, hero('rogue', 'Ilse'), base.party[3]!] };
+    const nessa = buildHero(
+      { ...originDraft('nessa'), classSkills: ['arcana', 'deception'] },
+      'nessa',
+    );
+    const all = { ...base, party: [base.party[0]!, vorna, nessa, base.party[3]!] };
     const done = { edric_tended: true, has_letter: true, strangers_gone: true };
     const states: GameState[] = [
       { ...all, quests: {} },
