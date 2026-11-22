@@ -5,10 +5,12 @@ import {
   defaultChoices,
   loadouts,
   magicItems,
+  origins,
   spellSlots,
   species as speciesList,
 } from '../data';
 import type { ClassDef } from '../data/schemas/class';
+import type { Origin, OriginId } from '../data/schemas/origin';
 import type { Species } from '../data/schemas/species';
 import {
   ABILITIES,
@@ -45,7 +47,7 @@ export type AbilityMethod = 'array' | 'point' | 'roll';
 
 /** A party member: a rules-engine creature plus everything the character sheet needs. */
 export interface Hero extends Creature {
-  origin: 'custom' | 'corin';
+  origin: 'custom' | OriginId;
   speciesId: string;
   classId: string;
   backgroundId: string;
@@ -92,7 +94,7 @@ export interface Hero extends Creature {
 
 /** What the player has picked so far in the creator. */
 export interface HeroDraft {
-  origin: 'custom' | 'corin';
+  origin: 'custom' | OriginId;
   name: string;
   speciesId: string;
   classId: string;
@@ -203,28 +205,35 @@ export function newDraft(classId = 'fighter', speciesId = 'human'): HeroDraft {
   };
 }
 
+/** A premade origin hero's record (src/data/origins.json; Story_Bible §9 and §9b, D33). */
+export function getOrigin(id: OriginId): Origin {
+  const o = origins.find((x) => x.id === id);
+  if (!o) throw new Error(`Unknown origin hero: ${id}`);
+  return o;
+}
+
 /**
- * Corin Varrow, the origin character (docs/Story_Bible.md §9): human sorcerer, Draconic
- * Bloodline (red), amber eyes. Name, species, class and look are fixed; abilities and
- * background can be chosen. Urchin is the default background [inferred: he grew up a street
- * mage downriver].
+ * A premade origin hero: name, species, class, subclass and look are fixed; abilities,
+ * background and the other level-1 choices can still be picked, as with Corin.
  */
-export function corinDraft(): HeroDraft {
+export function originDraft(id: OriginId): HeroDraft {
+  const o = getOrigin(id);
   return {
-    ...newDraft('sorcerer', 'human'),
-    origin: 'corin',
-    name: 'Corin Varrow',
-    backgroundId: 'urchin',
-    portrait: {
-      skin: '#d9a982',
-      hair: '#1e1712',
-      eyes: '#9a8a3a',
-      hairStyle: 'short',
-      beard: false,
-      scar: false,
-    },
+    ...newDraft(o.classId, o.speciesId),
+    origin: o.id,
+    name: o.name,
+    backgroundId: o.backgroundId,
+    portrait: { ...o.portrait },
+    ...(o.subclassId ? { subclassId: o.subclassId } : {}),
   };
 }
+
+/**
+ * Corin Varrow, the origin character (docs/Story_Bible.md §9): human sorcerer, Draconic
+ * Bloodline (red), amber eyes. Urchin is the default background [inferred: he grew up a street
+ * mage downriver].
+ */
+export const corinDraft = (): HeroDraft => originDraft('corin');
 
 /** Skills the hero gets without choosing: background and species traits. */
 export function grantedSkills(draft: Pick<HeroDraft, 'speciesId' | 'backgroundId'>): Skill[] {

@@ -45,7 +45,7 @@ import type { Hero } from './hero';
 import { GAME_START } from './calendar';
 import { formatDate } from './calendar';
 import { bestFor, parseSkill } from './dialogue';
-import { skillBonus, spellNumbers } from './hero';
+import { getOrigin, skillBonus, spellNumbers } from './hero';
 import { addNote, completeStep, kindledOfferDue, partyXp } from './journal';
 import { deliverLetters, readLetter } from './letters';
 import { canLongRest, finishShortRest, spendDie, startShortRest, takeLongRest } from './rest';
@@ -281,8 +281,8 @@ export const useGame = create<GameStore>()((set, get) => ({
   addHero: (hero) => {
     const party = get().pendingParty;
     if (party.length >= PARTY_SIZE) throw new Error('The party is full');
-    if (hero.origin === 'corin' && party.some((h) => h.origin === 'corin'))
-      throw new Error('Corin is already in the party');
+    if (hero.origin !== 'custom' && party.some((h) => h.origin === hero.origin))
+      throw new Error(`${getOrigin(hero.origin).name} is already in the party`);
     set({ pendingParty: [...party, hero] });
   },
 

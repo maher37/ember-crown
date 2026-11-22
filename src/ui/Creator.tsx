@@ -1,12 +1,14 @@
 import { SUBCLASS_TITLE } from '../game/hero';
 import { useMemo, useState } from 'react';
-import { backgrounds, classes } from '../data';
+import { backgrounds, classes, origins } from '../data';
+import type { OriginId } from '../data/schemas/origin';
 import {
   bonusSkillCount,
   buildHero,
   CLASS_PRIORITY,
   classSkillChoices,
-  corinDraft,
+  getOrigin,
+  originDraft,
   defaultHalfElfBonus,
   draftProblems,
   finalAbilities,
@@ -65,12 +67,14 @@ const SHORT: Record<Ability, string> = {
 export function Creator() {
   const { pendingParty, addHero, removeHero, beginAdventure, goto, withRng, startNewGame } =
     useGame();
-  const corinTaken = pendingParty.some((h) => h.origin === 'corin');
+  const takenOrigins = new Set(pendingParty.map((h) => h.origin));
+  const freeOrigins = origins.filter((o) => !takenOrigins.has(o.id));
   const [draft, setDraft] = useState<HeroDraft>(() => newDraft());
   const [step, setStep] = useState<1 | 2>(1);
   const [confirmReset, setConfirmReset] = useState(false);
   const [error, setError] = useState('');
-  const isCorin = draft.origin === 'corin';
+  const origin = draft.origin === 'custom' ? null : getOrigin(draft.origin);
+  const isOrigin = origin !== null;
   const cls = getClass(draft.classId);
   const sp = getSpecies(draft.speciesId);
   const abilities = finalAbilities(draft);
@@ -138,8 +142,8 @@ export function Creator() {
       baseAbilities: placeByPriority(rolled, CLASS_PRIORITY[d.classId]!),
     }));
   };
-  const setOrigin = (corin: boolean) => {
-    setDraft(corin ? corinDraft() : newDraft());
+  const setOrigin = (id: OriginId | null) => {
+    setDraft(id ? originDraft(id) : newDraft());
     setStep(1);
   };
 
@@ -205,22 +209,24 @@ export function Creator() {
             <button
               type="button"
               role="radio"
-              aria-checked={!isCorin}
-              className={!isCorin ? 'on' : ''}
-              onClick={() => setOrigin(false)}
+              aria-checked={!isOrigin}
+              className={!isOrigin ? 'on' : ''}
+              onClick={() => setOrigin(null)}
             >
               Custom hero
             </button>
             <button
               type="button"
               role="radio"
-              aria-checked={isCorin}
-              className={isCorin ? 'on' : ''}
-              disabled={corinTaken}
-              title={corinTaken ? 'Corin is already in your party' : undefined}
-              onClick={() => setOrigin(true)}
+              aria-checked={isOrigin}
+              className={isOrigin ? 'on' : ''}
+              disabled={!isOrigin && freeOrigins.length === 0}
+              title={
+                freeOrigins.length === 0 ? 'Every origin hero is already in your party' : undefined
+              }
+              onClick={() => !isOrigin && setOrigin(freeOrigins[0]!.id)}
             >
-              Origin: Corin Varrow
+              Origin hero
             </button>
           </div>
         </div>
@@ -265,11 +271,12 @@ export function Creator() {
                 <span className="muted small">{cls.name} · Level 1</span>
               </div>
             </div>
-            {isCorin ? (
+            {isOrigin ? (
               <div className="field">
                 Name
                 <div className="name-fixed">
-                  Corin Varrow<span className="tag">Origin</span>
+                  {origin.name}
+                  <span className="tag">Origin</span>
                 </div>
               </div>
             ) : (
@@ -289,7 +296,7 @@ export function Creator() {
               word="Skin tone"
               colors={SKIN_TONES}
               value={draft.portrait.skin}
-              disabled={isCorin}
+              disabled={isOrigin}
               onPick={(skin) => update({ portrait: { ...draft.portrait, skin } })}
             />
             <Swatches
@@ -297,7 +304,7 @@ export function Creator() {
               word="Hair color"
               colors={HAIR_COLORS}
               value={draft.portrait.hair}
-              disabled={isCorin}
+              disabled={isOrigin}
               onPick={(hair) => update({ portrait: { ...draft.portrait, hair } })}
             />
             <Swatches
@@ -305,7 +312,7 @@ export function Creator() {
               word="Eye color"
               colors={EYE_COLORS}
               value={draft.portrait.eyes}
-              disabled={isCorin}
+              disabled={isOrigin}
               onPick={(eyes) => update({ portrait: { ...draft.portrait, eyes } })}
             />
             <div className="grid-4">
@@ -315,7 +322,7 @@ export function Creator() {
                   type="button"
                   className={`pill ${draft.portrait.hairStyle === s ? 'on' : ''}`}
                   aria-pressed={draft.portrait.hairStyle === s}
-                  disabled={isCorin}
+                  disabled={isOrigin}
                   onClick={() => update({ portrait: { ...draft.portrait, hairStyle: s } })}
                 >
                   {s[0]!.toUpperCase() + s.slice(1)}
@@ -329,7 +336,7 @@ export function Creator() {
                   type="button"
                   className={`pill ${draft.portrait[f] ? 'on' : ''}`}
                   aria-pressed={draft.portrait[f]}
-                  disabled={isCorin}
+                  disabled={isOrigin}
                   onClick={() =>
                     update({ portrait: { ...draft.portrait, [f]: !draft.portrait[f] } })
                   }
@@ -345,15 +352,38 @@ export function Creator() {
           </section>
 
           <section aria-label="Species and class" className="col-main">
-            {isCorin && (
-              <div className="origin-banner">
-                <span className="origin-title">Corin Varrow · the last king's blood</span>
-                <span>
-                  Home for the first time in eight years because his sister asked. His magic is the
-                  dragon's ember in the Varrow blood. Unique scenes, [Corin] dialogue choices, the
-                  Ember bargains and his own endings.
-                </span>
-              </div>
+            {isOrigin && (
+              <>
+                <div role="radiogroup" aria-label="Origin hero" className="origin-picks">
+                  {origins.map((o) => {
+                    const on = o.id === origin.id;
+                    const taken = takenOrigins.has(o.id);
+                    return (
+                      <button
+                        key={o.id}
+                        type="button"
+                        role="radio"
+                        aria-checked={on}
+                        className={`bg-card ${on ? 'on' : ''}`}
+                        disabled={taken && !on}
+                        title={taken ? `${o.name} is already in your party` : undefined}
+                        onClick={() => setOrigin(o.id)}
+                      >
+                        <span className="bg-name">{o.name}</span>
+                        <span className="small">
+                          {getSpecies(o.speciesId).name} {getClass(o.classId).name}
+                        </span>
+                      </button>
+                    );
+                  })}
+                </div>
+                <div className="origin-banner">
+                  <span className="origin-title">
+                    {origin.name} · {origin.title}
+                  </span>
+                  <span>{origin.pitch}</span>
+                </div>
+              </>
             )}
             <h2 className="eyebrow">Species</h2>
             <div className="wrap">
@@ -363,7 +393,7 @@ export function Creator() {
                   type="button"
                   className={`pill ${id === sp.id ? 'on' : ''}`}
                   aria-pressed={id === sp.id}
-                  disabled={isCorin && id !== sp.id}
+                  disabled={isOrigin && id !== sp.id}
                   onClick={() => pickSpecies(id)}
                 >
                   {getSpecies(id).name}
@@ -378,7 +408,7 @@ export function Creator() {
                   type="button"
                   className={`class-card ${c.id === cls.id ? 'on' : ''}`}
                   aria-pressed={c.id === cls.id}
-                  disabled={isCorin && c.id !== cls.id}
+                  disabled={isOrigin && c.id !== cls.id}
                   onClick={() => pickClass(c.id)}
                 >
                   <span className="class-name">{c.name}</span>
@@ -589,6 +619,7 @@ function StepTwo({
   const choices = levelOneChoices(draft.classId);
   const sp = getSpecies(draft.speciesId);
   const cls = getClass(draft.classId);
+  const fixedSubclass = draft.origin !== 'custom' && !!getOrigin(draft.origin).subclassId;
   const owned = new Set<Skill>([...granted, ...draft.classSkills, ...draft.bonusSkills]);
   const toggle = (list: Skill[], s: Skill, max: number) =>
     list.includes(s) ? list.filter((x) => x !== s) : list.length < max ? [...list, s] : list;
@@ -705,6 +736,7 @@ function StepTwo({
                     role="radio"
                     aria-checked={on}
                     className={`bg-card ${on ? 'on' : ''}`}
+                    disabled={fixedSubclass && !on}
                     onClick={() => update({ subclassId: o.id })}
                   >
                     <span className="bg-name">{o.name}</span>

@@ -40,6 +40,8 @@ import shopsJson from './shops.json';
 import bountiesJson from './bounties.json';
 import findsJson from './finds.json';
 import { BountyFile, FindFile, ShopFile } from './schemas/town';
+import originsJson from './origins.json';
+import { OriginFile } from './schemas/origin';
 
 /**
  * Every JSON content file, paired with the zod schema that checks it.
@@ -69,4 +71,5 @@ export const dataFiles = [
   { name: 'letters.json', schema: LetterFile, raw: lettersJson },
   { name: 'epilogue.json', schema: EpilogueFile, raw: epilogueJson },
   { name: 'placeMaps.json', schema: PlaceMapFile, raw: placeMapsJson },
+  { name: 'origins.json', schema: OriginFile, raw: originsJson },
 ] as const satisfies readonly { name: string; schema: z.ZodType; raw: unknown }[];

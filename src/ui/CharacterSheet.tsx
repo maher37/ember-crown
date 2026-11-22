@@ -9,6 +9,7 @@ import {
   armorSlows,
   getBackground,
   getClass,
+  getOrigin,
   getSpecies,
   maxSlots,
   resourceLeft,
@@ -39,6 +40,7 @@ import { signed, SKILL_NAMES } from './creatorCopy';
 import { EquipmentPanel } from './EquipmentPanel';
 import { heroPortrait } from './heroLook';
 import { Portrait } from './Portrait';
+import type { OriginId } from '../data/schemas/origin';
 import './Sheet.css';
 
 const NO_FLAGS: Record<string, boolean | number | string> = {};
@@ -353,6 +355,7 @@ function StatsTab({ hero }: { hero: Hero }) {
               </li>
             </ul>
           </div>
+          {hero.origin !== 'custom' && <OriginStory id={hero.origin} />}
           <h3 className="eyebrow">Proficiencies and languages</h3>
           <p className="small">
             <span className="eyebrow-inline">Armor</span>{' '}
@@ -371,6 +374,24 @@ function StatsTab({ hero }: { hero: Hero }) {
           </p>
         </section>
       </div>
+    </div>
+  );
+}
+
+/** An origin hero's backstory and what they want (src/data/origins.json; D33). */
+function OriginStory({ id }: { id: OriginId }) {
+  const o = getOrigin(id);
+  return (
+    <div className="sheet-box origin-story">
+      <h3 className="eyebrow">Backstory · {o.title}</h3>
+      {o.backstory.map((p) => (
+        <p key={p.slice(0, 24)} className="small">
+          {p}
+        </p>
+      ))}
+      <p className="small">
+        <span className="eyebrow-inline">Wants</span> {o.wants}
+      </p>
     </div>
   );
 }
