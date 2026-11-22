@@ -8,129 +8,129 @@ Targets [inferred, DECISIONS.md]: main fights won 85–97% on Medium at the expe
 
 | Fight | Lvl | Party | Easy | Medium | Hard | Medium: rounds | HP left (wins) | Downed | A hero died | Target |
 |---|---|---|---|---|---|---|---|---|---|---|
-| F1 Brawl at the Drowned Lantern | 1 | classic | 100% | **100%** ▲ | 99% | 3.6 | 84% | 0.47 | 0% | 85%–97% |
+| F1 Brawl at the Drowned Lantern | 1 | classic | 100% | **100%** ▲ | 98% | 4.3 | 81% | 0.60 | 0% | 85%–97% |
 | F1 Brawl at the Drowned Lantern | 1 | mixed | 100% | **100%** ▲ | 99% | 3.4 | 81% | 0.47 | 0% | 85%–97% |
-| F2 Ambush on the Ashford road | 2 | classic | 100% | **100%** ▲ | 92% | 2.8 | 91% | 0.01 | 0% | 85%–97% |
-| F2 Ambush on the Ashford road | 2 | mixed | 100% | **100%** ▲ | 97% | 3.4 | 84% | 0.03 | 0% | 85%–97% |
-| F3 The warren gate | 2 | classic | 100% | **100%** ▲ | 99% | 3.6 | 87% | 0.12 | 1% | 85%–97% |
-| F3 The warren gate | 2 | mixed | 100% | **100%** ▲ | 100% | 3.4 | 81% | 0.02 | 0% | 85%–97% |
-| F4 Grisk's hall | 2 | classic | 100% | **99%** ▲ | 90% | 5.0 | 82% | 0.32 | 5% | 85%–97% |
-| F4 Grisk's hall | 2 | mixed | 100% | **100%** ▲ | 99% | 4.0 | 75% | 0.39 | 5% | 85%–97% |
-| F5 The mine mouth | 2 | classic | 100% | **100%** ▲ | 100% | 3.6 | 90% | 0.06 | 1% | 85%–97% |
-| F5 The mine mouth | 2 | mixed | 100% | **100%** ▲ | 98% | 4.1 | 78% | 0.28 | 2% | 85%–97% |
-| F6 The Deep Seam | 2 | classic | 100% | **100%** ▲ | 100% | 2.1 | 90% | 0.07 | 0% | 85%–97% |
-| F6 The Deep Seam | 2 | mixed | 100% | **100%** ▲ | 100% | 2.4 | 86% | 0.13 | 1% | 85%–97% |
-| F7 The sunken shrine | 3 | classic | 100% | **97%** ▲ | 78% | 9.1 | 65% | 0.77 | 18% | 75%–95% |
-| F7 The sunken shrine | 3 | mixed | 100% | **99%** ▲ | 93% | 9.5 | 53% | 1.01 | 26% | 75%–95% |
-| S1 Brannoc's cellar | 2 | classic | 100% | **95%** | 95% | 4.8 | 78% | 0.62 | 10% | 85%–97% |
-| S1 Brannoc's cellar | 2 | mixed | 100% | **89%** | 86% | 7.4 | 66% | 0.88 | 18% | 85%–97% |
-| S2 Wolves in the Ashwood | 2 | classic | 100% | **100%** ▲ | 99% | 2.6 | 84% | 0.20 | 0% | 85%–97% |
-| S2 Wolves in the Ashwood | 2 | mixed | 100% | **100%** ▲ | 98% | 3.0 | 76% | 0.25 | 1% | 85%–97% |
-| S3 Shadows in the mill | 2 | classic | 99% | **83%** | 40% | 8.1 | 55% | 1.74 | 42% | 75%–95% |
-| S3 Shadows in the mill | 2 | mixed | 100% | **98%** ▲ | 72% | 5.6 | 66% | 0.87 | 39% | 75%–95% |
-| S4 The luck-stone shrine | 2 | classic | 100% | **100%** ▲ | 100% | 3.7 | 84% | 0.15 | 2% | 85%–97% |
-| S4 The luck-stone shrine | 2 | mixed | 100% | **100%** ▲ | 100% | 3.3 | 81% | 0.25 | 4% | 85%–97% |
-| E1 Scald | 3 | classic | 71% | **73%** | 71% | 5.5 | 49% | 1.65 | 39% | 40%–85% |
-| E1 Scald | 3 | mixed | 78% | **79%** | 79% | 6.2 | 50% | 1.50 | 29% | 40%–85% |
-| F8 The toll bridge | 3 | classic | 100% | **97%** ▲ | 69% | 3.8 | 78% | 0.31 | 4% | 85%–97% |
-| F8 The toll bridge | 3 | mixed | 100% | **93%** | 73% | 5.6 | 66% | 0.46 | 4% | 85%–97% |
-| F9 Lizardfolk hunting grounds | 3 | classic | 100% | **100%** ▲ | 100% | 4.7 | 89% | 0.02 | 0% | 85%–97% |
-| F9 Lizardfolk hunting grounds | 3 | mixed | 100% | **100%** ▲ | 96% | 4.8 | 65% | 0.92 | 14% | 85%–97% |
-| F10 Drowned Marrowmere | 3 | classic | 100% | **100%** ▲ | 100% | 5.3 | 83% | 0.09 | 1% | 85%–97% |
-| F10 Drowned Marrowmere | 3 | mixed | 100% | **100%** ▲ | 99% | 7.2 | 72% | 0.23 | 7% | 85%–97% |
-| F11 Marrowmere chapel | 3 | classic | 100% | **100%** ▲ | 100% | 2.6 | 96% | 0.01 | 0% | 75%–95% |
-| F11 Marrowmere chapel | 3 | mixed | 100% | **100%** ▲ | 98% | 4.4 | 83% | 0.11 | 1% | 75%–95% |
-| F12 Betrayal at Ashford Hall | 4 | classic | 100% | **100%** ▲ | 100% | 4.7 | 91% | 0.00 | 0% | 85%–97% |
-| F12 Betrayal at Ashford Hall | 4 | mixed | 99% | **98%** ▲ | 48% | 4.6 | 66% | 0.91 | 9% | 85%–97% |
-| F12 Betrayal at Ashford Hall (exposed) | 4 | classic | 100% | **100%** ▲ | 100% | 3.0 | 96% | 0.00 | 0% | 85%–97% |
+| F2 Ambush on the Ashford road | 2 | classic | 100% | **100%** ▲ | 86% | 3.2 | 90% | 0.02 | 0% | 85%–97% |
+| F2 Ambush on the Ashford road | 2 | mixed | 100% | **100%** ▲ | 95% | 3.4 | 84% | 0.02 | 0% | 85%–97% |
+| F3 The warren gate | 2 | classic | 100% | **100%** ▲ | 97% | 4.0 | 86% | 0.17 | 3% | 85%–97% |
+| F3 The warren gate | 2 | mixed | 100% | **100%** ▲ | 98% | 3.5 | 81% | 0.03 | 0% | 85%–97% |
+| F4 Grisk's hall | 2 | classic | 100% | **92%** | 82% | 6.8 | 78% | 0.75 | 17% | 85%–97% |
+| F4 Grisk's hall | 2 | mixed | 100% | **99%** ▲ | 99% | 4.0 | 75% | 0.40 | 5% | 85%–97% |
+| F5 The mine mouth | 2 | classic | 100% | **100%** ▲ | 100% | 3.9 | 89% | 0.08 | 1% | 85%–97% |
+| F5 The mine mouth | 2 | mixed | 100% | **100%** ▲ | 97% | 4.1 | 78% | 0.28 | 2% | 85%–97% |
+| F6 The Deep Seam | 2 | classic | 100% | **100%** ▲ | 100% | 2.2 | 90% | 0.07 | 0% | 85%–97% |
+| F6 The Deep Seam | 2 | mixed | 100% | **100%** ▲ | 100% | 2.5 | 86% | 0.14 | 1% | 85%–97% |
+| F7 The sunken shrine | 3 | classic | 100% | **96%** ▲ | 61% | 9.5 | 64% | 0.94 | 22% | 75%–95% |
+| F7 The sunken shrine | 3 | mixed | 100% | **97%** ▲ | 92% | 9.6 | 53% | 1.08 | 26% | 75%–95% |
+| S1 Brannoc's cellar | 2 | classic | 100% | **95%** | 93% | 4.8 | 78% | 0.63 | 12% | 85%–97% |
+| S1 Brannoc's cellar | 2 | mixed | 100% | **81%** ▼ | 80% | 7.8 | 65% | 1.18 | 22% | 85%–97% |
+| S2 Wolves in the Ashwood | 2 | classic | 100% | **99%** ▲ | 99% | 2.7 | 82% | 0.27 | 1% | 85%–97% |
+| S2 Wolves in the Ashwood | 2 | mixed | 100% | **100%** ▲ | 97% | 3.0 | 76% | 0.25 | 1% | 85%–97% |
+| S3 Shadows in the mill | 2 | classic | 100% | **74%** ▼ | 35% | 8.1 | 54% | 1.97 | 46% | 75%–95% |
+| S3 Shadows in the mill | 2 | mixed | 100% | **96%** ▲ | 66% | 5.8 | 66% | 0.92 | 39% | 75%–95% |
+| S4 The luck-stone shrine | 2 | classic | 100% | **100%** ▲ | 97% | 4.4 | 82% | 0.25 | 3% | 85%–97% |
+| S4 The luck-stone shrine | 2 | mixed | 100% | **100%** ▲ | 100% | 3.3 | 81% | 0.25 | 3% | 85%–97% |
+| E1 Scald | 3 | classic | 68% | **70%** | 68% | 5.7 | 48% | 1.75 | 41% | 40%–85% |
+| E1 Scald | 3 | mixed | 77% | **77%** | 76% | 6.5 | 50% | 1.60 | 31% | 40%–85% |
+| F8 The toll bridge | 3 | classic | 100% | **96%** | 64% | 4.0 | 77% | 0.32 | 4% | 85%–97% |
+| F8 The toll bridge | 3 | mixed | 100% | **93%** | 67% | 5.8 | 66% | 0.47 | 5% | 85%–97% |
+| F9 Lizardfolk hunting grounds | 3 | classic | 100% | **100%** ▲ | 100% | 5.3 | 87% | 0.03 | 1% | 85%–97% |
+| F9 Lizardfolk hunting grounds | 3 | mixed | 100% | **99%** ▲ | 91% | 4.9 | 63% | 0.99 | 15% | 85%–97% |
+| F10 Drowned Marrowmere | 3 | classic | 100% | **100%** ▲ | 100% | 5.5 | 82% | 0.11 | 1% | 85%–97% |
+| F10 Drowned Marrowmere | 3 | mixed | 100% | **100%** ▲ | 99% | 7.4 | 72% | 0.25 | 7% | 85%–97% |
+| F11 Marrowmere chapel | 3 | classic | 100% | **100%** ▲ | 100% | 2.6 | 96% | 0.00 | 0% | 75%–95% |
+| F11 Marrowmere chapel | 3 | mixed | 100% | **100%** ▲ | 97% | 4.5 | 83% | 0.12 | 1% | 75%–95% |
+| F12 Betrayal at Ashford Hall | 4 | classic | 100% | **100%** ▲ | 100% | 5.4 | 90% | 0.02 | 0% | 85%–97% |
+| F12 Betrayal at Ashford Hall | 4 | mixed | 97% | **96%** | 41% | 4.7 | 67% | 0.95 | 10% | 85%–97% |
+| F12 Betrayal at Ashford Hall (exposed) | 4 | classic | 100% | **100%** ▲ | 100% | 3.4 | 95% | 0.00 | 0% | 85%–97% |
 | F12 Betrayal at Ashford Hall (exposed) | 4 | mixed | 100% | **100%** ▲ | 100% | 3.8 | 79% | 0.45 | 2% | 85%–97% |
-| F13 The abbey cloister | 4 | classic | 100% | **100%** ▲ | 100% | 3.6 | 90% | 0.03 | 0% | 85%–97% |
-| F13 The abbey cloister | 4 | mixed | 100% | **100%** ▲ | 100% | 4.5 | 87% | 0.09 | 0% | 85%–97% |
-| F14 The abbey undercroft | 4 | classic | 100% | **93%** | 92% | 6.7 | 73% | 0.55 | 9% | 75%–95% |
-| F14 The abbey undercroft | 4 | mixed | 90% | **89%** | 85% | 8.9 | 60% | 1.10 | 20% | 75%–95% |
-| S5 Mother Sallow | 4 | classic | 100% | **100%** ▲ | 99% | 11.8 | 82% | 0.24 | 7% | 75%–95% |
-| S5 Mother Sallow | 4 | mixed | 100% | **100%** ▲ | 100% | 14.7 | 69% | 0.57 | 26% | 75%–95% |
-| S6 Deserters' camp | 4 | classic | 100% | **100%** ▲ | 92% | 8.0 | 68% | 0.22 | 3% | 85%–97% |
-| S6 Deserters' camp | 4 | mixed | 100% | **100%** ▲ | 94% | 6.4 | 62% | 0.73 | 18% | 85%–97% |
-| S7 The flooded crypt | 4 | classic | 100% | **99%** ▲ | 92% | 4.3 | 87% | 0.21 | 12% | 75%–95% |
-| S7 The flooded crypt | 4 | mixed | 100% | **94%** | 59% | 7.7 | 73% | 0.81 | 39% | 75%–95% |
-| S8 Ambush in Cobbler's Lane | 4 | classic | 100% | **100%** ▲ | 100% | 3.4 | 91% | 0.02 | 0% | 85%–97% |
-| S8 Ambush in Cobbler's Lane | 4 | mixed | 100% | **100%** ▲ | 100% | 4.2 | 89% | 0.03 | 0% | 85%–97% |
-| E2 The Drowned Abbot | 5 | classic | 100% | **98%** ▲ | 100% | 4.1 | 92% | 0.45 | 33% | 40%–85% |
-| E2 The Drowned Abbot | 5 | mixed | 100% | **99%** ▲ | 100% | 4.5 | 88% | 0.71 | 47% | 40%–85% |
-| F15 Ashfall Pass | 4 | classic | 100% | **100%** ▲ | 100% | 4.3 | 88% | 0.01 | 1% | 85%–97% |
-| F15 Ashfall Pass | 4 | mixed | 100% | **100%** ▲ | 92% | 4.9 | 69% | 0.66 | 7% | 85%–97% |
-| F16 The Kiln Gate | 4 | classic | 100% | **100%** ▲ | 80% | 8.1 | 74% | 0.41 | 10% | 85%–97% |
-| F16 The Kiln Gate | 4 | mixed | 100% | **100%** ▲ | 31% | 9.7 | 63% | 0.55 | 14% | 85%–97% |
-| F16 The Kiln Gate (Kell holds the rear) | 4 | classic | 100% | **100%** ▲ | 100% | 2.7 | 96% | 0.00 | 0% | 85%–97% |
-| F16 The Kiln Gate (Kell holds the rear) | 4 | mixed | 100% | **100%** ▲ | 98% | 4.4 | 88% | 0.12 | 1% | 85%–97% |
-| F17 The Furnace Halls | 4 | classic | 100% | **96%** | 84% | 10.2 | 61% | 0.97 | 24% | 85%–97% |
-| F17 The Furnace Halls | 4 | mixed | 100% | **94%** | 55% | 11.8 | 49% | 1.23 | 27% | 85%–97% |
-| F18 Hall of the Honor Guard | 5 | classic | 100% | **100%** ▲ | 100% | 8.6 | 77% | 0.16 | 4% | 85%–97% |
-| F18 Hall of the Honor Guard | 5 | mixed | 100% | **99%** ▲ | 93% | 9.0 | 62% | 0.43 | 13% | 85%–97% |
-| F19 The Ember Galleries | 5 | classic | 99% | **94%** | 63% | 7.0 | 67% | 0.85 | 15% | 85%–97% |
-| F19 The Ember Galleries | 5 | mixed | 100% | **100%** ▲ | 96% | 7.8 | 61% | 0.49 | 11% | 85%–97% |
-| F20 The Star's last stand | 5 | classic | 100% | **100%** ▲ | 100% | 5.2 | 83% | 0.03 | 0% | 85%–97% |
-| F20 The Star's last stand | 5 | mixed | 100% | **100%** ▲ | 100% | 4.8 | 82% | 0.06 | 0% | 85%–97% |
-| F20 The Star's last stand (the back way) | 5 | classic | 100% | **100%** ▲ | 100% | 2.9 | 93% | 0.00 | 0% | 85%–97% |
-| F20 The Star's last stand (the back way) | 5 | mixed | 100% | **100%** ▲ | 100% | 2.7 | 93% | 0.00 | 0% | 85%–97% |
-| F21 The Crowning: Maelis | 5 | classic | 100% | **100%** ▲ | 76% | 2.2 | 50% | 0.24 | 5% | 75%–95% |
-| F21 The Crowning: Maelis | 5 | mixed | 100% | **100%** ▲ | 99% | 2.5 | 54% | 0.14 | 3% | 75%–95% |
-| F21 The Crowning: Cindrath | 5 | classic | 100% | **100%** ▲ | 100% | 6.6 | 83% | 0.11 | 1% | 75%–95% |
-| F21 The Crowning: Cindrath | 5 | mixed | 100% | **100%** ▲ | 100% | 7.7 | 61% | 1.00 | 25% | 75%–95% |
-| F21 The Ember Queen | 5 | classic | 100% | **100%** ▲ | 100% | 6.6 | 83% | 0.11 | 1% | 75%–95% |
-| F21 The Ember Queen | 5 | mixed | 100% | **100%** ▲ | 100% | 7.7 | 61% | 1.00 | 25% | 75%–95% |
-| F21 The Ember Heir | 5 | classic | 100% | **100%** ▲ | 100% | 6.6 | 83% | 0.11 | 1% | 75%–95% |
-| F21 The Ember Heir | 5 | mixed | 100% | **100%** ▲ | 100% | 7.7 | 61% | 1.00 | 25% | 75%–95% |
-| S9 The Cold Forge | 5 | classic | 100% | **92%** | 83% | 9.7 | 59% | 0.73 | 11% | 75%–95% |
-| S9 The Cold Forge | 5 | mixed | 100% | **100%** ▲ | 83% | 7.4 | 58% | 0.28 | 6% | 75%–95% |
-| S10 The ossuary | 5 | classic | 100% | **98%** ▲ | 93% | 7.1 | 66% | 0.36 | 6% | 75%–95% |
-| S10 The ossuary | 5 | mixed | 96% | **76%** | 72% | 10.1 | 53% | 1.34 | 25% | 75%–95% |
-| S11 The evacuation convoy | 5 | classic | 100% | **89%** | 24% | 4.4 | 51% | 2.67 | 98% | 85%–97% |
-| S11 The evacuation convoy | 5 | mixed | 100% | **98%** ▲ | 61% | 3.9 | 59% | 1.83 | 78% | 85%–97% |
-| S12 The giant at the door | 5 | classic | 100% | **100%** ▲ | 72% | 4.8 | 77% | 0.04 | 0% | 75%–95% |
-| S12 The giant at the door | 5 | mixed | 96% | **97%** ▲ | 35% | 6.0 | 58% | 0.68 | 13% | 75%–95% |
-| E3 Vorrag the Kiln-Smith | 6 | classic | 98% | **95%** ▲ | 100% | 8.3 | 77% | 0.39 | 6% | 40%–85% |
-| E3 Vorrag the Kiln-Smith | 6 | mixed | 80% | **82%** | 80% | 9.6 | 50% | 1.73 | 46% | 40%–85% |
-| R1 Starving wolves | 2 | classic | 100% | **100%** | 100% | 2.7 | 91% | 0.14 | 1% | 90%–100% |
+| F13 The abbey cloister | 4 | classic | 100% | **100%** ▲ | 100% | 4.0 | 89% | 0.03 | 0% | 85%–97% |
+| F13 The abbey cloister | 4 | mixed | 100% | **100%** ▲ | 100% | 4.6 | 87% | 0.09 | 0% | 85%–97% |
+| F14 The abbey undercroft | 4 | classic | 99% | **90%** | 87% | 8.1 | 66% | 0.81 | 15% | 75%–95% |
+| F14 The abbey undercroft | 4 | mixed | 92% | **88%** | 81% | 8.9 | 61% | 1.11 | 20% | 75%–95% |
+| S5 Mother Sallow | 4 | classic | 100% | **100%** ▲ | 99% | 13.3 | 81% | 0.28 | 11% | 75%–95% |
+| S5 Mother Sallow | 4 | mixed | 100% | **100%** ▲ | 99% | 15.6 | 67% | 0.63 | 26% | 75%–95% |
+| S6 Deserters' camp | 4 | classic | 100% | **99%** ▲ | 81% | 8.9 | 63% | 0.44 | 9% | 85%–97% |
+| S6 Deserters' camp | 4 | mixed | 100% | **99%** ▲ | 89% | 7.2 | 58% | 0.94 | 20% | 85%–97% |
+| S7 The flooded crypt | 4 | classic | 100% | **98%** ▲ | 88% | 4.4 | 88% | 0.24 | 15% | 75%–95% |
+| S7 The flooded crypt | 4 | mixed | 100% | **88%** | 55% | 8.3 | 72% | 1.04 | 41% | 75%–95% |
+| S8 Ambush in Cobbler's Lane | 4 | classic | 100% | **100%** ▲ | 100% | 3.7 | 90% | 0.02 | 0% | 85%–97% |
+| S8 Ambush in Cobbler's Lane | 4 | mixed | 100% | **100%** ▲ | 100% | 4.2 | 89% | 0.04 | 0% | 85%–97% |
+| E2 The Drowned Abbot | 5 | classic | 100% | **98%** ▲ | 100% | 4.2 | 91% | 0.46 | 34% | 40%–85% |
+| E2 The Drowned Abbot | 5 | mixed | 100% | **97%** ▲ | 99% | 4.1 | 88% | 0.61 | 39% | 40%–85% |
+| F15 Ashfall Pass | 4 | classic | 100% | **100%** ▲ | 100% | 4.6 | 87% | 0.01 | 0% | 85%–97% |
+| F15 Ashfall Pass | 4 | mixed | 100% | **100%** ▲ | 85% | 5.0 | 69% | 0.68 | 7% | 85%–97% |
+| F16 The Kiln Gate | 4 | classic | 100% | **99%** ▲ | 79% | 8.1 | 73% | 0.44 | 9% | 85%–97% |
+| F16 The Kiln Gate | 4 | mixed | 100% | **99%** ▲ | 24% | 9.9 | 61% | 0.58 | 16% | 85%–97% |
+| F16 The Kiln Gate (Kell holds the rear) | 4 | classic | 100% | **100%** ▲ | 100% | 2.8 | 96% | 0.00 | 0% | 85%–97% |
+| F16 The Kiln Gate (Kell holds the rear) | 4 | mixed | 100% | **100%** ▲ | 96% | 4.4 | 87% | 0.12 | 1% | 85%–97% |
+| F17 The Furnace Halls | 4 | classic | 100% | **91%** | 79% | 10.3 | 60% | 1.16 | 24% | 85%–97% |
+| F17 The Furnace Halls | 4 | mixed | 100% | **91%** | 40% | 12.1 | 48% | 1.38 | 33% | 85%–97% |
+| F18 Hall of the Honor Guard | 5 | classic | 100% | **100%** ▲ | 98% | 8.8 | 77% | 0.17 | 4% | 85%–97% |
+| F18 Hall of the Honor Guard | 5 | mixed | 100% | **100%** ▲ | 98% | 7.3 | 65% | 0.40 | 9% | 85%–97% |
+| F19 The Ember Galleries | 5 | classic | 98% | **92%** | 54% | 7.0 | 66% | 0.92 | 16% | 85%–97% |
+| F19 The Ember Galleries | 5 | mixed | 100% | **100%** ▲ | 99% | 5.5 | 68% | 0.36 | 6% | 85%–97% |
+| F20 The Star's last stand | 5 | classic | 100% | **100%** ▲ | 100% | 5.4 | 82% | 0.04 | 0% | 85%–97% |
+| F20 The Star's last stand | 5 | mixed | 100% | **100%** ▲ | 100% | 4.3 | 84% | 0.05 | 0% | 85%–97% |
+| F20 The Star's last stand (the back way) | 5 | classic | 100% | **100%** ▲ | 100% | 3.0 | 93% | 0.00 | 0% | 85%–97% |
+| F20 The Star's last stand (the back way) | 5 | mixed | 100% | **100%** ▲ | 100% | 2.5 | 94% | 0.00 | 0% | 85%–97% |
+| F21 The Crowning: Maelis | 5 | classic | 100% | **99%** ▲ | 73% | 2.5 | 49% | 0.29 | 7% | 75%–95% |
+| F21 The Crowning: Maelis | 5 | mixed | 100% | **100%** ▲ | 99% | 2.2 | 55% | 0.11 | 2% | 75%–95% |
+| F21 The Crowning: Cindrath | 5 | classic | 100% | **100%** ▲ | 100% | 8.5 | 79% | 0.22 | 3% | 75%–95% |
+| F21 The Crowning: Cindrath | 5 | mixed | 100% | **100%** ▲ | 100% | 5.9 | 66% | 0.91 | 10% | 75%–95% |
+| F21 The Ember Queen | 5 | classic | 100% | **100%** ▲ | 100% | 8.5 | 79% | 0.22 | 3% | 75%–95% |
+| F21 The Ember Queen | 5 | mixed | 100% | **100%** ▲ | 100% | 5.9 | 66% | 0.91 | 10% | 75%–95% |
+| F21 The Ember Heir | 5 | classic | 100% | **100%** ▲ | 100% | 8.5 | 79% | 0.22 | 3% | 75%–95% |
+| F21 The Ember Heir | 5 | mixed | 100% | **100%** ▲ | 100% | 5.9 | 66% | 0.91 | 10% | 75%–95% |
+| S9 The Cold Forge | 5 | classic | 100% | **90%** | 77% | 9.8 | 58% | 0.81 | 11% | 75%–95% |
+| S9 The Cold Forge | 5 | mixed | 100% | **100%** ▲ | 98% | 5.5 | 64% | 0.23 | 2% | 75%–95% |
+| S10 The ossuary | 5 | classic | 100% | **97%** ▲ | 90% | 7.4 | 64% | 0.44 | 8% | 75%–95% |
+| S10 The ossuary | 5 | mixed | 98% | **93%** | 85% | 7.9 | 58% | 0.61 | 11% | 75%–95% |
+| S11 The evacuation convoy | 5 | classic | 100% | **86%** | 22% | 4.5 | 51% | 2.79 | 98% | 85%–97% |
+| S11 The evacuation convoy | 5 | mixed | 100% | **98%** ▲ | 80% | 3.4 | 63% | 1.69 | 74% | 85%–97% |
+| S12 The giant at the door | 5 | classic | 100% | **100%** ▲ | 65% | 4.8 | 77% | 0.04 | 1% | 75%–95% |
+| S12 The giant at the door | 5 | mixed | 93% | **95%** ▲ | 37% | 5.7 | 57% | 0.84 | 12% | 75%–95% |
+| E3 Vorrag the Kiln-Smith | 6 | classic | 94% | **92%** ▲ | 98% | 9.9 | 75% | 0.61 | 9% | 40%–85% |
+| E3 Vorrag the Kiln-Smith | 6 | mixed | 98% | **98%** ▲ | 93% | 7.1 | 53% | 1.10 | 35% | 40%–85% |
+| R1 Starving wolves | 2 | classic | 100% | **100%** | 100% | 2.8 | 90% | 0.16 | 1% | 90%–100% |
 | R1 Starving wolves | 2 | mixed | 100% | **100%** | 100% | 2.7 | 88% | 0.13 | 1% | 90%–100% |
-| R2 Goblin foragers | 2 | classic | 100% | **100%** | 99% | 2.9 | 86% | 0.20 | 2% | 90%–100% |
-| R2 Goblin foragers | 2 | mixed | 100% | **100%** | 100% | 3.2 | 82% | 0.31 | 2% | 90%–100% |
-| R3 River-road bandits | 2 | classic | 100% | **100%** | 97% | 4.7 | 77% | 0.44 | 11% | 90%–100% |
-| R3 River-road bandits | 2 | mixed | 100% | **100%** | 100% | 4.3 | 75% | 0.55 | 8% | 90%–100% |
-| R4 Stirges at dusk | 2 | classic | 100% | **100%** | 100% | 2.3 | 99% | 0.00 | 0% | 90%–100% |
+| R2 Goblin foragers | 2 | classic | 100% | **100%** | 98% | 3.5 | 83% | 0.31 | 5% | 90%–100% |
+| R2 Goblin foragers | 2 | mixed | 100% | **100%** | 100% | 3.3 | 82% | 0.32 | 2% | 90%–100% |
+| R3 River-road bandits | 2 | classic | 100% | **96%** | 96% | 5.6 | 72% | 0.71 | 15% | 90%–100% |
+| R3 River-road bandits | 2 | mixed | 100% | **100%** | 99% | 4.3 | 73% | 0.57 | 11% | 90%–100% |
+| R4 Stirges at dusk | 2 | classic | 100% | **100%** | 100% | 2.5 | 99% | 0.00 | 0% | 90%–100% |
 | R4 Stirges at dusk | 2 | mixed | 100% | **100%** | 100% | 2.2 | 99% | 0.00 | 0% | 90%–100% |
-| R5 A brown bear | 2 | classic | 100% | **100%** | 100% | 1.9 | 98% | 0.04 | 0% | 90%–100% |
-| R5 A brown bear | 2 | mixed | 100% | **100%** | 100% | 2.4 | 89% | 0.15 | 0% | 90%–100% |
-| R6 A hunting griffon | 2 | classic | 100% | **100%** | 100% | 2.6 | 92% | 0.14 | 0% | 90%–100% |
-| R6 A hunting griffon | 2 | mixed | 100% | **100%** | 100% | 3.6 | 84% | 0.18 | 2% | 90%–100% |
-| R7 Cult recruiters | 2 | classic | 100% | **100%** | 100% | 3.2 | 92% | 0.08 | 1% | 90%–100% |
-| R7 Cult recruiters | 2 | mixed | 100% | **100%** | 100% | 3.7 | 82% | 0.31 | 2% | 90%–100% |
-| M1 Lizardfolk hunters | 3 | classic | 100% | **100%** | 100% | 3.4 | 93% | 0.00 | 0% | 90%–100% |
-| M1 Lizardfolk hunters | 3 | mixed | 100% | **100%** | 97% | 3.4 | 83% | 0.23 | 1% | 90%–100% |
-| M2 Insect swarms | 3 | classic | 100% | **100%** | 100% | 2.9 | 92% | 0.01 | 0% | 90%–100% |
-| M2 Insect swarms | 3 | mixed | 100% | **100%** | 100% | 3.9 | 87% | 0.05 | 0% | 90%–100% |
-| M3 Giant spiders | 3 | classic | 100% | **100%** | 100% | 3.8 | 100% | 0.00 | 0% | 90%–100% |
-| M3 Giant spiders | 3 | mixed | 100% | **99%** | 88% | 4.3 | 78% | 0.55 | 11% | 90%–100% |
-| M4 Bog dead | 3 | classic | 100% | **100%** | 100% | 3.8 | 91% | 0.00 | 0% | 90%–100% |
-| M4 Bog dead | 3 | mixed | 100% | **100%** | 100% | 5.2 | 84% | 0.07 | 1% | 90%–100% |
-| M5 Grey Company patrol | 3 | classic | 100% | **100%** | 100% | 4.0 | 85% | 0.00 | 0% | 90%–100% |
-| M5 Grey Company patrol | 3 | mixed | 100% | **100%** | 100% | 4.2 | 74% | 0.49 | 3% | 90%–100% |
-| M6 Sunken ruin | 3 | classic | 100% | **100%** | 100% | 1.6 | 98% | 0.00 | 0% | 90%–100% |
+| R5 A brown bear | 2 | classic | 100% | **100%** | 100% | 1.9 | 98% | 0.03 | 0% | 90%–100% |
+| R5 A brown bear | 2 | mixed | 100% | **100%** | 100% | 2.4 | 90% | 0.13 | 0% | 90%–100% |
+| R6 A hunting griffon | 2 | classic | 100% | **100%** | 100% | 2.7 | 91% | 0.16 | 0% | 90%–100% |
+| R6 A hunting griffon | 2 | mixed | 100% | **100%** | 100% | 3.6 | 84% | 0.19 | 2% | 90%–100% |
+| R7 Cult recruiters | 2 | classic | 100% | **100%** | 100% | 3.3 | 92% | 0.08 | 1% | 90%–100% |
+| R7 Cult recruiters | 2 | mixed | 100% | **100%** | 99% | 3.7 | 82% | 0.32 | 2% | 90%–100% |
+| M1 Lizardfolk hunters | 3 | classic | 100% | **100%** | 100% | 3.7 | 92% | 0.00 | 0% | 90%–100% |
+| M1 Lizardfolk hunters | 3 | mixed | 100% | **100%** | 96% | 3.4 | 82% | 0.23 | 2% | 90%–100% |
+| M2 Insect swarms | 3 | classic | 100% | **100%** | 100% | 3.0 | 92% | 0.01 | 0% | 90%–100% |
+| M2 Insect swarms | 3 | mixed | 100% | **100%** | 100% | 4.0 | 87% | 0.03 | 0% | 90%–100% |
+| M3 Giant spiders | 3 | classic | 100% | **100%** | 100% | 4.0 | 100% | 0.00 | 0% | 90%–100% |
+| M3 Giant spiders | 3 | mixed | 100% | **99%** | 85% | 4.3 | 77% | 0.57 | 12% | 90%–100% |
+| M4 Bog dead | 3 | classic | 100% | **100%** | 100% | 3.9 | 90% | 0.00 | 0% | 90%–100% |
+| M4 Bog dead | 3 | mixed | 100% | **100%** | 100% | 5.3 | 84% | 0.07 | 0% | 90%–100% |
+| M5 Grey Company patrol | 3 | classic | 100% | **100%** | 100% | 4.2 | 85% | 0.00 | 0% | 90%–100% |
+| M5 Grey Company patrol | 3 | mixed | 100% | **100%** | 99% | 4.2 | 74% | 0.50 | 4% | 90%–100% |
+| M6 Sunken ruin | 3 | classic | 100% | **100%** | 100% | 1.7 | 98% | 0.00 | 0% | 90%–100% |
 | M6 Sunken ruin | 3 | mixed | 100% | **100%** | 100% | 1.9 | 95% | 0.04 | 0% | 90%–100% |
 | M7 Ghoul pack | 3 | classic | 100% | **100%** | 100% | 2.6 | 95% | 0.00 | 0% | 90%–100% |
-| M7 Ghoul pack | 3 | mixed | 100% | **100%** | 100% | 3.2 | 91% | 0.03 | 0% | 90%–100% |
-| H1 Fleeing war band | 4 | classic | 100% | **100%** | 100% | 4.1 | 91% | 0.00 | 0% | 90%–100% |
-| H1 Fleeing war band | 4 | mixed | 100% | **100%** | 98% | 3.6 | 76% | 0.49 | 3% | 90%–100% |
-| H2 Owlbear | 4 | classic | 100% | **100%** | 100% | 2.6 | 95% | 0.00 | 0% | 90%–100% |
+| M7 Ghoul pack | 3 | mixed | 100% | **100%** | 100% | 3.3 | 91% | 0.03 | 0% | 90%–100% |
+| H1 Fleeing war band | 4 | classic | 100% | **100%** | 100% | 4.5 | 90% | 0.00 | 0% | 90%–100% |
+| H1 Fleeing war band | 4 | mixed | 100% | **100%** | 96% | 3.6 | 76% | 0.50 | 3% | 90%–100% |
+| H2 Owlbear | 4 | classic | 100% | **100%** | 100% | 2.7 | 94% | 0.00 | 0% | 90%–100% |
 | H2 Owlbear | 4 | mixed | 100% | **100%** | 100% | 3.2 | 83% | 0.18 | 1% | 90%–100% |
-| H3 Griffons | 4 | classic | 100% | **99%** | 72% | 4.6 | 82% | 0.19 | 3% | 90%–100% |
-| H3 Griffons | 4 | mixed | 100% | **87%** ▼ | 10% | 7.4 | 58% | 1.10 | 20% | 90%–100% |
-| H4 Dire wolves | 4 | classic | 100% | **100%** | 46% | 3.9 | 84% | 0.06 | 1% | 90%–100% |
-| H4 Dire wolves | 4 | mixed | 100% | **100%** | 6% | 5.9 | 72% | 0.26 | 3% | 90%–100% |
-| H5 Magma mephits | 4 | classic | 100% | **100%** | 100% | 3.6 | 74% | 0.02 | 0% | 90%–100% |
-| H5 Magma mephits | 4 | mixed | 100% | **100%** | 100% | 4.2 | 70% | 0.03 | 1% | 90%–100% |
-| H6 Hell hound | 4 | classic | 99% | **99%** | 37% | 3.4 | 61% | 0.49 | 4% | 90%–100% |
-| H6 Hell hound | 4 | mixed | 99% | **99%** | 38% | 4.1 | 62% | 0.35 | 5% | 90%–100% |
-| H7 Troll under the bridge | 4 | classic | 100% | **100%** | 100% | 3.8 | 90% | 0.01 | 0% | 90%–100% |
-| H7 Troll under the bridge | 4 | mixed | 100% | **100%** | 100% | 4.3 | 75% | 0.40 | 4% | 90%–100% |
+| H3 Griffons | 4 | classic | 100% | **97%** | 64% | 4.9 | 82% | 0.28 | 3% | 90%–100% |
+| H3 Griffons | 4 | mixed | 100% | **83%** ▼ | 7% | 7.5 | 60% | 1.17 | 20% | 90%–100% |
+| H4 Dire wolves | 4 | classic | 100% | **100%** | 44% | 4.0 | 84% | 0.05 | 1% | 90%–100% |
+| H4 Dire wolves | 4 | mixed | 100% | **99%** | 3% | 6.0 | 72% | 0.31 | 3% | 90%–100% |
+| H5 Magma mephits | 4 | classic | 100% | **100%** | 99% | 3.7 | 72% | 0.03 | 1% | 90%–100% |
+| H5 Magma mephits | 4 | mixed | 100% | **100%** | 99% | 4.3 | 70% | 0.04 | 1% | 90%–100% |
+| H6 Hell hound | 4 | classic | 99% | **99%** | 32% | 3.5 | 60% | 0.52 | 5% | 90%–100% |
+| H6 Hell hound | 4 | mixed | 99% | **99%** | 35% | 4.1 | 62% | 0.36 | 5% | 90%–100% |
+| H7 Troll under the bridge | 4 | classic | 100% | **100%** | 100% | 3.9 | 90% | 0.01 | 0% | 90%–100% |
+| H7 Troll under the bridge | 4 | mixed | 99% | **100%** | 99% | 4.3 | 75% | 0.40 | 4% | 90%–100% |
