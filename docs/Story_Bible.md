@@ -213,12 +213,12 @@ Either way, she tells you the Grey Company is already marching to the Marsh of C
 **Hook:** the Marsh of Chelimber is steaming in midwinter, and the Grey Company and the Hollow Star both have a head start.
 
 **Rest block D: the crossing**
-1. **The toll bridge** (L3). The Grey Company holds it. You can fight, bribe, bluff, or parley with **Captain Kell**. If you parley, he respects you, which matters in Act 3.
+1. **The toll bridge** (L3). The Grey Company holds it. You can fight, bribe, bluff, or parley with **Captain Kell**. If you parley, he respects you, which matters in Act 3. *(D35)* Sneak under the bridge first and you hear that his men haven't been paid in three months; that wins Kell round without a roll.
 2. **Drowned Marrowmere** (L3). A bog village where the heat has raised the dead (zombies, ghouls). Ghoul paralysis teaches the party to respect conditions.
 
 **Rest block E: Ashford, then the abbey**
 3. **Betrayal** (L4). Back in Ashford, Mayor Tarrow's guards try to seize the shard (or the party, if they gave it to Maelis). Clues from Act 1 (the letter's "friend in Ashford Hall", Edric's information) let you expose him *before* the ambush. That makes the fight easier, or avoids it entirely. Tarrow can confess (*Collapse Truth*). Brannoc, hearing it, makes his own confession.
-4. **The abbey undercroft** (L4, act boss). **Sister Venna**, cult fanatics and an ogre guard the second shard.
+4. **The abbey undercroft** (L4, act boss). **Sister Venna**, cult fanatics and an ogre guard the second shard. *(D35)* Steal the dozing warden's side-door key (Stealth, then Sleight of Hand) to come at Venna from behind: an ambush.
    - Nearby archives hold the abbey founder's account of the crown (*Crown Truth*).
    - **Reveal:** the crown is Cindrath's soul-vessel, and Maelis doesn't know.
    - **Cliffhanger:** a lantern moth arrives with Maelis's letter. She has the third shard's location and is going to the King's Kiln. She is going to put it on.
@@ -238,7 +238,7 @@ Either way, she tells you the Grey Company is already marching to the Marsh of C
 **Rest block F: the tomb**
 1. **The Kiln Gate** (L4). Animated guardians and traps. Arcana and Investigation solve the gate puzzle. **If Kell respects you,** his company holds the gate against the cult's rearguard, and this fight gets smaller.
 2. **Hall of the Honor Guard** (L5). Wights of Varrow's guard led by **Ser Ida Marrow**. If you hold the Crown Truth, Ida *stands aside*; she can be talked to rather than fought.
-3. **The Star's Last Stand** (L5). Cult fanatics, the last of Venna's zealots, and fire-warped miners. **If you spared Ulric,** he leads you through a hidden passage and you skip half of this fight.
+3. **The Star's Last Stand** (L5). Cult fanatics, the last of Venna's zealots, and fire-warped miners. **If you spared Ulric,** he leads you through a hidden passage and you skip half of this fight. *(D35)* Without Ulric or Wix, listening to the zealots at the stair finds the same way (the old miners' stair), and foreshadows Maelis talking to the fire.
 4. **The Crowning** (L5 main path; L6 for completionists). Maelis stands in the burning heart of the mountain with all three shards, the crown half-forged and Cindrath rising.
 
 **Side quests:**

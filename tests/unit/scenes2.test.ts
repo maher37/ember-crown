@@ -56,22 +56,20 @@ const afterFight = (c: Conversation, how: 'won' | 'lost' | 'parley' = 'won', rng
 const ACT2 = { act1_complete: true, edric_tended: true, has_letter: true, strangers_gone: true };
 const g2 = (flags: GameState['flags'] = {}, corin = false) => game(corin, { ...ACT2, ...flags });
 
+/** Arrive at the bridge and walk up to Kell (skipping the D35 chance to listen first). */
+const atBridge = (g: GameState, rng: ScriptedRng) =>
+  pick(new Conversation('bridge', g, rng).start('arrive'), /Walk up to the chain/);
+
 describe('the toll bridge (F8)', () => {
   it('talking Kell round crosses the river with the same XP (D16) and earns his respect', () => {
-    const c = pick(
-      pick(new Conversation('bridge', g2(), hi()).start('arrive'), /Make our case/),
-      /Let us cross/,
-    );
+    const c = pick(pick(atBridge(g2(), hi()), /Make our case/), /Let us cross/);
     expect(c.game.flags['bridge_crossed']).toBe(true);
     expect(c.game.flags['kell_respect']).toBe(true);
     expect(c.game.party[0]!.xp).toBe(100 + 200);
     expect(c.game.quests['hollow-star']!.steps).toContain('bridge');
   });
   it('a failed speech can still walk away, or fight; the fight leaves Kell sour', () => {
-    let c = pick(
-      pick(new Conversation('bridge', g2(), lo()).start('arrive'), /Make our case/),
-      /Let us cross/,
-    );
+    let c = pick(pick(atBridge(g2(), lo()), /Make our case/), /Let us cross/);
     pick(c, /Fight for the crossing/);
     expect(c.fight?.encounterId).toBe('f8-toll-bridge');
     c = afterFight(c);
@@ -80,15 +78,10 @@ describe('the toll bridge (F8)', () => {
   });
   it('bribing needs 50 gold', () => {
     expect(
-      pick(new Conversation('bridge', g2(), hi()).start('arrive'), /Make our case/).choices.some(
-        (x) => /Bribe/.test(x.text),
-      ),
+      pick(atBridge(g2(), hi()), /Make our case/).choices.some((x) => /Bribe/.test(x.text)),
     ).toBe(false);
     const rich = { ...g2(), gold: 80 };
-    const c = pick(
-      pick(new Conversation('bridge', rich, hi()).start('arrive'), /Make our case/),
-      /Bribe/,
-    );
+    const c = pick(pick(atBridge(rich, hi()), /Make our case/), /Bribe/);
     expect(c.game.gold).toBe(30);
     expect(c.game.flags['bridge_crossed']).toBe(true);
   });

@@ -32,6 +32,25 @@ VAR passed = false
     -> leave_only
 }
 A chain hangs across the only bridge over the Grayflow for twenty miles. Grey-cloaked soldiers lounge by a brazier, and a lean man with a captain's knot on his shoulder is eating an apple.
+-> approach
+
+// D35: eavesdrop on Kell's men before they see you.
+= approach
+* [Slip down the bank and listen under the bridge first. #check:stealth:13]
+    { passed:
+        Down among the pilings, the soldiers' voices carry. "Three months since the Guild paid us." "Kell wrote them again." "Kell says we go home before the snow, shards or no shards." Somebody spits in the river. "I'd let the whole marsh through for a hot bath."
+        ~ set_flag("kell_overheard", true)
+        ~ award("discover-kells-men")
+        ~ note("Under Kell's bridge: his soldiers haven't been paid in three months, and Kell has promised to get them home before the snow.")
+    - else:
+        A boot slips on the wet stones. A soldier leans over the rail and grins down at {roller()}. "Captain! There's a rat under the bridge wearing boots."
+        Kell doesn't even look up from his apple. "Then invite it up for a talk."
+    }
+    -> greet
++ [Walk up to the chain.]
+    -> greet
+
+= greet
 #speaker:kell
 "Toll's gone up," says Captain Ruther Kell. "Guild's orders. Nobody crosses to the marsh without the Coinwright Guild's say-so, and the Guild says no."
 -> talk
@@ -57,6 +76,10 @@ A chain hangs across the only bridge over the Grayflow for twenty miles. Grey-cl
 + [Leave (to the map).]
     -> END
 = case
++ {flag("kell_overheard")} [Your men haven't been paid in three months. Let us cross, and you'll get them home sooner.]
+    Kell stops chewing. He looks at his men, who suddenly find the river very interesting. "Somebody's been listening under my bridge." A long breath. "Fair. If you find the Star's people, you'll do my job for free. Lift the chain."
+    ~ set_flag("kell_respect", true)
+    -> crossed_talk
 + [Let us cross. The cult is ahead of all of us. #check:persuasion:14]
     { passed || flag("kell_rank"):
         Kell studies you, then tosses the apple core into the river. "Fair. If you find the Star's people, you'll do my job for free. Lift the chain."

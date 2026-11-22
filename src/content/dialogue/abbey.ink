@@ -53,7 +53,16 @@ The cloister garden is yours. Stairs lead down to the undercroft, a side door to
     -> chapel
 + {not flag("won:e2-drowned-abbot")} [The sealed door to the lower crypt (☠ elite).]
     -> abbot
++ {not flag("won:f14-undercroft") && not flag("warden_done")} [Watch the cult's warden by the well.]
+    -> warden
++ {not flag("won:f14-undercroft") && flag("has_undercroft_key")} [Use the warden's key on the side door, and come at Venna from behind. #fight]
+    #speaker:abbey
+    The key turns without a sound. Below, Sister Venna is preaching to the ogre with her back to the side door.
+    ~ set_flag("ambush:f14-undercroft", true)
+    ~ fight("f14-undercroft", "arrive.after_undercroft")
+    -> END
 + {not flag("won:f14-undercroft")} [Go down to the undercroft. #fight]
+    ~ set_flag("ambush:f14-undercroft", false)
     #speaker:venna
     "Lathander's priests sealed his fire under this floor and called it holy," Sister Venna says from the altar, "Let it burn the Guild's town, and the town that let them take it." The ogre beside her grins.
     ~ fight("f14-undercroft", "arrive.after_undercroft")
@@ -114,6 +123,35 @@ The Drowned Abbot comes apart like wet paper. On his tomb lie two relics of the 
     -> hub
 + [Take the staff (Staff of Healing). #item:staff-of-healing]
     ~ give_item("staff-of-healing", 1)
+    -> hub
+
+// D35: steal a key. Stealth to get close, then Sleight of Hand to lift it. Fails forward: the
+// main stairs are always open.
+= warden
+#speaker:abbey
+An old digger sits by the cloister well with a ring of keys on his belt, nodding over his pipe. One key is newer and brighter than the rest. The diggers call it "the side door", and nobody else is allowed to touch it.
+* [Creep up behind him. #check:stealth:13]
+    { passed:
+        {roller()} gets close enough to smell his pipe. He is snoring now, softly.
+        -> lift
+    - else:
+        A loose tile clatters. The warden's eyes snap open, and he clutches the key ring to his chest. "Nobody uses the side door but the Sister!" He hobbles off down the main stairs to tell her.
+        ~ set_flag("warden_done", true)
+        -> hub
+    }
++ [Leave him be.]
+    -> hub
+= lift
+* [Ease the bright key off the ring. #check:sleightOfHand:12]
+    { passed:
+        The key comes free without a jingle. The warden smiles at something in his dream.
+        ~ set_flag("has_undercroft_key", true)
+        ~ award("discover-side-door")
+        ~ note("You stole the warden's key to the undercroft's side door. You can come at Sister Venna from behind.")
+    - else:
+        The ring jingles. The warden grunts, rolls over and sleeps on top of the keys. There is no getting them now.
+    }
+    ~ set_flag("warden_done", true)
     -> hub
 
 = after_undercroft

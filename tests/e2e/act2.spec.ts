@@ -61,6 +61,9 @@ test('Act II: the marsh is locked until the toll bridge; Kell holds the bridge; 
   const ambush = page.getByRole('heading', { name: /^Prepare:/ });
   await expect(scene.or(ambush)).toBeVisible();
   if (await ambush.isVisible()) return;
+  // D35: the chance to listen under the bridge first; walk up instead.
+  await expect(page.getByRole('button', { name: /listen under the bridge/ })).toBeVisible();
+  await pick(page, /Walk up to the chain/);
   await expect(page.getByText(/Toll's gone up/)).toBeVisible();
   await expect(page.getByRole('button', { name: /take the bridge.*starts combat/ })).toBeVisible();
   await pick(page, /Make our case/);
