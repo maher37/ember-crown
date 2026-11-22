@@ -2,7 +2,9 @@ import armorJson from './armor.json';
 import backgroundsJson from './backgrounds.json';
 import classesJson from './classes.json';
 import difficultiesJson from './difficulties.json';
-import encountersJson from './encounters.json';
+import encountersAct1Json from './encounters/act1.json';
+import encountersAct2Json from './encounters/act2.json';
+import encountersAct3Json from './encounters/act3.json';
 import loadoutsJson from './loadouts.json';
 import npcsJson from './npcs.json';
 import questsJson from './quests.json';
@@ -60,10 +62,20 @@ const gearFile = GearFile.parse(gearJson);
 export const gear = gearFile.gear;
 export const startingSupplies = gearFile.startingSupplies;
 export const magicItems = MagicItemFile.parse(magicItemsJson).items;
-const encounterFile = EncounterFile.parse(encountersJson);
-export const encounters = encounterFile.encounters;
-export const roadTables = encounterFile.roadTables;
-export const roadEvents = encounterFile.roadEvents;
+// One encounter file per act (src/data/encounters/actN.json); joined here into one list.
+const encounterFiles = [encountersAct1Json, encountersAct2Json, encountersAct3Json].map((f) =>
+  EncounterFile.parse(f),
+);
+export const encounters = encounterFiles.flatMap((f) => f.encounters);
+type EncounterData = ReturnType<typeof EncounterFile.parse>;
+export const roadTables: EncounterData['roadTables'] = Object.assign(
+  {},
+  ...encounterFiles.map((f) => f.roadTables),
+);
+export const roadEvents: EncounterData['roadEvents'] = Object.assign(
+  {},
+  ...encounterFiles.map((f) => f.roadEvents),
+);
 const loadoutFile = LoadoutFile.parse(loadoutsJson);
 export const loadouts = loadoutFile.loadouts;
 export const defaultChoices = loadoutFile.defaultChoices;

@@ -4,7 +4,7 @@
 
 Each line was entered from memory or is marked ⚠ in the design docs. Check it against your PDFs. When a line is right (or fixed), remove its `verify` and `verifyNote` from the JSON and run `npm run verify-list` again.
 
-**219 items to check.**
+**221 items to check.**
 
 ## species.json
 
@@ -182,7 +182,7 @@ Each line was entered from memory or is marked ⚠ in the design docs. Check it 
 - [ ] **items › Boots of Elvenkind**: Name from the DMG; effect summarized from memory, price our own (XGtE puts uncommon items at 101–500 gp, rare at 501–5,000).
 - [ ] **items › Stone of Good Luck**: Name from the DMG; effect summarized from memory, price our own (XGtE puts uncommon items at 101–500 gp, rare at 501–5,000).
 
-## encounters.json
+## encounters/act1.json
 
 - [ ] **(whole file)**: Map layout, positions and the per-difficulty enemy lists come from docs/mockups/Combat.dc.html; terrain types (trees block, brush is difficult terrain and a hiding spot, boulders give half cover) are my design [inferred].
 - [ ] **encounters › Brawl at the Drowned Lantern**: Encounters_and_XP F1: 4 bruisers on Medium. Easy −1 / Hard +1 is my pick [inferred].
@@ -196,6 +196,17 @@ Each line was entered from memory or is marked ⚠ in the design docs. Check it 
 - [ ] **encounters › Shadows in the mill**: Encounters_and_XP side quests: 3 shadows (Hard at L2). Easy/Hard changes are my pick [inferred].
 - [ ] **encounters › The luck-stone shrine**: Encounters_and_XP side quests: hobgoblin + 2 goblins on Medium. Easy/Hard changes are my pick [inferred].
 - [ ] **encounters › Scald**: Items.md Elites: red dragon wyrmling (275 XP/PC bonus). One wyrmling on every difficulty [inferred].
+- [ ] **encounters › Starving wolves**: Monsters and raw XP from Encounters_and_XP.md §5b; XP per character = raw ÷ 4 (§3). Easy removes one enemy and Hard adds one [inferred, D9 says Easy/Hard add or remove enemies]; map and positions are mine [inferred].
+- [ ] **encounters › Goblin foragers**: Monsters and raw XP from Encounters_and_XP.md §5b; XP per character = raw ÷ 4 (§3). Easy removes one enemy and Hard adds one [inferred, D9 says Easy/Hard add or remove enemies]; map and positions are mine [inferred].
+- [ ] **encounters › River-road bandits**: Monsters and raw XP from Encounters_and_XP.md §5b; XP per character = raw ÷ 4 (§3). Easy removes one enemy and Hard adds one [inferred, D9 says Easy/Hard add or remove enemies]; map and positions are mine [inferred].
+- [ ] **encounters › Stirges at dusk**: Monsters and raw XP from Encounters_and_XP.md §5b; XP per character = raw ÷ 4 (§3). Easy removes one enemy and Hard adds one [inferred, D9 says Easy/Hard add or remove enemies]; map and positions are mine [inferred].
+- [ ] **encounters › A brown bear**: Monsters and raw XP from Encounters_and_XP.md §5b; XP per character = raw ÷ 4 (§3). Easy removes one enemy and Hard adds one [inferred, D9 says Easy/Hard add or remove enemies]; map and positions are mine [inferred].
+- [ ] **encounters › A hunting griffon**: Monsters and raw XP from Encounters_and_XP.md §5b; XP per character = raw ÷ 4 (§3). Easy removes one enemy and Hard adds one [inferred, D9 says Easy/Hard add or remove enemies]; map and positions are mine [inferred].
+- [ ] **encounters › Cult recruiters**: Monsters and raw XP from Encounters_and_XP.md §5b; XP per character = raw ÷ 4 (§3). Easy removes one enemy and Hard adds one [inferred, D9 says Easy/Hard add or remove enemies]; map and positions are mine [inferred].
+
+## encounters/act2.json
+
+- [ ] **(whole file)**: Map layout, positions and the per-difficulty enemy lists come from docs/mockups/Combat.dc.html; terrain types (trees block, brush is difficult terrain and a hiding spot, boulders give half cover) are my design [inferred].
 - [ ] **encounters › The toll bridge**: Encounters_and_XP F8: 3 thugs + 1 scout on Medium. Easy drops a thug and Hard adds a second scout (bot tests: a 4th thug was a wipe) [inferred].
 - [ ] **encounters › Lizardfolk hunting grounds**: Encounters_and_XP F9: 3 lizardfolk. Easy/Hard changes are my pick [inferred].
 - [ ] **encounters › Drowned Marrowmere**: Encounters_and_XP F10: 1 ghoul + 4 zombies on Medium. Easy/Hard changes are my pick [inferred].
@@ -209,6 +220,17 @@ Each line was entered from memory or is marked ⚠ in the design docs. Check it 
 - [ ] **encounters › The flooded crypt**: Encounters_and_XP side quests: 2 specters + 1 ghast (Hard at L4) [inferred Easy/Hard].
 - [ ] **encounters › Ambush in Cobbler's Lane**: Encounters_and_XP side quests: cult fanatic + 3 cultists on Medium [inferred Easy/Hard].
 - [ ] **encounters › The Drowned Abbot**: Items.md Elites: wraith + 1 specter (500 XP/PC bonus). Same on every difficulty [inferred].
+- [ ] **encounters › Lizardfolk hunters**: Encounters_and_XP §5b marsh table; XP = raw ÷ 4. Easy/Hard changes are my pick [inferred].
+- [ ] **encounters › Insect swarms**: Encounters_and_XP §5b marsh table; XP = raw ÷ 4. Easy/Hard changes are my pick [inferred].
+- [ ] **encounters › Giant spiders**: Encounters_and_XP §5b marsh table; XP = raw ÷ 4. Easy/Hard changes are my pick [inferred].
+- [ ] **encounters › Bog dead**: Encounters_and_XP §5b marsh table; XP = raw ÷ 4. Easy/Hard changes are my pick [inferred].
+- [ ] **encounters › Grey Company patrol**: Encounters_and_XP §5b marsh table; XP = raw ÷ 4. Easy/Hard changes are my pick [inferred].
+- [ ] **encounters › Sunken ruin**: Encounters_and_XP §5b marsh table; XP = raw ÷ 4. Easy/Hard changes are my pick [inferred].
+- [ ] **encounters › Ghoul pack**: Encounters_and_XP §5b marsh table; XP = raw ÷ 4. Easy/Hard changes are my pick [inferred].
+
+## encounters/act3.json
+
+- [ ] **(whole file)**: Map layout, positions and the per-difficulty enemy lists come from docs/mockups/Combat.dc.html; terrain types (trees block, brush is difficult terrain and a hiding spot, boulders give half cover) are my design [inferred].
 - [ ] **encounters › Ashfall Pass**: Encounters_and_XP F15: 2 ogres (Medium at L4). [inferred] Easy/Hard changes and the map are my pick.
 - [ ] **encounters › The Kiln Gate**: Encounters_and_XP F16: 2 gargoyles (Medium at L4). [inferred] Easy/Hard changes and the map are my pick.
 - [ ] **encounters › The Kiln Gate (Kell holds the rear)**: Story_Bible Act III: if Kell respects you the gate fight gets smaller [inferred: one gargoyle].
@@ -226,20 +248,6 @@ Each line was entered from memory or is marked ⚠ in the design docs. Check it 
 - [ ] **encounters › The evacuation convoy**: Encounters_and_XP side quests: 2 hell hounds (Medium at L5). [inferred] Easy/Hard changes and the map are my pick.
 - [ ] **encounters › The giant at the door**: Encounters_and_XP side quests: hill giant + ogre (Hard at L5). [inferred] Easy/Hard changes and the map are my pick.
 - [ ] **encounters › Vorrag the Kiln-Smith**: Items.md Elites: fire giant (1,250 XP/PC bonus). Same on every difficulty [inferred].
-- [ ] **encounters › Starving wolves**: Monsters and raw XP from Encounters_and_XP.md §5b; XP per character = raw ÷ 4 (§3). Easy removes one enemy and Hard adds one [inferred, D9 says Easy/Hard add or remove enemies]; map and positions are mine [inferred].
-- [ ] **encounters › Goblin foragers**: Monsters and raw XP from Encounters_and_XP.md §5b; XP per character = raw ÷ 4 (§3). Easy removes one enemy and Hard adds one [inferred, D9 says Easy/Hard add or remove enemies]; map and positions are mine [inferred].
-- [ ] **encounters › River-road bandits**: Monsters and raw XP from Encounters_and_XP.md §5b; XP per character = raw ÷ 4 (§3). Easy removes one enemy and Hard adds one [inferred, D9 says Easy/Hard add or remove enemies]; map and positions are mine [inferred].
-- [ ] **encounters › Stirges at dusk**: Monsters and raw XP from Encounters_and_XP.md §5b; XP per character = raw ÷ 4 (§3). Easy removes one enemy and Hard adds one [inferred, D9 says Easy/Hard add or remove enemies]; map and positions are mine [inferred].
-- [ ] **encounters › A brown bear**: Monsters and raw XP from Encounters_and_XP.md §5b; XP per character = raw ÷ 4 (§3). Easy removes one enemy and Hard adds one [inferred, D9 says Easy/Hard add or remove enemies]; map and positions are mine [inferred].
-- [ ] **encounters › A hunting griffon**: Monsters and raw XP from Encounters_and_XP.md §5b; XP per character = raw ÷ 4 (§3). Easy removes one enemy and Hard adds one [inferred, D9 says Easy/Hard add or remove enemies]; map and positions are mine [inferred].
-- [ ] **encounters › Cult recruiters**: Monsters and raw XP from Encounters_and_XP.md §5b; XP per character = raw ÷ 4 (§3). Easy removes one enemy and Hard adds one [inferred, D9 says Easy/Hard add or remove enemies]; map and positions are mine [inferred].
-- [ ] **encounters › Lizardfolk hunters**: Encounters_and_XP §5b marsh table; XP = raw ÷ 4. Easy/Hard changes are my pick [inferred].
-- [ ] **encounters › Insect swarms**: Encounters_and_XP §5b marsh table; XP = raw ÷ 4. Easy/Hard changes are my pick [inferred].
-- [ ] **encounters › Giant spiders**: Encounters_and_XP §5b marsh table; XP = raw ÷ 4. Easy/Hard changes are my pick [inferred].
-- [ ] **encounters › Bog dead**: Encounters_and_XP §5b marsh table; XP = raw ÷ 4. Easy/Hard changes are my pick [inferred].
-- [ ] **encounters › Grey Company patrol**: Encounters_and_XP §5b marsh table; XP = raw ÷ 4. Easy/Hard changes are my pick [inferred].
-- [ ] **encounters › Sunken ruin**: Encounters_and_XP §5b marsh table; XP = raw ÷ 4. Easy/Hard changes are my pick [inferred].
-- [ ] **encounters › Ghoul pack**: Encounters_and_XP §5b marsh table; XP = raw ÷ 4. Easy/Hard changes are my pick [inferred].
 - [ ] **encounters › Fleeing war band**: Encounters_and_XP §5b high Greypeaks table; XP = raw ÷ 4. [inferred] Easy/Hard changes and the map are my pick.
 - [ ] **encounters › Owlbear**: Encounters_and_XP §5b high Greypeaks table; XP = raw ÷ 4. [inferred] Easy/Hard changes and the map are my pick.
 - [ ] **encounters › Griffons**: Encounters_and_XP §5b high Greypeaks table; XP = raw ÷ 4. [inferred] Easy/Hard changes and the map are my pick.
