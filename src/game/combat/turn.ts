@@ -2,7 +2,7 @@ import type { DifficultyId } from '../../data/schemas/difficulty';
 import type { Encounter } from '../../data/schemas/encounter';
 import { getMonster, monsterToCreature } from '../creatures';
 import { hasSubclass, type Hero } from '../hero';
-import { hasItem, hasSpecial } from '../items';
+import { getItem, hasItem, hasSpecial } from '../items';
 import {
   abilityCheck,
   abilityModifier,
@@ -192,14 +192,23 @@ export function startCombat(o: StartOptions): CombatState {
           tag: 'resistance',
           data: { type: 'fire' },
         });
-      if (h && hasSpecial(h, 'resistance-while-held'))
-        c.effects.push({
-          id: 'resist-fire-shield',
-          name: 'Shield of the Morninglord',
-          sourceId: c.id,
-          tag: 'resistance',
-          data: { type: 'fire' },
-        });
+      // Worn or held items that grant a resistance (DMG: Ring of Resistance, Ring of Warmth,
+      // Brooch of Shielding): one effect per item, named after it.
+      for (const id of h ? (h.equipment.magic ?? []) : []) {
+        const item = getItem(id);
+        for (const e of item.effects)
+          if (e.type === 'special' && e.id === 'resistance-while-held')
+            c.effects.push({
+              id:
+                id === 'shield-of-the-morninglord'
+                  ? 'resist-fire-shield'
+                  : `resist-${e.note}-${id}`,
+              name: item.name,
+              sourceId: c.id,
+              tag: 'resistance',
+              data: { type: e.note ?? 'fire' },
+            });
+      }
     }
     // Mage Armor before the fight: free for warlocks with Armor of Shadows, a slot for others.
     for (const c of Object.values(s.combatants)) {

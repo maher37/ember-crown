@@ -8,6 +8,7 @@
 
 ## Design rules
 - **2–4 level-appropriate items per act**, each tied to a story beat (no random loot piles for the important stuff).
+- **Plus one ring, one cloak and one necklace hidden in each act's finds** (owner, Nov 22). These are smaller, useful items; the act's standout items stay tied to story beats.
 - **One optional elite monster per act.** It's Deadly at the expected level and Hard if you're ahead from side quests. It's clearly telegraphed (a "Deadly" skull rating in the journal, warnings from NPCs) and guards the act's **standout item**.
 - **Healing potions** (2d4 + 2, common) are sold at the Drowned Lantern and found regularly. Greater healing (4d4 + 4, uncommon) appears from Act II.
 - **Attunement:** up to 3 attuned items per character (DMG rule). Attuning happens during a short rest.
@@ -68,6 +69,12 @@ Bought, not found [inferred prices; XGtE puts uncommon items at 101–500 gp and
 
 ## Things to find while exploring (D27)
 22 finds in `src/data/finds.json`: chests, caches, bodies and buried things, sized to each act (Act I: 3–75 gp and potions; Act II: 18–150 gp; Act III: 30–250 gp plus a Periapt of Wound Closure in the Kiln-Wardens' strongroom). Three of them start short side quests: the Smuggler's Note (Ashwood → Varrow's Mill), the Sergeant's Key (hunting grounds → Marrowmere) and the Kiln-Wardens' Strongroom (Ashfall Pass → the Great Forge).
+
+Magic rings, cloaks and necklaces hidden in the finds (owner, Nov 22; placements are my picks [inferred]):
+- **Act I:** Ring of Warmth (cold resistance; the skeleton in the steaming cave), Cloak of Elvenkind (advantage on Stealth; the mill's pantry chest), Brooch of Shielding (force resistance, worn at the neck; the goblin stash in the warren).
+- **Act II:** Ring of Protection (the toll-bridge box), Cloak of Protection (the deserters' paychest), Amulet of the Devout +1 (+1 spell attack and save DC; the abbey reliquary).
+- **Act III:** Ring of Resistance (fire) (Wix's cave of trophies), the Kiln-Warden's Mantle (homebrew: advantage on initiative and Perception; the Kiln-Wardens' strongroom). The strongroom's Periapt of Wound Closure is the act's necklace.
+
 
 ## Brannoc's rare finds (D25, replaced by D26)
 Bought, not found, so they don't replace the story items above [inferred prices]:

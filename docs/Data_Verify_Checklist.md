@@ -4,7 +4,7 @@
 
 Each line was entered from memory or is marked ⚠ in the design docs. Check it against your PDFs. When a line is right (or fixed), remove its `verify` and `verifyNote` from the JSON and run `npm run verify-list` again.
 
-**221 items to check.**
+**227 items to check.**
 
 ## species.json
 
@@ -165,6 +165,12 @@ Each line was entered from memory or is marked ⚠ in the design docs. Check it 
 - [ ] **items › The Drowned Lantern**: Name found in the DMG tables (✅); effect summarized from memory (Items.md CONFIRM LOCALLY).
 - [ ] **items › Wix's Clan Gift**: Name found in the DMG tables (✅); effect summarized from memory (Items.md CONFIRM LOCALLY).
 - [ ] **items › Dragon Slayer**: Name found in the DMG tables (✅); effect summarized from memory (Items.md CONFIRM LOCALLY).
+- [ ] **items › Ring of Warmth**: Name from the DMG; effect summarized from memory (Items.md CONFIRM LOCALLY). A hidden find (D27). The DMG ring also keeps you comfortable in deep cold; that part is flavor here [inferred].
+- [ ] **items › Cloak of Elvenkind**: Name from the DMG; effect summarized from memory (Items.md CONFIRM LOCALLY). A hidden find (D27). The DMG cloak also gives disadvantage to Perception checks to see you; that part isn't modeled [inferred].
+- [ ] **items › Brooch of Shielding**: Name from the DMG; effect summarized from memory (Items.md CONFIRM LOCALLY). A hidden find (D27). The DMG brooch also makes you immune to Magic Missile; that part isn't modeled [inferred].
+- [ ] **items › Amulet of the Devout +1**: Name from Tasha's Cauldron of Everything; effect summarized from memory. The book limits it to clerics and paladins and adds an extra Channel Divinity; here any spellcaster can attune and the Channel Divinity part isn't modeled [inferred]. A hidden find (D27).
+- [ ] **items › Ring of Resistance (fire)**: Name from the DMG; effect summarized from memory (Items.md CONFIRM LOCALLY). A hidden find (D27). The DMG ring comes in one damage type per ring; fire is our pick for Act III [inferred].
+- [ ] **items › Kiln-Warden's Mantle**: Homebrew [inferred]: the Sentinel Shield's effect on a cloak, for the guards who watched the Kiln. A hidden find (D27).
 - [ ] **items › Longsword +1**: Price is our own (XGtE puts uncommon items at 101–500 gp).
 - [ ] **items › Rapier +1**: Price is our own (XGtE puts uncommon items at 101–500 gp).
 - [ ] **items › Mace +1**: Price is our own (XGtE puts uncommon items at 101–500 gp).
