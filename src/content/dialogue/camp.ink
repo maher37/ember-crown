@@ -63,13 +63,13 @@ Late in the watch, a red light comes through the trees, steady and unhurried. Ma
 #speaker:cindrath
 All of you dream the same dream. A red room, warm all the way through, and the marks on your palms glowing like coals. A voice like a banked fire speaks, fondly. "Kindled. You carry a little of me already. Let me make it worth carrying."
 {kindled() > 0: "You took my gifts before," it says. "You'll find they've grown."}
-+ {not flag("kindled_resist")} [Accept: let fire not burn us. (The mark deepens.)]
++ {not flag("kindled_resist")} [Accept: let fire not burn us. (Every marked hero takes half damage from fire, from now on.)]
     ~ set_flag("kindled_resist", true)
     -> took
-+ {not flag("kindled_strike")} [Accept: let our blows burn. (The mark deepens.)]
++ {not flag("kindled_strike")} [Accept: let our blows burn. (Once a turn, each hero's weapon hit adds 1d4 fire damage, from now on.)]
     ~ set_flag("kindled_strike", true)
     -> took
-+ {not flag("kindled_vigor")} [Accept: let the warmth keep us standing. (The mark deepens.)]
++ {not flag("kindled_vigor")} [Accept: let the warmth keep us standing. (Each hero starts every fight with temporary HP equal to their level, from now on.)]
     ~ set_flag("kindled_vigor", true)
     -> took
 + [Refuse.]
@@ -78,7 +78,7 @@ All of you dream the same dream. A red room, warm all the way through, and the m
     -> END
 = took
 ~ set_flag("kindled", kindled() + 1)
-You wake warm. The rings on your palms are a little wider than they were, and for a moment everyone's eyes catch the firelight like a cat's. (Kindled {kindled()} of 3: the voice will be harder to argue with when it matters.)
+You wake warm. The rings on your palms are a little wider than they were, and for a moment everyone's eyes catch the firelight like a cat's. (Kindled {kindled()} of 3. The gift is listed on each hero's sheet. The cost: every gift you take makes the voice harder to argue with when it matters most.)
 -> END
 
 // ── Corin's dream bargain (Story_Bible §9: the Ember meter) ──
@@ -86,13 +86,13 @@ You wake warm. The rings on your palms are a little wider than they were, and fo
 #speaker:cindrath
 Corin dreams of a red room that is warm all the way through. A voice like a banked fire speaks to him, kindly. "Little ember. You're tired. Let me help."
 ~ set_flag("ember_rest", true)
-+ [Accept: make my fire burn hotter. (+Ember)]
++ {not flag("ember_fire")} [Accept: make my fire burn hotter. (Corin's fire spells deal +2 damage, from now on. Ember +1.)]
     ~ set_flag("ember_fire", true)
     -> took
-+ [Accept: let the fire not burn me. (+Ember)]
++ {not flag("ember_resist")} [Accept: let the fire not burn me. (Corin takes half damage from fire, from now on. Ember +1.)]
     ~ set_flag("ember_resist", true)
     -> took
-+ [Accept: give me back my strength. (+Ember, a spell slot)]
++ [Accept: give me back my strength. (Corin gets back one used spell slot, now. Ember +1.)]
     ~ regain_slot()
     -> took
 + [Refuse.]
@@ -100,5 +100,5 @@ Corin dreams of a red room that is warm all the way through. A voice like a bank
     -> END
 = took
 ~ set_flag("ember", ember() + 1)
-Corin wakes warm, and his eyes are a little more gold than they were. (Ember {ember()} of 5.)
+Corin wakes warm, and his eyes are a little more gold than they were. (Ember {ember()} of 5. The gift is listed on Corin's sheet. The cost: the higher Ember climbs, the more of Corin belongs to the voice. At 5, it may take him.)
 -> END
