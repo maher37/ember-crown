@@ -20,10 +20,13 @@ Two ways to report what you find while playing. Use whichever is easier.
 **Story and clarity**
 
 **Feature wishes**
+- **Feature, resting in dungeons:** a long rest inside a mine or dungeon should have a small chance of being attacked by one or two of that place's roaming monsters. (Camps in the wild can already be attacked at night; dungeons and mines can't.)
+- **Feature, ambushing monsters:** if the party notices roaming monsters before they notice the party (Stealth against Perception), the party gets the jump on them and acts first. This applies only to roaming monsters, not ones already waiting in a room. (Today only monsters can surprise the party.)
 - **Feature, casting between fights (D34):** besides healing, let casters cast other spells on the map, for example Hex or Armor of Agathys just before a fight, and carry them into it. Today only healing spells (and Mage Armor on the Prepare screen) work outside a fight.
 - **Feature, summons:** the warlock's Pact of the Chain familiar (Find Familiar) can't be summoned, and summoned creatures and beast companions aren't in the game yet. Expected: familiars, summons and animal companions join the fight as allies.
 - **Feature, portraits:** the dragonborn portrait should look a little like a dragon, and small species (dwarf, halfling, gnome) should look smaller than humans.
 - **Story, camp companions who talk** (Story_Review #2, D32): at camp only.
+- **Story, rename a premade hero (D33):** Nessa and Rhessa rhyme; rename one of them. Owner to pick which one and the new name.
 - **Story, the new premade heroes' own story (D33):** Harl Deepdelve, Nessa Thorne and Rhessa Kalvaar should get unique dialogue options and story beats like Corin's `[Corin]` lines and scenes. Expected: each one has `[Name]` choices in major scenes and a few personal story moments tied to their backstory (Story_Bible §9b). One hero per PR.
 
 ## Done
