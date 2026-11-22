@@ -4,7 +4,7 @@ The owner's PHB, DMG and Monster Manual PDFs were text-extracted in the claude.a
 
 Roadmap task **N1**: apply the fixes in §1, clear the verify flags in §2, and update `docs/Data_Verify_Checklist.md` to match. Do it in one PR, and run `npm test`, `npm run validate-data` and `npm run balance`. The two monster fixes slightly change fights that use veterans and brown bears.
 
-**Status: applied (roadmap N1).** One exception: the veteran's heavy crossbow was kept at **1d10+1**. The free SRD 5.1 rules print 1d10+1, and the game's number checker already listed that "+1" as a known book quirk, so the "1d10" reading is probably a scan error [inferred]. It stays flagged in the checklist for the owner to look at in the MM. Fixed spells (§1) had their flags cleared too, since they were checked. `veteran` and `brown-bear` stay flagged for ability scores and hit dice, which the check didn't confirm.
+**Status: applied (roadmap N1).** One exception: the veteran's heavy crossbow was kept at **1d10+1**. The free SRD 5.1 rules print 1d10+1, and the game's number checker already listed that "+1" as a known book quirk, so the "1d10" reading is probably a scan error [inferred]. **The owner checked the MM on Nov 22: it says 1d10 + 1**, so the game's value is right. Fixed spells (§1) had their flags cleared too, since they were checked. `veteran` and `brown-bear` stay flagged for ability scores and hit dice, which the check didn't confirm.
 
 ## 1. Fixes (game value → book value)
 

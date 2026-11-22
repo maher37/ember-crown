@@ -20,6 +20,7 @@ Two ways to report what you find while playing. Use whichever is easier.
 **Story and clarity**
 
 **Feature wishes**
+- **Feature, casting between fights (D34):** besides healing, let casters cast other spells on the map, for example Hex or Armor of Agathys just before a fight, and carry them into it. Today only healing spells (and Mage Armor on the Prepare screen) work outside a fight.
 - **Feature, summons:** the warlock's Pact of the Chain familiar (Find Familiar) can't be summoned, and summoned creatures and beast companions aren't in the game yet. Expected: familiars, summons and animal companions join the fight as allies.
 - **Feature, premade companions (D33):** three more premade origin heroes like Corin Varrow, each with a backstory: a dwarf cleric, a female human warlock and a female dragonborn fighter.
 - **Feature, portraits:** the dragonborn portrait should look a little like a dragon, and small species (dwarf, halfling, gnome) should look smaller than humans.

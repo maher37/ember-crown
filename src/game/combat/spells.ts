@@ -376,7 +376,7 @@ export function castSpell(ctx: Ctx, caster: Combatant, req: CastRequest): void {
     (sp.id === 'eldritch-blast' && h?.invocations.includes('agonizing-blast') ? nums.mod : 0) +
     // PHB: Draconic Bloodline, Elemental Affinity (level 6, red: fire). +Cha to one damage roll.
     (firesFire && h && classLevel(caster, 'sorcerer') >= 6 ? nums.mod : 0) +
-    // Story_Bible §9: Corin's ember bargain "stronger fire spells" [inferred: +2].
+    // Story_Bible §9: Corin's ember bargain "stronger fire spells" (+2, confirmed by the owner Nov 22).
     (firesFire && h?.origin === 'corin' && s.flags['ember_fire'] ? 2 : 0);
   const effects = scaleCantrip(sp, h?.level ?? 1);
   const opts: LeafOpts = {
