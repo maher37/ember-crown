@@ -5,76 +5,47 @@ import { difficulties } from '../data';
 import {
   areaCells,
   attackOptions,
-  castProblem,
-  currentAc,
-  getSpell,
   featureList,
-  hideProblem,
-  offhandWeapons,
   posKey,
-  distanceFeet,
   reachable,
   spellChoices,
   targeting,
-  targetsFor,
-  terrainAt,
-  type CombatState,
   type Combatant,
   type FeatureId,
   type Metamagic,
   METAMAGIC_NAMES,
   type PlayerAction,
   type Pos,
-  zoneCells,
 } from '../game/combat';
-import { getClass, getSpecies, slotsLeft, type Hero } from '../game/hero';
+import { slotsLeft } from '../game/hero';
 import { readSlot } from '../game/save';
 import { useSettings } from '../game/settings';
 import { useGame } from '../game/store';
 import { hasCondition, SeededRng } from '../rules';
 import './Combat.css';
-import { briefLine, hitChance, isDiceLine, tokenDrawOrder } from './combatUi';
-import { Portrait } from './Portrait';
-import { heroPortrait } from './heroLook';
-import { terrainFill, terrainName } from './mapStyle';
+import { isDiceLine, tokenDrawOrder } from './combatUi';
 import { foeInfo } from './foeInfo';
 import { useHitFx } from './combatFx';
 import { setLabel } from '../game/loadout';
-import { ABILITY_LONG } from '../game/combat/leaves';
 import { getItem } from '../game/items';
 import { getGear, isMagicItem } from '../game/gear';
-import { getMonster } from '../game/creatures';
-import { SoundButton } from '../audio/SoundButton';
+import { CELL, MapTerrain } from './combat/MapTerrain';
+import { CombatHeader, TurnOrder } from './combat/CombatHeader';
+import { CombatAside } from './combat/CombatAside';
+import { ActionMenu, TurnEconomy, type MenuKind } from './combat/ActionBar';
+import { OutcomeDialog, PromptDialog } from './combat/CombatDialogs';
+import { isHero, moreActionsFor, targetBanner, validTargetsFor, type Mode } from './combat/modes';
 
-const CELL = 48;
-const ZONE_FILL: Record<string, string> = {
-  damage: '#e8c27a',
-  spikes: '#6a8a3a',
-  silence: '#7fb3e6',
-  darkness: '#05070a',
-};
-
-type Mode =
-  | { kind: 'idle' }
-  | { kind: 'attack'; optionId: string; offhand?: boolean }
-  | { kind: 'spell'; spellId: string; level: number; targets: string[]; mm?: Metamagic }
-  | { kind: 'item'; itemId: string }
-  | { kind: 'feature'; id: FeatureId; target: 'ally' | 'enemy' }
-  | { kind: 'help' }
-  | { kind: 'shove'; mode: 'prone' | 'push' }
-  | { kind: 'grapple' };
-
-/** A hero (not a monster ally the player controls, like the militia, Ser Ida or conjured wolves). */
-const isHero = (c: Combatant): c is Combatant & { creature: Hero } =>
-  c.side === 'party' && !!heroOf(c);
-
-/** Grid combat, rebuilt from docs/mockups/Combat.dc.html. */
+/**
+ * Grid combat, rebuilt from docs/mockups/Combat.dc.html. The pieces live in ui/combat/:
+ * the map terrain, header, side panel, action menu, dialogs, and the aiming logic (modes.ts).
+ */
 export function CombatScreen() {
   const { combat, combatAct, combatAdvance, setCombatDifficulty, endFight, loadGame, goto } =
     useGame();
   const settings = useSettings();
   const [mode, setMode] = useState<Mode>({ kind: 'idle' });
-  const [menu, setMenu] = useState<null | 'spells' | 'features' | 'more'>(null);
+  const [menu, setMenu] = useState<MenuKind | null>(null);
   const [hover, setHover] = useState<Pos | null>(null);
   const [message, setMessage] = useState('');
   const [smite, setSmite] = useState(0);
@@ -139,90 +110,10 @@ export function CombatScreen() {
   const features = myTurn ? featureList(me, s) : [];
 
   // Which tokens can be clicked in the current mode.
-  const validTargets = useMemo(() => {
-    if (!myTurn) return new Set<string>();
-    const all = Object.values(s.combatants).filter((c) => !c.gone && !c.creature.dead);
-    if (mode.kind === 'attack') {
-      const opt = options.find((o) => o.id === mode.optionId);
-      return new Set(opt ? targetsFor(s, me, opt) : []);
-    }
-    if (mode.kind === 'shove' || mode.kind === 'grapple')
-      return new Set(
-        all
-          .filter(
-            (c) =>
-              c.side === 'enemy' &&
-              Math.max(Math.abs(c.pos.x - me.pos.x), Math.abs(c.pos.y - me.pos.y)) === 1,
-          )
-          .map((c) => c.id),
-      );
-    if (mode.kind === 'help')
-      return new Set(all.filter((c) => c.side === 'party' && c.id !== me.id).map((c) => c.id));
-    if (mode.kind === 'item' && getGear(mode.itemId)?.use?.type === 'throw') {
-      const use = getGear(mode.itemId)!.use as { rangeFt: number; onlyVs?: string[] };
-      return new Set(
-        all
-          .filter(
-            (c) =>
-              c.side === 'enemy' &&
-              distanceFeet(c.pos, me.pos) <= use.rangeFt * 3 &&
-              (!use.onlyVs ||
-                use.onlyVs.includes(c.monsterId ? getMonster(c.monsterId).type : 'humanoid')),
-          )
-          .map((c) => c.id),
-      );
-    }
-    if (mode.kind === 'item' && getGear(mode.itemId)?.use?.type === 'stabilize')
-      return new Set(
-        all
-          .filter(
-            (c) =>
-              c.side === 'party' &&
-              c.creature.hp === 0 &&
-              !c.creature.stable &&
-              Math.abs(c.pos.x - me.pos.x) <= 1 &&
-              Math.abs(c.pos.y - me.pos.y) <= 1,
-          )
-          .map((c) => c.id),
-      );
-    if (mode.kind === 'item')
-      return new Set(
-        all
-          .filter(
-            (c) =>
-              c.side === 'party' &&
-              (c.id === me.id ||
-                (Math.abs(c.pos.x - me.pos.x) <= 1 && Math.abs(c.pos.y - me.pos.y) <= 1)),
-          )
-          .map((c) => c.id),
-      );
-    if (mode.kind === 'feature')
-      return new Set(
-        all
-          .filter((c) => (mode.target === 'ally' ? c.side === 'party' : c.side === 'enemy'))
-          .map((c) => c.id),
-      );
-    if (mode.kind === 'spell') {
-      const sp = spells.find((x) => x.spell.id === mode.spellId)?.spell;
-      if (!sp) return new Set<string>();
-      const t = targeting(sp, mode.level, mode.mm, myLevel);
-      if (t.kind !== 'creatures') return new Set<string>();
-      return new Set(
-        all
-          .filter(
-            (c) =>
-              !castProblem({ s, rng: new SeededRng(1) }, me, {
-                spellId: sp.id,
-                slotLevel: mode.level,
-                targetIds: [c.id],
-                metamagic: mode.mm,
-              }),
-          )
-          .map((c) => c.id),
-      );
-    }
-    return new Set<string>();
-  }, [s, me, myTurn, mode, options, spells, myLevel]);
+  const validTargets = useMemo(
+    () => validTargetsFor(s, me, myTurn, mode, options, spells, myLevel),
+    [s, me, myTurn, mode, options, spells, myLevel],
+  );
 
   const areaPreview = useMemo(() => {
     if (mode.kind !== 'spell' || !hover) return new Set<string>();
@@ -335,144 +226,30 @@ export function CombatScreen() {
     mode.kind === 'attack' ? options.find((o) => o.id === mode.optionId) : options[0];
   const banner = targetBanner(mode, options, spells);
   const actionLeft = !me.turn.actionUsed || me.turn.extraActions > 0 || !!me.turn.hasteAction;
-  const moreActions: { label: string; detail: string; onClick: () => void; blocked?: string }[] = [
-    ...(s.parley
-      ? [
-          {
-            label: 'Talk them down',
-            detail: `${s.parley.skills.join(' or ')} check · uses your action · once each`,
-            onClick: () => doAct({ type: 'parley' }),
-            blocked: s.parleyTried.includes(me.id)
-              ? 'already tried'
-              : actionLeft
-                ? undefined
-                : 'no action left',
-          },
-        ]
-      : []),
-    ...potions.map(([id, n]) => ({
-      label: `${getItem(id).name} (${n})`,
-      detail: 'drink it, or give it to an adjacent ally · action',
-      onClick: () => setMode({ kind: 'item', itemId: id }),
-      blocked:
-        actionLeft ||
-        (hero &&
-          hero.creature.classId === 'rogue' &&
-          hero.creature.level >= 3 &&
-          !me.turn.bonusUsed)
-          ? undefined
-          : 'no action left',
-    })),
-    ...fightGear.map(({ g, n }) => ({
-      label:
-        g.use!.type === 'stabilize'
-          ? `${g.name}: stabilize`
-          : `Throw ${g.name.toLowerCase()} (${n})`,
-      detail:
-        g.use!.type === 'stabilize'
-          ? 'a dying ally next to you becomes stable · action'
-          : `${g.use!.type === 'throw' ? `${g.use!.dice} ${g.use!.damageType}` : ''}${
-              g.use!.type === 'throw' && g.use!.onlyVs ? ` vs ${g.use!.onlyVs.join('/')}` : ''
-            } · ${g.use!.type === 'throw' ? g.use!.rangeFt : 5} ft · action`,
-      onClick: () => setMode({ kind: 'item', itemId: g.id }),
-      blocked: actionLeft ? undefined : 'no action left',
-    })),
-    {
-      label: 'Help',
-      detail: 'an ally gets advantage on their next attack',
-      onClick: () => setMode({ kind: 'help' }),
-    },
-    {
-      label: 'Hide',
-      detail: 'Stealth vs passive Perception',
-      onClick: () => doAct({ type: 'hide' }),
-      blocked: hideProblem(s, me) ?? undefined,
-    },
-    {
-      label: 'Shove: knock prone',
-      detail: 'Athletics contest (uses an attack)',
-      onClick: () => setMode({ kind: 'shove', mode: 'prone' }),
-    },
-    {
-      label: 'Shove: push 5 ft',
-      detail: 'Athletics contest (uses an attack)',
-      onClick: () => setMode({ kind: 'shove', mode: 'push' }),
-    },
-    {
-      label: 'Grapple',
-      detail: 'Athletics contest (uses an attack)',
-      onClick: () => setMode({ kind: 'grapple' }),
-    },
-    {
-      label: 'Stand up',
-      detail: 'costs half your speed',
-      onClick: () => doAct({ type: 'stand' }),
-      blocked: hasCondition(me.creature, 'prone') ? undefined : 'not prone',
-    },
-    ...offhandWeapons(me).map((id) => ({
-      label: `Off-hand: ${options.find((o) => o.id === id)?.name}`,
-      detail: 'bonus action',
-      onClick: () => setMode({ kind: 'attack', optionId: id, offhand: true }),
-      blocked: me.turn.bonusUsed
-        ? 'bonus action used'
-        : me.turn.lightWeaponUsed
-          ? undefined
-          : 'attack with a light weapon first',
-    })),
-  ];
+  const moreActions = moreActionsFor({
+    s,
+    me,
+    hero,
+    actionLeft,
+    potions,
+    fightGear,
+    options,
+    doAct,
+    setMode,
+  });
 
   return (
     <div className="combat">
-      <header className="combat-header">
-        <div className="row baseline">
-          <h1>{s.name}</h1>
-          <span className="muted">
-            Round {s.round} · {encounterText}
-          </span>
-        </div>
-        <div className="row">
-          <SoundButton />
-          <div role="radiogroup" aria-label="Difficulty" className="seg">
-            {difficulties.levels.map((d) => (
-              <button
-                key={d.id}
-                type="button"
-                role="radio"
-                aria-checked={s.difficulty === d.id}
-                className={s.difficulty === d.id ? 'on' : ''}
-                onClick={() => {
-                  settings.setDifficulty(d.id);
-                  setCombatDifficulty(d.id);
-                }}
-              >
-                {d.name}
-              </button>
-            ))}
-          </div>
-        </div>
-      </header>
+      <CombatHeader
+        s={s}
+        encounterText={encounterText}
+        onDifficulty={(d) => {
+          settings.setDifficulty(d);
+          setCombatDifficulty(d);
+        }}
+      />
 
-      <div className="initiative" aria-label="Turn order">
-        <span className="eyebrow muted-eyebrow">Initiative</span>
-        {/* Whoever is acting comes first; those who've gone move to the back (playtest). */}
-        {[...s.order.slice(s.turnIndex), ...s.order.slice(0, s.turnIndex)].map((id, i, all) => {
-          const c = s.combatants[id]!;
-          const down = c.gone || c.creature.dead || c.creature.hp === 0;
-          const nextRound = i === all.length - s.turnIndex && s.turnIndex > 0;
-          return (
-            <div
-              key={id}
-              className={`chip ${id === me.id ? 'on' : ''} ${down ? 'down' : ''} ${nextRound ? 'next-round' : ''}`}
-              aria-current={id === me.id ? 'true' : undefined}
-              title={nextRound ? `Round ${s.round + 1} starts here` : undefined}
-            >
-              <span className={`dot ${c.side}`} aria-hidden="true" />
-              <span>{c.name}</span>
-              <span className="faint">{c.initiative}</span>
-            </div>
-          );
-        })}
-      </div>
+      <TurnOrder s={s} meId={me.id} />
 
       <div className="combat-main">
         <div
@@ -487,81 +264,7 @@ export function CombatScreen() {
             }
           }}
         >
-          <svg
-            viewBox={`0 0 ${s.map.width * CELL} ${s.map.height * CELL}`}
-            width={s.map.width * CELL}
-            height={s.map.height * CELL}
-            aria-hidden="true"
-            className="map-svg"
-          >
-            {s.map.terrain.flatMap((row, y) =>
-              row.map((t, x) => (
-                <g key={`${x},${y}`}>
-                  <rect
-                    x={x * CELL}
-                    y={y * CELL}
-                    width={CELL}
-                    height={CELL}
-                    fill={terrainFill(s.map.style, t)}
-                  />
-                  {t === 'trees' && s.map.style === 'forest-road' && (
-                    <circle cx={x * CELL + 24} cy={y * CELL + 24} r={22} fill="#2f4226" />
-                  )}
-                  {t === 'boulder' && (s.map.style === 'forest-road' || s.map.style === 'cave') && (
-                    <path
-                      d={`M${x * CELL + 8} ${y * CELL + 34} L${x * CELL + 16} ${y * CELL + 12} L${x * CELL + 36} ${y * CELL + 10} L${x * CELL + 42} ${y * CELL + 32} L${x * CELL + 24} ${y * CELL + 42} Z`}
-                      fill="#6f6a62"
-                      stroke="#3b3833"
-                      strokeWidth="2"
-                    />
-                  )}
-                  {t === 'boulder' && s.map.style !== 'forest-road' && s.map.style !== 'cave' && (
-                    <rect
-                      x={x * CELL + 6}
-                      y={y * CELL + 6}
-                      width={CELL - 12}
-                      height={CELL - 12}
-                      rx={s.map.style === 'mill' ? 18 : 3}
-                      fill="none"
-                      stroke="#00000055"
-                      strokeWidth="3"
-                    />
-                  )}
-                  {t === 'brush' && s.map.style === 'forest-road' && (
-                    <path
-                      d={`M${x * CELL + 10} ${y * CELL + 40} q6 -18 12 0 q6 -22 12 0 q6 -16 10 0`}
-                      fill="none"
-                      stroke="#5f8a45"
-                      strokeWidth="3"
-                    />
-                  )}
-                </g>
-              )),
-            )}
-            <g stroke="#000" strokeOpacity="0.18">
-              {Array.from({ length: s.map.width + 1 }, (_, i) => (
-                <line key={`v${i}`} x1={i * CELL} y1={0} x2={i * CELL} y2={s.map.height * CELL} />
-              ))}
-              {Array.from({ length: s.map.height + 1 }, (_, i) => (
-                <line key={`h${i}`} x1={0} y1={i * CELL} x2={s.map.width * CELL} y2={i * CELL} />
-              ))}
-            </g>
-            {s.zones.map((z) =>
-              zoneCells(s, z).map((p) => (
-                <rect
-                  key={`${z.id}-${p.x},${p.y}`}
-                  x={p.x * CELL}
-                  y={p.y * CELL}
-                  width={CELL}
-                  height={CELL}
-                  fill={ZONE_FILL[z.kind]}
-                  opacity={z.kind === 'darkness' ? 0.75 : 0.3}
-                >
-                  <title>{z.name}</title>
-                </rect>
-              )),
-            )}
-          </svg>
+          <MapTerrain s={s} />
           {s.map.terrain.flatMap((row, y) =>
             row.map((_, x) => {
               const k = `${x},${y}`;
@@ -668,185 +371,23 @@ export function CombatScreen() {
           )}
         </div>
 
-        <aside className="combat-aside">
-          <div className={`active-card ${me.side}`}>
-            {hero ? (
-              <div className="active-portrait">
-                <Portrait {...heroPortrait(hero.creature)} />
-              </div>
-            ) : (
-              <div className="active-portrait enemy-face" aria-hidden="true">
-                {me.short}
-              </div>
-            )}
-            <div className="active-info">
-              <div className="row between baseline">
-                <span className="active-name">{me.name}</span>
-                <span className={me.side === 'party' ? 'turn-you' : 'turn-foe'}>
-                  {s.outcome ? '' : me.side === 'party' ? 'Your turn' : 'Enemy turn'}
-                </span>
-              </div>
-              <span className="muted small">
-                {hero
-                  ? `${getSpecies(hero.creature.speciesId).name} ${getClass(hero.creature.classId).name} ${hero.creature.level}`
-                  : 'Enemy'}{' '}
-                · AC {currentAc(me)} · Speed {me.speed} ft
-                {me.wildShape ? ' · Wolf form' : ''}
-              </span>
-              <div className="row">
-                <div className="hp-bar" aria-hidden="true">
-                  <div
-                    style={{
-                      width: `${Math.round((hp / maxHp) * 100)}%`,
-                      background: hp > maxHp / 2 ? '#5f9a4a' : '#c9a23a',
-                    }}
-                  />
-                </div>
-                <span className="small strong">
-                  {hp} / {maxHp} HP{me.creature.tempHp ? ` (+${me.creature.tempHp})` : ''}
-                </span>
-              </div>
-              {hero && slotsLeft(hero.creature).length > 0 && (
-                <span className="small muted">
-                  Spell slots:{' '}
-                  {slotsLeft(hero.creature)
-                    .map((n, i) => `${['1st', '2nd', '3rd'][i]} ${n}`)
-                    .join(' · ')}
-                </span>
-              )}
-            </div>
-          </div>
-          <section className="party-hp" aria-label="Party health">
-            {Object.values(s.combatants)
-              .filter((c) => c.side === 'party' && !c.gone)
-              .map((c) => {
-                const now = c.wildShape ? c.wildShape.hp : c.creature.hp;
-                const max = c.wildShape ? c.wildShape.maxHp : c.creature.maxHp;
-                const state = c.creature.dead
-                  ? 'dead'
-                  : c.creature.hp === 0
-                    ? c.creature.stable
-                      ? 'down, stable'
-                      : 'dying'
-                    : '';
-                return (
-                  <div key={c.id} className={`party-hp-row ${c.id === me.id ? 'on' : ''}`}>
-                    <span className="party-hp-name">{c.name.split(' ')[0]}</span>
-                    <div className="hp-bar" aria-hidden="true">
-                      <div
-                        style={{
-                          width: `${Math.round((now / Math.max(1, max)) * 100)}%`,
-                          background: now > max / 2 ? '#5f9a4a' : now > 0 ? '#c9a23a' : '#8a3a2a',
-                        }}
-                      />
-                    </div>
-                    <span className="small">
-                      {now}/{max}
-                      {c.creature.tempHp ? ` +${c.creature.tempHp}` : ''}
-                      {state ? ` · ${state}` : ''}
-                      {c.creature.conditions.length > 0 && !state
-                        ? ` · ${[...new Set(c.creature.conditions.map((x) => x.id))].join(', ')}`
-                        : ''}
-                    </span>
-                  </div>
-                );
-              })}
-          </section>
-          <div className="row between baseline">
-            <h2 className="eyebrow">Combat log · newest first</h2>
-            <span className="faint small">
-              Dice: {settings.showRolls ? 'automatic, all shown' : 'automatic'}
-            </span>
-          </div>
-          {hovered && (
-            <div className={`tooltip inspect ${hovered.side}`} role="status">
-              <span className="strong">
-                {hovered.name} · AC {currentAc(hovered)} · HP{' '}
-                {hovered.wildShape?.hp ?? hovered.creature.hp}/
-                {hovered.wildShape?.maxHp ?? hovered.creature.maxHp}
-              </span>
-              {hovered.side === 'enemy' && myTurn && hoverOpt && (
-                <span>
-                  {hoverOpt.name}: {hitChance(hoverOpt.toHit, currentAc(hovered))}% to hit ·{' '}
-                  {hoverOpt.damage.map((d) => `${d.dice} ${d.type}`).join(' + ')}
-                </span>
-              )}
-              {info && (
-                <>
-                  <span className="foe-kind">{info.kind}</span>
-                  {info.defenses.map((d) => (
-                    <span key={d} className="muted">
-                      {d}
-                    </span>
-                  ))}
-                  {info.traits.length > 0 && (
-                    <span className="muted">Traits: {info.traits.join(', ')}</span>
-                  )}
-                  {info.edges.map((d) => (
-                    <span key={d} className="foe-edge">
-                      ★ {d}
-                    </span>
-                  ))}
-                </>
-              )}
-              {hovered.creature.conditions.length > 0 && (
-                <span className="muted">
-                  Conditions:{' '}
-                  {[...new Set(hovered.creature.conditions.map((x) => x.id))].join(', ')}
-                </span>
-              )}
-              {hovered.effects.length > 0 && (
-                <span className="muted">
-                  Under: {[...new Set(hovered.effects.map((e) => e.name))].join(', ')}
-                </span>
-              )}
-              <span className="muted">
-                Standing on: {terrainName(s.map.style, terrainAt(s.map, hovered.pos))}
-              </span>
-            </div>
-          )}
-          <div className="log" role="log" aria-live="polite">
-            {log.map((l, i) => (
-              <div key={s.log.length - i} className={`log-${l.kind}`}>
-                {settings.showRolls ? l.text : briefLine(l.text)}
-              </div>
-            ))}
-          </div>
-        </aside>
+        <CombatAside
+          s={s}
+          me={me}
+          hero={hero}
+          hp={hp}
+          maxHp={maxHp}
+          hovered={hovered}
+          info={info}
+          hoverOpt={hoverOpt}
+          myTurn={myTurn}
+          showRolls={settings.showRolls}
+          log={log}
+        />
       </div>
 
       <footer className="combat-footer">
-        <div className="economy">
-          <div className="row small">
-            <span className="pip-row">
-              <span className={`pip action ${actionLeft ? '' : 'used'}`} />
-              Action
-              {me.turn.extraActions > 0 ? ` +${me.turn.extraActions} extra` : ''}
-              {me.turn.hasteAction ? ' +1 (Haste)' : ''}
-            </span>
-            <span className="pip-row">
-              <span className={`pip bonus ${me.turn.bonusUsed ? 'used' : ''}`} />
-              Bonus
-            </span>
-            <span className="pip-row">
-              <span className={`pip reaction ${me.reactionUsed ? 'used' : ''}`} />
-              Reaction
-            </span>
-          </div>
-          <div className="row between small">
-            <span>Movement</span>
-            <span className="muted">
-              {me.turn.movement} / {me.speed} ft
-            </span>
-          </div>
-          <div className="move-bar">
-            <div
-              style={{
-                width: `${Math.min(100, Math.round((me.turn.movement / Math.max(1, me.speed)) * 100))}%`,
-              }}
-            />
-          </div>
-        </div>
+        <TurnEconomy me={me} actionLeft={actionLeft} />
         <div className="actions">
           {options
             .filter((o) => !o.unarmed || me.wildShape)
@@ -999,113 +540,19 @@ export function CombatScreen() {
             More ▴
           </button>
           {menu && myTurn && (
-            <div
-              className="menu"
-              role="menu"
-              aria-label={
-                menu === 'spells'
-                  ? 'Spells'
-                  : menu === 'features'
-                    ? 'Class features'
-                    : 'More actions'
-              }
-            >
-              {menu === 'spells' && knownMetamagic.length > 0 && (
-                <div className="menu-row">
-                  <label className="small">
-                    Metamagic{' '}
-                    <select
-                      value={mm}
-                      onChange={(e) => setMm(e.target.value as Metamagic | '')}
-                      aria-label="Metamagic"
-                    >
-                      <option value="">none</option>
-                      {knownMetamagic.map((m) => (
-                        <option key={m} value={m}>
-                          {METAMAGIC_NAMES[m]}
-                        </option>
-                      ))}
-                    </select>
-                  </label>
-                </div>
-              )}
-              {menu === 'spells' &&
-                spells.map((c) => (
-                  <div key={c.spell.id} className="menu-row">
-                    <span>
-                      <span className="strong">{c.spell.name}</span>{' '}
-                      <span className="muted small">
-                        {c.spell.level === 0 ? 'cantrip' : `level ${c.spell.level}`} ·{' '}
-                        {c.spell.castingTime}
-                        {c.spell.concentration ? ' · concentration' : ''}
-                      </span>
-                      <br />
-                      <span className="small muted">
-                        {c.blocked ?? c.spell.summary}
-                        {c.spell.id === 'hex' && hero
-                          ? ` Curses ${ABILITY_LONG[hero.creature.choices['hex-ability']?.[0] ?? 'str']} (change it on the Party sheet).`
-                          : ''}
-                      </span>
-                    </span>
-                    <span className="row">
-                      {c.levels.map((lv) => (
-                        <button
-                          key={lv}
-                          type="button"
-                          role="menuitem"
-                          className="mini"
-                          disabled={!!c.blocked}
-                          onClick={() => pickSpell(c.spell.id, lv)}
-                        >
-                          {lv === 0 ? 'Cast' : `Lv ${lv}`}
-                        </button>
-                      ))}
-                    </span>
-                  </div>
-                ))}
-              {menu === 'features' &&
-                features.map((f) => (
-                  <div key={f.id} className="menu-row">
-                    <span>
-                      <span className="strong">{f.name}</span>{' '}
-                      <span className="muted small">{f.cost}</span>
-                      <br />
-                      <span className="small muted">{f.blocked ?? f.detail}</span>
-                    </span>
-                    <button
-                      type="button"
-                      role="menuitem"
-                      className="mini"
-                      disabled={!!f.blocked}
-                      onClick={() => pickFeature(f.id)}
-                    >
-                      Use
-                    </button>
-                  </div>
-                ))}
-              {menu === 'more' &&
-                moreActions.map((m) => (
-                  <div key={m.label} className="menu-row">
-                    <span>
-                      <span className="strong">{m.label}</span>
-                      <br />
-                      <span className="small muted">{m.blocked ?? m.detail}</span>
-                    </span>
-                    <button
-                      type="button"
-                      role="menuitem"
-                      className="mini"
-                      disabled={!!m.blocked}
-                      onClick={() => {
-                        setMenu(null);
-                        m.onClick();
-                      }}
-                    >
-                      Do it
-                    </button>
-                  </div>
-                ))}
-            </div>
+            <ActionMenu
+              menu={menu}
+              setMenu={setMenu}
+              knownMetamagic={knownMetamagic}
+              mm={mm}
+              setMm={setMm}
+              spells={spells}
+              hero={hero}
+              pickSpell={pickSpell}
+              features={features}
+              pickFeature={pickFeature}
+              moreActions={moreActions}
+            />
           )}
         </div>
         <div className="end-col">
@@ -1128,134 +575,17 @@ export function CombatScreen() {
       )}
 
       {s.outcome && (
-        <div className="dialog-backdrop">
-          <div
-            role="dialog"
-            aria-modal="true"
-            aria-labelledby="outcome-title"
-            className="dialog outcome"
-          >
-            <h2 id="outcome-title">
-              {s.outcome === 'victory'
-                ? 'Victory!'
-                : s.outcome === 'parley'
-                  ? 'The fight is over'
-                  : s.defeatContinues
-                    ? 'Beaten'
-                    : 'Defeat'}
-            </h2>
-            {s.outcome !== 'defeat' || s.defeatContinues ? (
-              <>
-                <p>
-                  {s.outcome === 'defeat'
-                    ? 'Your party is knocked flat, but the story goes on.'
-                    : `${s.outcome === 'parley' ? 'Words won where swords would have.' : 'The enemy is beaten.'} Each surviving hero earns ${s.xpPerPc} XP.`}
-                </p>
-                <button type="button" className="primary" autoFocus onClick={endFight}>
-                  Continue
-                </button>
-              </>
-            ) : (
-              <>
-                <p>Your party has fallen.</p>
-                <button
-                  type="button"
-                  className="primary"
-                  autoFocus
-                  onClick={() => {
-                    const auto = readSlot('autosave').save;
-                    if (auto) loadGame(auto);
-                    else goto('title');
-                  }}
-                >
-                  Load the autosave from before the fight
-                </button>
-                <button
-                  type="button"
-                  className="menu-secondary small-btn"
-                  onClick={() => goto('title')}
-                >
-                  Title screen
-                </button>
-              </>
-            )}
-          </div>
-        </div>
+        <OutcomeDialog
+          s={s}
+          onContinue={endFight}
+          onLoadAutosave={() => {
+            const auto = readSlot('autosave').save;
+            if (auto) loadGame(auto);
+            else goto('title');
+          }}
+          onTitle={() => goto('title')}
+        />
       )}
     </div>
   );
-}
-
-function PromptDialog({
-  state,
-  onAnswer,
-}: {
-  state: CombatState;
-  onAnswer: (yes: boolean) => void;
-}) {
-  const p = state.prompt!;
-  const name = (id: string) => state.combatants[id]!.name;
-  const text =
-    p.kind === 'opportunity-attack'
-      ? `${name(p.targetId)} is leaving ${name(p.reactorId)}'s reach. Make an opportunity attack?`
-      : p.kind === 'shield'
-        ? `${name(p.attackerId)} hits ${name(p.reactorId)} with a ${p.total}. Cast Shield (+5 AC, uses a spell slot) to turn it into a miss?`
-        : p.kind === 'protection'
-          ? `${name(p.attackerId)} attacks ${name(p.targetId)}. Should ${name(p.reactorId)} use Protection (disadvantage on the attack)?`
-          : p.kind === 'cutting-words'
-            ? `${name(p.attackerId)} hits ${name(p.targetId)} with a ${p.total}. Should ${name(p.reactorId)} use Cutting Words (a Bardic Inspiration die off the roll)?`
-            : p.kind === 'counterspell'
-              ? `${name(p.casterId)} starts casting ${getSpell(p.spellId).name}. Should ${name(p.reactorId)} cast Counterspell (a 3rd-level slot) to stop it?`
-              : `${name(p.attackerId)} just hurt ${name(p.reactorId)}. Answer with Hellish Rebuke (uses a spell slot)?`;
-  return (
-    <div className="dialog-backdrop">
-      <div
-        role="alertdialog"
-        aria-modal="true"
-        aria-labelledby="prompt-title"
-        aria-describedby="prompt-text"
-        className="dialog"
-      >
-        <h2 id="prompt-title">Reaction</h2>
-        <p id="prompt-text">{text}</p>
-        <div className="row">
-          <button type="button" className="primary" autoFocus onClick={() => onAnswer(true)}>
-            Yes
-          </button>
-          <button
-            type="button"
-            className="menu-secondary small-btn"
-            onClick={() => onAnswer(false)}
-          >
-            No
-          </button>
-        </div>
-      </div>
-    </div>
-  );
-}
-
-function targetBanner(
-  mode: Mode,
-  options: { id: string; name: string }[],
-  spells: { spell: { id: string; name: string } }[],
-): string | null {
-  switch (mode.kind) {
-    case 'idle':
-      return null;
-    case 'attack':
-      return `Choose a target for ${options.find((o) => o.id === mode.optionId)?.name ?? 'the attack'}.`;
-    case 'spell':
-      return `${spells.find((x) => x.spell.id === mode.spellId)?.spell.name}: choose ${mode.targets.length ? 'more targets or cast now' : 'a target or a square'}.`;
-    case 'feature':
-      return `Choose ${mode.target === 'ally' ? 'an ally' : 'an enemy'}.`;
-    case 'help':
-      return 'Choose an ally to help.';
-    case 'shove':
-      return 'Choose an enemy next to you to shove.';
-    case 'grapple':
-      return 'Choose an enemy next to you to grapple.';
-    case 'item':
-      return 'Choose who drinks it: yourself or an ally next to you.';
-  }
 }
