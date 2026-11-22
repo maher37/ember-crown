@@ -17,8 +17,6 @@ Two ways to report what you find while playing. Use whichever is easier.
 
 **Bugs**
 - **Bug, combat, spells:** sometimes a spellcaster can't cast any spell, as if they had no spell slots, even though the sheet shows slots left. Expected: they can cast while they have slots. (Intermittent; a save from when it happens would help.)
-- **Bug, combat, targeting:** when a monster stands on the body of a downed monster, you can hover it and see it, but you can't attack it with weapons or spells. Expected: you can target the living monster.
-- **Bug, Lantern Board (notice board):** the list runs out of screen space, so new quests can't be reached. Expected: the board lists only quests you can take and ones in progress; finished quests drop off (they stay in the journal).
 
 **Story and clarity**
 - **Story, dreams:** the nightly dream with the red figure (Corin's ember bargain after every long rest) doesn't make clear what accepting gives. The party's once-an-act kindled gifts are listed on the character sheet, but Corin's bargain gifts (+2 fire spell damage [inferred number], fire resistance, a spell slot back) are not shown anywhere. The owner refuses only because he knows it affects the ending. Expected: the choice says plainly what you get (for example "+2 damage on fire spells", "resist fire", "regain a spell slot"), the gift shows on the character sheet, and the cost is hinted at clearly enough for a player who doesn't know the ending.
@@ -30,4 +28,5 @@ Two ways to report what you find while playing. Use whichever is easier.
 - **Story, camp companions who talk** (Story_Review #2, D32): at camp only.
 
 ## Done
-- (moved here with the PR number that fixed it)
+- **Bug, combat, targeting:** when a monster stands on the body of a downed monster, you can hover it and see it, but you can't attack it with weapons or spells. Expected: you can target the living monster. **Fixed in PR #25.**
+- **Bug, Lantern Board (notice board):** the list runs out of screen space, so new quests can't be reached. Expected: the board lists only quests you can take and ones in progress; finished quests drop off (they stay in the journal). **Fixed in PR #25.**
