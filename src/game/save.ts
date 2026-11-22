@@ -10,7 +10,7 @@ import type { LetterState } from './letters';
 import { GAME_START } from './calendar';
 
 /** Bump when the save format changes, and add a migration below. Never break old saves. */
-export const SAVE_VERSION = 8;
+export const SAVE_VERSION = 9;
 
 export interface GameState {
   id: string;
@@ -269,6 +269,16 @@ export const MIGRATIONS: Record<number, (old: Record<string, unknown>) => Record
       const game = old.game as GameState;
       const r = giveLoadouts(game.party, game.inventory);
       return { ...old, game: { ...game, party: r.party, inventory: r.inventory } };
+    },
+    // v8 → v9 (D33): the origin hero Rhessa Kalvaar was renamed Vorna Kalvaar (owner, Nov 22).
+    8: (old) => {
+      const game = old.game as { party: { origin?: string; name?: string }[] };
+      const party = game.party.map((h) =>
+        h.origin === 'rhessa'
+          ? { ...h, origin: 'vorna', name: h.name === 'Rhessa Kalvaar' ? 'Vorna Kalvaar' : h.name }
+          : h,
+      );
+      return { ...old, game: { ...game, party } };
     },
   };
 

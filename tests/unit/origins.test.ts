@@ -14,11 +14,11 @@ import { makeSave, parseSave, serializeSave, type GameState } from '../../src/ga
 import { useGame } from '../../src/game/store';
 
 /** Each new origin hero with legal level-1 picks (class skills not already given). */
-const ready: Record<'harl' | 'nessa' | 'rhessa', () => HeroDraft> = {
+const ready: Record<'harl' | 'nessa' | 'vorna', () => HeroDraft> = {
   harl: () => ({ ...originDraft('harl'), classSkills: ['history', 'medicine'] }),
   nessa: () => ({ ...originDraft('nessa'), classSkills: ['arcana', 'deception'] }),
-  rhessa: () => ({
-    ...originDraft('rhessa'),
+  vorna: () => ({
+    ...originDraft('vorna'),
     classSkills: ['acrobatics', 'perception'],
     fightingStyle: 'defense',
   }),
@@ -67,12 +67,12 @@ describe('origin heroes (D33)', () => {
     expect(subclassOf(h)).toBe('fiend');
   });
 
-  it('Rhessa Kalvaar: red dragonborn fighter, Soldier, resists fire', () => {
-    const d = ready.rhessa();
+  it('Vorna Kalvaar: red dragonborn fighter, Soldier, resists fire', () => {
+    const d = ready.vorna();
     expect(draftProblems(d)).toEqual([]);
-    const h = buildHero(d, 'rhessa');
+    const h = buildHero(d, 'vorna');
     expect(h).toMatchObject({
-      origin: 'rhessa',
+      origin: 'vorna',
       speciesId: 'dragonborn',
       classId: 'fighter',
       backgroundId: 'soldier',
@@ -97,11 +97,11 @@ describe('origin heroes in the party', () => {
     addHero(buildHero(ready.harl(), 'a'));
     addHero(buildHero(ready.nessa(), 'b'));
     expect(() => addHero(buildHero(ready.harl(), 'c'))).toThrow(/already in the party/);
-    addHero(buildHero(ready.rhessa(), 'd'));
+    addHero(buildHero(ready.vorna(), 'd'));
     expect(useGame.getState().pendingParty.map((h) => h.origin)).toEqual([
       'harl',
       'nessa',
-      'rhessa',
+      'vorna',
     ]);
   });
 
@@ -109,7 +109,7 @@ describe('origin heroes in the party', () => {
     const party = [
       buildHero(ready.harl(), 'a'),
       buildHero(ready.nessa(), 'b'),
-      buildHero(ready.rhessa(), 'c'),
+      buildHero(ready.vorna(), 'c'),
       buildHero({ ...corinDraft(), classSkills: ['arcana', 'insight'] }, 'd'),
     ];
     const s = useGame.getState();
@@ -119,6 +119,31 @@ describe('origin heroes in the party', () => {
     const r = parseSave(serializeSave(makeSave(game)));
     expect(r.ok).toBe(true);
     if (r.ok)
-      expect(r.save.game.party.map((h) => h.origin)).toEqual(['harl', 'nessa', 'rhessa', 'corin']);
+      expect(r.save.game.party.map((h) => h.origin)).toEqual(['harl', 'nessa', 'vorna', 'corin']);
+  });
+});
+
+describe('renamed origin hero (D33: Rhessa became Vorna)', () => {
+  it('a version-8 save with Rhessa Kalvaar loads as Vorna Kalvaar', () => {
+    useGame.getState().startNewGame(1);
+    const s = useGame.getState();
+    s.addHero(buildHero(ready.vorna(), 'v'));
+    s.addHero(buildHero(ready.harl(), 'h'));
+    s.addHero(buildHero(ready.nessa(), 'n'));
+    s.addHero(buildHero({ ...corinDraft(), classSkills: ['arcana', 'insight'] }, 'c'));
+    s.beginAdventure();
+    const save = makeSave(useGame.getState().game as GameState);
+    // Turn it back into an old save, as made before the rename.
+    const old = JSON.parse(serializeSave(save)) as {
+      saveVersion: number;
+      game: { party: { origin: string; name: string }[] };
+    };
+    old.saveVersion = 8;
+    old.game.party[0]!.origin = 'rhessa';
+    old.game.party[0]!.name = 'Rhessa Kalvaar';
+    const r = parseSave(JSON.stringify(old));
+    expect(r.ok).toBe(true);
+    if (r.ok)
+      expect(r.save.game.party[0]).toMatchObject({ origin: 'vorna', name: 'Vorna Kalvaar' });
   });
 });
