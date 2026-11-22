@@ -7,7 +7,7 @@
 |---|---|---|
 | N1 | ✅ **Done.** **Data fixes** from the rulebook check (a fix list from the claude.ai chat, saved as `docs/Data_Fixes.md` when ready) | `Apply docs/Data_Fixes.md.` |
 | N2 | **Story pass:** the remaining picks in `docs/Story_Review.md`, one PR per pick | `Do the next story pick from docs/Story_Review.md.` |
-| N3 | **Decide D31** (should Medium be harder?), then apply it with a balance run | `D31 is decided: <your choice>. Apply it and rerun the balance report.` |
+| N3 | ✅ **Done.** D31 decided: Medium stays as it is (owner, Nov 22). | (none) |
 | N4 | **Refactor:** split the biggest files (`src/game/combat/actions.ts`, `src/ui/CombatScreen.tsx`, `src/game/store.ts`, `src/data/encounters.json` by act) with no behavior change | `Do refactor R1 from docs/BUILD_ROADMAP.md.` |
 | N5 | **Full playthrough** by the owner, start to finish, with notes in `docs/PLAYTEST.md` or issues | (no prompt; then `Work the playtest inbox.`) |
 | N6 | **M11 animations** | `Do Milestone M11 from docs/BUILD_ROADMAP.md.` |

@@ -13,7 +13,22 @@ Two ways to report what you find while playing. Use whichever is easier.
 - Anything that changes a decision gets an entry in `docs/DECISIONS.md` and is confirmed with you first.
 
 ## Open
-- (add notes here: type, where, what happened, what you expected)
+*Owner notes from Nov 22 (by voice, split into one line each by Claude).*
+
+**Bugs**
+- **Bug, combat, spells:** sometimes a spellcaster can't cast any spell, as if they had no spell slots, even though the sheet shows slots left. Expected: they can cast while they have slots. (Intermittent; a save from when it happens would help.)
+- **Bug, combat, targeting:** when a monster stands on the body of a downed monster, you can hover it and see it, but you can't attack it with weapons or spells. Expected: you can target the living monster.
+- **Bug, Lantern Board (notice board):** the list runs out of screen space, so new quests can't be reached. Expected: the board lists only quests you can take and ones in progress; finished quests drop off (they stay in the journal).
+- **Bug, story, kindled dream:** the "let our blows burn" gift (`kindled_strike`) sets a flag that nothing in combat reads, so it does nothing. Found by Claude while checking the note below.
+
+**Story and clarity**
+- **Story, dreams:** the nightly dream with the red figure (Corin's ember bargain, and the once-an-act kindled dream) doesn't make clear what accepting gives. The owner refuses only because he knows it affects the ending. Expected: the choice says plainly what you get (for example "+2 damage on fire spells", "resist fire", "regain a spell slot"), the gift shows on the character sheet, and the cost is hinted at clearly enough for a player who doesn't know the ending.
+
+**Feature wishes**
+- **Feature, summons:** the warlock's Pact of the Chain familiar (Find Familiar) can't be summoned, and summoned creatures and beast companions aren't in the game yet. Expected: familiars, summons and animal companions join the fight as allies.
+- **Feature, premade companions:** more premade origin heroes like Corin Varrow, each with a backstory, to round out a party. Owner's ideas: a dwarf cleric, a human warlock, a dragonborn fighter.
+- **Feature, portraits:** the dragonborn portrait should look a little like a dragon, and small species (dwarf, halfling, gnome) should look smaller than humans.
+- **Story, camp companions who talk** (Story_Review #2): the owner likes it. Still to decide: at camp only, or a fifth party member in fights too.
 
 ## Done
 - (moved here with the PR number that fixed it)
