@@ -196,6 +196,29 @@
       "text": "Wix opened a pie stall by the new springs. It is very popular. Nobody asks where the pies come from, and Wix offers no proverbs on the subject."
     },
     {
+      "title": "The Coinwright Guild",
+      "if": ["nessa_notarized"],
+      "except": ["ember-crown", "guild-prize"],
+      "text": "Nessa's sworn statement reached the Guild's counting-house in Waterdeep. A debt built on a forged report is an awkward thing to collect in court, so the Guild quietly wrote off a third of what Ashford owed and called it generosity."
+    },
+    {
+      "title": "Nessa Thorne",
+      "if": ["nessa_free"],
+      "text": "Nessa burned both halves of her contract in Brannoc's hearth and stayed to watch the ash go cold. The songs say Cindrath died screaming in the stone. Nessa knows better, and she doesn't sing along."
+    },
+    {
+      "title": "Nessa Thorne",
+      "if": ["nessa_bound", "nessa_refused_trade"],
+      "except": ["ember-crown"],
+      "text": "Nessa turned down the best price she will ever be offered. Her contract is still in her satchel, and on bad nights she takes it out and reads clause nine again. On good nights she doesn't."
+    },
+    {
+      "title": "Nessa Thorne",
+      "if": ["nessa_bound", "!nessa_refused_trade"],
+      "except": ["ember-crown"],
+      "text": "Every Midwinter a letter comes for Nessa in grey ink, with no return address: her account, still open. She went back to reading contracts for a living, looking for something worth more than a soul."
+    },
+    {
       "title": "Corin",
       "if": ["corin"],
       "endings": ["lamp-lit"],

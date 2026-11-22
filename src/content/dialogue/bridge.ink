@@ -80,6 +80,13 @@ A chain hangs across the only bridge over the Grayflow for twenty miles. Grey-cl
     Kell stops chewing. He looks at his men, who suddenly find the river very interesting. "Somebody's been listening under my bridge." A long breath. "Fair. If you find the Star's people, you'll do my job for free. Lift the chain."
     ~ set_flag("kell_respect", true)
     -> crossed_talk
++ {has("nessa")} [Coinwright Guild notary. Your company's back pay is in my book, Captain. #as:nessa]
+    Kell stops chewing. "You're Guild." He looks at the seal on her satchel, then at her face. "Three months, then. Show me it's written down."
+    Nessa writes it out on the rail, there and then: three months' pay for every soldier on this bridge, owed by the Guild, witnessed and sealed. Kell reads it twice, folds it into his coat and lifts the chain himself. "First time a Guild pen's done me any good."
+    ~ set_flag("kell_respect", true)
+    ~ set_flag("nessa_certified_pay", true)
+    ~ note("Nessa certified the Grey Company's unpaid wages under the Guild's seal. Captain Kell let you cross.")
+    -> crossed_talk
 + [Let us cross. The cult is ahead of all of us. #check:persuasion:14]
     { passed || flag("kell_rank"):
         Kell studies you, then tosses the apple core into the river. "Fair. If you find the Star's people, you'll do my job for free. Lift the chain."
@@ -93,7 +100,7 @@ A chain hangs across the only bridge over the Grayflow for twenty miles. Grey-cl
     ~ give_gold(-50)
     "Now that's Guild arithmetic." The chain rattles down.
     -> crossed_talk
-+ [We carry the mayor's writ. Stand aside. #check:deception:15]
++ {not has("nessa")} [We carry the mayor's writ. Stand aside. #check:deception:15]
     { passed:
         Kell reads the scrap of paper you hand him, upside down, and laughs. "That's a laundry list. But it's a brave one. Go on."
         -> crossed_talk

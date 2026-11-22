@@ -26,7 +26,7 @@ Two ways to report what you find while playing. Use whichever is easier.
 - **Feature, summons:** the warlock's Pact of the Chain familiar (Find Familiar) can't be summoned, and summoned creatures and beast companions aren't in the game yet. Expected: familiars, summons and animal companions join the fight as allies.
 - **Feature, portraits:** the dragonborn portrait should look a little like a dragon, and small species (dwarf, halfling, gnome) should look smaller than humans.
 - **Story, camp companions who talk** (Story_Review #2, D32): at camp only.
-- **Story, the new premade heroes' own story (D33):** Harl Deepdelve, Nessa Thorne and Vorna Kalvaar should get unique dialogue options and story beats like Corin's `[Corin]` lines and scenes. Expected: each one has `[Name]` choices in major scenes and a few personal story moments tied to their backstory (Story_Bible §9b). One hero per PR.
+- **Story, the new premade heroes' own story (D33):** Harl Deepdelve, Nessa Thorne and Vorna Kalvaar should get unique dialogue options and story beats like Corin's `[Corin]` lines and scenes. Expected: each one has `[Name]` choices in major scenes and a few personal story moments tied to their backstory (Story_Bible §9b). One hero per PR. **Nessa done in her own PR** (Story_Bible §9b lists her scenes); Harl and Vorna still to do.
 
 ## Done
 - **Story, rename a premade hero (D33):** Nessa and Rhessa rhyme; rename one of them. Owner to pick which one and the new name. **Done in PR #32:** Rhessa is now Vorna Kalvaar; old saves are renamed when they load.

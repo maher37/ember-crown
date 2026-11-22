@@ -71,6 +71,40 @@ The ogres lie in the ash. The pass is open.
 ~ set_flag("pass_cleared", true)
 ~ quest_step("kings-kiln", "pass")
 ~ note("Ashfall Pass is open. The King's Kiln and Ammarindar's Great Forge are on the map now.")
+{ has("nessa") && not flag("auditor_met"):
+    -> auditor
+}
+-> after_auditor
+
+// ── Nessa Thorne (D33, Story_Bible §9b): the Auditor's courtesy call ──
+= auditor
+~ set_flag("auditor_met", true)
+#speaker:pass
+The ash stops falling. Every flake hangs in the air, and the ogres' cookfire smoke stands still like a grey pillar. Nobody in the party moves except Nessa.
+#speaker:auditor
+A thin man in a grey coat is sitting on the boulder with a ledger open on his knee. "Miss Thorne. A courtesy call." He licks a finger and turns a page. "The crown is two days up this road, and your account is still open."
+-> auditor_talk
+= auditor_talk
+* [What exactly would settle my account? #as:nessa]
+    "The Ember Crown, delivered to me. Or what is inside it." He smiles without showing any teeth. "There is a dragon in that crown, Miss Thorne. Next to her, your soul is a very small line."
+    -> auditor_talk
+* {flag("nessa_clause")} [Clause nine. Substitution of collateral. #as:nessa]
+    For the first time, the Auditor stops writing. "You've had it read. By a hag, I'd guess; I can smell the bog on it." He closes the ledger with a soft clap. "Very well. Put a greater soul in front of me and I countersign. I keep the law, Miss Thorne. That is what makes me so unpleasant."
+    -> auditor_talk
+* {not flag("nessa_clause")} [Read the contract again, every line, while he waits. #as:nessa #check:investigation:14]
+    { passed:
+        Nessa finds it on the back of the ninth page, in ink gone brown: substitution of collateral. He must take a soul worth more than hers in its place. The Auditor watches her find it, and sighs like a clerk at closing time.
+        ~ set_flag("nessa_clause", true)
+        ~ note("Nessa found clause nine in her contract: the Auditor must accept a soul worth more than hers in its place.")
+    - else:
+        The lines swim in the frozen light. "Take your time," says the Auditor. "I have all of it."
+    }
+    -> auditor_talk
++ [Some things aren't for sale. Good day, Auditor. #as:nessa]
+    "Everything is for sale. That is the first thing a notary learns." He tips his hat to her. The ash starts falling again, and the boulder is empty.
+    ~ note("The Auditor visited Nessa on Ashfall Pass. He wants the Ember Crown, or the dragon inside it.")
+    -> after_auditor
+= after_auditor
 { not flag("maelis_pass_met"):
     -> maelis_ridge
 }
@@ -103,6 +137,15 @@ Above the pass, on a spur of black rock, a lantern is burning. Maelis Varrow sta
 * { has("corin") } [Come home, Mae. Mother asked me to tell you. #as:corin]
     The lantern flickers. For a moment she looks fourteen. "Don't," she says. "Don't use her voice. Not up here." But she doesn't turn away.
     ~ set_flag("maelis_trust", trust() + 1)
+    -> ridge_talk
+* { has("nessa") } [You made a bargain too. Did you read it before you said yes? #as:nessa]
+    { flag("nessa_met_maelis"):
+        "You remembered." Maelis looks down at her lantern. "There was nothing to read, notary. It just asked, in my father's voice, and I said yes."
+    - else:
+        "There was nothing to read." Maelis looks down at her lantern. "It just asked, in my father's voice, and I said yes."
+    }
+    "What did yours cost you?" She waits for the answer, and doesn't like it. "Then we're both fools. At least you got your brother back."
+    ~ set_flag("maelis_doubt", true)
     -> ridge_talk
 + [We'll see you at the Kiln.]
     "Yes." She lifts the lantern. "Come quickly, if you're coming. It's getting harder to hear my own voice over its." Then she climbs into the ash, and the light goes with her.
