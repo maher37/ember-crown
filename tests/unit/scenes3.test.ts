@@ -209,6 +209,17 @@ describe("Corin's Ember meter (Story_Bible §9)", () => {
     expect(c.game.flags['ember']).toBe(2);
     expect(c.game.flags['ember_fire']).toBe(true);
   });
+  it('each choice says what it gives, and a gift already taken is not offered again (playtest Nov 22)', () => {
+    const fresh = new Conversation('camp', game({ ember: 1 }, true), hi()).start('bargain');
+    const texts = fresh.choices.map((x) => x.text).join(' | ');
+    expect(texts).toMatch(/fire spells deal \+2 damage/);
+    expect(texts).toMatch(/half damage from fire/);
+    expect(texts).toMatch(/one used spell slot/);
+    const taken = new Conversation('camp', game({ ember: 2, ember_fire: true }, true), hi()).start(
+      'bargain',
+    );
+    expect(taken.choices.map((x) => x.text).join(' | ')).not.toMatch(/burn hotter/);
+  });
   it('refusing changes nothing', () => {
     const c = pick(
       new Conversation('camp', game({ ember: 1 }, true), hi()).start('bargain'),

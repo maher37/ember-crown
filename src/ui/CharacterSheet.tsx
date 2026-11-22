@@ -317,6 +317,23 @@ function StatsTab({ hero }: { hero: Hero }) {
                   <span className="small muted">{t.summary}</span>
                 </li>
               ))}
+              {hero.origin === 'corin' && Number(flags['ember'] ?? 0) > 0 && (
+                <li>
+                  <span className="strong">Ember bargain</span>{' '}
+                  <span className="faint small">(Cindrath's dreams)</span>{' '}
+                  <span className="small muted">
+                    Ember {Number(flags['ember'] ?? 0)} of 5
+                    {[
+                      flags['ember_fire'] && 'fire spells deal +2 damage',
+                      flags['ember_resist'] && 'resists fire',
+                    ]
+                      .filter(Boolean)
+                      .map((x) => `; ${x}`)
+                      .join('')}
+                    . At 5, the voice may take him.
+                  </span>
+                </li>
+              )}
               {marked && (
                 <li>
                   <span className="strong">Ember-kiss</span>{' '}
