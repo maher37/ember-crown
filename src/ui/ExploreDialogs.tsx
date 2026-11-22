@@ -160,6 +160,12 @@ export function SpellsDialog({ onClose }: { onClose: () => void }) {
                 .filter(Boolean)
                 .join(' · ') || 'none yet'}
             </div>
+            {/* Playtest Nov 22: without this line, casters with no healing spell looked out of slots. */}
+            <div className="small muted">
+              {healingSpells(h).length
+                ? 'Between fights you can cast healing spells here. The rest are cast in a fight.'
+                : `Nothing to cast between fights: ${h.name}'s spells are cast in a fight.`}
+            </div>
             {healingSpells(h).map(({ spell, levels, group }) => (
               <div key={spell.id} className="row small heal-row">
                 <span className="strong">{spell.name}</span>
