@@ -46,12 +46,27 @@ Late in the watch, a red light comes through the trees, steady and unhurried. Ma
     For a moment her face is very still. "That's what the hag says. Or the abbey's old priests." She looks into the fire for a long time. "It knew how my father took his tea." But she doesn't sound sure anymore.
     ~ set_flag("maelis_doubt", true)
     -> talk
-* {flag("truth_collapse")} [Tarrow's report is known now. Your father's name is clear.]
+* {flag("truth_collapse") && not has("harl")} [Tarrow's report is known now. Your father's name is clear.]
     "I heard." Her voice catches, just once. "Ten years. And it took you a month." She wipes her eyes with the back of a sooty hand. "Thank you."
     -> talk
 * {has("corin")} [Come home, Mae. Leave the crown. #as:corin]
     "I am home, Corin. That's the point." She reaches over and fixes his collar, the way she used to. "Come with me to the Kiln. Please."
     ~ set_flag("corin_asked_to_kiln", true)
+    -> talk
+* {has("harl")} [I knew your father. I should have said so ten years ago. #as:harl]
+    "I know you did. I was at the mine mouth, behind my mother, when you read the names." She looks at Harl for a long time. "You left his out. I counted."
+    {
+        - flag("harl_confessed"):
+        "I heard you stood on the Hall steps beside Tarrow." Her voice catches, just once. "Ten years, and then a month."
+        - flag("truth_collapse"):
+        "Tarrow's report is known now, they tell me. My father's name is clear." She wipes her eyes with the back of a sooty hand. "Ten years, and then a month."
+    }
+    { flag("harl_named_hadric"):
+        Harl tells her about the chisel and the gap in the wall. She doesn't thank him. She looks into the fire, and her jaw works, and she doesn't say anything at all.
+    - else:
+        "Saying it now doesn't give me back ten years," she says. "Say it anyway. Out loud, where they can hear."
+    }
+    ~ set_flag("maelis_harl", true)
     -> talk
 + [Good night, Maelis.]
     She stands and picks up her lantern. "Good night. Keep warm." At the edge of the firelight she turns. "If you're right about the voice, I'd rather hear it from you than from a hag."

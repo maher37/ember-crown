@@ -69,6 +69,9 @@ VAR passed = false
     - has("corin") && not flag("gran_corin"):
         ~ set_flag("gran_corin", true)
         She squints at Corin, then spits on the cobbles for luck. "Hadric's boy. Your father dug me out of the '82 flood with his bare hands. Some of us remember that, whatever the Hall says."
+    - has("harl") && not flag("gran_harl"):
+        ~ set_flag("gran_harl", true)
+        "Father Harl." She doesn't spit this time. "You read the words over my Davey, ten years back. Fine words." She draws a bucket. "Shame you never said the rest of them."
     - has("vorna") && not flag("gran_vorna"):
         ~ set_flag("gran_vorna", true)
         Gran sees Vorna's red scales, and her hand makes the warding sign before she can stop it: two fingers, pressed to the iron nail. "Begging your pardon," she says, not very sorry. "Old habit. Red's an unlucky colour in Ashford."

@@ -113,7 +113,7 @@ Captain Voss is down. Tarrow has backed into his own fireplace, hands up.
     ~ truth("collapse")
     ~ note("Tarrow confessed in the square, and Nessa took his sworn statement under the Guild's seal: the Guild ordered the false report that blamed Hadric Varrow.")
     -> decided
-+ [Say it in the square, in front of everyone. #check:persuasion:12]
++ {not has("harl") || flag("tarrow_exposed")} [Say it in the square, in front of everyone. #check:persuasion:12]
     { passed || flag("tarrow_exposed"):
         It takes an hour. Tarrow stands on the Hall steps in the cold and says Hadric Varrow's name, and what he wrote, and why. Nobody throws anything. Somebody starts to cry.
         ~ set_flag("tarrow_confessed", true)
@@ -122,6 +122,14 @@ Captain Voss is down. Tarrow has backed into his own fireplace, hands up.
         -> decided
     - else:
         "I can't," he whispers. "They'll hang me." He won't do it. Not today.
+        -> fate
+    }
++ {has("harl") && not flag("tarrow_exposed")} [I kept quiet too. I'll stand on the steps beside you. #as:harl #check:persuasion:8]
+    { passed:
+        Tarrow stares at the old priest. "You knew?" Harl nods. Something goes out of the mayor's shoulders, as if he'd been carrying the thing alone and has only just put it down.
+        -> harl_steps
+    - else:
+        "You didn't write it," Tarrow whispers. "They'll hang me, not you." He won't do it. Not today.
         -> fate
     }
 + [Get out of Ashford. Tonight. Don't come back.]
@@ -134,6 +142,13 @@ Captain Voss is down. Tarrow has backed into his own fireplace, hands up.
     ~ set_flag("tarrow_killed", true)
     ~ note("Mayor Tarrow is dead.")
     -> decided
+= harl_steps
+It takes an hour. Tarrow stands on the Hall steps in the cold and says Hadric Varrow's name, and what he wrote, and why. Then Harl Deepdelve steps up beside him and says what he knew, and that he said nothing. Nobody throws anything. Somebody starts to cry.
+~ set_flag("tarrow_confessed", true)
+~ set_flag("harl_confessed", true)
+~ truth("collapse")
+~ note("Mayor Tarrow confessed in the square that he falsified the report that blamed Hadric Varrow. Harl stood beside him and confessed his own ten years of silence.")
+-> decided
 = decided
 ~ set_flag("tarrow_fate_decided", true)
 ~ set_flag("hall_resolved", true)
