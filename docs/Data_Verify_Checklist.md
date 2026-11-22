@@ -117,7 +117,7 @@ Each line was entered from memory or is marked ⚠ in the design docs. Check it 
 ## monsters.json
 
 - [ ] **monsters › Grey Company bruiser**: Bandit stats (Encounters_and_XP F1: 'bandit stats, fists and clubs'); club and bottle attacks are my own [inferred].
-- [ ] **monsters › Veteran**: AC, HP, speed and CR from the MM PDF (✅). Data_Fixes.md says the heavy crossbow does 1d10, but the SRD 5.1 says 1d10+1 (kept). Check the crossbow damage, ability scores and hit dice in the MM.
+- [ ] **monsters › Veteran**: AC, HP, speed and CR from the MM PDF (✅). Heavy crossbow 1d10+1 confirmed in the MM by the owner (Nov 22). Ability scores and hit dice not confirmed yet.
 - [ ] **monsters › Cult fanatic**: Spell list and slots from memory (Monster_Roster CONFIRM LOCALLY).
 - [ ] **monsters › Priest**: Spell list and slots from memory.
 - [ ] **monsters › Mage**: Spell list and slots from memory.

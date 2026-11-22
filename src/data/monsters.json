@@ -532,7 +532,7 @@
       "usedIn": ["F12 Hall captain"],
       "art": "Mayor's captain: polished splint mail, tired eyes",
       "verify": true,
-      "verifyNote": "AC, HP, speed and CR from the MM PDF (✅). Data_Fixes.md says the heavy crossbow does 1d10, but the SRD 5.1 says 1d10+1 (kept). Check the crossbow damage, ability scores and hit dice in the MM."
+      "verifyNote": "AC, HP, speed and CR from the MM PDF (✅). Heavy crossbow 1d10+1 confirmed in the MM by the owner (Nov 22). Ability scores and hit dice not confirmed yet."
     },
     {
       "id": "cultist",
