@@ -10,6 +10,8 @@ import { canLevelUp } from '../rules';
 import './Combat.css';
 import { SoundButton } from '../audio/SoundButton';
 import { SneakPanel } from './SneakPanel';
+import { PrecastPanel } from './PrecastPanel';
+import type { Precast } from '../game/precast';
 
 // DMG encounter multipliers (docs/Encounters_and_XP.md §3).
 const multiplier = (n: number) => (n <= 1 ? 1 : n === 2 ? 1.5 : n <= 6 ? 2 : 2.5);
@@ -40,7 +42,7 @@ export function PrepareScreen() {
     setOrderState(o);
     setFormation(o);
   };
-  const [mageArmor, setMageArmor] = useState<string[]>([]);
+  const [precasts, setPrecasts] = useState<Precast[]>([]);
   const foes = enc.enemies.filter((e) => e.difficulties.includes(difficulty));
   const raw = foes.reduce((n, e) => n + monsters.find((m) => m.id === e.monster)!.xp, 0);
   const groups = Object.entries(
@@ -50,9 +52,11 @@ export function PrepareScreen() {
     ),
   );
   const below = party.some((h) => h.level < 2);
-  const casters = party.filter(
-    (h) => h.spells.includes('mage-armor') && !h.equipment.armor && (slotsLeft(h)[0] ?? 0) > 0,
-  );
+  // Heroes who take part (Corin sits out some fights).
+  const fighters = party.filter((h) => !(enc.excludeOrigin && h.origin === enc.excludeOrigin));
+  // D34: Hex and Hunter's Mark need a foe in sight. Not when the enemy springs an ambush, or the
+  // scout was spotted [inferred].
+  const foesInSight = !enc.surprise && !(scoutedHere && !scoutedHere.success);
   const map = parseMapForUi(enc);
 
   const swap = (i: number, j: number) => {
@@ -66,7 +70,7 @@ export function PrepareScreen() {
     const formation = Object.fromEntries(
       order.map((id, i) => [id, { x: enc.partyStart[i]![0], y: enc.partyStart[i]![1] }]),
     );
-    startFight({ difficulty, formation, mageArmor });
+    startFight({ difficulty, formation, precasts });
   };
 
   return (
@@ -273,27 +277,13 @@ export function PrepareScreen() {
           {below && !party.some((h) => canLevelUp(h)) && (
             <p className="notice">This fight is built for level-2 heroes. It will be hard.</p>
           )}
-          {casters.length > 0 && (
-            <>
-              <h2 className="eyebrow">Before the fight</h2>
-              {casters.map((h) => (
-                <label key={h.id} className="check">
-                  <input
-                    type="checkbox"
-                    checked={mageArmor.includes(h.id)}
-                    onChange={(e) =>
-                      setMageArmor(
-                        e.target.checked
-                          ? [...mageArmor, h.id]
-                          : mageArmor.filter((x) => x !== h.id),
-                      )
-                    }
-                  />
-                  {h.name} casts Mage Armor (uses a 1st-level slot)
-                </label>
-              ))}
-            </>
-          )}
+          <PrecastPanel
+            party={fighters}
+            foes={foes.map((f) => ({ id: f.id, name: f.name }))}
+            foesInSight={foesInSight}
+            list={precasts}
+            onChange={setPrecasts}
+          />
           {enc.talk && (
             <div className="talk">
               <h2 className="eyebrow">Talk or fight</h2>

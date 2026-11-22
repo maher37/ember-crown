@@ -58,6 +58,8 @@ export const Spell = z
     summary: z.string().min(1),
     /** Exploration/dialogue only: no combat effect yet. */
     utility: z.boolean().default(false),
+    /** D34: can be cast on the Prepare screen just before a fight, and carries into it. */
+    beforeFight: z.boolean().default(false),
     effects: z.array(Effect),
     upcast: z
       .object({

@@ -32,7 +32,7 @@ export const combatSlice = (
       scouted: get().scouted?.encounterId === encounterId ? get().scouted : null,
     }),
 
-  startFight: ({ difficulty, formation, mageArmor }) => {
+  startFight: ({ difficulty, formation, mageArmor, precasts }) => {
     const { game, encounterId } = get();
     if (!game || !encounterId) throw new Error('No game or encounter');
     const enc = getEncounter(encounterId);
@@ -66,6 +66,7 @@ export const combatSlice = (
       rngState: get().rngState,
       formation,
       mageArmor,
+      precasts,
       surprise,
       inventory: game.inventory,
       // Kind dice (a setting, on by default): read by the spell code.

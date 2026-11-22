@@ -536,6 +536,7 @@
         "feet": 30
       },
       "concentration": true,
+      "beforeFight": true,
       "duration": {
         "minutes": 1
       },
@@ -887,6 +888,7 @@
       "castingTime": "action",
       "range": "touch",
       "concentration": false,
+      "beforeFight": true,
       "duration": {
         "hours": 8
       },
@@ -1051,6 +1053,7 @@
         "feet": 90
       },
       "concentration": true,
+      "beforeFight": true,
       "duration": {
         "hours": 1
       },
@@ -1075,6 +1078,7 @@
         "feet": 90
       },
       "concentration": true,
+      "beforeFight": true,
       "duration": {
         "hours": 1
       },
@@ -1129,6 +1133,7 @@
       "castingTime": "action",
       "range": "self",
       "concentration": false,
+      "beforeFight": true,
       "duration": {
         "hours": 1
       },
@@ -1160,6 +1165,7 @@
         "feet": 60
       },
       "concentration": true,
+      "beforeFight": true,
       "duration": {
         "minutes": 10
       },
@@ -1185,6 +1191,7 @@
       "castingTime": "bonus",
       "range": "self",
       "concentration": true,
+      "beforeFight": true,
       "duration": {
         "minutes": 1
       },
@@ -1375,6 +1382,7 @@
       "castingTime": "action",
       "range": "touch",
       "concentration": true,
+      "beforeFight": true,
       "duration": {
         "minutes": 10
       },
@@ -1413,6 +1421,7 @@
         "feet": 30
       },
       "concentration": false,
+      "beforeFight": true,
       "duration": {
         "hours": 8
       },
@@ -1803,6 +1812,7 @@
       "castingTime": "action",
       "range": "touch",
       "concentration": true,
+      "beforeFight": true,
       "duration": {
         "hours": 1
       },
@@ -1830,6 +1840,7 @@
       "castingTime": "action",
       "range": "self",
       "concentration": false,
+      "beforeFight": true,
       "duration": {
         "minutes": 1
       },
@@ -1911,6 +1922,7 @@
       "castingTime": "action",
       "range": "self",
       "concentration": true,
+      "beforeFight": true,
       "duration": {
         "hours": 1
       },
@@ -2133,6 +2145,7 @@
       "castingTime": "action",
       "range": "self",
       "concentration": true,
+      "beforeFight": true,
       "duration": {
         "minutes": 10
       },
@@ -2266,6 +2279,7 @@
         "feet": 30
       },
       "concentration": true,
+      "beforeFight": true,
       "duration": {
         "minutes": 1
       },
@@ -2560,6 +2574,7 @@
         "feet": 30
       },
       "concentration": true,
+      "beforeFight": true,
       "duration": {
         "minutes": 1
       },
@@ -2822,6 +2837,7 @@
         "dicePerLevel": "1d8"
       },
       "concentration": false,
+      "beforeFight": true,
       "components": "V, S"
     },
     {
@@ -2932,6 +2948,7 @@
       "castingTime": "action",
       "range": "self",
       "concentration": true,
+      "beforeFight": true,
       "duration": {
         "minutes": 1
       },
@@ -2955,6 +2972,7 @@
         "feet": 30
       },
       "concentration": true,
+      "beforeFight": true,
       "duration": {
         "minutes": 1
       },
@@ -2980,6 +2998,7 @@
       "castingTime": "bonus",
       "range": "touch",
       "concentration": true,
+      "beforeFight": true,
       "duration": {
         "hours": 1
       },
@@ -3049,6 +3068,7 @@
       "castingTime": "action",
       "range": "touch",
       "concentration": true,
+      "beforeFight": true,
       "duration": {
         "hours": 1
       },

@@ -38,6 +38,8 @@ import {
 } from './core';
 import { conscious, distanceFeet, moveCost, parseMap } from './grid';
 import { enterSquare, startOfTurnZones, zoneSlows } from './zones';
+import { castBeforeFight } from './precast';
+import type { Precast } from '../precast';
 import { giveCondition } from './leaves';
 import type { CombatState, Combatant, Pos, TurnState } from './types';
 
@@ -78,6 +80,8 @@ export interface StartOptions {
   formation?: Record<string, Pos>;
   /** Heroes who cast Mage Armor before the fight (spends a 1st-level slot). */
   mageArmor?: string[];
+  /** Spells cast just before the fight on the Prepare screen (D34). */
+  precasts?: Precast[];
   /** The party's consumables (potions). */
   inventory?: Record<string, number>;
   /** Story flags the fight can read. */
@@ -227,6 +231,7 @@ export function startCombat(o: StartOptions): CombatState {
     }
     say(s, 'head', e.code === 'F2' ? 'Goblins burst from the treeline!' : `${e.name} begins!`);
     rollInitiative(ctx);
+    castBeforeFight(ctx, o.precasts ?? []);
     if (o.surprise) surpriseSide(ctx, o.surprise);
     else if (e.surprise) rollSurprise(ctx);
     beginTurnLoop(ctx);
