@@ -16,6 +16,7 @@ import {
   type DamageType,
 } from '../../rules';
 import {
+  breakInvisibility,
   classLevel,
   combatSave,
   currentAc,
@@ -407,6 +408,7 @@ export function makeAttack(
       );
       if (r0 >= dupAc) images.data = { ...images.data, images: n - 1 };
       attacker.effects = attacker.effects.filter((e) => e.tag !== 'hidden');
+      breakInvisibility(s, attacker);
       return { hit: false, critical: false, total: r0, natural: 0 };
     }
   }
@@ -464,6 +466,7 @@ export function makeAttack(
     if (e) removeEffect(e === guided ? target : attacker, e);
   if (entropic) removeEffect(attacker, entropic);
   attacker.effects = attacker.effects.filter((e) => e.tag !== 'hidden');
+  breakInvisibility(s, attacker);
 
   let hit = r.hit;
   let total = r.total ?? 0;
