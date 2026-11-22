@@ -311,7 +311,8 @@ Premade like Corin: fixed name, species, class and look; abilities and backgroun
 - **Wants:** to find something worth more than her soul and buy the contract back.
 - **Story hooks for later:** Captain Kell and the Guild, Tarrow's books, Sabeth Quillon (another Waterdhavian), Mother Sallow's bargains.
 
-### Rhessa Kalvaar: red dragonborn fighter, Soldier
+### Vorna Kalvaar: red dragonborn fighter, Soldier
+- (Renamed from Rhessa on Nov 22 so she doesn't rhyme with Nessa.)
 - Six years a sergeant in the Grey Company under Captain Kell. Quit when the Guild wouldn't pay her dead squad's families and Kell let it go.
 - Red scales in a town that curses a red dragon's name; children make warding signs at her.
 - Since entering the Greypeaks she has heard a warm voice in her sleep calling her "daughter".

@@ -2,7 +2,7 @@ import { z } from 'zod';
 import { fileOf, Id } from './common';
 
 /** The premade origin heroes (Story_Bible §9 and §9b; D33). Saves store one of these ids. */
-export const ORIGIN_IDS = ['corin', 'harl', 'nessa', 'rhessa'] as const;
+export const ORIGIN_IDS = ['corin', 'harl', 'nessa', 'vorna'] as const;
 export type OriginId = (typeof ORIGIN_IDS)[number];
 
 const Hex = z.string().regex(/^#[0-9a-f]{6}$/i);

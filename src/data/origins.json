@@ -72,8 +72,8 @@
       "wants": "To find something worth more than her soul and buy her contract back."
     },
     {
-      "id": "rhessa",
-      "name": "Rhessa Kalvaar",
+      "id": "vorna",
+      "name": "Vorna Kalvaar",
       "title": "the dragon's daughter",
       "speciesId": "dragonborn",
       "classId": "fighter",
@@ -88,7 +88,7 @@
       },
       "pitch": "A red-scaled sergeant who quit the Grey Company over her squad's unpaid dead, in a town that curses a red dragon's name.",
       "backstory": [
-        "Rhessa served six years as a sergeant in the Grey Company under Captain Ruther Kell. When four of her squad died on a Guild contract, the Coinwright Guild refused to pay their families, and Kell let it go. She handed back her badge the same night.",
+        "Vorna served six years as a sergeant in the Grey Company under Captain Ruther Kell. When four of her squad died on a Guild contract, the Coinwright Guild refused to pay their families, and Kell let it go. She handed back her badge the same night.",
         "Her scales are red, and Ashford has cursed a red dragon's name for two hundred years. Children make warding signs when she walks past.",
         "Since she came into the Greypeaks she has heard a voice in her sleep, warm and patient. It calls her daughter."
       ],
