@@ -14,6 +14,7 @@ import {
 } from '../hero';
 import { abilityModifier, attackRoll, roll, startConcentration, type DiceRoll } from '../../rules';
 import {
+  breakInvisibility,
   classLevel,
   combatSave,
   currentAc,
@@ -344,6 +345,8 @@ export function castSpell(ctx: Ctx, caster: Combatant, req: CastRequest): void {
   if (lvl > 0) spendSlot(caster, lvl);
   if (sp.school === 'abjuration') chargeWard(s, caster, lvl);
   caster.effects = caster.effects.filter((e) => e.tag !== 'hidden');
+  // Casting ends Invisibility first [inferred: the spell's own attack roll gets no advantage].
+  breakInvisibility(s, caster);
   say(
     s,
     caster.side === 'party' ? 'you' : 'foe',

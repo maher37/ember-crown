@@ -284,6 +284,29 @@ export function dealDamage(
   return out.damageTaken;
 }
 
+/**
+ * PHB: Invisibility. The spell ends for a target that attacks or casts a spell. When no one is
+ * left invisible from it, the caster stops concentrating on it.
+ */
+export function breakInvisibility(s: CombatState, c: Combatant): void {
+  const held = c.effects.filter(
+    (e) =>
+      e.tag === 'condition' &&
+      e.data?.condition === 'invisible' &&
+      e.concentration === 'invisibility',
+  );
+  for (const e of held) {
+    removeEffect(c, e);
+    say(s, 'info', `${c.name} is visible again (Invisibility ends on attacking or casting)`);
+    const caster = s.combatants[e.sourceId];
+    const left = Object.values(s.combatants).some((o) =>
+      o.effects.some((x) => x.sourceId === e.sourceId && x.concentration === 'invisibility'),
+    );
+    if (caster && !left && caster.creature.concentration === 'invisibility')
+      caster.creature = { ...caster.creature, concentration: null };
+  }
+}
+
 /** Remove every effect that depended on `casterId` concentrating on `spellId`. */
 export function endConcentrationEffects(s: CombatState, casterId: string, spellId: string): void {
   for (const c of Object.values(s.combatants)) {
