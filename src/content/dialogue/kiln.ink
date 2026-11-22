@@ -326,6 +326,10 @@ A mural runs the length of a side passage, cut into the rock by dwarven smiths: 
     Now you know how it ends. Or rather, that it hasn't, yet.
 }
 ~ set_flag("kiln_mural", true)
++ {has("harl")} [Read the masons' marks on the blank panel. #as:harl]
+    Harl runs his thumb along the edge of the bare stone. "Our masons leave a panel blank when the work isn't finished. Not the carving." He looks down the passage, toward the heat. "The cage."
+    ~ note("Harl read the smiths' mural: the blank last panel is a dwarven mason's sign that the work, the crown's cage, was never finished.")
+    -> back
 + [Go on.]
     -> back
 
@@ -355,6 +359,9 @@ The mountain's heart is a cavern of molten light. In a ritual circle of black ir
     -> speak
 * {has("corin")} [You call me "boy". You're not our father. #as:corin]
     The voice in the crown laughs, low and pleased, and Maelis flinches: she heard it too. Their father never called him boy.
+    -> speak
+* {has("harl") && flag("harl_named_hadric")} [Your father's name is on the mine wall now. #as:harl]
+    "I saw it," Maelis says. "I stood in front of it for an hour, on my way up the mountain." The crown's light dims, just a little, while she remembers.
     -> speak
 * {has_item("drowned-lantern")} [You asked us to bring a lantern. We did.]
     Maelis looks at the Drowned Lantern, Brannoc's lantern, and something in her face gives way. "You did," she says.

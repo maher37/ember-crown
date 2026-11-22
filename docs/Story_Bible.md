@@ -296,7 +296,7 @@ Epilogue slides also report on Brannoc, Edric, Ulric, Wynn's granddaughter, Kell
 
 ## 9b. Three more origin heroes (D33, approved Nov 22)
 
-Premade like Corin: fixed name, species, class and look; abilities and background can still be chosen. Their backstory text lives in `src/data/origins.json` and shows on the character sheet. Each can join the party once, alongside Corin or each other. **Not built yet:** their own `[Name]` dialogue options, unique scenes and endings (later PRs, one hero each).
+Premade like Corin: fixed name, species, class and look; abilities and background can still be chosen. Their backstory text lives in `src/data/origins.json` and shows on the character sheet. Each can join the party once, alongside Corin or each other. **Built so far:** Harl's own `[Harl]` choices and scenes (below). **Not built yet:** Nessa's and Vorna's (later PRs, one hero each). None of them has a unique ending yet.
 
 ### Harl Deepdelve: hill dwarf cleric of Moradin (Life Domain), Acolyte
 - Tended Moradin's shrine at the Old Mine for thirty years. On the day of the Collapse he dug three men out by hand and read the rites over the thirty-one who died.
@@ -304,6 +304,15 @@ Premade like Corin: fixed name, species, class and look; abilities and backgroun
 - Came back because the rock over the sealed Deep Seam has turned warm.
 - **Wants:** to reconsecrate the mine shrine and speak the true names of the dead.
 - **Story hooks for later:** the Collapse, Hadric, Brannoc and Ulric (old shift faces), `[Dwarf]` stonework in the Kiln.
+- **What changes when you play as Harl (built):**
+  - **Opening:** he walks down the mine road on Lantern Night, after touching the warm rock over the Deep Seam. An old miner calls him "Father Harl". (If Corin is in the party too, Corin's barge scene plays first.)
+  - **Brannoc** gives Harl the letter on trust: `[Harl] Thirty years you've known me, Brannoc.` Gran Esk greets him coolly ("Shame you never said the rest of them").
+  - **The ember-kiss:** Harl knows the warmth; he felt it through the rock.
+  - **Old Mine:** `[Harl]` talks the diggers down (easier check; he blessed their fathers' shifts). At the memorial he recognizes the names he carved and can **carve Hadric Varrow's name** into the gap. In the drowned shrine he confronts **Ulric**, which counts like Brannoc's name for talking Ulric down. After the shard he can **reconsecrate Moradin's shrine**.
+  - **Ashford Hall (Act II):** `[Harl] I kept quiet too.` He stands on the steps beside Tarrow and confesses his own silence: an easier way to the Collapse Truth.
+  - **Maelis at camp:** she was at the mine mouth when he read the names, and counted that he left her father's out.
+  - **The Kiln (Act III):** he reads the blank last panel of the smiths' mural (the cage was never finished). At the Crowning, if he carved the name, he can tell Maelis.
+  - **Epilogue:** one slide, depending on whether he reconsecrated the shrine.
 
 ### Nessa Thorne: human warlock (the Fiend), Noble
 - From a fallen Waterdeep house. Signed a contract with a devil she calls the Auditor to get her brother out of debtors' prison; her soul is the collateral.
@@ -325,7 +334,7 @@ Premade like Corin: fixed name, species, class and look; abilities and backgroun
 
 - **Skill checks use the party member with the best bonus** for that skill, and the UI says who rolls ("Insight DC 12 · Thorn +3").
 - **Exception: character-specific options** use that character only, shown with a tag:
-  - `[Corin]` origin lines
+  - `[Corin]` origin lines (also `[Harl]`, and later `[Nessa]`, `[Vorna]`)
   - `[Cleric]` / `[Paladin]` Religion insights
   - `[Dwarf]` stonework sense
   - `[Background: Soldier]`, `[Rogue]` thieves' cant, etc.

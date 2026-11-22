@@ -202,6 +202,18 @@
       "text": "Corin stayed for Lantern Night, and the one after that. He and Maelis still don't agree about anything, loudly, over burnt honey-bread."
     },
     {
+      "title": "Harl",
+      "if": ["harl", "harl_shrine"],
+      "except": ["ember-crown"],
+      "text": "Harl Deepdelve keeps Moradin's shrine below the Old Mine again. Every shift that goes down hears thirty-one names read out first, and the last of them is Hadric Varrow's."
+    },
+    {
+      "title": "Harl",
+      "if": ["harl", "!harl_shrine"],
+      "except": ["ember-crown"],
+      "text": "Harl went back to the dwarf halls in the west. Every Lantern Night he sends a letter to Ashford with thirty-one names in it, and asks Brannoc to read them aloud."
+    },
+    {
       "title": "The kindled",
       "if": ["kindled"],
       "text": "The ember-kiss never quite faded. On cold nights the rings on your palms glow like coals, and once in a long while, just before sleep, something warm and patient says your name."

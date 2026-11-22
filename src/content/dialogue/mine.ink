@@ -58,7 +58,9 @@ Fresh spoil heaps, new timbers, and a crane that wasn't there ten years ago. A d
     -> mouth
 + {flag("miners_rescued")} [Your friends from the warren are safe. Go home to your families. #check:persuasion:10]
     -> talk
-+ [None of this is worth dying for. Walk away. #check:persuasion:13]
++ {not has("harl")} [None of this is worth dying for. Walk away. #check:persuasion:13]
+    -> talk
++ {has("harl")} [I blessed your fathers' shifts. I won't bury their sons. #as:harl #check:persuasion:9]
     -> talk
 + [Stand aside or be moved. #fight]
     ~ fight("f5-mine-mouth", "arrive.after_mouth")
@@ -131,6 +133,9 @@ Stairs go down into a hall half-full of steaming water. At its far end, a drowne
 { has("corin"):
     The glow brightens as Corin steps closer. Under the hiss of the water, something says his name.
 }
+{ has("harl"):
+    Harl stops at the bottom stair. This was Moradin's shrine, his shrine, and someone has hung Hollow Star rags over the hammer on the altar.
+}
 #speaker:ulric
 "So Brannoc's town sends heroes now." Brother Ulric doesn't turn round. "Go home. This is for the widows of the Collapse, and it's nearly done."
 * [What is that thing on the altar?]
@@ -138,6 +143,11 @@ Stairs go down into a hall half-full of steaming water. At its far end, a drowne
     -> shrine
 * {flag("knows_ulric")} [Brannoc sent us. He says you were his shift partner.]
     That turns him round. "Brannoc." Something in his face cracks. "Then he should've come himself." The skeletons in the water begin to stir anyway. (Brannoc's name will make talking him down easier.)
+    -> shrine
+* {has("harl")} [Ulric Dunmore. This is not Moradin's work, and you know it. #as:harl]
+    Ulric turns round at the voice. "Father Harl. You read the rites for them up top, and then you said nothing for ten years." His hook shakes. "Don't you preach to me about what's owed the dead." But he looks at the floor, not at Harl. (He knows Harl. Talking him down will be easier.)
+    ~ set_flag("knows_ulric", true)
+    ~ set_flag("harl_ulric", true)
     -> shrine
 + [Step down into the shrine. #fight]
     ~ fight("f7-sunken-shrine", "arrive.after_shrine")
@@ -165,7 +175,21 @@ The shard is warm, and heavier than it should be. When you hold it the steam sto
 ~ quest_step("old-mine", "shrine")
 ~ note("You took the first crown shard. It whispers. Holding it, fire seems to sting less.")
 Somewhere above, at the mine mouth, a red lantern is burning.
+{ has("harl"):
+    -> harl_rites
+}
 -> back
+= harl_rites
+#speaker:mine
+Harl wades to the altar. Under the Star's rags, Moradin's hammer is still cut into the stone, black with soot.
+* [Reconsecrate the shrine. #as:harl]
+    Harl tears down the rags and scrubs the hammer clean with his sleeve, then speaks the old words of hearth and stone. The water stays warm. But the hall feels like a place that belongs to someone again.
+    ~ set_flag("harl_shrine", true)
+    ~ note("Harl reconsecrated Moradin's shrine in the drowned hall below the Old Mine.")
+    -> back
+* [Leave it. The shard is still whispering.]
+    Harl touches the hammer once and lets it be. "Another day," he says, though he doesn't sound sure there'll be one.
+    -> back
 
 = maelis
 #speaker:mine
@@ -232,9 +256,17 @@ Where the old tunnel meets the shaft, someone has carved names into the rock: th
 { has("corin"):
     Corin looks at the gap for a long time and says nothing at all.
 }
+{ has("harl"):
+    Harl knows the hand. He cut these names himself, ten years ago, and left the gap because the Hall told him to.
+}
 ~ set_flag("mine_memorial", true)
 + [Light a candle for the thirty-one.]
     The flame stands straight up in the still air. For a moment the mine feels less hungry.
+    -> back
++ {has("harl")} [Carve the missing name. #as:harl]
+    Harl takes a chisel from his pack and works by candlelight until it's done: HADRIC VARROW, FOREMAN, in the same neat capitals as the rest. "Ten years late," he says. "Moradin forgive me every one of them."
+    ~ set_flag("harl_named_hadric", true)
+    ~ note("Harl carved Hadric Varrow's name into the miners' memorial, in the gap the town left for him.")
     -> back
 
 = alcove

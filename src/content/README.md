@@ -6,7 +6,7 @@ Dialogue is written in [Ink](https://github.com/inkle/ink/blob/master/Documentat
 
 | In Ink | What it does |
 |---|---|
-| `has("corin")`, `has("class:cleric")`, `has("species:hill-dwarf")`, `has("background:soldier")` | Is someone like that in the party? |
+| `has("corin")`, `has("harl")` (any origin hero id), `has("class:cleric")`, `has("species:hill-dwarf")`, `has("background:soldier")` | Is someone like that in the party? |
 | `flag("name")` / `~ set_flag("name", true)` | Story flags, saved with the game |
 | `~ quest_step("quest", "step")` / `quest_done("quest")` | Journal steps (ids in `src/data/quests.json`); finishing a quest awards its XP |
 | `~ award("id")` | One-off XP (ids and amounts in `quests.json` → `awards`) |
@@ -27,7 +27,7 @@ Dialogue is written in [Ink](https://github.com/inkle/ink/blob/master/Documentat
 ## Choice tags
 
 - `+ [Let me see to his wounds. #check:medicine:10]`: a skill check. The party member with the best bonus rolls (D11); the result is in the variable `passed`. Always write both outcomes, and make failure move the story on.
-- `+ {has("corin")} [You know me, Brannoc. #as:corin]`: a character option, shown as **[Corin]**; that character speaks (and rolls, if there's also a check).
+- `+ {has("corin")} [You know me, Brannoc. #as:corin]`: a character option, shown as **[Corin]** (`#as:harl` shows **[Harl]**); that character speaks (and rolls, if there's also a check).
 - `+ [Fight him. #fight]`: marks a choice that starts a fight with ⚔ "(starts combat)" (Encounters_and_XP §6).
 
 ## Stories and places

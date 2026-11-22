@@ -69,6 +69,9 @@ VAR passed = false
     - has("corin") && not flag("gran_corin"):
         ~ set_flag("gran_corin", true)
         She squints at Corin, then spits on the cobbles for luck. "Hadric's boy. Your father dug me out of the '82 flood with his bare hands. Some of us remember that, whatever the Hall says."
+    - has("harl") && not flag("gran_harl"):
+        ~ set_flag("gran_harl", true)
+        "Father Harl." She doesn't spit this time. "You read the words over my Davey, ten years back. Fine words." She draws a bucket. "Shame you never said the rest of them."
     - flag("tarrow_confessed"):
         "So it was the Hall all along." She draws a bucket. "Ten years of spitting at the Varrows' door. I'll be saying sorry to a mill full of ghosts."
     - flag("miners_rescued"):

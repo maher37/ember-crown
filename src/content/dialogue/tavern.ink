@@ -39,6 +39,9 @@ VAR passed = false
 { has("corin") && not flag("corin_barge"):
     -> corin_barge
 }
+{ has("harl") && not flag("harl_road"):
+    -> harl_road
+}
 -> lantern_night
 
 // ── Corin's origin opening (Story_Bible §9) ──
@@ -55,7 +58,23 @@ His sister's letter is creased soft from rereading: the first word from her in e
 = walk_in
 At the Drowned Lantern the potboy takes one look at those amber eyes and suddenly has somewhere else to be. A miner at the bar spits into the rushes. "Varrow," he says, to nobody.
 Brannoc's hands go still on the mug he's wiping. He doesn't say a word. Yet.
--> lantern_night
+-> intro
+
+// ── Harl's origin opening (Story_Bible §9b) ──
+=== harl_road ===
+#speaker:road
+Harl Deepdelve comes down the mine road at dusk with his pack, his hammer and thirty years of Ashford in his beard. He has been gone for ten.
+On the way he stopped at the sealed Deep Seam and laid his palm on the rock. It was warm, like a hearthstone the morning after a fire.
+~ set_flag("harl_road", true)
+* [Say the names of the thirty-one.]
+    Moradin's priest knows them all by heart, and they come easily, one after another. All but one. That one he has never once said out loud.
+    -> walk_in
+* [Go on down to the Lantern.]
+    -> walk_in
+= walk_in
+At the Drowned Lantern an old miner by the door lifts his mug an inch. "Father Harl." Nobody else says anything.
+Brannoc looks up from the bar, and for a moment his face is ten years younger and very tired. Then he goes back to his mugs.
+-> intro
 
 === lantern_night ===
 #speaker:tavern
@@ -114,6 +133,10 @@ Three strangers in grey came in behind him, asking quietly after "a lost letter.
     Brannoc stares a long moment. "You've your mother's eyes, Varrow boy." He sets down the mug. "Your father never stole a coin in his life. Here. If anyone has a right to this, it's you."
     ~ set_flag("brannoc_knows_corin", true)
     -> get_letter -> menu
++ {not flag("has_letter") && not flag("letter_lost") && not flag("strangers_gone") && has("harl") && not has("corin")} [Thirty years you've known me, Brannoc. #as:harl]
+    Brannoc puts the mug down. "Father Harl. You read the words over half my shift." He reaches under the bar. "If I can't trust Moradin's priest, I can't trust anyone in this town. Mind you, that's not saying much."
+    ~ set_flag("brannoc_knows_harl", true)
+    -> get_letter -> menu
 + {not flag("has_letter") && not flag("letter_lost") && not flag("strangers_gone") && not flag("tried_insight")} [You knew him. What aren't you telling us? #check:insight:12]
     ~ set_flag("tried_insight", true)
     {passed:
@@ -123,7 +146,7 @@ Three strangers in grey came in behind him, asking quietly after "a lost letter.
         Brannoc meets your eyes and holds them. You can't read him. "I've told you what I know."
         -> menu
     }
-+ {not flag("has_letter") && not flag("letter_lost") && not flag("strangers_gone") && not flag("tried_persuasion") && not has("corin")} [Give us the letter. We'll handle this. #check:persuasion:14]
++ {not flag("has_letter") && not flag("letter_lost") && not flag("strangers_gone") && not flag("tried_persuasion") && not has("corin") && not has("harl")} [Give us the letter. We'll handle this. #check:persuasion:14]
     ~ set_flag("tried_persuasion", true)
     {passed:
         He slides a wax-sealed letter across the bar.
@@ -460,6 +483,7 @@ Wix is sitting on the kitchen table with pastry on both ears. "Friends! Tell the
 Your hand is on the latch when the light changes. Through the shutters, every lantern on the river flares red at once: thirty-one of them, and one more nobody lit.
 Each of you feels it land, a warm spark under the skin of the palm, like a coal you can't drop. When you look, there's a thin red ring there that fades to a freckle.
 {has("corin"): Corin's was already there. It has always been there. It has just never glowed before.}
+{has("harl"): Harl knows that warmth. He felt it last night, through a yard of solid rock over the Deep Seam.}
 Brannoc stares at your hands, and his voice goes quiet. "The old miners called that the ember-kiss. Gods keep you. It's not a blessing."
 ~ set_flag("ember_marked", true)
 ~ note("On Lantern Night the river lanterns flared red and left a mark on every one of you: a warm red ring under the skin of the palm. Brannoc calls it the ember-kiss.")
