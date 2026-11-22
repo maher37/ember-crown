@@ -102,3 +102,47 @@ Corin dreams of a red room that is warm all the way through. A voice like a bank
 ~ set_flag("ember", ember() + 1)
 Corin wakes warm, and his eyes are a little more gold than they were. (Ember {ember()} of 5. The gift is listed on Corin's sheet. The cost: the higher Ember climbs, the more of Corin belongs to the voice. At 5, it may take him.)
 -> END
+
+// ── Vorna's dreams (D33, Story_Bible §9b): once an act, the voice that calls her "daughter" ──
+=== vorna_dream_1 ===
+#speaker:cindrath
+Vorna dreams of a red room, warm all the way through, and of being small enough to be carried. A voice like a banked fire speaks to her, fondly. "Daughter. You came home."
++ [I'm nobody's daughter. #as:vorna]
+    "Everyone is somebody's," the voice says, amused. "You'll see." Vorna wakes with her fists clenched.
+    ~ set_flag("vorna_defied", true)
+    -> END
++ [Who are you? #as:vorna]
+    "The fire your scales remember. The mountain you were always walking toward." It hums, pleased. "Sleep. We'll talk again."
+    Vorna wakes warm, and doesn't tell anyone for most of the morning.
+    ~ set_flag("vorna_listened", true)
+    -> END
+
+=== vorna_dream_2 ===
+#speaker:cindrath
+The red room again. This time there are four bedrolls by the fire, and the voice says the names Vorna never says out loud: "Tamm. Bel. Orrin. Little Sef." A pause. "The Guild weighed them and found them cheap. Put the crown on Maelis's head, and no family on this mountain will go hungry again."
++ {flag("vorna_truth_blood")} [You talk to Maelis in her father's voice. With me you use theirs. #as:vorna]
+    For the first time, the voice has nothing to say. The bedrolls are empty, and then they were never there. Vorna wakes up cold and angry, and it feels much better than warm.
+    ~ set_flag("vorna_defied", true)
+    -> END
++ [Don't say their names. #as:vorna]
+    "Someone should," the voice says gently. "You never do." Vorna wakes before dawn and sits by the dead fire until the others stir.
+    ~ set_flag("vorna_defied", true)
+    -> END
++ [Could you really do that? Pay them? #as:vorna]
+    "Daughter, I could pay the whole world." The fire purrs. Vorna wakes with four names on her lips and an ache in her chest like a healed bone in the cold.
+    ~ set_flag("vorna_listened", true)
+    -> END
+
+=== vorna_dream_3 ===
+#speaker:cindrath
+The red room has a door now, iron, glowing at the edges. "They'll come for my door tomorrow," the voice says. "Stand at it for me, daughter. You were always the one who held the line."
++ [I'll stand at it. With my sword pointed in. #as:vorna]
+    The heat goes out of the room so fast it hurts. "Then you are no child of mine," the voice says, and it is not fond anymore. Vorna wakes, and for the first time in months her sleep was her own.
+    ~ set_flag("vorna_refused_voice", true)
+    ~ note("Vorna told the voice in her dreams no. Whatever it is, it isn't her mother, and it isn't her captain.")
+    -> END
++ [I'll think on it. #as:vorna]
+    "That's my girl," the voice says. Vorna wakes warm, and spends the morning sharpening a sword that is already sharp.
+    ~ set_flag("vorna_heeded_voice", true)
+    ~ note("Vorna didn't say no to the voice in her dreams. It asked her to guard its door in the Kiln.")
+    -> END

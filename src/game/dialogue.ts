@@ -19,7 +19,8 @@ import forgeInk from '../content/dialogue/forge.ink';
 import kilnInk from '../content/dialogue/kiln.ink';
 import passInk from '../content/dialogue/pass.ink';
 import townInk from '../content/dialogue/town.ink';
-import { backgrounds, classes, npcs, species } from '../data';
+import { backgrounds, classes, npcs, origins, species } from '../data';
+import { ORIGIN_IDS, type OriginId } from '../data/schemas/origin';
 import {
   abilityCheck,
   abilityModifier,
@@ -118,9 +119,14 @@ export function parseSkill(text: string): Skill {
 
 const alive = (g: GameState) => g.party.filter((h) => !h.dead);
 
-/** Does this hero match a dialogue tag ("corin", "class:cleric", "species:hill-dwarf", "background:soldier")? */
+const isOrigin = (tag: string): tag is OriginId => (ORIGIN_IDS as readonly string[]).includes(tag);
+
+/**
+ * Does this hero match a dialogue tag? An origin hero's id ("corin", "vorna"; D33), or
+ * "class:cleric", "species:hill-dwarf", "background:soldier".
+ */
 export function matches(h: Hero, tag: string): boolean {
-  if (tag === 'corin') return h.origin === 'corin';
+  if (isOrigin(tag)) return h.origin === tag;
   const [kind, id] = tag.split(':');
   if (kind === 'class') return h.classId === id;
   if (kind === 'species') return h.speciesId === id;
@@ -128,9 +134,9 @@ export function matches(h: Hero, tag: string): boolean {
   throw new Error(`Unknown dialogue tag "${tag}"`);
 }
 
-/** "[Corin]", "[Cleric]", "[Hill Dwarf]", "[Soldier]". */
+/** "[Corin]", "[Vorna]", "[Cleric]", "[Hill Dwarf]", "[Soldier]". */
 export function tagLabel(tag: string): string {
-  if (tag === 'corin') return 'Corin';
+  if (isOrigin(tag)) return origins.find((o) => o.id === tag)!.name.split(' ')[0]!;
   const [kind, id] = tag.split(':');
   const list = kind === 'class' ? classes : kind === 'species' ? species : backgrounds;
   return list.find((x) => x.id === id)?.name ?? id!;
