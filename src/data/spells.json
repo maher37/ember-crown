@@ -2787,6 +2787,7 @@
       },
       "components": "V, S, M",
       "classes": ["sorcerer", "wizard"],
+      "beforeFight": true,
       "summary": "Borrow a little death: gain 1d4 + 4 temporary hit points for an hour.",
       "effects": [
         {
@@ -2837,7 +2838,6 @@
         "dicePerLevel": "1d8"
       },
       "concentration": false,
-      "beforeFight": true,
       "components": "V, S"
     },
     {

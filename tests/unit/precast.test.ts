@@ -1,6 +1,7 @@
 // D34: casting between fights. Spells cast on the Prepare screen carry into the fight.
 import { describe, expect, it } from 'vitest';
 import type { Hero } from '../../src/game/hero';
+import { spells } from '../../src/data';
 import { precastProblems, precastSpells, type Precast } from '../../src/game/precast';
 import { fight, L, party, texts } from './combat/arrange';
 
@@ -11,6 +12,38 @@ const start = (lead: Hero, precasts: Precast[]) =>
   fight('f13-cloister', party(lead, lead.level), 1, { precasts });
 
 describe('casting before a fight (D34)', () => {
+  it("offers exactly the spells the owner approved (D34), plus Hex and Hunter's Mark", () => {
+    expect(
+      spells
+        .filter((s) => s.beforeFight)
+        .map((s) => s.id)
+        .sort(),
+    ).toEqual(
+      [
+        'bless',
+        'shield-of-faith',
+        'aid',
+        'protection-from-evil-and-good',
+        'divine-favor',
+        'armor-of-agathys',
+        'false-life',
+        'mage-armor',
+        'blur',
+        'mirror-image',
+        'enlarge-reduce',
+        'haste',
+        'magic-weapon',
+        'protection-from-energy',
+        'spirit-guardians',
+        'beacon-of-hope',
+        'invisibility',
+        'pass-without-trace',
+        'hex',
+        'hunters-mark',
+      ].sort(),
+    );
+  });
+
   it('Bless on three allies is up from round 1, spends the slot, and keeps the first turn', () => {
     const s = start(cleric(), [
       { casterId: 'ada', spellId: 'bless', slotLevel: 1, targetIds: ['ada', 'thorn', 'ilse'] },
