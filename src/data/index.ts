@@ -29,8 +29,9 @@ import monstersJson from './monsters.json';
 import { BackgroundFile } from './schemas/background';
 import { ClassFile } from './schemas/class';
 import { DifficultyFile } from './schemas/difficulty';
-import { ArmorFile, GearFile, MagicItemFile, WeaponFile } from './schemas/item';
+import { ArmorFile, GearFile, MagicItemFile, TreasureFile, WeaponFile } from './schemas/item';
 import gearJson from './gear.json';
+import treasureJson from './treasure.json';
 import { MonsterFile, NamedFoeFile } from './schemas/monster';
 import { SpeciesFile } from './schemas/species';
 import { SpellFile } from './schemas/spell';
@@ -62,6 +63,7 @@ const gearFile = GearFile.parse(gearJson);
 export const gear = gearFile.gear;
 export const startingSupplies = gearFile.startingSupplies;
 export const magicItems = MagicItemFile.parse(magicItemsJson).items;
+export const treasure = TreasureFile.parse(treasureJson).treasure;
 // One encounter file per act (src/data/encounters/actN.json); joined here into one list.
 const encounterFiles = [encountersAct1Json, encountersAct2Json, encountersAct3Json].map((f) =>
   EncounterFile.parse(f),
@@ -109,6 +111,7 @@ export const gameData = {
   armor,
   gear,
   magicItems,
+  treasure,
   encounters,
   loadouts,
   quests,

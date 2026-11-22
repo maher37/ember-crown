@@ -4,7 +4,7 @@
 
 Each line was entered from memory or is marked ⚠ in the design docs. Check it against your PDFs. When a line is right (or fixed), remove its `verify` and `verifyNote` from the JSON and run `npm run verify-list` again.
 
-**227 items to check.**
+**228 items to check.**
 
 ## species.json
 
@@ -187,6 +187,10 @@ Each line was entered from memory or is marked ⚠ in the design docs. Check it 
 - [ ] **items › Periapt of Wound Closure**: Name from the DMG; effect summarized from memory, price our own (XGtE puts uncommon items at 101–500 gp, rare at 501–5,000).
 - [ ] **items › Boots of Elvenkind**: Name from the DMG; effect summarized from memory, price our own (XGtE puts uncommon items at 101–500 gp, rare at 501–5,000).
 - [ ] **items › Stone of Good Luck**: Name from the DMG; effect summarized from memory, price our own (XGtE puts uncommon items at 101–500 gp, rare at 501–5,000).
+
+## treasure.json
+
+- [ ] **(whole file)**: Values are our own [inferred], in line with the DMG's 25 gp and 250 gp art-object tiers.
 
 ## encounters/act1.json
 

@@ -210,10 +210,11 @@ export function crossCheck(d: GameData): { errors: string[]; warnings: string[] 
       errors.push(`bounty ${b.quest}: unknown encounter "${b.encounter}"`);
     if (b.encounter && !b.rewardGp) errors.push(`bounty ${b.quest}: a fight needs a reward`);
   }
+  const findable = new Set([...sellable, ...ids(d.treasure)]);
   for (const f of d.finds) {
     if (!placeIds.has(f.place)) errors.push(`find ${f.id}: unknown place "${f.place}"`);
     for (const it of f.loot.items)
-      if (!sellable.has(it.id)) errors.push(`find ${f.id}: unknown item "${it.id}"`);
+      if (!findable.has(it.id)) errors.push(`find ${f.id}: unknown item "${it.id}"`);
     if (f.startsQuest && !questIds.has(f.startsQuest))
       errors.push(`find ${f.id}: unknown quest "${f.startsQuest}"`);
     if (f.completes) {

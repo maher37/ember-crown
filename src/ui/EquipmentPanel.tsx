@@ -37,6 +37,7 @@ export function itemKindLine(id: string, hero?: Hero): string {
     const m = getItem(id);
     return `${m.consumable ? 'Potion' : (kind ?? m.kind).replace(/^./, (c) => c.toUpperCase())} · ${m.rarity}${m.attunement ? ' · needs attunement' : ''}`;
   }
+  if (it.type === 'treasure') return `Treasure · worth ${formatCoins(it.costGp ?? 0)}`;
   return 'Adventuring gear';
 }
 
@@ -244,6 +245,9 @@ function PackAction({
   const [patient, setPatient] = useState(game!.party[0]!.id);
   const it = lookupItem(id)!;
   if (it.type === 'gear') return <span className="small muted nowrap">{gearUse(id)}</span>;
+  // PHB: Selling Treasure. Jewelry sells for its full value to a keeper who buys it.
+  if (it.type === 'treasure')
+    return <span className="small muted nowrap">sell it at Quillon's or Odo's wagon</span>;
   if (isMagicItem(id) && getItem(id).consumable)
     return getItem(id).effects.some((e) => e.type === 'heal') ? (
       <button
@@ -315,7 +319,7 @@ function PackAction({
   );
 }
 
-const order = (t: string) => ['magic', 'weapon', 'shield', 'armor', 'gear'].indexOf(t);
+const order = (t: string) => ['magic', 'weapon', 'shield', 'armor', 'gear', 'treasure'].indexOf(t);
 
 function gearUse(id: string): string {
   if (/alchemist|holy-water|acid/.test(id)) return 'throw it in a fight';

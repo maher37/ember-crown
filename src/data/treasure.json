@@ -1,0 +1,48 @@
+{
+  "verify": true,
+  "verifyNote": "Values are our own [inferred], in line with the DMG's 25 gp and 250 gp art-object tiers.",
+  "treasure": [
+    {
+      "id": "gold-ring",
+      "name": "Gold ring",
+      "kind": "ring",
+      "valueGp": 25,
+      "summary": "A plain gold band, worn thin on one side. Worth its weight and no more."
+    },
+    {
+      "id": "silver-chain",
+      "name": "Silver chain",
+      "kind": "necklace",
+      "valueGp": 10,
+      "summary": "A fine silver neck chain, the pendant long lost."
+    },
+    {
+      "id": "signet-ring",
+      "name": "Signet ring",
+      "kind": "ring",
+      "valueGp": 50,
+      "summary": "A heavy gold ring cut with a merchant house's crest. Someone, somewhere, misses it."
+    },
+    {
+      "id": "pearl-necklace",
+      "name": "Pearl necklace",
+      "kind": "necklace",
+      "valueGp": 100,
+      "summary": "A string of river pearls, still lustrous under the grime."
+    },
+    {
+      "id": "dwarven-armband",
+      "name": "Dwarven gold armband",
+      "kind": "bracelet",
+      "valueGp": 250,
+      "summary": "A broad band of red dwarven gold, etched with the hammer of the Kiln-Wardens."
+    },
+    {
+      "id": "emerald-ring",
+      "name": "Emerald ring",
+      "kind": "ring",
+      "valueGp": 250,
+      "summary": "A gold ring set with an emerald the size of a pea. Wix thought it was a button."
+    }
+  ]
+}

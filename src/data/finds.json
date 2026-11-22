@@ -22,10 +22,15 @@
       "kind": "buried",
       "dc": 13,
       "notice": "The earth under a charred oak has been dug and patted flat, a day or two ago at most.",
-      "text": "An oilskin satchel: twelve gold pieces and a smudged note. \"Rest is under the third millstone at Varrow's. Don't let the dead see you.\"",
+      "text": "An oilskin satchel: twelve gold pieces and a smudged note. \"Rest is under the third millstone at Varrow's. Don't let the dead see you.\" Wound around the note, a thin silver chain.",
       "loot": {
         "gold": 12,
-        "items": []
+        "items": [
+          {
+            "id": "silver-chain",
+            "qty": 1
+          }
+        ]
       },
       "setsFlag": "smuggler_note",
       "startsQuest": "smugglers-cache",
@@ -42,7 +47,7 @@
       "dc": null,
       "requires": [["smuggler_note"]],
       "notice": "Three old millstones lean against the mill wall. The third has been moved recently; there are drag marks.",
-      "text": "Under it, a tarred strongbox: a smuggler's stash of coin, two healing draughts and a flask of alchemist's fire.",
+      "text": "Under it, a tarred strongbox: a smuggler's stash of coin, two healing draughts and a flask of alchemist's fire. Tucked in the corner, a gold ring the smugglers must have taken in trade.",
       "lock": {
         "dc": 13
       },
@@ -63,6 +68,10 @@
           },
           {
             "id": "alchemists-fire",
+            "qty": 1
+          },
+          {
+            "id": "gold-ring",
             "qty": 1
           }
         ]
@@ -228,10 +237,15 @@
       "dc": 14,
       "act": 2,
       "notice": "Something grey and Grey-Company-coloured lies face-down among the reeds.",
-      "text": "A Grey Company sergeant, long drowned. His purse holds eighteen gold, and around his neck hangs a key on a tag: \"M'mere chapel. Strongbox. Mine.\"",
+      "text": "A Grey Company sergeant, long drowned. His purse holds eighteen gold, and around his neck hangs a key on a tag: \"M'mere chapel. Strongbox. Mine.\" On his hand, a signet ring with a merchant's crest that was never his.",
       "loot": {
         "gold": 18,
-        "items": []
+        "items": [
+          {
+            "id": "signet-ring",
+            "qty": 1
+          }
+        ]
       },
       "setsFlag": "sergeant_key",
       "startsQuest": "sergeants-key",
@@ -335,12 +349,16 @@
       "dc": 16,
       "act": 2,
       "notice": "Among the jars of teeth on Mother Sallow's shelf, one rattles like coins.",
-      "text": "It is coins. Also one tooth. You don't take the tooth.",
+      "text": "It is coins. Also one tooth. You don't take the tooth. Under the coins, a string of river pearls.",
       "loot": {
         "gold": 45,
         "items": [
           {
             "id": "potion-of-healing",
+            "qty": 1
+          },
+          {
+            "id": "pearl-necklace",
             "qty": 1
           }
         ]
@@ -396,7 +414,7 @@
       "requires": [["vault_runes"]],
       "act": 3,
       "notice": "Above the forge floor, a rune-locked door. It hums when you say \"Varrow\".",
-      "text": "The Kiln-Wardens kept their pay and their healers' charms here. Three centuries of dust, and the gold is still gold. On a hook by the door hangs a Warden's ash-grey mantle, its clasp shaped like an open eye.",
+      "text": "The Kiln-Wardens kept their pay and their healers' charms here. Three centuries of dust, and the gold is still gold. On a hook by the door hangs a Warden's ash-grey mantle, its clasp shaped like an open eye. A broad armband of red dwarven gold lies on the top shelf.",
       "lock": {
         "dc": 17
       },
@@ -421,6 +439,10 @@
           },
           {
             "id": "kiln-wardens-mantle",
+            "qty": 1
+          },
+          {
+            "id": "dwarven-armband",
             "qty": 1
           }
         ]
@@ -471,7 +493,7 @@
       "dc": 14,
       "act": 3,
       "notice": "High on the cave wall, a shelf of 'very important' goblin treasures.",
-      "text": "Most of it is buttons. Some of it is gold. Wix says you can take the gold, but not the good buttons. Wix also gives you a ring with a red stone. \"Too hot,\" Wix says. \"Wix doesn't like it. You have it.\"",
+      "text": "Most of it is buttons. Some of it is gold. Wix says you can take the gold, but not the good buttons. Wix also gives you a ring with a red stone. \"Too hot,\" Wix says. \"Wix doesn't like it. You have it.\" One of the \"buttons\" turns out to be an emerald set in gold. Wix shrugs: you can have that one.",
       "loot": {
         "gold": 60,
         "items": [
@@ -481,6 +503,10 @@
           },
           {
             "id": "ring-of-fire-resistance",
+            "qty": 1
+          },
+          {
+            "id": "emerald-ring",
             "qty": 1
           }
         ]

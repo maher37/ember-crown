@@ -8,7 +8,11 @@
       "keeper": "Brannoc Hale",
       "blurb": "“Rope, oil, torches, a flask of something that burns. Swords and mail you'll want from Hulda at the forge.”",
       "categories": ["gear"],
-      "items": [{ "id": "potion-of-healing" }],
+      "items": [
+        {
+          "id": "potion-of-healing"
+        }
+      ],
       "buys": ["gear", "potion"]
     },
     {
@@ -18,14 +22,38 @@
       "blurb": "“Steel's honest. People aren't. Tell me what you swing and I'll tell you what you need.”",
       "categories": ["weapon", "armor", "shield"],
       "items": [
-        { "id": "longsword-plus-1", "act": 2 },
-        { "id": "rapier-plus-1", "act": 2 },
-        { "id": "mace-plus-1", "act": 2 },
-        { "id": "longbow-plus-1", "act": 2 },
-        { "id": "greataxe-plus-1", "act": 2 },
-        { "id": "quarterstaff-plus-1", "act": 2 },
-        { "id": "shield-plus-1", "act": 2 },
-        { "id": "sentinel-shield", "act": 3 }
+        {
+          "id": "longsword-plus-1",
+          "act": 2
+        },
+        {
+          "id": "rapier-plus-1",
+          "act": 2
+        },
+        {
+          "id": "mace-plus-1",
+          "act": 2
+        },
+        {
+          "id": "longbow-plus-1",
+          "act": 2
+        },
+        {
+          "id": "greataxe-plus-1",
+          "act": 2
+        },
+        {
+          "id": "quarterstaff-plus-1",
+          "act": 2
+        },
+        {
+          "id": "shield-plus-1",
+          "act": 2
+        },
+        {
+          "id": "sentinel-shield",
+          "act": 3
+        }
       ],
       "buys": ["weapon", "armor", "shield"]
     },
@@ -35,17 +63,43 @@
       "keeper": "Sabeth Quillon",
       "blurb": "“Wands, pearls, a ring or two. Most of it wants a spellcaster's touch; the rest just wants paying for.”",
       "items": [
-        { "id": "potion-of-healing" },
-        { "id": "wand-of-the-war-mage-1", "act": 1 },
-        { "id": "potion-of-greater-healing", "act": 2 },
-        { "id": "potion-of-fire-resistance", "act": 2 },
-        { "id": "pearl-of-power", "act": 2 },
-        { "id": "stone-of-good-luck", "act": 2 },
-        { "id": "cloak-of-protection-shop", "act": 3 },
-        { "id": "ring-of-protection", "act": 3 },
-        { "id": "wand-of-the-war-mage-2", "act": 3 }
+        {
+          "id": "potion-of-healing"
+        },
+        {
+          "id": "wand-of-the-war-mage-1",
+          "act": 1
+        },
+        {
+          "id": "potion-of-greater-healing",
+          "act": 2
+        },
+        {
+          "id": "potion-of-fire-resistance",
+          "act": 2
+        },
+        {
+          "id": "pearl-of-power",
+          "act": 2
+        },
+        {
+          "id": "stone-of-good-luck",
+          "act": 2
+        },
+        {
+          "id": "cloak-of-protection-shop",
+          "act": 3
+        },
+        {
+          "id": "ring-of-protection",
+          "act": 3
+        },
+        {
+          "id": "wand-of-the-war-mage-2",
+          "act": 3
+        }
       ],
-      "buys": ["magic", "potion"]
+      "buys": ["magic", "potion", "treasure"]
     },
     {
       "id": "temple",
@@ -53,7 +107,14 @@
       "keeper": "Sister Aubra",
       "blurb": "“The Morninglord turns no one away. The roof, however, needs mending, so the shrine does ask a gift.”",
       "categories": [],
-      "items": [{ "id": "holy-water" }, { "id": "potion-of-healing" }],
+      "items": [
+        {
+          "id": "holy-water"
+        },
+        {
+          "id": "potion-of-healing"
+        }
+      ],
       "services": [
         {
           "id": "heal-party",
@@ -82,22 +143,51 @@
       "keeper": "Odo Fenwick",
       "blurb": "“Fresh from Daggerford! Well. Fresh-ish. Two to a customer, my friends; I've other towns to rob. Sell to. Sell to.”",
       "items": [
-        { "id": "periapt-of-wound-closure" },
-        { "id": "boots-of-elvenkind" },
-        { "id": "potion-of-healing" },
-        { "id": "alchemists-fire" },
-        { "id": "potion-of-greater-healing", "act": 2 },
-        { "id": "potion-of-fire-resistance", "act": 2 },
-        { "id": "stone-of-good-luck", "act": 2 },
-        { "id": "sentinel-shield", "act": 2 },
-        { "id": "rapier-plus-1", "act": 2 },
-        { "id": "longbow-plus-1", "act": 2 },
-        { "id": "wand-of-the-war-mage-2", "act": 3 }
+        {
+          "id": "periapt-of-wound-closure"
+        },
+        {
+          "id": "boots-of-elvenkind"
+        },
+        {
+          "id": "potion-of-healing"
+        },
+        {
+          "id": "alchemists-fire"
+        },
+        {
+          "id": "potion-of-greater-healing",
+          "act": 2
+        },
+        {
+          "id": "potion-of-fire-resistance",
+          "act": 2
+        },
+        {
+          "id": "stone-of-good-luck",
+          "act": 2
+        },
+        {
+          "id": "sentinel-shield",
+          "act": 2
+        },
+        {
+          "id": "rapier-plus-1",
+          "act": 2
+        },
+        {
+          "id": "longbow-plus-1",
+          "act": 2
+        },
+        {
+          "id": "wand-of-the-war-mage-2",
+          "act": 3
+        }
       ],
       "rotating": 3,
       "limit": 2,
       "marketDays": true,
-      "buys": ["gear", "weapon", "armor", "shield", "potion", "magic"]
+      "buys": ["gear", "weapon", "armor", "shield", "potion", "magic", "treasure"]
     },
     {
       "id": "nib",
@@ -105,9 +195,15 @@
       "keeper": "Nib, a goblin pedlar",
       "blurb": "“Not stolen! Found. Found from people. One thing each, big-folk, Nib has to run soon.”",
       "items": [
-        { "id": "boots-of-elvenkind" },
-        { "id": "periapt-of-wound-closure" },
-        { "id": "wand-of-the-war-mage-1" }
+        {
+          "id": "boots-of-elvenkind"
+        },
+        {
+          "id": "periapt-of-wound-closure"
+        },
+        {
+          "id": "wand-of-the-war-mage-1"
+        }
       ],
       "limit": 1,
       "buys": ["gear", "potion"]
@@ -118,9 +214,15 @@
       "keeper": "Ssessk, a lizardfolk trader",
       "blurb": "“Drowned people drop things. Ssessk picks them up. You give coin, you take one. Then you go.”",
       "items": [
-        { "id": "potion-of-fire-resistance" },
-        { "id": "stone-of-good-luck" },
-        { "id": "pearl-of-power" }
+        {
+          "id": "potion-of-fire-resistance"
+        },
+        {
+          "id": "stone-of-good-luck"
+        },
+        {
+          "id": "pearl-of-power"
+        }
       ],
       "limit": 1,
       "buys": []
@@ -131,9 +233,15 @@
       "keeper": "Brokk Emberbeard, an exiled smith",
       "blurb": "“My clan threw me out for selling. So I sell. Pick one, and don't tell them where you got it.”",
       "items": [
-        { "id": "ring-of-protection" },
-        { "id": "sentinel-shield" },
-        { "id": "wand-of-the-war-mage-2" }
+        {
+          "id": "ring-of-protection"
+        },
+        {
+          "id": "sentinel-shield"
+        },
+        {
+          "id": "wand-of-the-war-mage-2"
+        }
       ],
       "limit": 1,
       "buys": ["weapon", "armor", "shield"]
