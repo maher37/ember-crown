@@ -69,6 +69,9 @@ VAR passed = false
     - has("corin") && not flag("gran_corin"):
         ~ set_flag("gran_corin", true)
         She squints at Corin, then spits on the cobbles for luck. "Hadric's boy. Your father dug me out of the '82 flood with his bare hands. Some of us remember that, whatever the Hall says."
+    - has("vorna") && not flag("gran_vorna"):
+        ~ set_flag("gran_vorna", true)
+        Gran sees Vorna's red scales, and her hand makes the warding sign before she can stop it: two fingers, pressed to the iron nail. "Begging your pardon," she says, not very sorry. "Old habit. Red's an unlucky colour in Ashford."
     - flag("tarrow_confessed"):
         "So it was the Hall all along." She draws a bucket. "Ten years of spitting at the Varrows' door. I'll be saying sorry to a mill full of ghosts."
     - flag("miners_rescued"):
@@ -86,6 +89,10 @@ VAR passed = false
 }
 -> menu
 = menu
+* {flag("gran_vorna")} [What did the red dragon do to Ashford, grandmother? #as:vorna]
+    "Burned the old king's halls, two hundred years back, and the king locked her in the mountain for it. Or she's sleeping. Depends who's telling." Gran looks Vorna up and down. "You've a kind face, under all that. I'll stop with the nail."
+    ~ set_flag("gran_vorna_kind", true)
+    -> menu
 + [What's the old story about the lanterns?]
     "Every family puts a lantern on the river for their dead from the Collapse. Thirty-one lanterns." She counts on her fingers, and stops. "This year there's always one more than we light. Nobody's owned up to it."
     -> menu

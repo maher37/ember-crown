@@ -65,6 +65,11 @@ A round, rosy old woman opens the door before you knock. "Visitors! And you've c
         She's a nice old woman. Probably.
     }
     -> talk
+* {has("vorna")} [A voice in my sleep calls me daughter. Is my blood hers? #as:vorna]
+    Sallow's smile goes wide, wider than a face should. "That one I'll give you free, dearie, because it stings." She taps a red scale on Vorna's arm. "Dragons made your folk, long ago. Not that one. She calls every warm thing on this mountain 'child', and she talks to the Varrow girl in her dead father's voice. Whatever you miss most: that's the voice she uses."
+    ~ set_flag("vorna_truth_blood", true)
+    ~ note("Mother Sallow, to Vorna: the voice that calls her daughter isn't her blood. It speaks to everyone in the voice they miss most, and to Maelis in her father's.")
+    -> talk
 * [What do you know about the crown?]
     "Everything, dearie. Who made it, what's inside it, what it wants." She pats your hand. "And I'll tell you, for a price. Nothing much. Something precious."
     -> price
