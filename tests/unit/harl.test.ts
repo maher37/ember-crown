@@ -205,3 +205,56 @@ describe('[Harl] in Acts II and III', () => {
     expect(none.some((s) => s.title === 'Harl')).toBe(false);
   });
 });
+
+describe('Harl with the other origin heroes', () => {
+  it('never more than 5 choices with Harl and Vorna together (Story_Bible §10)', () => {
+    const vorna = buildHero(
+      {
+        ...originDraft('vorna'),
+        classSkills: ['acrobatics', 'perception'],
+        fightingStyle: 'defense',
+      },
+      'vorna',
+    );
+    const base = game();
+    const all = { ...base, party: [base.party[0]!, vorna, hero('rogue', 'Ilse'), base.party[3]!] };
+    const done = { edric_tended: true, has_letter: true, strangers_gone: true };
+    const states: GameState[] = [
+      { ...all, quests: {} },
+      { ...all, flags: done },
+      {
+        ...all,
+        flags: { ...done, mouth_cleared: true, 'won:f6-deep-seam': true, found_halls: true },
+      },
+      {
+        ...all,
+        flags: { ...done, harl_named_hadric: true, truth_collapse: true, truth_crown: true },
+      },
+    ];
+    for (const [story, knots] of Object.entries({
+      tavern: ['brannoc', 'strangers', 'hooded'],
+      mine: ['arrive', 'arrive.memorial'],
+      ashford: ['hall', 'hall.fate'],
+      camp: ['parley'],
+      town: ['gran'],
+      kiln: ['arrive.mural'],
+    }))
+      for (const knot of knots)
+        for (const g of states) {
+          const c = new Conversation(story, g, hi()).start(knot);
+          expect(c.choices.length, `${story}.${knot}`).toBeLessThanOrEqual(5);
+        }
+  });
+
+  it('Harl adds no extra choice at the camp or the Crowning: his option takes the Collapse line', () => {
+    const flags = { harl_named_hadric: true, truth_collapse: true, truth_crown: true };
+    for (const [story, knot] of [
+      ['camp', 'parley'],
+      ['kiln', 'arrive.heart'],
+    ] as const) {
+      const c = new Conversation(story, game(flags, { act: 3 }), hi()).start(knot);
+      expect(c.choices.length, `${story}.${knot}`).toBeLessThanOrEqual(5);
+      expect(find(c, /name is clear/)).toBeUndefined();
+    }
+  });
+});

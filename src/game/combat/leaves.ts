@@ -186,7 +186,9 @@ export function applyLeaf(
       return;
     }
     case 'tempHp': {
-      const amount = roll(e.dice, ctx.rng).total;
+      // PHB: Armor of Agathys and False Life give 5 more temporary HP per slot level above 1st.
+      const amount =
+        roll(e.dice, ctx.rng).total + (opts.upcastDice ? roll(opts.upcastDice, ctx.rng).total : 0);
       target.creature = grantTempHp(target.creature, amount);
       say(s, 'you', `${target.name} gains ${amount} temporary HP`);
       return;
@@ -464,7 +466,8 @@ function applySpecial(
         name: 'Armor of Agathys',
         sourceId: source.id,
         tag: 'agathys',
-        data: { cold: 5 },
+        // PHB: Armor of Agathys. 5 cold damage per slot level.
+        data: { cold: 5 * (opts.slotLevel ?? 1) },
       });
       return;
     case 'bonus-damage-on-hit': {

@@ -1152,6 +1152,7 @@
         }
       ],
       "upcast": {
+        "dicePerLevel": "5",
         "note": "+5 temporary HP and +5 cold per slot level."
       }
     },
@@ -2795,6 +2796,10 @@
           "dice": "1d4+4"
         }
       ],
+      "upcast": {
+        "dicePerLevel": "5",
+        "note": "+5 temporary HP per slot level above 1st."
+      },
       "concentration": false
     },
     {

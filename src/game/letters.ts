@@ -1,6 +1,6 @@
 import { letterReplies, letters, trustDcBonus } from '../data';
-import { ORIGIN_IDS } from '../data/schemas/origin';
 import type { Letter } from '../data/schemas/story';
+import { ORIGIN_IDS } from '../data/schemas/origin';
 import type { GameState } from './save';
 
 export interface LetterState {
@@ -17,12 +17,12 @@ export const getLetter = (id: string): Letter => {
 
 const hasCorin = (g: GameState) => g.party.some((h) => h.origin === 'corin' && !h.dead);
 
-const ORIGIN_CONDS = new Set<string>(ORIGIN_IDS);
-
-/** Does a paragraph's condition hold? (`flag`, `!flag`, or an origin hero's id such as `corin`.) */
+/** Does a paragraph's condition hold? (`flag`, `!flag`, or an origin hero's id: `corin`, `vorna`.) */
 export function conditionHolds(g: GameState, cond: string | undefined): boolean {
   if (!cond) return true;
-  if (ORIGIN_CONDS.has(cond)) return g.party.some((h) => h.origin === cond && !h.dead);
+  if (cond === 'corin') return hasCorin(g);
+  if ((ORIGIN_IDS as readonly string[]).includes(cond))
+    return g.party.some((h) => h.origin === cond && !h.dead);
   if (cond.startsWith('!')) return !g.flags[cond.slice(1)];
   return !!g.flags[cond];
 }

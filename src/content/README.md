@@ -6,7 +6,7 @@ Dialogue is written in [Ink](https://github.com/inkle/ink/blob/master/Documentat
 
 | In Ink | What it does |
 |---|---|
-| `has("corin")`, `has("harl")` (any origin hero id), `has("class:cleric")`, `has("species:hill-dwarf")`, `has("background:soldier")` | Is someone like that in the party? |
+| `has("corin")`, `has("harl")`, `has("vorna")` (any origin hero id), `has("class:cleric")`, `has("species:hill-dwarf")`, `has("background:soldier")` | Is someone like that in the party? |
 | `flag("name")` / `~ set_flag("name", true)` | Story flags, saved with the game |
 | `~ quest_step("quest", "step")` / `quest_done("quest")` | Journal steps (ids in `src/data/quests.json`); finishing a quest awards its XP |
 | `~ award("id")` | One-off XP (ids and amounts in `quests.json` → `awards`) |
@@ -32,7 +32,7 @@ Dialogue is written in [Ink](https://github.com/inkle/ink/blob/master/Documentat
 
 ## Stories and places
 
-Each `.ink` file is one story (`src/game/dialogue.ts` → `STORIES`). Arriving at a map place opens its scene (`PLACE_SCENES`): Act I's `warren`, `mine` (the Old Mine), `mill`, `ashwood` and `cave` (the Steaming Cave), Act II's `bridge`, `marsh` (lizardfolk), `marrowmere`, `abbey`, `sallow` and `deserters`, and Act III's `pass`, `forge` (Vorrag), `caves` (Wix's clan) and `kiln` (the King's Kiln and the Crowning) start at their `arrive` knot; `ashford.ink` holds Ashford Hall and Edric's Errand, and `camp.ink` Maelis's visit to the camp and Corin's dream bargains; the tavern's hotspots open knots in `tavern.ink`; `road.ink` holds Wix's scene after the road ambush.
+Each `.ink` file is one story (`src/game/dialogue.ts` → `STORIES`). Arriving at a map place opens its scene (`PLACE_SCENES`): Act I's `warren`, `mine` (the Old Mine), `mill`, `ashwood` and `cave` (the Steaming Cave), Act II's `bridge`, `marsh` (lizardfolk), `marrowmere`, `abbey`, `sallow` and `deserters`, and Act III's `pass`, `forge` (Vorrag), `caves` (Wix's clan) and `kiln` (the King's Kiln and the Crowning) start at their `arrive` knot; `ashford.ink` holds Ashford Hall and Edric's Errand, and `camp.ink` Maelis's visit to the camp, Corin's dream bargains and Vorna's three dreams (`vorna_dream_1`–`3`, one an act); the tavern's hotspots open knots in `tavern.ink`; `road.ink` holds Wix's scene after the road ambush.
 
 Lines can switch the portrait with `#speaker:edric` (ids in `src/data/npcs.json`). Keep NPC lines to 3 sentences and choices to 5 (Story_Bible §10–11). `tests/unit/dialogue.test.ts` checks that every quest step and award the script names exists. Mark an act ending or a turning point with `#style:card` at the end of the line: it shows as a big centered card.
 

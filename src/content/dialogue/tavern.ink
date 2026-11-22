@@ -116,6 +116,9 @@ Three strangers in grey came in behind him, asking quietly after "a lost letter.
 - else:
     "He came in off the river road an hour past dusk, half-dead and clutching that satchel like it was his own heart. Then three strangers walked in after him, asking after 'a lost letter.'"
     "I don't want trouble in my house, friends. But I think trouble's already sitting at my tables."
+    { has("vorna"):
+        His eyes go to Vorna's red scales and stay there a beat too long. Then he puts a mug in front of her like anyone else. "House rule. Nobody gets spat at while they're drinking."
+    }
     ~ quest_step("lantern-night", "talk-brannoc")
 }
 -> menu
@@ -123,6 +126,11 @@ Three strangers in grey came in behind him, asking quietly after "a lost letter.
 * [Who was the courier, and who wants that letter?]
     "His name's Edric. He rides for the mayor's office." He nods at the hearth. "As for the letter, look at the men by the fire. Not from Ashford, and they haven't touched their ale."
     ~ set_flag("knows_strangers", true)
+    -> menu
+* {has("vorna") && not flag("strangers_gone")} [Those three by the fire are Grey Company. I wore that cloak for six years. #as:vorna]
+    Brannoc glances at the fire, then back at Vorna. "Then you'll know whether they draw steel in a man's house." Vorna watches them a moment. "They will if their captain's paying. He usually isn't."
+    ~ set_flag("knows_strangers", true)
+    ~ set_flag("vorna_knows_company", true)
     -> menu
 + {not flag("edric_tended")} [Let me see to his wounds. #check:medicine:10]
     -> tend_edric -> menu
@@ -137,7 +145,7 @@ Three strangers in grey came in behind him, asking quietly after "a lost letter.
     Brannoc puts the mug down. "Father Harl. You read the words over half my shift." He reaches under the bar. "If I can't trust Moradin's priest, I can't trust anyone in this town. Mind you, that's not saying much."
     ~ set_flag("brannoc_knows_harl", true)
     -> get_letter -> menu
-+ {not flag("has_letter") && not flag("letter_lost") && not flag("strangers_gone") && not flag("tried_insight")} [You knew him. What aren't you telling us? #check:insight:12]
++ {not flag("has_letter") && not flag("letter_lost") && not flag("strangers_gone") && not flag("tried_insight") && not has("corin") && not has("harl")} [You knew him. What aren't you telling us? #check:insight:12]
     ~ set_flag("tried_insight", true)
     {passed:
         Brannoc's jaw tightens. "Fine. Edric's my sister's boy. The letter's under the bar. I meant to burn it if those men pushed."

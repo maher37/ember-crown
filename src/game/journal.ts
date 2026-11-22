@@ -104,3 +104,15 @@ export function kindledOfferDue(g: GameState): 1 | 2 | 3 | null {
   if (g.flags['pass_cleared'] && !g.flags['kindled_offer_3']) return 3;
   return null;
 }
+
+/**
+ * D33 / Story_Bible §9b: Vorna's own dreams. The voice that calls her "daughter" comes once an
+ * act (1 after the mine, 2 after the abbey, 3 once through Ashfall Pass), or null.
+ */
+export function vornaDreamDue(g: GameState): 1 | 2 | 3 | null {
+  if (g.flags['ending'] || !g.party.some((h) => h.origin === 'vorna' && !h.dead)) return null;
+  if (g.flags['act1_complete'] && !g.flags['vorna_dream_1']) return 1;
+  if (g.flags['act2_complete'] && g.flags['vorna_dream_1'] && !g.flags['vorna_dream_2']) return 2;
+  if (g.flags['pass_cleared'] && g.flags['vorna_dream_2'] && !g.flags['vorna_dream_3']) return 3;
+  return null;
+}
