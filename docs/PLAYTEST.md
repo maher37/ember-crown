@@ -26,9 +26,9 @@ Two ways to report what you find while playing. Use whichever is easier.
 
 **Feature wishes**
 - **Feature, summons:** the warlock's Pact of the Chain familiar (Find Familiar) can't be summoned, and summoned creatures and beast companions aren't in the game yet. Expected: familiars, summons and animal companions join the fight as allies.
-- **Feature, premade companions:** more premade origin heroes like Corin Varrow, each with a backstory, to round out a party. Owner's ideas: a dwarf cleric, a human warlock, a dragonborn fighter.
+- **Feature, premade companions (D33):** three more premade origin heroes like Corin Varrow, each with a backstory: a dwarf cleric, a female human warlock and a female dragonborn fighter.
 - **Feature, portraits:** the dragonborn portrait should look a little like a dragon, and small species (dwarf, halfling, gnome) should look smaller than humans.
-- **Story, camp companions who talk** (Story_Review #2): the owner likes it. Still to decide: at camp only, or a fifth party member in fights too.
+- **Story, camp companions who talk** (Story_Review #2, D32): at camp only.
 
 ## Done
 - (moved here with the PR number that fixed it)
