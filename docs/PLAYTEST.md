@@ -24,6 +24,7 @@ Two ways to report what you find while playing. Use whichever is easier.
 - **Feature, summons:** the warlock's Pact of the Chain familiar (Find Familiar) can't be summoned, and summoned creatures and beast companions aren't in the game yet. Expected: familiars, summons and animal companions join the fight as allies.
 - **Feature, portraits:** the dragonborn portrait should look a little like a dragon, and small species (dwarf, halfling, gnome) should look smaller than humans.
 - **Story, camp companions who talk** (Story_Review #2, D32): at camp only.
+- **Story, the new premade heroes' own story (D33):** Harl Deepdelve, Nessa Thorne and Rhessa Kalvaar should get unique dialogue options and story beats like Corin's `[Corin]` lines and scenes. Expected: each one has `[Name]` choices in major scenes and a few personal story moments tied to their backstory (Story_Bible §9b). One hero per PR.
 
 ## Done
 - **Feature, premade companions (D33):** three more premade origin heroes like Corin Varrow, each with a backstory: a dwarf cleric, a female human warlock and a female dragonborn fighter. **Done in PR #29:** Harl Deepdelve (dwarf cleric), Nessa Thorne (warlock) and Rhessa Kalvaar (dragonborn fighter) can be picked under Origin hero, with their backstory on the sheet. Their own dialogue and scenes come later.
