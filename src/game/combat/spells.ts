@@ -648,6 +648,8 @@ function rollArea(
 }
 
 function multiplyDice(dice: string, times: number): string {
+  // A flat number per level (Armor of Agathys: 5).
+  if (/^\d+$/.test(dice)) return String(Number(dice) * times);
   const m = /^(\d*)d(\d+)$/.exec(dice);
   if (!m) return dice;
   return `${Number(m[1] || 1) * times}d${m[2]}`;
