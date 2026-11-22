@@ -102,7 +102,7 @@ Phase 1 is skipped if the party talks Maelis down.
 | **Deserters' Bounty** | 1. Track the "bandits". 2. Free them (Kell owes you) or turn them in (gold). | Bandit captain + 3 bandits: 525 → 1,050, **Medium** | 600 | Kell's respect *or* 300 gp |
 | **The Fallen Paladin's Shield** | 1. Clue in the abbey chapel. 2. Flooded crypt. 3. Restore the shield at the shrine. | 2 specters + 1 ghast: 850 → 1,700, **Hard** | 712 | Fire-resistance shield |
 | **Edric's Errand** | 1. Edric shadows the mayor's runner. 2. Steal the Hall ledger (stealth and skill challenge). 3. Venna's enforcers ambush Edric. | Cult fanatic + 3 cultists: 525 → 1,050, **Medium** | 781 | Exposes Tarrow early (Betrayal fight shrinks) |
-| *Discoveries* | | | 107 | |
+| *Discoveries* | | | 150 | |
 
 ### Act III (about 6,000 XP/PC available)
 | Side quest | Parts | Optional fight (difficulty at L5) | XP/PC | Reward |
@@ -111,7 +111,7 @@ Phase 1 is skipped if the party talks Maelis down.
 | **Ser Ida's Unfinished Oath** | 1. Hear her oath. 2. The ossuary. 3. Lay King Varrow's remains to rest. | 2 ghasts + 4 ghouls: 1,700 → 3,400, **Hard** | 1,425 | **Family Truth** (backup); Ida fights at the finale |
 | **Last Boats from Ashford** | 1. Escort the evacuation convoy. 2. Brannoc's choice: leave, or defend the inn. | 2 hell hounds: 1,400 → 2,100, **Medium** (M10: 2 Ashford militia fight beside you; 1 hound on Easy) | 1,350 | Epilogue outcome for the town |
 | **Wix's Homecoming** | 1. Wix's clan in the upper caves. 2. The giant at their door. | Hill giant + ogre: 2,250 → 3,375, **Hard** | 1,562 | A back way into the Kiln (skips half of the Star's last stand) |
-| *Discoveries* | | | 213 | |
+| *Discoveries* | | | 256 | |
 
 ### Bounties and finds (D27, Nov 21)
 Extra, on top of the four side quests per act. Bounties reuse road encounters (their usual combat XP) and add quest XP and gold:

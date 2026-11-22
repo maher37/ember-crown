@@ -47,9 +47,16 @@ export const combatSlice = (
           : { ...h, lingering: undefined },
       );
     // A scout went ahead (D35): an ambush if they got close unseen, the party surprised if not.
+    // A scene can also set ambush:<id> (the abbey's stolen side-door key).
     const sc = get().scouted;
     const surprise =
-      sc && sc.encounterId === encounterId ? (sc.success ? 'enemies' : 'party') : undefined;
+      sc && sc.encounterId === encounterId
+        ? sc.success
+          ? 'enemies'
+          : 'party'
+        : game.flags[`ambush:${encounterId}`]
+          ? 'enemies'
+          : undefined;
     // Autosave before every fight (docs/BUILD_ROADMAP.md, M4).
     get().saveTo('autosave');
     const combat = startCombat({

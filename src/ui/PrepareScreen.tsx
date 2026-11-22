@@ -319,8 +319,8 @@ export function PrepareScreen() {
           <SneakPanel enc={enc} difficulty={difficulty} />
           <p className="muted small">The game autosaves before the fight starts.</p>
           <button type="button" className="primary fight-btn" onClick={fight}>
-            {scoutedHere
-              ? scoutedHere.success
+            {scoutedHere || game!.flags[`ambush:${encounterId}`]
+              ? !scoutedHere || scoutedHere.success
                 ? 'Ambush! (they lose their first turn)'
                 : 'Fight! (spotted: your party is surprised)'
               : 'Fight!'}

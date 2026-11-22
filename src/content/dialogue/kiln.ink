@@ -276,7 +276,17 @@ The last of Venna's zealots hold the great stair down to the mountain's heart.
     Brother Ulric steps out of a side passage, lantern-hook raised. "Said I'd know a way. Come on, quiet."
     #speaker:kiln
 }
-+ {flag("ulric_spared") || flag("wix_backway")} [Take the back way in behind them. #fight]
+* {not (flag("ulric_spared") || flag("wix_backway"))} [Creep close to the stair and listen to the zealots. #check:stealth:15]
+    { passed:
+        {roller()} lies flat behind a fallen statue, close enough to hear them. "She hasn't slept in three days. She talks to the fire like it's her mother." "Hush." "And the old miners' stair behind the shrine is still open. Who's watching that?" "Nobody. Nobody's left."
+        ~ set_flag("stand_backway", true)
+        ~ award("discover-miners-stair")
+        ~ note("Listening at the great stair: the zealots left the old miners' stair behind the shrine unguarded. And Maelis hasn't slept in three days; she talks to the fire like it's her mother.")
+    - else:
+        A pebble skitters down the stair. "Who's there?" A burning brand sails over the statue, and {roller()} scrambles back out of sight. The zealots shout for each other and close ranks.
+    }
+    -> stand
++ {flag("ulric_spared") || flag("wix_backway") || flag("stand_backway")} [Take the back way in behind them. #fight]
     ~ fight("f20-last-stand-half", "arrive.after_stand")
     -> END
 + [Charge the stair. #fight]

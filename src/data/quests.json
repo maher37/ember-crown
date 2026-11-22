@@ -817,6 +817,11 @@
       "reason": "Discovery: Captain Kell's company is paid by the Guild, in arrears"
     },
     {
+      "id": "discover-kells-men",
+      "xp": 21,
+      "reason": "Discovery: overheard Kell's unpaid soldiers under the bridge (D35)"
+    },
+    {
       "id": "discover-records",
       "xp": 21,
       "reason": "Discovery: Marrowmere's parish records"
@@ -830,6 +835,11 @@
       "id": "discover-ledger",
       "xp": 22,
       "reason": "Discovery: the ledger's code"
+    },
+    {
+      "id": "discover-side-door",
+      "xp": 22,
+      "reason": "Discovery: stole the warden's key to the undercroft's side door (D35)"
     },
     {
       "id": "q-ash",
@@ -885,6 +895,11 @@
       "id": "discover-circle",
       "xp": 43,
       "reason": "Discovery: the ritual circle's weak points"
+    },
+    {
+      "id": "discover-miners-stair",
+      "xp": 43,
+      "reason": "Discovery: overheard the zealots at the great stair (D35)"
     }
   ]
 }
