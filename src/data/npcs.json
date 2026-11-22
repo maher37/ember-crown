@@ -248,6 +248,20 @@
       }
     },
     {
+      "id": "auditor",
+      "name": "The Auditor",
+      "title": "A devil who holds Nessa Thorne's contract",
+      "portrait": {
+        "skin": "#b8a8a0",
+        "hair": "#2a2a2a",
+        "eyes": "#c0392b",
+        "hairStyle": "short",
+        "beard": false,
+        "scar": false,
+        "cloth": "#3a3a44"
+      }
+    },
+    {
       "id": "tarrow",
       "name": "Mayor Oswin Tarrow",
       "title": "Ashford Hall",

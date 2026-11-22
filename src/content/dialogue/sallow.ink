@@ -95,6 +95,12 @@ A round, rosy old woman opens the door before you knock. "Visitors! And you've c
     {leader()} feels the years go out like a tide. There's grey in the mirror that wasn't there this morning.
     ~ set_flag("sallow_years", true)
     -> told
++ {has("nessa")} [My soul's already spoken for. But you may read the paper it's written on. #as:nessa]
+    Mother Sallow's eyes go wide and wet with joy. "A devil's contract! Oh, dearie. I haven't read one of those in a hundred years." Nessa unrolls it on the table, and the hag reads every line with a long green fingernail, humming.
+    "Clause nine," she says at last, and taps it. "Substitution of collateral. He has to take a soul worth more than yours in its place, if you can put one in front of him. Devils hate that clause. They can't leave it out." She sniffs the seal, delighted. "That's my price paid. I'll keep the smell of it."
+    ~ set_flag("nessa_clause", true)
+    ~ note("Mother Sallow read Nessa's contract. Clause nine: the Auditor must accept a soul worth more than hers in its place.")
+    -> told
 + [No bargain. We'll take what we came for. #fight]
     The kindly face slides off like wet paper.
     ~ fight("s5-sallow", "arrive.after_fight")
