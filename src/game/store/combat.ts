@@ -2,7 +2,9 @@ import { act, advance, finishCombat, getEncounter, startCombat } from '../combat
 import { PLACE_SCENES } from '../dialogue';
 import { useSettings } from '../settings';
 import { getBounty, markHunted } from '../bounties';
-import { completeStep } from '../journal';
+import { completeStep, partyXp } from '../journal';
+import { rollSneak, sneakDc } from '../sneak';
+import { SeededRng } from '../../rules';
 import type { GameState } from '../save';
 import { arrive, homeScreen, type GameStore, type StoreSet, type StoreGet } from './shared';
 
@@ -12,9 +14,23 @@ export const combatSlice = (
   get: StoreGet,
 ): Pick<
   GameStore,
-  'openPrepare' | 'startFight' | 'combatAct' | 'combatAdvance' | 'setCombatDifficulty' | 'endFight'
+  | 'openPrepare'
+  | 'startFight'
+  | 'scout'
+  | 'slipPast'
+  | 'combatAct'
+  | 'combatAdvance'
+  | 'setCombatDifficulty'
+  | 'endFight'
 > => ({
-  openPrepare: (encounterId) => set({ encounterId, screen: 'prepare', lastResult: null }),
+  openPrepare: (encounterId) =>
+    set({
+      encounterId,
+      screen: 'prepare',
+      lastResult: null,
+      // One scouting try per fight: coming back to the same fight keeps the result (D35).
+      scouted: get().scouted?.encounterId === encounterId ? get().scouted : null,
+    }),
 
   startFight: ({ difficulty, formation, mageArmor }) => {
     const { game, encounterId } = get();
@@ -30,6 +46,10 @@ export const combatSlice = (
           ? { ...h, concentration: h.lingering.spell, lingering: undefined }
           : { ...h, lingering: undefined },
       );
+    // A scout went ahead (D35): an ambush if they got close unseen, the party surprised if not.
+    const sc = get().scouted;
+    const surprise =
+      sc && sc.encounterId === encounterId ? (sc.success ? 'enemies' : 'party') : undefined;
     // Autosave before every fight (docs/BUILD_ROADMAP.md, M4).
     get().saveTo('autosave');
     const combat = startCombat({
@@ -39,11 +59,71 @@ export const combatSlice = (
       rngState: get().rngState,
       formation,
       mageArmor,
+      surprise,
       inventory: game.inventory,
       // Kind dice (a setting, on by default): read by the spell code.
       flags: { ...game.flags, kind_dice: useSettings.getState().kindDice },
     });
-    set({ combat, screen: 'combat' });
+    set({ combat, screen: 'combat', scouted: null });
+  },
+
+  scout: (heroId, difficulty) => {
+    const { game, encounterId, rngState, scouted } = get();
+    if (!game || !encounterId) return null;
+    const enc = getEncounter(encounterId);
+    if (!enc.sneak) return null;
+    // One try per fight: the scout either gets close or is seen.
+    if (scouted?.encounterId === encounterId) return scouted;
+    const hero = game.party.find((h) => h.id === heroId);
+    if (!hero) return null;
+    const dc = sneakDc(enc, difficulty);
+    const rng = SeededRng.fromState(rngState);
+    const r = rollSneak(hero, dc, rng);
+    const first = hero.name.split(' ')[0]!;
+    const text = `${r.log.text}. ${
+      r.success
+        ? `${first} gets close without being seen.`
+        : `${first} is spotted! The enemy is ready for you.`
+    }`;
+    const result = { encounterId, heroId, success: r.success, text };
+    set({ rngState: rng.state, scouted: result });
+    return result;
+  },
+
+  slipPast: () => {
+    const { game, encounterId, scouted, pendingArrival, backToCamp } = get();
+    if (!game || !encounterId || !scouted?.success || scouted.encounterId !== encounterId) return;
+    const enc = getEncounter(encounterId);
+    if (!enc.sneak?.slipPast) return;
+    // D35 (owner): getting past unseen is worth the same XP as the fight. Scenes read it as a
+    // win (won:<id>) and can tell the two apart with sneaked:<id>.
+    let next = partyXp(game, enc.xpPerPc, enc.name).game;
+    next = {
+      ...next,
+      flags: { ...next.flags, [`won:${enc.id}`]: true, [`sneaked:${enc.id}`]: true },
+    };
+    const messages = [enc.sneak.slipPast, `+${enc.xpPerPc} XP each: ${enc.name} (slipped past)`];
+    if (pendingArrival) {
+      const r = arrive(next, pendingArrival);
+      next = r.game;
+      messages.push(...r.messages);
+    }
+    const resume = get().resume;
+    set({
+      game: next,
+      screen: backToCamp ? 'camp' : homeScreen(next),
+      scouted: null,
+      hunt: null,
+      pendingArrival: null,
+      backToCamp: false,
+      resume: null,
+      toasts: messages,
+      travelLog: [...messages, ...get().travelLog].slice(0, 30),
+      campLog: backToCamp ? [...get().campLog, ...messages] : get().campLog,
+    });
+    get().saveTo('autosave');
+    if (resume) get().talk(resume.knot, resume.story);
+    else if (!backToCamp && pendingArrival && PLACE_SCENES[pendingArrival]) get().enterPlace();
   },
 
   combatAct: (a) => {

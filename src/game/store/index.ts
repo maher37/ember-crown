@@ -37,6 +37,7 @@ export const useGame = create<GameStore>()((set, get) => ({
   afterDialogue: null,
   sheetHeroId: null,
   hunt: null,
+  scouted: null,
   pendingNight: [],
 
   ...sessionSlice(set, get),

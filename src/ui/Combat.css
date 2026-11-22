@@ -884,3 +884,18 @@ button.cell {
   box-shadow: 0 -8px 24px rgba(0, 0, 0, 0.45);
   z-index: 5;
 }
+
+/* Sneak ahead (D35) */
+.sneak-list {
+  list-style: none;
+  margin: 6px 0;
+  padding: 0;
+  display: grid;
+  gap: 6px;
+}
+.sneak-adv {
+  color: #8fd18a;
+}
+.sneak-dis {
+  color: #f0a07a;
+}

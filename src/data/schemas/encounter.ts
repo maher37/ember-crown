@@ -78,6 +78,17 @@ export const Encounter = z
       })
       .strict()
       .optional(),
+    /**
+     * Sneak past or ambush (D35): one scout's Stealth check. `slipPast` is the text when the party
+     * gets by unseen; leave it out for fights that can only be ambushed (the deserters).
+     */
+    sneak: z
+      .object({
+        prompt: z.string().min(1),
+        slipPast: z.string().min(1).optional(),
+      })
+      .strict()
+      .optional(),
     enemies: z
       .array(
         z

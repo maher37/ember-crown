@@ -93,6 +93,10 @@
         [2, 4],
         [0, 4]
       ],
+      "sneak": {
+        "prompt": "The gargoyles sit still as stone on their pillars. A scout could learn whether they are watching.",
+        "slipPast": "You slip along the wall in the gargoyles' blind side and through the gate before the stone heads turn."
+      },
       "enemies": [
         {
           "id": "garg-a",
@@ -153,6 +157,10 @@
         [2, 4],
         [0, 4]
       ],
+      "sneak": {
+        "prompt": "With Kell's company drawing the cult's eyes, a scout might get past the last gargoyle unseen.",
+        "slipPast": "While Kell's men keep the cult busy, you slip past the last gargoyle and through the gate."
+      },
       "enemies": [
         {
           "id": "garg-a",
@@ -205,6 +213,10 @@
         [2, 4],
         [0, 4]
       ],
+      "sneak": {
+        "prompt": "The old forge-guard armor stands in rows between the cold furnaces. A scout could test whether it wakes for quiet feet.",
+        "slipPast": "You pass between the silent suits of armor one careful step at a time. Not one of them stirs."
+      },
       "enemies": [
         {
           "id": "armor-a",
@@ -1207,6 +1219,10 @@
         [0, 5],
         [2, 3]
       ],
+      "sneak": {
+        "prompt": "Send a scout ahead to see if there's a way around them.",
+        "slipPast": "You lie flat among the rocks while the war band hurries past."
+      },
       "enemies": [
         {
           "id": "o-a",
@@ -1290,6 +1306,10 @@
         [0, 5],
         [2, 3]
       ],
+      "sneak": {
+        "prompt": "Send a scout ahead to see if there's a way around them.",
+        "slipPast": "You give the owlbear's scree slope a very wide berth."
+      },
       "enemies": [
         {
           "id": "owlbear",
@@ -1334,6 +1354,10 @@
         [0, 5],
         [2, 3]
       ],
+      "sneak": {
+        "prompt": "Send a scout ahead to see if there's a way around them.",
+        "slipPast": "You keep to the overhangs until the griffons wheel away into the ash."
+      },
       "enemies": [
         {
           "id": "g-a",
@@ -1394,6 +1418,10 @@
         [0, 5],
         [2, 3]
       ],
+      "sneak": {
+        "prompt": "Send a scout ahead to see if there's a way around them.",
+        "slipPast": "You double back over bare rock until the wolves lose the trail."
+      },
       "enemies": [
         {
           "id": "w-a",
@@ -1462,6 +1490,10 @@
         [0, 5],
         [2, 3]
       ],
+      "sneak": {
+        "prompt": "Send a scout ahead to see if there's a way around them.",
+        "slipPast": "You edge past the cracked slope while the mephits bicker in the heat."
+      },
       "enemies": [
         {
           "id": "m-a",
@@ -1530,6 +1562,10 @@
         [0, 5],
         [2, 3]
       ],
+      "sneak": {
+        "prompt": "Send a scout ahead to see if there's a way around them.",
+        "slipPast": "You cross a stream to break your scent, and the hell hound goes by."
+      },
       "enemies": [
         {
           "id": "h-a",
@@ -1582,6 +1618,10 @@
         [0, 5],
         [2, 3]
       ],
+      "sneak": {
+        "prompt": "Send a scout ahead to see if there's a way around them.",
+        "slipPast": "You find a goat path down to a ford, and leave the troll to its bridge."
+      },
       "enemies": [
         {
           "id": "troll",

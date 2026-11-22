@@ -82,6 +82,11 @@ export interface StartOptions {
   inventory?: Record<string, number>;
   /** Story flags the fight can read. */
   flags?: Record<string, boolean | number | string>;
+  /**
+   * A scout's Stealth check decided who is caught off guard (D35): 'enemies' after a successful
+   * sneak (an ambush), 'party' when the scout was spotted. Replaces the encounter's own surprise roll.
+   */
+  surprise?: 'enemies' | 'party';
 }
 
 /** Set up a fight: place everyone, roll initiative (and surprise), and start the first turn. */
@@ -222,7 +227,8 @@ export function startCombat(o: StartOptions): CombatState {
     }
     say(s, 'head', e.code === 'F2' ? 'Goblins burst from the treeline!' : `${e.name} begins!`);
     rollInitiative(ctx);
-    if (e.surprise) rollSurprise(ctx);
+    if (o.surprise) surpriseSide(ctx, o.surprise);
+    else if (e.surprise) rollSurprise(ctx);
     beginTurnLoop(ctx);
   });
 }
@@ -304,6 +310,24 @@ export function rollSurprise(ctx: Ctx): void {
       c.reactionUsed = true;
       say(s, 'foe', `${c.name} is surprised (passive Perception ${passive} vs Stealth ${lowest})`);
     }
+  }
+}
+
+/** PHB: Surprise. Everyone on one side is caught off guard (an ambush, or a scout spotted). */
+export function surpriseSide(ctx: Ctx, side: 'enemies' | 'party'): void {
+  const { s } = ctx;
+  const target = side === 'enemies' ? 'enemy' : 'party';
+  say(
+    s,
+    'head',
+    side === 'enemies'
+      ? 'Ambush! The enemy never saw you coming.'
+      : 'Spotted! The enemy is ready for you.',
+  );
+  for (const c of Object.values(s.combatants).filter((x) => x.side === target)) {
+    c.surprised = true;
+    c.reactionUsed = true;
+    say(s, side === 'enemies' ? 'you' : 'foe', `${c.name} is surprised`);
   }
 }
 

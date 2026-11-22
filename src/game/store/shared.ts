@@ -38,6 +38,14 @@ export function homeScreen(g: GameState | null | undefined): Screen {
 export type CampScene = 'wild' | 'inn' | 'cave';
 export const PARTY_SIZE = 4;
 
+/** A scout's Stealth check before a fight (D35). */
+export interface Scouted {
+  encounterId: string;
+  heroId: string;
+  success: boolean;
+  text: string;
+}
+
 export interface GameStore {
   screen: Screen;
   /** The game in progress, once the party is complete. */
@@ -79,6 +87,8 @@ export interface GameStore {
   afterDialogue: 'place' | null;
   /** Which hero the party screen's character sheet shows. */
   sheetHeroId: string | null;
+  /** The scout's result for the fight being prepared (D35). */
+  scouted: Scouted | null;
   /** The bounty whose fight is under way (its hunt step completes on a win). */
   hunt: string | null;
 
@@ -151,6 +161,10 @@ export interface GameStore {
     formation?: Record<string, Pos>;
     mageArmor?: string[];
   }) => void;
+  /** Send one hero ahead to sneak up on the fight being prepared (D35). One try per fight. */
+  scout: (heroId: string, difficulty: DifficultyId) => Scouted | null;
+  /** After a successful scout: get past unseen, for the fight's XP (D35). */
+  slipPast: () => void;
   combatAct: (a: PlayerAction) => string | undefined;
   combatAdvance: () => void;
   setCombatDifficulty: (d: DifficultyId) => void;

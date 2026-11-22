@@ -66,7 +66,11 @@ King Varrow's tomb is cut into the mountain's heart: a gate of black iron forty 
     -> END
 = after_gate
 ~ quest_step("kings-kiln", "gate")
-The gate's guards are down. Beyond it, a door with no handle waits.
+{ flag("sneaked:f16-kiln-gate") || flag("sneaked:f16-kiln-gate-kell"):
+    The gargoyles settle back onto their pillars behind you. Ahead, a door with no handle waits.
+- else:
+    The gate's guards are down. Beyond it, a door with no handle waits.
+}
 -> back
 = back
 -> END
@@ -110,7 +114,11 @@ The Furnace Halls run deep into the mountain: cold furnaces as big as houses, an
     -> END
 = after_halls
 ~ quest_step("kings-kiln", "halls")
-At the far end of the halls, a door of red stone is warm to the touch.
+{ flag("sneaked:f17-furnace-halls"):
+    The armor stands silent behind you. At the far end of the halls, a door of red stone is warm to the touch.
+- else:
+    At the far end of the halls, a door of red stone is warm to the touch.
+}
 -> back
 
 = seal
