@@ -7,6 +7,7 @@ import { placeMapFor } from '../placeMaps';
 import { spotFinds, type OpenHow, type OpenResult } from '../finds';
 import type { SlotId as GearSlot } from '../loadout';
 import type { Hero } from '../hero';
+import type { Precast } from '../precast';
 import type { LevelUpPlan } from '../levelup';
 import { type GameState, type SaveFile, type SlotId } from '../save';
 
@@ -160,6 +161,8 @@ export interface GameStore {
     difficulty: DifficultyId;
     formation?: Record<string, Pos>;
     mageArmor?: string[];
+    /** Spells cast just before the fight (D34). */
+    precasts?: Precast[];
   }) => void;
   /** Send one hero ahead to sneak up on the fight being prepared (D35). One try per fight. */
   scout: (heroId: string, difficulty: DifficultyId) => Scouted | null;

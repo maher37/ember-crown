@@ -899,3 +899,62 @@ button.cell {
 .sneak-dis {
   color: #f0a07a;
 }
+
+/* Casting before the fight (D34). */
+.precast {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.precast-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.precast-list li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+  padding: 4px 8px;
+  border-radius: 6px;
+  background: var(--card);
+  border: 1px solid var(--ally);
+  font-size: 13px;
+}
+.precast-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 6px 8px;
+  margin: 0;
+}
+.precast-row legend {
+  font-weight: 700;
+  font-size: 13px;
+  padding: 0 4px;
+}
+.precast-row p {
+  margin: 0;
+  flex-basis: 100%;
+}
+.precast-row select {
+  background: var(--card);
+  color: var(--text);
+  border: 1px solid var(--border-strong);
+  border-radius: 4px;
+  min-height: 28px;
+}
+.precast-targets {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  flex-basis: 100%;
+}
