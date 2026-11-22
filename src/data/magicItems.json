@@ -434,6 +434,142 @@
       "howItWorks": "A longsword or greatsword (whichever its wielder prefers): +1 to hit and damage, and 3d6 extra damage against dragons, including the ember-wraith."
     },
     {
+      "id": "ring-of-warmth",
+      "name": "Ring of Warmth",
+      "base": "DMG: Ring of Warmth",
+      "kind": "ring",
+      "rarity": "uncommon",
+      "attunement": true,
+      "summary": "You resist cold damage.",
+      "effects": [
+        {
+          "type": "special",
+          "id": "resistance-while-held",
+          "note": "cold"
+        }
+      ],
+      "act": 1,
+      "source": "Found: the skeleton in the steaming cave",
+      "howItWorks": "Worn on a finger (needs attunement): the wearer resists cold damage, and never feels the mountain chill.",
+      "verify": true,
+      "verifyNote": "Name from the DMG; effect summarized from memory (Items.md CONFIRM LOCALLY). A hidden find (D27). The DMG ring also keeps you comfortable in deep cold; that part is flavor here [inferred]."
+    },
+    {
+      "id": "cloak-of-elvenkind",
+      "name": "Cloak of Elvenkind",
+      "base": "DMG: Cloak of Elvenkind",
+      "kind": "cloak",
+      "rarity": "uncommon",
+      "attunement": true,
+      "summary": "Hood up, you are hard to spot: advantage on Stealth checks.",
+      "effects": [
+        {
+          "type": "special",
+          "id": "stealth-advantage-quiet"
+        }
+      ],
+      "act": 1,
+      "source": "Found: the Varrows' pantry chest at the mill",
+      "howItWorks": "Worn on the shoulders (needs attunement): advantage on Stealth checks (the story's sneaking checks and searches).",
+      "verify": true,
+      "verifyNote": "Name from the DMG; effect summarized from memory (Items.md CONFIRM LOCALLY). A hidden find (D27). The DMG cloak also gives disadvantage to Perception checks to see you; that part isn't modeled [inferred]."
+    },
+    {
+      "id": "brooch-of-shielding",
+      "name": "Brooch of Shielding",
+      "base": "DMG: Brooch of Shielding",
+      "kind": "wondrous",
+      "rarity": "uncommon",
+      "attunement": true,
+      "summary": "You resist force damage.",
+      "effects": [
+        {
+          "type": "special",
+          "id": "resistance-while-held",
+          "note": "force"
+        }
+      ],
+      "act": 1,
+      "slot": "neck",
+      "source": "Found: the goblin's secret stash in the warren",
+      "howItWorks": "Pinned at the neck (needs attunement): the wearer resists force damage.",
+      "verify": true,
+      "verifyNote": "Name from the DMG; effect summarized from memory (Items.md CONFIRM LOCALLY). A hidden find (D27). The DMG brooch also makes you immune to Magic Missile; that part isn't modeled [inferred]."
+    },
+    {
+      "id": "amulet-of-the-devout",
+      "name": "Amulet of the Devout +1",
+      "base": "TCE: Amulet of the Devout",
+      "kind": "wondrous",
+      "rarity": "uncommon",
+      "attunement": "spellcaster",
+      "summary": "+1 to spell attack rolls and spell save DCs.",
+      "effects": [
+        {
+          "type": "modifier",
+          "target": "spell-attack",
+          "value": 1
+        },
+        {
+          "type": "modifier",
+          "target": "spell-dc",
+          "value": 1
+        }
+      ],
+      "act": 2,
+      "slot": "neck",
+      "source": "Found: the abbey's reliquary",
+      "howItWorks": "Worn at the neck (needs a spellcaster's attunement): +1 to every spell attack roll and to the DC of your spells.",
+      "verify": true,
+      "verifyNote": "Name from Tasha's Cauldron of Everything; effect summarized from memory. The book limits it to clerics and paladins and adds an extra Channel Divinity; here any spellcaster can attune and the Channel Divinity part isn't modeled [inferred]. A hidden find (D27)."
+    },
+    {
+      "id": "ring-of-fire-resistance",
+      "name": "Ring of Resistance (fire)",
+      "base": "DMG: Ring of Resistance",
+      "kind": "ring",
+      "rarity": "rare",
+      "attunement": true,
+      "summary": "You resist fire damage.",
+      "effects": [
+        {
+          "type": "special",
+          "id": "resistance-while-held",
+          "note": "fire"
+        }
+      ],
+      "act": 3,
+      "source": "Found: Wix's cave of trophies",
+      "howItWorks": "Worn on a finger (needs attunement): the wearer resists fire damage. Welcome in the King's Kiln.",
+      "verify": true,
+      "verifyNote": "Name from the DMG; effect summarized from memory (Items.md CONFIRM LOCALLY). A hidden find (D27). The DMG ring comes in one damage type per ring; fire is our pick for Act III [inferred]."
+    },
+    {
+      "id": "kiln-wardens-mantle",
+      "name": "Kiln-Warden's Mantle",
+      "base": "homebrew",
+      "kind": "cloak",
+      "rarity": "uncommon",
+      "attunement": true,
+      "summary": "Never caught napping: advantage on initiative and on Perception checks.",
+      "effects": [
+        {
+          "type": "special",
+          "id": "initiative-advantage"
+        },
+        {
+          "type": "special",
+          "id": "perception-advantage"
+        }
+      ],
+      "homebrew": true,
+      "act": 3,
+      "source": "Found: the Kiln-Wardens' strongroom",
+      "howItWorks": "Worn on the shoulders (needs attunement): advantage on initiative rolls and on Perception checks, like the Sentinel Shield.",
+      "verify": true,
+      "verifyNote": "Homebrew [inferred]: the Sentinel Shield's effect on a cloak, for the guards who watched the Kiln. A hidden find (D27)."
+    },
+    {
       "id": "longsword-plus-1",
       "name": "Longsword +1",
       "base": "DMG: Weapon, +1",

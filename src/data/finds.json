@@ -79,7 +79,7 @@
       "kind": "chest",
       "dc": 14,
       "notice": "Behind a collapsed shelf in the mill kitchen, the corner of an iron-bound chest.",
-      "text": "The Varrows' old pantry chest. The food is long gone, but a purse and a good lantern were packed away under the linen.",
+      "text": "The Varrows' old pantry chest. The food is long gone, but a purse and a good lantern were packed away under the linen. Folded at the bottom: a grey-green cloak that seems to take on the color of whatever it lies against.",
       "lock": {
         "dc": 12
       },
@@ -88,6 +88,10 @@
         "items": [
           {
             "id": "lantern",
+            "qty": 1
+          },
+          {
+            "id": "cloak-of-elvenkind",
             "qty": 1
           }
         ]
@@ -152,12 +156,16 @@
       "kind": "cache",
       "dc": 14,
       "notice": "One stone in the warren wall has been rubbed smooth by a lot of nervous fingers.",
-      "text": "Behind it, a goblin's secret savings: coins of four kingdoms and a vial of acid it was clearly saving for someone it disliked.",
+      "text": "Behind it, a goblin's secret savings: coins of four kingdoms and a vial of acid it was clearly saving for someone it disliked. Pinned to the sack is a silver brooch shaped like a shield. It hums when you hold it near your chest.",
       "loot": {
         "gold": 20,
         "items": [
           {
             "id": "acid-vial",
+            "qty": 1
+          },
+          {
+            "id": "brooch-of-shielding",
             "qty": 1
           }
         ]
@@ -170,7 +178,7 @@
       "kind": "body",
       "dc": 15,
       "notice": "Under a drift of ash near the cave mouth: the glint of a belt buckle.",
-      "text": "Whoever this was, they came looking for the dragon too. Their purse and potions survived the fire better than they did.",
+      "text": "Whoever this was, they came looking for the dragon too. Their purse and potions survived the fire better than they did. One bony finger still wears a plain copper ring, warm to the touch in a way nothing else down here is.",
       "loot": {
         "gold": 40,
         "items": [
@@ -180,6 +188,10 @@
           },
           {
             "id": "alchemists-fire",
+            "qty": 1
+          },
+          {
+            "id": "ring-of-warmth",
             "qty": 1
           }
         ]
@@ -194,13 +206,18 @@
       "requires": [["bridge_crossed"]],
       "act": 2,
       "notice": "The toll box is still chained to the bridge post. Nobody's minding it now.",
-      "text": "A month of Ashford's tolls. Somebody should give it back. Somebody probably won't.",
+      "text": "A month of Ashford's tolls. Somebody should give it back. Somebody probably won't. Among the coins, a gold ring set with a pale stone: someone paid their toll with it and never came back.",
       "lock": {
         "dc": 15
       },
       "loot": {
         "gold": 60,
-        "items": []
+        "items": [
+          {
+            "id": "ring-of-protection",
+            "qty": 1
+          }
+        ]
       }
     },
     {
@@ -295,13 +312,17 @@
       "dc": 15,
       "act": 2,
       "notice": "A fallen statue of a saint has a hollow behind its plinth.",
-      "text": "The abbey's emergency fund, hidden by a sensible monk, and two flasks of holy water.",
+      "text": "The abbey's emergency fund, hidden by a sensible monk, and two flasks of holy water. Beside them, on a worn cord, the abbot's holy symbol. It still feels like someone is listening.",
       "loot": {
         "gold": 50,
         "items": [
           {
             "id": "holy-water",
             "qty": 2
+          },
+          {
+            "id": "amulet-of-the-devout",
+            "qty": 1
           }
         ]
       }
@@ -333,13 +354,18 @@
       "dc": 13,
       "act": 2,
       "notice": "The ground under the deserters' fire-pit has been dug and burned over to hide it.",
-      "text": "The pay the Grey Company owed them, taken back on the way out. Is it stealing if it was theirs?",
+      "text": "The pay the Grey Company owed them, taken back on the way out. Is it stealing if it was theirs? The coin is wrapped in an officer's cloak, stitched inside with little warding runes.",
       "lock": {
         "dc": 14
       },
       "loot": {
         "gold": 90,
-        "items": []
+        "items": [
+          {
+            "id": "cloak-of-protection-shop",
+            "qty": 1
+          }
+        ]
       }
     },
     {
@@ -370,7 +396,7 @@
       "requires": [["vault_runes"]],
       "act": 3,
       "notice": "Above the forge floor, a rune-locked door. It hums when you say \"Varrow\".",
-      "text": "The Kiln-Wardens kept their pay and their healers' charms here. Three centuries of dust, and the gold is still gold.",
+      "text": "The Kiln-Wardens kept their pay and their healers' charms here. Three centuries of dust, and the gold is still gold. On a hook by the door hangs a Warden's ash-grey mantle, its clasp shaped like an open eye.",
       "lock": {
         "dc": 17
       },
@@ -391,6 +417,10 @@
           },
           {
             "id": "potion-of-greater-healing",
+            "qty": 1
+          },
+          {
+            "id": "kiln-wardens-mantle",
             "qty": 1
           }
         ]
@@ -441,13 +471,17 @@
       "dc": 14,
       "act": 3,
       "notice": "High on the cave wall, a shelf of 'very important' goblin treasures.",
-      "text": "Most of it is buttons. Some of it is gold. Wix says you can take the gold, but not the good buttons.",
+      "text": "Most of it is buttons. Some of it is gold. Wix says you can take the gold, but not the good buttons. Wix also gives you a ring with a red stone. \"Too hot,\" Wix says. \"Wix doesn't like it. You have it.\"",
       "loot": {
         "gold": 60,
         "items": [
           {
             "id": "acid-vial",
             "qty": 2
+          },
+          {
+            "id": "ring-of-fire-resistance",
+            "qty": 1
           }
         ]
       }
