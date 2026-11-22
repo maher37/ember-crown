@@ -80,6 +80,7 @@ adopt, then Story_Bible.md is updated in the same PR (CLAUDE.md: ask before chan
 | 10 | **Party banter on the road** | BG2/BG3 | Short exchanges between *your* heroes while travelling, chosen from their class, background and personality (a new pick in the character creator: ideal, bond and flaw from the PHB backgrounds). | M |
 
 **Adopted (owner, Nov 21):** #1 (every hero is marked), #3 and #6. See D28 in DECISIONS.md.
+**Adopted (owner, Nov 22):** #2, at camp only. See D32.
 
 **My suggested first step [inferred]:** #1 (ember-marked heroes) + #3 (the world remembers) + #6
 (Maelis in person). Together they fix the biggest problem, "why do I care?", without rebuilding the
