@@ -204,6 +204,17 @@ describe('the notice board at Ashford Hall', () => {
     expect(paid.game.quests['bounty-bandits']?.status).toBe('done');
     expect(paid.game.party[0]!.xp).toBe(xp + 75);
   });
+  it('lists only notices you can take or are doing; paid ones come down (playtest Nov 22)', () => {
+    let g = takeBounty(game(), 'bounty-bandits').game;
+    g = takeBounty(g, 'bounty-stirges').game;
+    g = markHunted(g, 'bounty-stirges').game;
+    const states = boardNotices(g).map((n) => n.state);
+    expect(states[0]).toBe('hunted'); // ready to collect comes first
+    expect(states.indexOf('new')).toBeLessThan(states.indexOf('taken'));
+    g = claimBounty(g, 'bounty-stirges').game;
+    expect(boardNotices(g).map((n) => n.bounty.quest)).not.toContain('bounty-stirges');
+    expect(boardNotices(g).some((n) => n.state === 'done')).toBe(false);
+  });
   it("the Deserters' notice opens the existing side quest (same flag Brannoc sets)", () => {
     const g = game({ act: 2, flags: { act1_complete: true } });
     const r = takeBounty(g, 'deserters');

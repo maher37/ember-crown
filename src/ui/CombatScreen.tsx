@@ -33,7 +33,7 @@ import { useSettings } from '../game/settings';
 import { useGame } from '../game/store';
 import { hasCondition, SeededRng } from '../rules';
 import './Combat.css';
-import { briefLine, hitChance, isDiceLine } from './combatUi';
+import { briefLine, hitChance, isDiceLine, tokenDrawOrder } from './combatUi';
 import { Portrait } from './Portrait';
 import { heroPortrait } from './heroLook';
 import { terrainFill, terrainName } from './mapStyle';
@@ -598,34 +598,32 @@ export function CombatScreen() {
               );
             }),
           )}
-          {Object.values(s.combatants)
-            .filter((c) => !c.gone)
-            .map((c) => {
-              const dead = c.creature.dead || (c.side === 'enemy' && c.creature.hp === 0);
-              const down = c.creature.hp === 0 && !c.creature.dead;
-              const target = validTargets.has(c.id);
-              const chosen = mode.kind === 'spell' && mode.targets.filter((x) => x === c.id).length;
-              return (
-                <button
-                  key={c.id}
-                  type="button"
-                  className={`token ${c.side} ${c.id === me.id ? 'active' : ''} ${target ? 'target' : ''} ${dead ? 'dead' : ''} ${down && !dead ? 'downed' : ''} ${fx.flashing(c.id) ? (settings.reduceFlashing ? 'hit calm' : 'hit') : ''}`}
-                  style={{ left: c.pos.x * CELL + 4, top: c.pos.y * CELL + 4 }}
-                  aria-label={`${c.name}, ${c.side === 'party' ? 'ally' : 'enemy'}, ${dead ? 'dead' : down ? 'down' : `HP ${c.wildShape?.hp ?? c.creature.hp} of ${c.wildShape?.maxHp ?? c.creature.maxHp}`}${target ? ', valid target' : ''}`}
-                  aria-disabled={!target && !(mode.kind === 'spell' && validTargets.size === 0)}
-                  onMouseEnter={() => setHover(c.pos)}
-                  onFocus={() => setHover(c.pos)}
-                  onClick={() =>
-                    target || (mode.kind === 'spell' && validTargets.size === 0)
-                      ? clickToken(c)
-                      : setInspect(inspect === c.id ? null : c.id)
-                  }
-                >
-                  {c.wildShape ? 'Wf' : c.short}
-                  {chosen ? <span className="badge">{chosen}</span> : null}
-                </button>
-              );
-            })}
+          {tokenDrawOrder(Object.values(s.combatants).filter((c) => !c.gone)).map((c) => {
+            const dead = c.creature.dead || (c.side === 'enemy' && c.creature.hp === 0);
+            const down = c.creature.hp === 0 && !c.creature.dead;
+            const target = validTargets.has(c.id);
+            const chosen = mode.kind === 'spell' && mode.targets.filter((x) => x === c.id).length;
+            return (
+              <button
+                key={c.id}
+                type="button"
+                className={`token ${c.side} ${c.id === me.id ? 'active' : ''} ${target ? 'target' : ''} ${dead ? 'dead' : ''} ${down && !dead ? 'downed' : ''} ${fx.flashing(c.id) ? (settings.reduceFlashing ? 'hit calm' : 'hit') : ''}`}
+                style={{ left: c.pos.x * CELL + 4, top: c.pos.y * CELL + 4 }}
+                aria-label={`${c.name}, ${c.side === 'party' ? 'ally' : 'enemy'}, ${dead ? 'dead' : down ? 'down' : `HP ${c.wildShape?.hp ?? c.creature.hp} of ${c.wildShape?.maxHp ?? c.creature.maxHp}`}${target ? ', valid target' : ''}`}
+                aria-disabled={!target && !(mode.kind === 'spell' && validTargets.size === 0)}
+                onMouseEnter={() => setHover(c.pos)}
+                onFocus={() => setHover(c.pos)}
+                onClick={() =>
+                  target || (mode.kind === 'spell' && validTargets.size === 0)
+                    ? clickToken(c)
+                    : setInspect(inspect === c.id ? null : c.id)
+                }
+              >
+                {c.wildShape ? 'Wf' : c.short}
+                {chosen ? <span className="badge">{chosen}</span> : null}
+              </button>
+            );
+          })}
           {fx.floats.map((f) => {
             const c = s.combatants[f.id];
             if (!c) return null;
