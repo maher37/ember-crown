@@ -1,7 +1,7 @@
 import { roll, SeededRng } from '../../rules';
 import { PLACE_SCENES } from '../dialogue';
 import { formatDate } from '../calendar';
-import { addNote, kindledOfferDue } from '../journal';
+import { addNote, kindledOfferDue, vornaDreamDue } from '../journal';
 import { deliverLetters } from '../letters';
 import { canLongRest, finishShortRest, spendDie, startShortRest, takeLongRest } from '../rest';
 import { currentPlace, getPlace, roadCheck, travelHours, travelLeg } from '../travel';
@@ -217,6 +217,13 @@ export const restSlice = (
     else if (offer) {
       set({ game: { ...g, flags: { ...g.flags, [`kindled_offer_${offer}`]: true } } });
       get().talk('kindled_dream', 'camp');
+    }
+    // D33: once an act, the voice that calls Vorna "daughter" comes to her (before Corin's
+    // every-night bargain, so it isn't crowded out).
+    else if (vornaDreamDue(g)) {
+      const n = vornaDreamDue(g)!;
+      set({ game: { ...g, flags: { ...g.flags, [`vorna_dream_${n}`]: true } } });
+      get().talk(`vorna_dream_${n}`, 'camp');
     }
     // Story_Bible §9: after the first shard, Cindrath offers Corin a dream bargain every long rest.
     else if (

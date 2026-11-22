@@ -53,6 +53,9 @@ A chain hangs across the only bridge over the Grayflow for twenty miles. Grey-cl
 = greet
 #speaker:kell
 "Toll's gone up," says Captain Ruther Kell. "Guild's orders. Nobody crosses to the marsh without the Coinwright Guild's say-so, and the Guild says no."
+{ has("vorna"):
+    Then he sees who's standing behind you, and the apple stops halfway to his mouth. "Sergeant Kalvaar." Every soldier at the brazier straightens up without being told.
+}
 -> talk
 
 = leave_only
@@ -68,6 +71,8 @@ A chain hangs across the only bridge over the Grayflow for twenty miles. Grey-cl
     Kell looks at {roller()} properly for the first time: the bearing, the boots. "Sergeant-trained, by the look. Fine. Talk to me like a soldier."
     ~ set_flag("kell_rank", true)
     -> talk
+* {has("vorna")} [Four families, Ruther. Tamm, Bel, Orrin and Sef. Have they been paid? #as:vorna]
+    -> vorna_pay
 + [Make our case for crossing.]
     -> case
 + [Then we'll take the bridge. #fight]
@@ -75,6 +80,26 @@ A chain hangs across the only bridge over the Grayflow for twenty miles. Grey-cl
     -> END
 + [Leave (to the map).]
     -> END
+// D33: Vorna asks her old captain about her dead squad's pay (Story_Bible §9b).
+= vorna_pay
+#speaker:kell
+Kell sets the apple down on the rail. "I wrote to the Guild eleven times, Sergeant. They sent back a sheet that said 'contract void: deaths not in the line of duty.'" He can't quite look at her. "I let it go. You didn't."
++ [Then stop letting it go. Give me your word you'll see them paid. #as:vorna #check:persuasion:12]
+    { passed:
+        Kell is quiet a long moment. Then he takes off his captain's knot and turns it over in his hands. "When this business is done, they'll be paid. Out of my own purse, if the Guild won't. My word, Vorna." He pins the knot back on. "And you can cross my bridge. You always could."
+        ~ set_flag("vorna_kell_promise", true)
+        ~ set_flag("kell_rank", true)
+        ~ note("Captain Kell swore to Vorna that her dead squad's families will be paid, out of his own purse if the Guild won't.")
+    - else:
+        "I'm sorry," Kell says. "I am. But sorry doesn't pay anyone, and neither do I, it turns out." He goes back to his apple, and doesn't eat it.
+        ~ set_flag("vorna_kell_cold", true)
+    }
+    -> talk
++ [You should have walked out with me. #as:vorna]
+    "Maybe." Kell looks at his men, cold and three months unpaid. "Then who'd get these idiots home?" He doesn't say anything else, and neither does Vorna.
+    ~ set_flag("vorna_kell_cold", true)
+    -> talk
+
 = case
 + {flag("kell_overheard")} [Your men haven't been paid in three months. Let us cross, and you'll get them home sooner.]
     Kell stops chewing. He looks at his men, who suddenly find the river very interesting. "Somebody's been listening under my bridge." A long breath. "Fair. If you find the Star's people, you'll do my job for free. Lift the chain."
@@ -128,6 +153,9 @@ A chain hangs across the only bridge over the Grayflow for twenty miles. Grey-cl
 }
 #speaker:kell
 Kell steps back over his fallen men with his hands up and empty. "Enough. I count my dead, and I've counted enough for one morning." He lifts the chain himself.
+{ has("vorna"):
+    As you pass, he says it to Vorna, quietly: "Now we've both got dead to answer for, Sergeant."
+}
 ~ set_flag("kell_hostile", true)
 -> crossed
 = crossed

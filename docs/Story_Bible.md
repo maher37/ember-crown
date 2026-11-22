@@ -296,7 +296,7 @@ Epilogue slides also report on Brannoc, Edric, Ulric, Wynn's granddaughter, Kell
 
 ## 9b. Three more origin heroes (D33, approved Nov 22)
 
-Premade like Corin: fixed name, species, class and look; abilities and background can still be chosen. Their backstory text lives in `src/data/origins.json` and shows on the character sheet. Each can join the party once, alongside Corin or each other. **Nessa's own scenes are built (listed under her). Not built yet:** Harl's and Vorna's `[Name]` options and scenes (later PRs, one hero each).
+Premade like Corin: fixed name, species, class and look; abilities and background can still be chosen. Their backstory text lives in `src/data/origins.json` and shows on the character sheet. Each can join the party once, alongside Corin or each other. **Built so far:** Vorna and Nessa (below). **Not built yet:** Harl's own `[Name]` dialogue options, scenes and epilogue slides (a later PR).
 
 ### Harl Deepdelve: hill dwarf cleric of Moradin (Life Domain), Acolyte
 - Tended Moradin's shrine at the Old Mine for thirty years. On the day of the Collapse he dug three men out by hand and read the rites over the thirty-one who died.
@@ -326,6 +326,8 @@ Premade like Corin: fixed name, species, class and look; abilities and backgroun
 - Since entering the Greypeaks she has heard a warm voice in her sleep calling her "daughter".
 - **Wants:** her dead squad's pay, and to know whether her blood belongs to Cindrath.
 - **Story hooks for later:** Kell's rivalry and respect, Cindrath's dreams and gifts, the town's fear of red scales.
+- **Built (`[Vorna]` lines):** Brannoc's house rule and the Grey Company men in the tavern; Gran Esk's warding sign; Maelis at the mine mouth ("it's never lied to me"); Kell at the bridge (her squad's pay: Persuasion as Vorna wins his promise); Holm's deserters; Mother Sallow's free answer (the voice isn't her blood: it speaks to everyone in the voice they miss most); three camp dreams, one an act; Kell paying the four families at the Kiln gate; a line at the Crowning; two epilogue slides.
+- **The squad:** Tamm, Bel, Orrin and Sef (names are new writing [inferred], not from the backstory).
 
 ---
 

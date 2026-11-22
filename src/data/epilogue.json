@@ -233,6 +233,30 @@
       "title": "The kindled",
       "if": ["ember_marked", "!kindled"],
       "text": "By spring the red rings on your palms had faded to freckles. You never answered the voice in the dream, and in the end it stopped asking."
+    },
+    {
+      "title": "Vorna Kalvaar",
+      "if": ["vorna", "vorna_squad_paid"],
+      "except": ["ember-crown", "ember-heir"],
+      "text": "Vorna carried four purses down the mountain herself and knocked on four doors. At the last one, Sef's mother made her stay for supper, and nobody in that house made a warding sign."
+    },
+    {
+      "title": "Vorna Kalvaar",
+      "if": ["vorna", "!vorna_squad_paid"],
+      "except": ["ember-crown", "ember-heir"],
+      "text": "The Guild never paid. Vorna went to Waterdeep and sat on the Coinwright Guild's front steps in her old grey cloak, every morning, until a clerk came out with four purses just to make her leave."
+    },
+    {
+      "title": "The Voice",
+      "if": ["vorna", "vorna_refused_voice"],
+      "except": ["ember-crown", "ember-heir"],
+      "text": "Vorna never heard the voice again. Some nights she almost misses it, and that frightens her more than the dragon ever did. She sleeps fine."
+    },
+    {
+      "title": "The Voice",
+      "if": ["vorna", "!vorna_refused_voice"],
+      "except": ["ember-crown", "ember-heir"],
+      "text": "On cold nights Vorna still wakes up warm, sure that someone has just said \"daughter\" in the dark. She keeps a sword by the bed, pointed at the door."
     }
   ]
 }

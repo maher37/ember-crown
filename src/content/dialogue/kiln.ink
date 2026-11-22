@@ -53,6 +53,16 @@ King Varrow's tomb is cut into the mountain's heart: a gate of black iron forty 
     #speaker:kell
     Boots on the road behind you. Captain Kell and thirty Grey Company soldiers come up through the ash. "Cult rearguard's coming up the pass. We'll hold them. You go in." He grins. "I owe you a bridge."
     ~ set_flag("kell_at_gate", true)
+    // D33: Kell keeps (or finally makes) his promise to Vorna about her dead squad's pay.
+    { has("vorna") && not flag("vorna_squad_paid"):
+        { flag("vorna_kell_promise"):
+            He presses four sealed purses into Vorna's hands. "Tamm, Bel, Orrin, Sef. Paid in full, out of my pay and the lads' dice money. I said I would." He salutes her, properly, the way you salute a sergeant.
+        - else:
+            He presses four sealed purses into Vorna's hands before she can speak. "Tamm, Bel, Orrin, Sef. Out of my own pay. I should have done it the night you left." He doesn't wait for her to forgive him; he just goes to hold the road.
+        }
+        ~ set_flag("vorna_squad_paid", true)
+        ~ note("Captain Kell gave Vorna four purses at the Kiln gate: her dead squad's pay, from his own pocket.")
+    }
     #speaker:kiln
 }
 + [Break through the gate. #fight]
@@ -355,6 +365,13 @@ The mountain's heart is a cavern of molten light. In a ritual circle of black ir
     -> speak
 * {has("corin")} [You call me "boy". You're not our father. #as:corin]
     The voice in the crown laughs, low and pleased, and Maelis flinches: she heard it too. Their father never called him boy.
+    -> speak
+* {has("vorna")} [It called me daughter, Maelis. It calls everyone whatever they're missing. #as:vorna]
+    { flag("vorna_refused_voice"):
+        "Not you, now," the crown hisses, and it isn't her father's voice at all. Maelis takes a step back from her own hands.
+    - else:
+        "Daughter," the crown croons, at Vorna, in a voice Maelis has never heard it use. Maelis stares at the crown as if it had bitten her.
+    }
     -> speak
 * {has_item("drowned-lantern")} [You asked us to bring a lantern. We did.]
     Maelis looks at the Drowned Lantern, Brannoc's lantern, and something in her face gives way. "You did," she says.

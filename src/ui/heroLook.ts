@@ -1,7 +1,7 @@
 // How a hero looks: the portrait plus what they're wearing.
 import type { Hero } from '../game/hero';
 import { CLASS_COPY, ELF_EARS } from './creatorCopy';
-import type { ArmorLook, PortraitGear } from './Portrait';
+import type { ArmorLook, PortraitGear, PortraitKind, Stature } from './Portrait';
 
 const ARMOR_LOOK: Record<string, ArmorLook> = {
   padded: 'padded',
@@ -37,11 +37,26 @@ export function portraitGear(hero: {
   };
 }
 
+/** Species drawn shorter (playtest wish, Nov 22). Dwarves are Medium in the rules but short. */
+const STATURE: Record<string, Stature> = {
+  'hill-dwarf': 'stocky',
+  'lightfoot-halfling': 'small',
+  'rock-gnome': 'small',
+};
+
+/** The head shape and height a species gets in its portrait. */
+export function speciesLook(speciesId: string): { ears: PortraitKind; stature: Stature } {
+  return {
+    ears: speciesId === 'dragonborn' ? 'dragon' : ELF_EARS.has(speciesId) ? 'elf' : 'human',
+    stature: STATURE[speciesId] ?? 'medium',
+  };
+}
+
 /** Everything <Portrait> needs for a hero. */
 export function heroPortrait(hero: Hero, label = `Portrait of ${hero.name}`) {
   return {
     ...hero.portrait,
-    ears: ELF_EARS.has(hero.speciesId) ? ('elf' as const) : ('human' as const),
+    ...speciesLook(hero.speciesId),
     cloth: CLASS_COPY[hero.classId]!.cloth,
     gear: portraitGear(hero),
     wounds: woundsOf(hero),

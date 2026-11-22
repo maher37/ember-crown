@@ -55,12 +55,19 @@ The bounty says four bandits are robbing travellers at the forest's edge. The tr
 = camp
 #speaker:holm
 "Sergeant Holm," says the oldest. "Late of the Grey Company. Kell's paying for our heads because the Guild told him to make an example." He spits. "We left because the Guild stopped paying, and started asking us to burn things."
+{ has("vorna"):
+    Then he squints past you. "Kalvaar? They said you walked. Said you threw your badge at the captain." A crooked grin. "Wish I'd seen it."
+}
 * [What did the Guild want burned?]
     "Ashford Hall's records. Anything with the old Collapse in it." He shrugs. "We're soldiers, not arsonists."
     -> camp
 + [Go home. We'll tell Kell we found nothing.]
     -> free
 + {flag("kell_respect") || has("background:soldier")} [Go home. We'll square it with Kell. Soldier to soldier.]
+    -> free
++ {has("vorna")} [Go home, Holm. If Kell wants your head, he can ask me for it. #as:vorna]
+    Holm laughs, the first time in weeks by the sound of it. "He won't. He's still scared of you." He clasps Vorna's arm, soldier-fashion.
+    ~ set_flag("vorna_freed_holm", true)
     -> free
 + [Come quietly. The bounty's paid either way. #check:intimidation:14]
     { passed:
@@ -78,6 +85,9 @@ The bounty says four bandits are robbing travellers at the forest's edge. The tr
 = free
 Holm grips your hand, hard. "We won't forget it." They're gone into the trees by noon.
 A week later a Grey Company runner finds you with a shield wrapped in oilcloth and a note in a careful soldier's hand: "Holm reached his mother's farm. I didn't want to hang them. Thank you for not making me. — R. Kell"
+{ has("vorna"):
+    Under the signature, in smaller letters: "Tell Kalvaar I haven't forgotten the four."
+}
 ~ set_flag("deserters_freed", true)
 ~ set_flag("kell_owes", true)
 ~ give_item("kells-shield", 1)

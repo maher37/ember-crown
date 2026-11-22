@@ -43,7 +43,6 @@ import {
 import './Creator.css';
 import {
   CLASS_COPY,
-  ELF_EARS,
   EYE_COLORS,
   HAIR_COLORS,
   signed,
@@ -52,7 +51,7 @@ import {
   SPECIES_ORDER,
 } from './creatorCopy';
 import { Portrait } from './Portrait';
-import { portraitGear } from './heroLook';
+import { portraitGear, speciesLook } from './heroLook';
 
 const SHORT: Record<Ability, string> = {
   str: 'STR',
@@ -253,7 +252,7 @@ export function Creator() {
               <div className="portrait-frame">
                 <Portrait
                   {...draft.portrait}
-                  ears={ELF_EARS.has(sp.id) ? 'elf' : 'human'}
+                  {...speciesLook(sp.id)}
                   cloth={CLASS_COPY[cls.id]!.cloth}
                   gear={portraitGear({
                     classId: cls.id,

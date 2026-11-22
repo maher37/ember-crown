@@ -188,6 +188,10 @@ When you climb back out into the evening, someone is waiting at the mine mouth: 
     "What you ran away from doing, little brother." She takes his hands. "Stand with me. Just this once, let a Varrow win."
     ~ set_flag("corin_reunion", true)
     -> meet
+* {has("vorna")} [Something speaks to me in my sleep, since I came into these mountains. Does it speak to you? #as:vorna]
+    Maelis goes very still. Then she smiles, and it's the first real smile you've seen on her. "Then you know it's kind." She looks at Vorna's scales the way nobody else in Ashford has. "Listen to it. It's never once lied to me."
+    ~ set_flag("vorna_maelis", true)
+    -> meet
 + [No. The shard stays with us.]
     She nods, as if she expected it. "Then we'll talk again, when you've seen more of this town." She turns down the track. "The Grey Company is already marching for the Marsh of Chelimber. The second shard is there. Don't let the Guild have it."
     -> done
