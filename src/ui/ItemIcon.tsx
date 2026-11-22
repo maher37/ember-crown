@@ -1,6 +1,6 @@
 // Item icons (playtest): a small drawing for every item, framed by rarity, so a hard-won magic item
 // looks special beside plain gear. Original SVG.
-import { armor, magicItems, weapons } from '../data';
+import { armor, magicItems, treasure, weapons } from '../data';
 import { SOLD_ANYWHERE } from '../game/shops';
 import { slotKindOf } from '../game/loadout';
 
@@ -92,6 +92,8 @@ function glyphOf(id: string): Glyph {
     const base = m?.baseWeapon && typeof m.baseWeapon === 'string' ? m.baseWeapon : id;
     return WEAPON_GLYPH.find(([re]) => re.test(base) || re.test(id))?.[1] ?? 'sword';
   }
+  const t = treasure.find((x) => x.id === id);
+  if (t) return t.kind === 'necklace' ? 'amulet' : 'ring';
   const slot = slotKindOf(id);
   if (slot === 'ring') return 'ring';
   if (slot === 'cloak') return 'cloak';
@@ -327,7 +329,9 @@ export function ItemIcon({ id, size = 36 }: { id: string; size?: number }) {
   const [edge, fill] = FRAME[rarity];
   const g = glyphOf(id);
   const ink = rarity === 'mundane' ? '#b8c0cc' : '#f3ead6';
-  const accent = FLASK_COLOR[id] ?? (rarity === 'mundane' ? '#8a96a8' : edge);
+  // Treasure (gold rings, necklaces) shines gold even though it isn't magic.
+  const gold = treasure.some((x) => x.id === id) ? '#e8c27a' : null;
+  const accent = FLASK_COLOR[id] ?? gold ?? (rarity === 'mundane' ? '#8a96a8' : edge);
   return (
     <span
       className={`item-icon rarity-${rarity}`}

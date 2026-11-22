@@ -30,8 +30,9 @@ import monstersJson from './monsters.json';
 import { BackgroundFile } from './schemas/background';
 import { ClassFile } from './schemas/class';
 import { DifficultyFile } from './schemas/difficulty';
-import { ArmorFile, GearFile, MagicItemFile, WeaponFile } from './schemas/item';
+import { ArmorFile, GearFile, MagicItemFile, TreasureFile, WeaponFile } from './schemas/item';
 import gearJson from './gear.json';
+import treasureJson from './treasure.json';
 import { MonsterFile, NamedFoeFile } from './schemas/monster';
 import { SpeciesFile } from './schemas/species';
 import { SpellFile } from './schemas/spell';
@@ -61,6 +62,7 @@ export const dataFiles = [
   { name: 'armor.json', schema: ArmorFile, raw: armorJson },
   { name: 'gear.json', schema: GearFile, raw: gearJson },
   { name: 'magicItems.json', schema: MagicItemFile, raw: magicItemsJson },
+  { name: 'treasure.json', schema: TreasureFile, raw: treasureJson },
   { name: 'encounters/act1.json', schema: EncounterFile, raw: encountersAct1Json },
   { name: 'encounters/act2.json', schema: EncounterFile, raw: encountersAct2Json },
   { name: 'encounters/act3.json', schema: EncounterFile, raw: encountersAct3Json },

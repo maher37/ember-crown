@@ -76,6 +76,8 @@ Magic rings, cloaks and necklaces hidden in the finds (owner, Nov 22; placements
 - **Act III:** Ring of Resistance (fire) (Wix's cave of trophies), the Kiln-Warden's Mantle (homebrew: advantage on initiative and Perception; the Kiln-Wardens' strongroom). The strongroom's Periapt of Wound Closure is the act's necklace.
 
 
+Plain treasure (owner, Nov 22; `src/data/treasure.json`, values are my picks [inferred]): gold rings, necklaces and an armband, hidden in the finds to sell for gold. PHB: Selling Treasure says jewelry keeps its full value, so Quillon's Curios and Odo's wagon pay the whole price. Two in each act: a gold ring and a silver chain (Act I), a signet ring and a pearl necklace (Act II), a dwarven gold armband and an emerald ring (Act III).
+
 ## Brannoc's rare finds (D25, replaced by D26)
 Bought, not found, so they don't replace the story items above [inferred prices]:
 - **From Act II:** Longsword, Rapier, Mace, Longbow, Greataxe and Quarterstaff +1 (400 gp each); Shield +1 (400 gp); Potion of Greater Healing and Potion of Fire Resistance (150 gp).

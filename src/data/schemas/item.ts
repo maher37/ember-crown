@@ -89,6 +89,25 @@ export const MagicItem = z
 export type MagicItem = z.infer<typeof MagicItem>;
 export const MagicItemFile = fileOf('items', MagicItem);
 
+/**
+ * Plain valuables found as loot: rings, necklaces, gems. PHB: Selling Treasure. Gems, jewelry and
+ * art objects keep their full value, so a keeper who buys them pays the whole price.
+ */
+export const Treasure = z
+  .object({
+    id: Id,
+    name: z.string().min(1),
+    /** What it looks like (picks the icon). */
+    kind: z.enum(['ring', 'necklace', 'bracelet']),
+    valueGp: z.number().int().positive(),
+    /** In our own words: what it is. */
+    summary: z.string().min(1),
+    ...Verify,
+  })
+  .strict();
+export type Treasure = z.infer<typeof Treasure>;
+export const TreasureFile = fileOf('treasure', Treasure);
+
 /** What a piece of adventuring gear does when used (PHB Chapter 5, Adventuring Gear). */
 export const GearUse = z.discriminatedUnion('type', [
   /** Thrown like a flask: a ranged attack (improvised weapon) that deals damage on a hit. */

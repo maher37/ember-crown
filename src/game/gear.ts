@@ -1,6 +1,6 @@
 // Mundane equipment: the catalog (armor, weapons, adventuring gear, magic items), the shop, and
 // wearing or wielding things from the party's pack. Pure functions over the game state.
-import { armor, gear, magicItems, startingSupplies, weapons } from '../data';
+import { armor, gear, magicItems, startingSupplies, treasure, weapons } from '../data';
 import type { Gear, Weapon } from '../data/schemas/item';
 import { armorProfsOf, getSpecies, weaponProfsOf, type Hero } from './hero';
 import { heroAc } from './items';
@@ -20,7 +20,7 @@ import {
 import { heroSpeed } from './levelup';
 import type { GameState } from './save';
 
-export type ItemType = 'magic' | 'armor' | 'shield' | 'weapon' | 'gear';
+export type ItemType = 'magic' | 'armor' | 'shield' | 'weapon' | 'gear' | 'treasure';
 
 export interface CatalogItem {
   id: string;
@@ -59,6 +59,8 @@ export function lookupItem(id: string): CatalogItem | null {
   if (w) return { id, name: w.name, type: 'weapon', costGp: w.costGp, summary: weaponSummary(w) };
   const g = gear.find((x) => x.id === id);
   if (g) return { id, name: g.name, type: 'gear', costGp: g.costGp, summary: g.summary };
+  const t = treasure.find((x) => x.id === id);
+  if (t) return { id, name: t.name, type: 'treasure', costGp: t.valueGp, summary: t.summary };
   return null;
 }
 

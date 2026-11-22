@@ -4,7 +4,7 @@ import { AbilityId, DamageTypeId, Dice, fileOf, Id, Verify } from './common';
 import { StoryCondition } from './story';
 
 const Act = z.union([z.literal(1), z.literal(2), z.literal(3)]);
-const Category = z.enum(['gear', 'weapon', 'armor', 'shield', 'potion', 'magic']);
+const Category = z.enum(['gear', 'weapon', 'armor', 'shield', 'potion', 'magic', 'treasure']);
 
 /** A shop: a keeper, what they stock (from which act), and what they buy back. */
 export const Shop = z

@@ -103,10 +103,15 @@ const categoryOf = (id: string): string | null => {
   return it.type;
 };
 
-/** PHB: Selling Treasure. Half price, only to a keeper who buys that kind of thing; story items never sell. */
+/**
+ * PHB: Selling Treasure. Half price, only to a keeper who buys that kind of thing; story items
+ * never sell. Gems, jewelry and art objects (our treasure) sell for their full value.
+ */
 export function sellPriceAt(shopId: string, id: string): number | null {
   const it = lookupItem(id);
   const cat = categoryOf(id);
+  if (it?.type === 'treasure')
+    return getShop(shopId).buys.includes('treasure') ? (it.costGp ?? null) : null;
   if (!it || it.costGp === undefined || !cat || !SOLD_ANYWHERE.has(id)) return null;
   if (!getShop(shopId).buys.includes(cat as never)) return null;
   return Math.floor((it.costGp / 2) * 100) / 100;
