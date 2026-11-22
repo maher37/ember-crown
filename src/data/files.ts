@@ -3,7 +3,9 @@ import armorJson from './armor.json';
 import backgroundsJson from './backgrounds.json';
 import classesJson from './classes.json';
 import difficultiesJson from './difficulties.json';
-import encountersJson from './encounters.json';
+import encountersAct1Json from './encounters/act1.json';
+import encountersAct2Json from './encounters/act2.json';
+import encountersAct3Json from './encounters/act3.json';
 import loadoutsJson from './loadouts.json';
 import npcsJson from './npcs.json';
 import questsJson from './quests.json';
@@ -59,7 +61,9 @@ export const dataFiles = [
   { name: 'armor.json', schema: ArmorFile, raw: armorJson },
   { name: 'gear.json', schema: GearFile, raw: gearJson },
   { name: 'magicItems.json', schema: MagicItemFile, raw: magicItemsJson },
-  { name: 'encounters.json', schema: EncounterFile, raw: encountersJson },
+  { name: 'encounters/act1.json', schema: EncounterFile, raw: encountersAct1Json },
+  { name: 'encounters/act2.json', schema: EncounterFile, raw: encountersAct2Json },
+  { name: 'encounters/act3.json', schema: EncounterFile, raw: encountersAct3Json },
   { name: 'loadouts.json', schema: LoadoutFile, raw: loadoutsJson },
   { name: 'quests.json', schema: QuestFile, raw: questsJson },
   { name: 'npcs.json', schema: NpcFile, raw: npcsJson },
