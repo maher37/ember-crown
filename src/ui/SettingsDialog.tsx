@@ -1,6 +1,6 @@
 import { difficulties } from '../data';
 import { SoundControls } from '../audio/SoundButton';
-import { useSettings, type ToggleKey } from '../game/settings';
+import { ANIM_SPEEDS, useSettings, type ToggleKey } from '../game/settings';
 import { useGame } from '../game/store';
 import { Modal } from './ExploreDialogs';
 import './Sheet.css';
@@ -30,7 +30,12 @@ const GROUPS: { title: string; toggles: { key: ToggleKey; label: string; note?: 
       {
         key: 'reduceFlashing',
         label: 'Reduce flashing',
-        note: 'No bright flash when someone is hit (a small shake instead).',
+        note: 'No bright flashes when someone is hit or a spell goes off; Color Spray stays still.',
+      },
+      {
+        key: 'shake',
+        label: 'Shake tokens when hit',
+        note: 'Off: a hit shows as a red outline instead.',
       },
     ],
   },
@@ -84,6 +89,27 @@ export function SettingsDialog({ onClose }: { onClose: () => void }) {
             ))}
           </section>
         ))}
+        <section aria-label="Combat animation">
+          <h3 className="eyebrow">Combat animation</h3>
+          <div role="radiogroup" aria-label="Animation speed" className="seg">
+            {ANIM_SPEEDS.map((a) => (
+              <button
+                key={a.id}
+                type="button"
+                role="radio"
+                aria-checked={settings.animSpeed === a.id}
+                className={settings.animSpeed === a.id ? 'on' : ''}
+                onClick={() => settings.setAnimSpeed(a.id)}
+              >
+                {a.label}
+              </button>
+            ))}
+          </div>
+          <p className="small muted">
+            Arrows, spells and damage numbers. Instant shows only the numbers. Reduce motion also
+            skips the flying effects.
+          </p>
+        </section>
         <section aria-label="Sound">
           <h3 className="eyebrow">Sound</h3>
           <SoundControls />

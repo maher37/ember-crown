@@ -34,6 +34,7 @@ import { castSpell, getSpell, spiritAttack } from './spells';
 import { silenced } from './zones';
 import { meleeOption, moveAlong, nextTurn, settle, speedNow } from './turn';
 import type { CombatState, Combatant, EnemyPlan, PlanStep, Pos } from './types';
+import { firstDamageType, fx } from './fx';
 
 /**
  * Run the active enemy's turn (pausing if a party member gets a reaction prompt). The UI
@@ -293,6 +294,13 @@ function areaAction(ctx: Ctx, me: Combatant, actionId: string, point: Pos): void
   me.recharge = { ...me.recharge, [a.id]: false };
   say(s, 'foe', `${me.name} uses ${a.name}!`);
   const cells = coneCells(s.map, me.pos, point, a.area!.size);
+  fx(s, {
+    type: 'area',
+    casterId: me.id,
+    shape: 'cone',
+    cells,
+    damageType: firstDamageType(a.effects),
+  });
   const caught = Object.values(s.combatants).filter(
     (c) =>
       c.id !== me.id &&
@@ -586,6 +594,7 @@ export function continuePlan(ctx: Ctx): void {
         else me.turn.actionUsed = true;
         if (step.slotLevel > 0) spendSlot(me, step.slotLevel);
         say(s, 'foe', `${me.name}'s ${sp.name} fizzles (countered)`);
+        fx(s, { type: 'banner', text: 'Countered!', side: me.side });
       } else if (ok) castSpell(ctx, me, step);
       plan.steps.shift();
     } else if (step.type === 'area-action') {
@@ -808,6 +817,7 @@ export function resolvePrompt(ctx: Ctx, accept: boolean): void {
       reactor.reactionUsed = true;
       const opt = meleeOption(reactor);
       say(s, 'you', `${reactor.name} takes an opportunity attack!`);
+      fx(s, { type: 'banner', text: 'Opportunity Attack!', side: reactor.side });
       if (opt) makeAttack(ctx, reactor, get(s, p.targetId), opt, { opportunity: true });
     }
   } else if (p.kind === 'protection') {
@@ -831,6 +841,7 @@ export function resolvePrompt(ctx: Ctx, accept: boolean): void {
         expires: { turnOf: reactor.id, when: 'start', round: nextTurnRound(s, reactor.id) },
       });
       say(s, 'you', `${reactor.name} casts Shield (+5 AC)`);
+      fx(s, { type: 'banner', text: 'Shield!', side: reactor.side });
       chargeWard(s, reactor, lvl);
     }
   } else if (p.kind === 'counterspell') {
@@ -841,6 +852,7 @@ export function resolvePrompt(ctx: Ctx, accept: boolean): void {
       reactor.reactionUsed = true;
       step.countered = true;
       say(s, 'you', `${reactor.name} casts Counterspell (level ${lvl} slot)!`);
+      fx(s, { type: 'banner', text: 'Counterspell!', side: reactor.side });
     }
   } else if (p.kind === 'cutting-words') {
     if (accept && step?.type === 'attack' && step.roll) {

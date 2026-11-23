@@ -10,7 +10,7 @@
 | N3 | ✅ **Done.** D31 decided: Medium stays as it is (owner, Nov 22). | (none) |
 | N4 | ✅ **Done** (refactor R1, Nov 22). **Refactor:** split the biggest files (`src/game/combat/actions.ts`, `src/ui/CombatScreen.tsx`, `src/game/store.ts`, `src/data/encounters.json` by act) with no behavior change | `Do refactor R1 from docs/BUILD_ROADMAP.md.` |
 | N5 | ✅ **Done once** (owner played start to finish; Medium felt right). Repeat after major changes, such as the premade heroes' own stories. **Full playthrough** by the owner, start to finish, with notes in `docs/PLAYTEST.md` or issues | (no prompt; then `Work the playtest inbox.`) |
-| N6 | **M11 animations** | `Do Milestone M11 from docs/BUILD_ROADMAP.md.` |
+| N6 | ✅ **Done** (Nov 23). **M11 animations** | `Do Milestone M11 from docs/BUILD_ROADMAP.md.` |
 
 **Recommendation:** hold new features (more subclasses, shops, places) until N5 is done. Note them in `docs/PLAYTEST.md` as "feature wish" so nothing is lost.
 
@@ -135,4 +135,6 @@
 ## M11: Animations (phase 2)
 - A presentation-event system, then the effects list in `docs/Animation_Plan.md` (projectiles, spell areas, damage-type colors, condition icons, downed state).
 - Includes the reduce-motion and reduce-flashing settings.
+- ✅ **Done (Nov 23):** the engine records presentation events (`src/game/combat/fx.ts`); the combat screen plays them (`src/ui/combat/fxPlayer.ts`, `FxLayer.tsx`, `TokenStatus.tsx`). Built: arrows, bolts, thrown weapons and melee swings (a miss flies past), spell beams, Magic Missile darts in one volley, Fireball-style beads, spell areas and breath cones, damage numbers coloured by type, healing motes, Saved/Failed shields, reaction banners, spell-school cast glows, condition icons, a concentration ring, and the downed state (blood drop, death-save pips, Stable, skull). Settings: animation speed 1× / 2× / Instant, shake on/off, reduce flashing (also calms Color Spray).
+- Not yet (the "phase 2 ideas" in Animation_Plan.md): dice on screen, area previews with ally warnings, class signatures (Rage aura is an icon only), the cracking concentration ring, the movement danger preview, and out-of-combat moments.
 - **Prompt:** `Do Milestone M11 from docs/BUILD_ROADMAP.md.`

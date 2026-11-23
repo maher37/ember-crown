@@ -37,6 +37,7 @@ import {
 import { conscious, coverBetween, distanceFeet, hasLineOfSight, isAdjacent } from './grid';
 import { applyLeaf } from './leaves';
 import type { Combatant } from './types';
+import { fx, weaponShot } from './fx';
 
 export interface AttackOption {
   id: string;
@@ -308,6 +309,28 @@ export function makeAttack(
   target: Combatant,
   opt: AttackOption,
   extras: AttackExtras = {},
+): { hit: boolean; critical: boolean; total: number; natural: number } {
+  // M11: the shot is recorded before its damage so the screen plays them in order; whether it
+  // hit is filled in once the roll is known.
+  const shot = fx(ctx.s, {
+    type: 'shot',
+    fromId: attacker.id,
+    toId: target.id,
+    style: weaponShot(opt.name, opt.kind),
+    hit: false as boolean,
+    damageType: opt.damage[0]?.type,
+  });
+  const r = resolveAttack(ctx, attacker, target, opt, extras);
+  shot.hit = r.hit;
+  return r;
+}
+
+function resolveAttack(
+  ctx: Ctx,
+  attacker: Combatant,
+  target: Combatant,
+  opt: AttackOption,
+  extras: AttackExtras,
 ): { hit: boolean; critical: boolean; total: number; natural: number } {
   const { s, rng } = ctx;
   const adv: string[] = [];
@@ -598,6 +621,7 @@ export function makeAttack(
       target.reactionUsed = true;
       spendResource(target, 'superiority-dice');
       say(s, 'you', `${target.name} ripostes!`);
+      fx(s, { type: 'banner', text: 'Riposte!', side: target.side });
       const die = roll('1d8', rng);
       makeAttack(ctx, target, attacker, back, {
         extraDamage: { dice: String(die.total), type: back.damage[0]!.type },
@@ -616,6 +640,7 @@ export function makeAttack(
     ) {
       target.reactionUsed = true;
       spendSlot(target, 1);
+      fx(s, { type: 'banner', text: 'Shield!', side: target.side });
       target.effects.push({
         id: 'shield',
         name: 'Shield',
@@ -643,6 +668,7 @@ export function makeAttack(
     const parry = getMonster(target.monsterId).actions.find((a) => a.id === 'parry');
     if (parry && total < currentAc(target) + 2) {
       target.reactionUsed = true;
+      fx(s, { type: 'banner', text: 'Parry!', side: target.side });
       say(
         s,
         'foe',

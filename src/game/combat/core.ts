@@ -24,6 +24,7 @@ import {
 } from '../../rules';
 import { conscious, distanceFeet } from './grid';
 import { hasBeacon } from './wards';
+import { fx } from './fx';
 import type { ActiveEffect, CombatState, Combatant, LogLine } from './types';
 
 /**
@@ -164,6 +165,7 @@ export function dealDamage(
     const left = target.wildShape.hp - taken;
     if (left > 0) {
       target.wildShape.hp = left;
+      fxDamage(s, target, instances, taken, !!opts.critical);
       say(
         s,
         'dmg',
@@ -172,6 +174,7 @@ export function dealDamage(
       return taken;
     }
     say(s, 'dmg', `${target.name}'s beast form drops; ${-left} damage carries over`);
+    fxDamage(s, target, instances, target.wildShape.hp, !!opts.critical);
     target.wildShape = undefined;
     if (left === 0) return taken;
     parts = [{ amount: -left, type: instances[0]!.type }];
@@ -215,6 +218,7 @@ export function dealDamage(
   }
   // Keep the real defenses (Rage resistance is not permanent).
   target.creature = { ...after, defenses: before.defenses };
+  fxDamage(s, target, parts, out.damageTaken, !!opts.critical, view);
   if (warder && wardLeft !== wardHp) {
     warder.creature = { ...warder.creature, arcaneWard: wardLeft } as Hero;
     if (warder.id !== target.id) warder.reactionUsed = true;
@@ -283,6 +287,42 @@ export function dealDamage(
     }
   }
   return out.damageTaken;
+}
+
+/**
+ * M11: one floating number per damage type (a flaming sword shows its fire apart), in the
+ * type's colour. The numbers add up to the damage actually taken.
+ */
+function fxDamage(
+  s: CombatState,
+  target: Combatant,
+  parts: DamageInstance[],
+  taken: number,
+  critical: boolean,
+  view?: Creature,
+): void {
+  const live = parts.filter((p) => p.amount > 0);
+  if (!live.length) return;
+  if (live.length === 1 || !view) {
+    fx(s, {
+      type: 'damage',
+      targetId: target.id,
+      amount: taken,
+      damageType: live[0]!.type,
+      critical,
+    });
+    return;
+  }
+  let left = taken;
+  live.forEach((p, i) => {
+    const amount =
+      i === live.length - 1
+        ? left
+        : Math.min(left, adjustForDefenses(p.amount, p.type, view.defenses).amount);
+    left -= amount;
+    if (amount > 0 || i === 0)
+      fx(s, { type: 'damage', targetId: target.id, amount, damageType: p.type, critical });
+  });
 }
 
 /**
@@ -370,6 +410,7 @@ export function healCombatant(
   }
   const out = rulesHeal(target.creature, amount, source);
   target.creature = out.creature;
+  if (out.healed > 0) fx(ctx.s, { type: 'heal', targetId: target.id, amount: out.healed });
   sayAll(ctx.s, out.log, healer);
   return out.healed;
 }
@@ -462,6 +503,7 @@ export function combatSave(
     );
     if (total >= dc) result = { ...result, total, success: true };
   }
+  fx(ctx.s, { type: 'save', targetId: target.id, success: result.success, ability });
   return result;
 }
 

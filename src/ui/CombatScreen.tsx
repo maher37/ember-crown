@@ -25,7 +25,10 @@ import { hasCondition, SeededRng } from '../rules';
 import './Combat.css';
 import { isDiceLine, tokenDrawOrder } from './combatUi';
 import { foeInfo } from './foeInfo';
-import { useHitFx } from './combatFx';
+import { useFxPlayer } from './combat/fxPlayer';
+import { FxLayer } from './combat/FxLayer';
+import { statusWords, TokenStatus } from './combat/TokenStatus';
+import { prefersReducedMotion } from '../game/settings';
 import { setLabel } from '../game/loadout';
 import { getItem } from '../game/items';
 import { getGear, isMagicItem } from '../game/gear';
@@ -54,7 +57,12 @@ export function CombatScreen() {
   const [maneuver, setManeuver] = useState<'' | 'trip' | 'push'>('');
   const [inspect, setInspect] = useState<string | null>(null);
   const s = combat!;
-  const fx = useHitFx(s);
+  const reduceMotion = settings.reduceMotion || prefersReducedMotion();
+  const fx = useFxPlayer(s, { speed: settings.animSpeed, reduceMotion });
+  const { busyMs } = fx;
+  const hitNow = new Set(
+    fx.playing.flatMap((p) => (p.ev.type === 'damage' && p.ev.amount > 0 ? [p.ev.targetId] : [])),
+  );
   const me = s.combatants[s.order[s.turnIndex]!]!;
   const myTurn = me.side === 'party' && !s.outcome && !s.prompt;
   const myLevel = heroOf(me)?.level ?? 1;
@@ -62,9 +70,10 @@ export function CombatScreen() {
   // Enemy turns play out one at a time so the log can be followed.
   useEffect(() => {
     if (s.outcome || s.prompt || me.side !== 'enemy') return;
-    const t = setTimeout(combatAdvance, 450);
+    // M11: the next enemy step waits for the last one's animation to finish.
+    const t = setTimeout(combatAdvance, 450 + busyMs());
     return () => clearTimeout(t);
-  }, [s, me.side, combatAdvance]);
+  }, [s, me.side, combatAdvance, busyMs]);
 
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
@@ -310,9 +319,9 @@ export function CombatScreen() {
               <button
                 key={c.id}
                 type="button"
-                className={`token ${c.side} ${c.id === me.id ? 'active' : ''} ${target ? 'target' : ''} ${dead ? 'dead' : ''} ${down && !dead ? 'downed' : ''} ${fx.flashing(c.id) ? (settings.reduceFlashing ? 'hit calm' : 'hit') : ''}`}
+                className={`token ${c.side} ${c.id === me.id ? 'active' : ''} ${target ? 'target' : ''} ${dead ? 'dead' : ''} ${down && !dead ? 'downed' : ''} ${hitNow.has(c.id) ? `hit${settings.reduceFlashing ? ' calm' : ''}${settings.shake ? '' : ' still'}` : ''} ${hasCondition(c.creature, 'prone') ? 'prone' : ''} ${hasCondition(c.creature, 'invisible') ? 'invisible' : ''}`}
                 style={{ left: c.pos.x * CELL + 4, top: c.pos.y * CELL + 4 }}
-                aria-label={`${c.name}, ${c.side === 'party' ? 'ally' : 'enemy'}, ${dead ? 'dead' : down ? 'down' : `HP ${c.wildShape?.hp ?? c.creature.hp} of ${c.wildShape?.maxHp ?? c.creature.maxHp}`}${target ? ', valid target' : ''}`}
+                aria-label={`${c.name}, ${c.side === 'party' ? 'ally' : 'enemy'}, ${dead ? 'dead' : down ? 'down' : `HP ${c.wildShape?.hp ?? c.creature.hp} of ${c.wildShape?.maxHp ?? c.creature.maxHp}`}${statusWords(c)}${target ? ', valid target' : ''}`}
                 aria-disabled={!target && !(mode.kind === 'spell' && validTargets.size === 0)}
                 onMouseEnter={() => setHover(c.pos)}
                 onFocus={() => setHover(c.pos)}
@@ -324,23 +333,11 @@ export function CombatScreen() {
               >
                 {c.wildShape ? 'Wf' : c.short}
                 {chosen ? <span className="badge">{chosen}</span> : null}
+                <TokenStatus c={c} />
               </button>
             );
           })}
-          {fx.floats.map((f) => {
-            const c = s.combatants[f.id];
-            if (!c) return null;
-            return (
-              <span
-                key={f.key}
-                className={`float ${f.kind}`}
-                style={{ left: c.pos.x * CELL + 24, top: c.pos.y * CELL + 2 }}
-                aria-hidden="true"
-              >
-                {f.text}
-              </span>
-            );
-          })}
+          <FxLayer s={s} playing={fx.playing} reduceFlashing={settings.reduceFlashing} />
           {banner && myTurn && (
             <div className="banner" role="status">
               {banner}{' '}

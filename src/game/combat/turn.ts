@@ -39,6 +39,7 @@ import {
 import { conscious, distanceFeet, moveCost, parseMap } from './grid';
 import { enterSquare, startOfTurnZones, zoneSlows } from './zones';
 import { castBeforeFight } from './precast';
+import { fx } from './fx';
 import { hasBeacon, passWithoutTrace } from './wards';
 import { restoreBuffs } from './carryover';
 import type { Precast } from '../precast';
@@ -643,6 +644,7 @@ export function moveAlong(
         if (s.difficulty === 'easy') continue;
         h.reactionUsed = true;
         say(s, 'foe', `${h.name} makes an opportunity attack!`);
+        fx(s, { type: 'banner', text: 'Opportunity Attack!', side: h.side });
         // PHB: Totem Warrior (Eagle). Opportunity attacks against a raging eagle have disadvantage.
         const eagle = isSub(mover, 'barbarian', 'totem-eagle', 3) && hasEffect(mover, 'rage');
         makeAttack(ctx, h, mover, opt, {
