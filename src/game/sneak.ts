@@ -8,6 +8,7 @@ import { noisyArmor } from './gear';
 import { skillBonus, type Hero } from './hero';
 import { armor } from '../data';
 import { getItem, itemMods } from './items';
+import { precastProblems, type Precast } from './precast';
 
 /** A monster's passive Perception: 10 + its Perception skill (or Wisdom modifier). PHB: Passive Checks. */
 export function monsterPassive(monsterId: string): number {
@@ -31,12 +32,14 @@ export interface SneakOdds {
   name: string;
   /** Stealth bonus: Dex + proficiency (or expertise) + items like the Stone of Good Luck. */
   bonus: number;
+  /** PHB: Pass without Trace, cast before the fight: +10 (included in `bonus`). */
+  passWithoutTrace?: boolean;
   advantage: string[];
   disadvantage: string[];
 }
 
 /** How good a hero is at sneaking, with the reasons for advantage or disadvantage. */
-export function sneakOdds(hero: Hero): SneakOdds {
+export function sneakOdds(hero: Hero, passWithoutTrace = false): SneakOdds {
   const advantage = (hero.equipment.magic ?? [])
     .filter((id) =>
       getItem(id).effects.some((e) => e.type === 'special' && e.id === 'stealth-advantage-quiet'),
@@ -49,7 +52,8 @@ export function sneakOdds(hero: Hero): SneakOdds {
   return {
     heroId: hero.id,
     name: hero.name,
-    bonus: skillBonus(hero, 'stealth') + itemMods(hero).check,
+    bonus: skillBonus(hero, 'stealth') + itemMods(hero).check + (passWithoutTrace ? 10 : 0),
+    passWithoutTrace,
     advantage,
     disadvantage,
   };
@@ -66,13 +70,31 @@ export function sneakChance(odds: SneakOdds, dc: number): number {
 }
 
 /** The scout's Stealth check (logged like every other roll). */
-export function rollSneak(hero: Hero, dc: number, rng: RandomSource): TestResult {
+export function rollSneak(
+  hero: Hero,
+  dc: number,
+  rng: RandomSource,
+  passWithoutTrace = false,
+): TestResult {
   const odds = sneakOdds(hero);
   const dex = abilityModifier(hero.abilities.dex);
   return abilityCheck(hero, 'dex', dc, rng, {
     label: 'Stealth',
     advantage: odds.advantage,
     disadvantage: odds.disadvantage,
-    bonuses: odds.bonus - dex ? [{ label: 'skill', value: odds.bonus - dex }] : [],
+    bonuses: [
+      ...(odds.bonus - dex ? [{ label: 'skill', value: odds.bonus - dex }] : []),
+      ...(passWithoutTrace ? [{ label: 'Pass without Trace', value: 10 }] : []),
+    ],
   });
+}
+
+/** The Pass without Trace in a before-fight list, if its caster can still cast it (D34). */
+export function plannedPassWithoutTrace(party: Hero[], list: Precast[]): Precast | undefined {
+  return list.find(
+    (p) =>
+      p.spellId === 'pass-without-trace' &&
+      party.some((h) => h.id === p.casterId && !h.dead && h.hp > 0) &&
+      !precastProblems(party, [p]).length,
+  );
 }

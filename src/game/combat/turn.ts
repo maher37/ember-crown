@@ -39,6 +39,8 @@ import {
 import { conscious, distanceFeet, moveCost, parseMap } from './grid';
 import { enterSquare, startOfTurnZones, zoneSlows } from './zones';
 import { castBeforeFight } from './precast';
+import { hasBeacon, passWithoutTrace } from './wards';
+import { restoreBuffs } from './carryover';
 import type { Precast } from '../precast';
 import { giveCondition } from './leaves';
 import type { CombatState, Combatant, Pos, TurnState } from './types';
@@ -91,6 +93,8 @@ export interface StartOptions {
    * sneak (an ambush), 'party' when the scout was spotted. Replaces the encounter's own surprise roll.
    */
   surprise?: 'enemies' | 'party';
+  /** The game hour: long spells from earlier (Aid, Mage Armor...) still run if within it (D34). */
+  clock?: number;
 }
 
 /** Set up a fight: place everyone, roll initiative (and surprise), and start the first turn. */
@@ -118,6 +122,7 @@ export function startCombat(o: StartOptions): CombatState {
     parleyTried: [],
     inventory: { ...(o.inventory ?? {}) },
     flags: { ...(o.flags ?? {}) },
+    ...(o.clock !== undefined ? { clock: o.clock } : {}),
   };
   return produce(base, (ctx) => {
     const { s } = ctx;
@@ -230,6 +235,7 @@ export function startCombat(o: StartOptions): CombatState {
       }
     }
     say(s, 'head', e.code === 'F2' ? 'Goblins burst from the treeline!' : `${e.name} begins!`);
+    if (o.clock !== undefined) restoreBuffs(ctx, o.clock);
     rollInitiative(ctx);
     castBeforeFight(ctx, o.precasts ?? []);
     if (o.surprise) surpriseSide(ctx, o.surprise);
@@ -336,14 +342,15 @@ export function surpriseSide(ctx: Ctx, side: 'enemies' | 'party'): void {
   }
 }
 
-export function stealthBonus(c: Combatant): number {
+export function stealthBonus(c: Combatant, s?: CombatState): number {
   const h = heroOf(c);
   const dex = abilityModifier(c.creature.abilities.dex);
   if (h)
     return (
       dex +
       (h.expertise.includes('stealth') ? 2 : h.skills.includes('stealth') ? 1 : 0) *
-        h.proficiencyBonus
+        h.proficiencyBonus +
+      (s ? passWithoutTrace(s, c) : 0)
     );
   return c.monsterId ? (getMonster(c.monsterId).skills.stealth ?? dex) : dex;
 }
@@ -422,7 +429,8 @@ function beginTurn(ctx: Ctx): boolean {
     return false;
   }
   if (isDying(c.creature)) {
-    const r = deathSave(c.creature, rng);
+    // PHB: Beacon of Hope. Advantage on death saves.
+    const r = deathSave(c.creature, rng, hasBeacon(c) ? 'Beacon of Hope' : undefined);
     c.creature = r.creature;
     sayAll(s, r.log, c);
     if (r.outcome !== 'revived') return false;

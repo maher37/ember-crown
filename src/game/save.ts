@@ -127,6 +127,18 @@ export const HeroSchema = z.object({
   canPrepare: z.boolean().optional(),
   subclassId: z.string().optional(),
   lingering: z.object({ spell: z.string(), until: z.number().optional() }).optional(),
+  buffs: z
+    .array(
+      z.object({
+        spell: z.enum(['aid', 'mage-armor', 'armor-of-agathys', 'false-life']),
+        until: z.number(),
+        amount: z.number().optional(),
+        hpAbove: z.number().optional(),
+        tempHp: z.number().optional(),
+        cold: z.number().optional(),
+      }),
+    )
+    .optional(),
   arcaneWard: z.number().int().min(0).optional(),
   equipment: z.object({
     armor: z.string().nullable(),

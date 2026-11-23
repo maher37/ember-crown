@@ -22,7 +22,8 @@ export type PrecastTarget = { kind: 'self' } | { kind: 'allies'; count: number }
 /** Who a spell cast before the fight can be aimed at, at this slot level. */
 export function precastTarget(sp: Spell, slotLevel: number): PrecastTarget {
   if (FOE_SPELLS.has(sp.id)) return { kind: 'foe' };
-  if (sp.range === 'self') return { kind: 'self' };
+  // Beacon of Hope reaches every ally within 30 ft of the caster: no one to pick.
+  if (sp.range === 'self' || sp.id === 'beacon-of-hope') return { kind: 'self' };
   const extra = Math.max(0, slotLevel - sp.level);
   return { kind: 'allies', count: (sp.targets ?? 1) + (sp.upcast?.targetsPerLevel ?? 0) * extra };
 }

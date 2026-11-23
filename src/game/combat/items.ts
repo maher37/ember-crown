@@ -2,16 +2,9 @@ import { gear } from '../../data';
 import { getMonster } from '../creatures';
 import { getItem } from '../items';
 import { skillBonus } from '../hero';
-import {
-  abilityCheck,
-  abilityModifier,
-  isDying,
-  roll,
-  SKILLS,
-  stabilize,
-  type Skill,
-} from '../../rules';
+import { abilityCheck, abilityModifier, isDying, SKILLS, stabilize, type Skill } from '../../rules';
 import { attackBlocked, makeAttack, type AttackOption } from './attacks';
+import { healDice } from './wards';
 import { addEffect, healCombatant, heroOf, say, type Ctx, isSub } from './core';
 import { distanceFeet } from './grid';
 import type { Combatant } from './types';
@@ -104,7 +97,8 @@ export function applyItem(ctx: Ctx, c: Combatant, itemId: string, targetId: stri
   );
   for (const e of item.effects) {
     if (e.type === 'heal') {
-      const r = roll(e.dice, rng);
+      // PHB: Beacon of Hope. Healing gives its maximum.
+      const r = healDice(target, e.dice, rng);
       say(s, 'you', `${item.name}: ${r.text}`);
       healCombatant(ctx, target, r.total, item.name, c);
     } else if (e.type === 'special' && e.id === 'resistance-for-1-hour') {

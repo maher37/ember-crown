@@ -23,6 +23,7 @@ import {
   type TestResult,
 } from '../../rules';
 import { conscious, distanceFeet } from './grid';
+import { hasBeacon } from './wards';
 import type { ActiveEffect, CombatState, Combatant, LogLine } from './types';
 
 /**
@@ -396,6 +397,8 @@ export function combatSave(
   )
     adv.push('Danger Sense');
   if (ability === 'str' && hasEffect(target, 'rage')) adv.push('Rage');
+  // PHB: Beacon of Hope. Advantage on Wisdom saving throws.
+  if (ability === 'wis' && hasBeacon(target)) adv.push('Beacon of Hope');
   if (h) {
     const species = h.speciesId;
     if (opts.against === 'charmed' && (species === 'high-elf' || species === 'half-elf'))

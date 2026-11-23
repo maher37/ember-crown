@@ -1390,8 +1390,12 @@
       "components": "V, S",
       "classes": ["cleric", "paladin", "warlock", "wizard"],
       "summary": "Aberrations, celestials, elementals, fey, fiends and undead have disadvantage attacking the target, and can't charm, frighten or possess it.",
-      "effects": [],
-      "utility": true
+      "effects": [
+        {
+          "type": "special",
+          "id": "prot-evil-good"
+        }
+      ]
     },
     {
       "id": "goodberry",
@@ -1932,15 +1936,10 @@
       "summary": "You and allies within 30 ft get +10 to Stealth checks.",
       "effects": [
         {
-          "type": "modifier",
-          "target": "check",
-          "value": 10,
-          "duration": {
-            "hours": 1
-          }
+          "type": "special",
+          "id": "pass-without-trace"
         }
-      ],
-      "utility": true
+      ]
     },
     {
       "id": "branding-smite",
@@ -2581,9 +2580,13 @@
       },
       "components": "V, S",
       "classes": ["cleric"],
-      "summary": "Allies get advantage on Wis saves and death saves, and regain the maximum from healing.",
-      "effects": [],
-      "utility": true
+      "summary": "You and allies within 30 ft get advantage on Wis saves and death saves, and regain the maximum from healing.",
+      "effects": [
+        {
+          "type": "special",
+          "id": "beacon-of-hope"
+        }
+      ]
     },
     {
       "id": "stinking-cloud",

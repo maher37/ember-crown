@@ -1,3 +1,4 @@
+import { buffsAfterFight } from './carryover';
 import { encounters } from '../../data';
 import { levelUpHero, type Hero } from '../hero';
 import { awardXp, stabilize } from '../../rules';
@@ -50,7 +51,11 @@ export function finishCombat(state: CombatState, party: Hero[]): CombatResult {
         ...h,
         abilities: { ...h.abilities, str: h.abilities.str + Number(drain.data?.amount ?? 0) },
       };
-    // Aid's extra hit points end with the fight [inferred: RAW 8 hours].
+    // D34: long spells still running (Aid, Mage Armor, Armor of Agathys, False Life) are kept
+    // with their end hour, to come back in the next fight within it. Read before the clean-up.
+    const buffs = state.clock !== undefined ? buffsAfterFight(c, h, state.clock) : [];
+    // Aid's extra hit points leave the sheet between fights; they come back with the next fight
+    // while Aid lasts (carryover.ts).
     const aid = c.effects.find((e) => e.tag === 'aid');
     if (aid)
       h = {
@@ -72,6 +77,7 @@ export function finishCombat(state: CombatState, party: Hero[]): CombatResult {
     h = {
       ...h,
       lingering,
+      buffs: buffs.length ? buffs : undefined,
       tempHp: 0,
       concentration: null,
       conditions: [],

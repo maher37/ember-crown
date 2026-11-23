@@ -45,6 +45,8 @@ export interface Scouted {
   heroId: string;
   success: boolean;
   text: string;
+  /** A Pass without Trace cast for the scout (its slot is spent whatever happens next). */
+  pwt?: Precast;
 }
 
 export interface GameStore {
@@ -165,7 +167,7 @@ export interface GameStore {
     precasts?: Precast[];
   }) => void;
   /** Send one hero ahead to sneak up on the fight being prepared (D35). One try per fight. */
-  scout: (heroId: string, difficulty: DifficultyId) => Scouted | null;
+  scout: (heroId: string, difficulty: DifficultyId, precasts?: Precast[]) => Scouted | null;
   /** After a successful scout: get past unseen, for the fight's XP (D35). */
   slipPast: () => void;
   combatAct: (a: PlayerAction) => string | undefined;
