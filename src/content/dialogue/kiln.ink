@@ -355,37 +355,11 @@ The mountain's heart is a cavern of molten light. In a ritual circle of black ir
 -> speak
 = speak
 #speaker:maelis
-* {flag("truth_collapse") && not (has("harl") && flag("harl_named_hadric"))} [Your father's name is clear. Ashford has said it.]
-    "I know." Her voice catches. "I heard it said out loud. I thought it would feel like winning."
-    -> speak
-* {flag("truth_crown")} [The voice isn't your father. It's Cindrath. The crown is her cage.]
-    "It knew how he took his tea." But the crown's light stutters as she says it.
-    -> speak
-* {flag("truth_family")} [Your mother never wanted vengeance. She wanted you to live.]
-    { has_item("lysas-locket"):
-        You hold up the locket. Maelis stares at it, and for a moment she is nine years old.
-    }
-    "Mother," she whispers. "Don't."
-    -> speak
-* {has("corin")} [You call me "boy". You're not our father. #as:corin]
-    The voice in the crown laughs, low and pleased, and Maelis flinches: she heard it too. Their father never called him boy.
-    -> speak
-* {has("harl") && flag("harl_named_hadric")} [Your father's name is on the mine wall now. #as:harl]
-    "I saw it," Maelis says. "I stood in front of it for an hour, on my way up the mountain." The crown's light dims, just a little, while she remembers.
-    { flag("truth_collapse"):
-        "And Ashford has said it out loud now." Her voice catches. "I thought it would feel like winning."
-    }
-    -> speak
-* {has("vorna")} [It called me daughter, Maelis. It calls everyone whatever they're missing. #as:vorna]
-    { flag("vorna_refused_voice"):
-        "Not you, now," the crown hisses, and it isn't her father's voice at all. Maelis takes a step back from her own hands.
-    - else:
-        "Daughter," the crown croons, at Vorna, in a voice Maelis has never heard it use. Maelis stares at the crown as if it had bitten her.
-    }
-    -> speak
-* {has_item("drowned-lantern")} [You asked us to bring a lantern. We did.]
-    Maelis looks at the Drowned Lantern, Brannoc's lantern, and something in her face gives way. "You did," she says.
-    -> speak
+// Story_Bible §10: at most 5 choices. What you learned, and the heroes' own lines, each open a short list.
++ {(flag("truth_collapse") && not tell.t_collapse && not (has("harl") && flag("harl_named_hadric"))) || (flag("truth_crown") && not tell.t_crown) || (flag("truth_family") && not tell.t_family) || (has_item("drowned-lantern") && not tell.t_lantern)} [Tell her what you've learned.]
+    -> tell
++ {(has("corin") && not own.y_corin) || (has("harl") && flag("harl_named_hadric") && not own.y_harl) || (has("vorna") && not own.y_vorna)} [Say something of your own.]
+    -> own
 + [Maelis. Take it off. (Try to talk her down.)]
     { speech():
         -> redeemed
@@ -398,6 +372,45 @@ The mountain's heart is a cavern of molten light. In a ritual circle of black ir
     ~ fight("f21-crowning-maelis", "arrive.after_maelis")
     -> END
 
+= tell
+#speaker:maelis
+* (t_collapse) {flag("truth_collapse") && not (has("harl") && flag("harl_named_hadric"))} [Your father's name is clear. Ashford has said it.]
+    "I know." Her voice catches. "I heard it said out loud. I thought it would feel like winning."
+    -> speak
+* (t_crown) {flag("truth_crown")} [The voice isn't your father. It's Cindrath. The crown is her cage.]
+    "It knew how he took his tea." But the crown's light stutters as she says it.
+    -> speak
+* (t_family) {flag("truth_family")} [Your mother never wanted vengeance. She wanted you to live.]
+    { has_item("lysas-locket"):
+        You hold up the locket. Maelis stares at it, and for a moment she is nine years old.
+    }
+    "Mother," she whispers. "Don't."
+    -> speak
+* (t_lantern) {has_item("drowned-lantern")} [You asked us to bring a lantern. We did.]
+    Maelis looks at the Drowned Lantern, Brannoc's lantern, and something in her face gives way. "You did," she says.
+    -> speak
++ [Not yet. Something else.]
+    -> speak
+= own
+#speaker:maelis
+* (y_corin) {has("corin")} [You call me "boy". You're not our father. #as:corin]
+    The voice in the crown laughs, low and pleased, and Maelis flinches: she heard it too. Their father never called him boy.
+    -> speak
+* (y_harl) {has("harl") && flag("harl_named_hadric")} [Your father's name is on the mine wall now. #as:harl]
+    "I saw it," Maelis says. "I stood in front of it for an hour, on my way up the mountain." The crown's light dims, just a little, while she remembers.
+    { flag("truth_collapse"):
+        "And Ashford has said it out loud now." Her voice catches. "I thought it would feel like winning."
+    }
+    -> speak
+* (y_vorna) {has("vorna")} [It called me daughter, Maelis. It calls everyone whatever they're missing. #as:vorna]
+    { flag("vorna_refused_voice"):
+        "Not you, now," the crown hisses, and it isn't her father's voice at all. Maelis takes a step back from her own hands.
+    - else:
+        "Daughter," the crown croons, at Vorna, in a voice Maelis has never heard it use. Maelis stares at the crown as if it had bitten her.
+    }
+    -> speak
++ [Not yet. Something else.]
+    -> speak
 = redeemed
 #speaker:maelis
 Maelis looks at the crown in her hands as if she has only just seen it. "It isn't him," she says. "It never was." The voice in the crown screams.

@@ -39,7 +39,8 @@ Late in the watch, a red light comes through the trees, steady and unhurried. Ma
 * [Marrowmere. The dead walk because of the shards.]
     "I know." She doesn't look away. "I didn't raise them. The heat did, when the first shard woke. I'm sorry for it. I'm not sorry for what it's for."
     -> talk
-* [What happens when you wear the crown?]
+// Once you know the crown's Truth, that line answers this question (Story_Bible §10: at most 5 choices).
+* {not flag("truth_crown")} [What happens when you wear the crown?]
     "The deep forges light. Ashford's debt turns to ash. And the voice that's guided me finally gets to speak out loud." She smiles. "My father's voice, I think. He always had so much to say."
     -> talk
 * {flag("truth_crown")} [The crown is Cindrath's prison. The voice is the dragon.]
