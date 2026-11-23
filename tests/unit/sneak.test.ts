@@ -73,6 +73,15 @@ describe('the scout’s odds', () => {
     expect(r.log.text).toMatch(/Stealth check/);
     expect(r.log.text).toMatch(/vs DC 14/);
   });
+
+  // D34: Pass without Trace planned on the Prepare screen gives the scout +10 (PHB: Pass without Trace).
+  it('Pass without Trace adds +10 to the odds and to the roll', () => {
+    const ilse = party()[2]!;
+    expect(sneakOdds(ilse, true).bonus).toBe(sneakOdds(ilse).bonus + 10);
+    const plain = rollSneak(ilse, 30, new ScriptedRng([12]));
+    const pwt = rollSneak(ilse, 30, new ScriptedRng([12]), true);
+    expect(pwt.total).toBe(plain.total + 10);
+  });
 });
 
 describe('PHB: Surprise. An ambush or a spotted scout', () => {
