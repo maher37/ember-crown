@@ -1,0 +1,444 @@
+/* Combat presentation effects (M11). Timings come from the fx player through --dur. */
+.fx-layer {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 5;
+}
+
+/* Cast glow on the caster, in the spell school's colour. */
+.fx-cast {
+  position: absolute;
+  width: 58px;
+  height: 58px;
+  margin: -29px 0 0 -29px;
+  border-radius: 50%;
+  background: radial-gradient(circle, transparent 45%, var(--fx) 62%, transparent 72%);
+  animation: fx-cast var(--dur) ease-out forwards;
+}
+@keyframes fx-cast {
+  0% {
+    opacity: 0;
+    transform: scale(0.6);
+  }
+  40% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: scale(1.25);
+  }
+}
+
+/* Projectiles: the outer span travels, the inner one points the way (and arcs, for arrows). */
+.fx-shot {
+  position: absolute;
+  width: 0;
+  height: 0;
+  animation: fx-fly var(--dur) linear forwards;
+}
+.fx-shot i {
+  position: absolute;
+  display: block;
+  transform: rotate(var(--rot));
+}
+@keyframes fx-fly {
+  from {
+    transform: translate(0, 0);
+  }
+  to {
+    transform: translate(var(--dx), var(--dy));
+  }
+}
+.fx-shot.arrow i,
+.fx-shot.bolt i {
+  width: 20px;
+  height: 2px;
+  margin: -1px 0 0 -10px;
+  background: linear-gradient(90deg, #8a6a44 0 70%, #e8e3d6 70%);
+  animation: fx-arc var(--dur) ease-in-out forwards;
+}
+.fx-shot.bolt i {
+  width: 14px;
+  height: 3px;
+  margin-left: -7px;
+}
+@keyframes fx-arc {
+  0%,
+  100% {
+    translate: 0 0;
+  }
+  50% {
+    translate: 0 -12px;
+  }
+}
+.fx-shot.thrown i {
+  width: 12px;
+  height: 12px;
+  margin: -6px 0 0 -6px;
+  border-radius: 2px;
+  background: #cfd6e0;
+  animation: fx-spin calc(var(--dur) / 2) linear infinite;
+}
+@keyframes fx-spin {
+  to {
+    rotate: 1turn;
+  }
+}
+.fx-shot.dart i,
+.fx-shot.bead i {
+  width: 10px;
+  height: 10px;
+  margin: -5px 0 0 -5px;
+  border-radius: 50%;
+  background: var(--fx);
+  box-shadow:
+    0 0 8px 3px var(--fx),
+    -10px 0 10px 1px color-mix(in srgb, var(--fx) 50%, transparent);
+}
+.fx-shot.bead i {
+  width: 8px;
+  height: 8px;
+  margin: -4px 0 0 -4px;
+}
+/* A miss lands past the target and fades on the ground. */
+.fx-shot.miss {
+  animation:
+    fx-fly var(--dur) linear forwards,
+    fx-land var(--dur) linear forwards;
+}
+@keyframes fx-land {
+  0%,
+  80% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0.25;
+  }
+}
+
+/* Spell attacks: a beam drawn from the caster to the target. */
+.fx-ray {
+  position: absolute;
+  height: 4px;
+  width: var(--len);
+  margin-top: -2px;
+  transform-origin: 0 50%;
+  transform: rotate(var(--rot));
+  border-radius: 2px;
+  background: var(--fx);
+  box-shadow: 0 0 10px 2px var(--fx);
+  animation: fx-ray var(--dur) ease-out forwards;
+}
+@keyframes fx-ray {
+  0% {
+    clip-path: inset(0 100% 0 0);
+    opacity: 1;
+  }
+  60% {
+    clip-path: inset(0 0 0 0);
+    opacity: 1;
+  }
+  100% {
+    clip-path: inset(0 0 0 0);
+    opacity: 0;
+  }
+}
+
+/* Melee: a slash across the target. A miss swipes wide and grey. */
+.fx-swing {
+  position: absolute;
+  width: 46px;
+  height: 46px;
+  margin: -23px 0 0 -23px;
+  border-radius: 50%;
+  border: 3px solid transparent;
+  border-top-color: #f3ead6;
+  border-right-color: #f3ead6;
+  animation: fx-swing var(--dur) ease-out forwards;
+}
+.fx-swing.miss {
+  border-top-color: #8792a3;
+  border-right-color: #8792a3;
+  translate: 10px -8px;
+}
+@keyframes fx-swing {
+  0% {
+    opacity: 0;
+    transform: rotate(-80deg) scale(0.8);
+  }
+  30% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: rotate(60deg) scale(1.05);
+  }
+}
+
+/* Spell areas: each square blooms in the damage colour. */
+.fx-cell {
+  position: absolute;
+  width: 48px;
+  height: 48px;
+  background: radial-gradient(
+    circle,
+    color-mix(in srgb, var(--fx) 85%, white) 0%,
+    color-mix(in srgb, var(--fx) 60%, transparent) 70%
+  );
+  animation: fx-bloom var(--dur) ease-out forwards;
+}
+@keyframes fx-bloom {
+  0% {
+    opacity: 0;
+    transform: scale(0.4);
+  }
+  35% {
+    opacity: 0.8;
+    transform: scale(1.05);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(1);
+  }
+}
+/* Color Spray: shifting colours. With "reduce flashing" it stays a still, soft wash. */
+.fx-area.prism .fx-cell {
+  background: linear-gradient(135deg, #ff8a8a, #ffd36b, #8fe39a, #7fb3e6, #c49bff);
+  animation:
+    fx-bloom var(--dur) ease-out forwards,
+    fx-prism calc(var(--dur) / 3) linear infinite;
+}
+@keyframes fx-prism {
+  to {
+    filter: hue-rotate(360deg);
+  }
+}
+.fx-layer.calm .fx-cell {
+  animation: fx-soft var(--dur) ease-in-out forwards;
+  background: color-mix(in srgb, var(--fx) 45%, transparent);
+}
+.fx-layer.calm .fx-area.prism .fx-cell {
+  background: linear-gradient(135deg, #b98a8a, #b9a86b, #7fa98a, #7f98b9, #9a8ab9);
+}
+@keyframes fx-soft {
+  0%,
+  100% {
+    opacity: 0;
+  }
+  40%,
+  70% {
+    opacity: 0.45;
+  }
+}
+.fx-layer.calm .fx-ray,
+.fx-layer.calm .fx-shot i {
+  box-shadow: none;
+}
+
+/* Floating numbers: the colours come from the damage type (see FxLayer). */
+.float-type {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+}
+.float.heal .motes {
+  position: absolute;
+  left: -8px;
+  top: 18px;
+}
+.float.heal .motes i {
+  position: absolute;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: #8fe39a;
+  box-shadow: 0 0 6px #8fe39a;
+  animation: fx-mote 1s ease-out forwards;
+}
+.float.heal .motes i:nth-child(2) {
+  left: 14px;
+  animation-delay: 0.12s;
+}
+.float.heal .motes i:nth-child(3) {
+  left: 28px;
+  animation-delay: 0.24s;
+}
+@keyframes fx-mote {
+  from {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(-26px);
+  }
+}
+
+/* Saving throws: a shield and the result under the token. */
+.fx-save {
+  position: absolute;
+  transform: translate(-50%, 0);
+  display: flex;
+  gap: 3px;
+  align-items: center;
+  padding: 1px 6px;
+  border-radius: 8px;
+  font: 700 11px var(--font-ui);
+  white-space: nowrap;
+  animation: float-fade var(--dur) linear forwards;
+}
+.fx-save svg {
+  fill: currentColor;
+}
+.fx-save.saved {
+  background: #1d3550;
+  color: #bfdcff;
+  border: 1px solid #7fb3e6;
+}
+.fx-save.failed {
+  background: #4a1f14;
+  color: #ffd2bf;
+  border: 1px solid #e06a3b;
+}
+
+/* Reactions: a short banner explains why the turn was interrupted. */
+.fx-banner {
+  position: absolute;
+  left: 50%;
+  top: 14px;
+  transform: translateX(-50%);
+  padding: 6px 18px;
+  border-radius: 6px;
+  font: 700 20px var(--font-heading, 'Cinzel', serif);
+  color: #f8f3e8;
+  background: rgba(38, 47, 60, 0.94);
+  border: 2px solid var(--ally);
+  white-space: nowrap;
+  animation: fx-banner var(--dur) ease-out forwards;
+}
+.fx-banner.enemy {
+  border-color: var(--enemy);
+}
+@keyframes fx-banner {
+  0% {
+    opacity: 0;
+    transform: translateX(-50%) scale(0.85);
+  }
+  15%,
+  80% {
+    opacity: 1;
+    transform: translateX(-50%) scale(1);
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .fx-cell,
+  .fx-banner {
+    animation: float-fade var(--dur) linear forwards;
+    transform: none;
+  }
+  .fx-banner {
+    transform: translateX(-50%);
+  }
+  .float.heal .motes {
+    display: none;
+  }
+}
+[data-reduce-motion='true'] .fx-cell,
+[data-reduce-motion='true'] .fx-banner {
+  animation: float-fade var(--dur) linear forwards;
+}
+[data-reduce-motion='true'] .float.heal .motes {
+  display: none;
+}
+
+/* Token states (M11): shake setting, prone, invisible, concentration, downed. */
+.token.hit.still {
+  animation: none;
+  outline: 3px solid #ff8a5a;
+}
+.token.prone:not(.downed) {
+  transform: scaleY(0.7) translateY(6px);
+}
+.token.invisible {
+  opacity: 0.55;
+  border-style: dashed;
+}
+.conc-ring {
+  position: absolute;
+  inset: -7px;
+  border-radius: 50%;
+  border: 2px dotted #c9d4ff;
+  pointer-events: none;
+}
+.token.enemy .conc-ring {
+  border-radius: 12px;
+}
+.status-icons {
+  position: absolute;
+  left: 50%;
+  top: -13px;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 1px;
+  padding: 0 2px;
+  border-radius: 7px;
+  background: rgba(20, 26, 34, 0.85);
+  pointer-events: none;
+}
+.status-icon {
+  display: block;
+}
+.downed-marks {
+  position: absolute;
+  left: 50%;
+  bottom: -14px;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  padding: 1px 3px;
+  border-radius: 6px;
+  background: rgba(20, 26, 34, 0.9);
+  pointer-events: none;
+}
+.blood-drop {
+  fill: #d8423a;
+}
+.death-pips {
+  display: flex;
+  gap: 2px;
+}
+.death-pips i {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  border: 1px solid #8792a3;
+}
+.death-pips i.ok.on {
+  background: #8fe39a;
+  border-color: #8fe39a;
+}
+.death-pips i.bad.on {
+  background: #ff6a5a;
+  border-color: #ff6a5a;
+}
+.death-pips i:nth-child(4) {
+  margin-left: 3px;
+}
+.stable-mark {
+  font: 700 9px var(--font-ui);
+  color: #bfdcff;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+.token .skull {
+  position: absolute;
+  right: -6px;
+  bottom: -6px;
+  fill: #e8e3d6;
+}

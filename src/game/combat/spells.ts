@@ -55,6 +55,7 @@ import {
   type LeafOpts,
 } from './leaves';
 import type { Combatant, Pos } from './types';
+import { firstDamageType, fx, nextVolley } from './fx';
 
 export const getSpell = (id: string): Spell => {
   const sp = spells.find((x) => x.id === id);
@@ -355,6 +356,8 @@ export function castSpell(ctx: Ctx, caster: Combatant, req: CastRequest): void {
     `${caster.name} casts ${sp.name}${lvl > sp.level ? ` at level ${lvl}` : ''}${mm ? ` (${METAMAGIC_NAMES[mm]} Spell)` : ''}`,
   );
 
+  fx(s, { type: 'cast', casterId: caster.id, school: sp.school, spellId: sp.id });
+
   // PHB: Concentration. A new concentration spell ends the old one.
   if (sp.concentration) {
     const old = caster.creature.concentration;
@@ -418,6 +421,7 @@ export function castSpell(ctx: Ctx, caster: Combatant, req: CastRequest): void {
       tg.kind === 'area'
         ? areaCells(ctx, caster, sp, at)
         : around(s, at, sp.id === 'flaming-sphere' ? 5 : 5);
+    fxArea(ctx, caster, sp, cells, at);
     const zone = makeZone(caster, sp, cells, { dc: nums.dc, slotLevel: lvl, upcastDice });
     if (zone) addZone(ctx, zone);
     return;
@@ -442,7 +446,9 @@ export function castSpell(ctx: Ctx, caster: Combatant, req: CastRequest): void {
   else if (tg.kind === 'creatures')
     targets = (req.targetIds ?? []).map((id) => s.combatants[id]!).filter(Boolean);
   else {
-    targets = creaturesIn(ctx, areaCells(ctx, caster, sp, req.point ?? caster.pos)).filter(
+    const cells = areaCells(ctx, caster, sp, req.point ?? caster.pos);
+    fxArea(ctx, caster, sp, cells, req.point ?? caster.pos);
+    targets = creaturesIn(ctx, cells).filter(
       (c) => !(sp.area!.shape !== 'sphere' && c.id === caster.id),
     );
     if (sp.area!.shape === 'aura') targets = targets.filter((c) => c.side !== caster.side);
@@ -495,6 +501,14 @@ export function castSpell(ctx: Ctx, caster: Combatant, req: CastRequest): void {
         // time, and only the roll that counts is logged.
         if (!r.hit && kindDice(s, caster) && rng.die(2) === 1) r = swing();
         sayAll(s, [r.log], caster);
+        fx(s, {
+          type: 'shot',
+          fromId: caster.id,
+          toId: target.id,
+          style: e.kind === 'melee' ? 'melee' : 'ray',
+          hit: r.hit,
+          damageType: firstDamageType(e.onHit),
+        });
         if (r.hit) {
           for (const x of e.onHit) applyLeaf(ctx, caster, target, x, opts, r.critical);
           // PHB: Hex. +1d6 necrotic whenever the caster hits the cursed creature with an attack,
@@ -560,6 +574,37 @@ export function castSpell(ctx: Ctx, caster: Combatant, req: CastRequest): void {
     say(s, 'you', `Blessed Healer: ${caster.name} also regains ${2 + lvl} HP`);
     healCombatant(ctx, caster, 2 + lvl, 'Blessed Healer', caster);
   }
+}
+
+/**
+ * M11: an area spell blooms over its squares. A spell aimed at a distant point (Fireball)
+ * first sends a small bead there.
+ */
+function fxArea(ctx: Ctx, caster: Combatant, sp: Spell, cells: Pos[], at: Pos): void {
+  const shape = sp.area?.shape ?? 'sphere';
+  const damageType = firstDamageType(sp.effects as Effect[]);
+  if (
+    sp.range !== 'self' &&
+    sp.range !== 'touch' &&
+    (at.x !== caster.pos.x || at.y !== caster.pos.y)
+  )
+    fx(ctx.s, {
+      type: 'shot',
+      fromId: caster.id,
+      toId: caster.id,
+      toPos: at,
+      style: 'bead',
+      hit: true,
+      damageType,
+    });
+  fx(ctx.s, {
+    type: 'area',
+    casterId: caster.id,
+    shape,
+    cells,
+    damageType,
+    prism: sp.id === 'color-spray',
+  });
 }
 
 /** Put two conjured wolves next to `point`, acting right after their summoner. */
@@ -687,6 +732,18 @@ function monsterSpellNumbers(c: Combatant) {
 function magicMissile(ctx: Ctx, caster: Combatant, targetIds: string[], opts: LeafOpts): void {
   const r = roll('1d4+1', ctx.rng);
   say(ctx.s, 'you', `Magic Missile: ${targetIds.length} darts, each ${r.text} force`);
+  // PHB: the darts strike simultaneously, so they fly as one volley.
+  const volley = nextVolley();
+  for (const id of targetIds)
+    fx(ctx.s, {
+      type: 'shot',
+      fromId: caster.id,
+      toId: id,
+      style: 'dart',
+      hit: true,
+      damageType: 'force',
+      volley,
+    });
   for (const id of targetIds) {
     const target = ctx.s.combatants[id];
     if (!target || target.creature.dead) continue;

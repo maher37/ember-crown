@@ -1,6 +1,7 @@
 import type { DifficultyId } from '../../data/schemas/difficulty';
 import type { Ability, Creature, DamageType, Skill } from '../../rules';
 import type { Hero } from '../hero';
+import type { FxEvent } from './fx';
 
 export interface Pos {
   x: number;
@@ -207,6 +208,10 @@ export interface CombatState {
   plan: EnemyPlan | null;
   /** Spells left on the battlefield (Spirit Guardians, Moonbeam, Spike Growth...). */
   zones: Zone[];
+  /** Presentation events for the screen to play back (M11). Never read by the rules. */
+  fx?: FxEvent[];
+  /** The number of the last presentation event. */
+  fxSeq?: number;
 }
 
 /** A lasting spell area (M8). */

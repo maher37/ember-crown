@@ -2,6 +2,8 @@
 
 *Moved from the original plan (§9d). Read this only when working on animations.*
 
+**Status (Nov 23):** the core list below is built (M11; see BUILD_ROADMAP.md for the exact list). Code: events in `src/game/combat/fx.ts`, playback in `src/ui/combat/fxPlayer.ts` and `FxLayer.tsx`, token marks in `TokenStatus.tsx`. To add a look for a new spell, the engine already records its school, shape, squares and damage type; the screen picks colours from those. The "phase 2 ideas" list is still open. There is no flaming "Ember Arrow" item yet, so that row isn't built.
+
 **Approach.** The rules engine resolves the action first (all rolls). It then sends a list of **presentation events** that the renderer plays back. Animation never decides outcomes, so a missed arrow visibly flies past the target.
 Example event list: `projectile → impact → damageNumber → status → downed`. Each spell or attack gets a small JSON "VFX recipe" (`projectile: {sprite, count, arc, trail, speed}`, `area: {shape, size}`, `impactFx`, `statusIcon`).
 

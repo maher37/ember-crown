@@ -40,3 +40,4 @@ export {
 export { currentAc, heroOf, active } from './core';
 export { zoneCells } from './zones';
 export { finishCombat, readyParty, getEncounter, type CombatResult } from './finish';
+export { fx, fxSince, type FxEvent, type FxBody, type ShotStyle } from './fx';

@@ -23,14 +23,25 @@ export interface Settings {
   muted: boolean;
   /** Less movement: animations off, the party jumps instead of walking (also follows the system setting). */
   reduceMotion: boolean;
-  /** No bright flashes when something is hit (and, from M11, from spell effects). */
+  /** No bright flashes when something is hit or a spell goes off (M11). */
   reduceFlashing: boolean;
+  /** Combat animation speed (M11): normal, double, or instant (numbers only). */
+  animSpeed: AnimSpeed;
+  /** Tokens shake when hit (M11). */
+  shake: boolean;
   /**
    * Kind dice (owner's request, Nov 21): when a party spell misses, or an enemy saves against
    * one, the dice are quietly rerolled half the time. About 20% more spells land.
    */
   kindDice: boolean;
 }
+
+export type AnimSpeed = '1x' | '2x' | 'instant';
+export const ANIM_SPEEDS: { id: AnimSpeed; label: string }[] = [
+  { id: '1x', label: '1×' },
+  { id: '2x', label: '2×' },
+  { id: 'instant', label: 'Instant' },
+];
 
 export const defaultSettings: Settings = {
   difficulty: difficulties.default,
@@ -43,19 +54,28 @@ export const defaultSettings: Settings = {
   muted: false,
   reduceMotion: false,
   reduceFlashing: false,
+  animSpeed: '1x',
+  shake: true,
   kindDice: true,
 };
 
 export type VolumeKey = 'music' | 'ambience' | 'effects';
 
 export type ToggleKey =
-  'showRolls' | 'clickToRoll' | 'allowCombatSave' | 'reduceMotion' | 'reduceFlashing' | 'kindDice';
+  | 'showRolls'
+  | 'clickToRoll'
+  | 'allowCombatSave'
+  | 'reduceMotion'
+  | 'reduceFlashing'
+  | 'kindDice'
+  | 'shake';
 
 interface SettingsStore extends Settings {
   setDifficulty: (d: DifficultyId) => void;
   toggle: (key: ToggleKey) => void;
   setVolume: (key: VolumeKey, value: number) => void;
   toggleMute: () => void;
+  setAnimSpeed: (v: AnimSpeed) => void;
   reset: () => void;
 }
 
@@ -69,6 +89,7 @@ export const useSettings = create<SettingsStore>()(
       toggle: (key) => set((s) => ({ [key]: !s[key] })),
       setVolume: (key, value) => set({ [key]: Math.max(0, Math.min(1, value)) }),
       toggleMute: () => set((s) => ({ muted: !s.muted })),
+      setAnimSpeed: (animSpeed) => set({ animSpeed }),
       reset: () => set(defaultSettings),
     }),
     {
@@ -87,6 +108,8 @@ export const useSettings = create<SettingsStore>()(
         muted,
         reduceMotion,
         reduceFlashing,
+        animSpeed,
+        shake,
         kindDice,
       }) => ({
         difficulty,
@@ -99,6 +122,8 @@ export const useSettings = create<SettingsStore>()(
         muted,
         reduceMotion,
         reduceFlashing,
+        animSpeed,
+        shake,
         kindDice,
       }),
     },
