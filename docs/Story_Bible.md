@@ -298,7 +298,7 @@ Epilogue slides also report on Brannoc, Edric, Ulric, Wynn's granddaughter, Kell
 
 Premade like Corin: fixed name, species, class and look; abilities and background can still be chosen. Their backstory text lives in `src/data/origins.json` and shows on the character sheet. Each can join the party once, alongside Corin or each other. **Built:** Harl, Vorna and Nessa each have their own `[Name]` choices and scenes (below).
 
-### Harl Deepdelve: hill dwarf cleric of Moradin (Life Domain), Acolyte
+### Harl Deepdelve: hill dwarf cleric of Moradin (Life Domain suggested; the player may pick another), Acolyte
 - Tended Moradin's shrine at the Old Mine for thirty years. On the day of the Collapse he dug three men out by hand and read the rites over the thirty-one who died.
 - Knew Hadric Varrow as a careful foreman and never believed the town's story, but kept quiet. The silence has gone sour.
 - Came back because the rock over the sealed Deep Seam has turned warm.
@@ -314,7 +314,7 @@ Premade like Corin: fixed name, species, class and look; abilities and backgroun
   - **The Kiln (Act III):** he reads the blank last panel of the smiths' mural (the cage was never finished). At the Crowning, if he carved the name, he can tell Maelis.
   - **Epilogue:** one slide, depending on whether he reconsecrated the shrine.
 
-### Nessa Thorne: human warlock (the Fiend), Noble
+### Nessa Thorne: human warlock (the Fiend suggested; the player may pick another), Noble
 - From a fallen Waterdeep house. Signed a contract with a devil she calls the Auditor to get her brother out of debtors' prison; her soul is the collateral.
 - Now a notary for the Coinwright Guild, sent to put a value on Ashford's debt. The Auditor wants the Ember Crown and hints it would settle her account.
 - **Wants:** to find something worth more than her soul and buy the contract back.

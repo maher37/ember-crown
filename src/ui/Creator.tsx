@@ -620,7 +620,9 @@ function StepTwo({
   const choices = levelOneChoices(draft.classId);
   const sp = getSpecies(draft.speciesId);
   const cls = getClass(draft.classId);
-  const fixedSubclass = draft.origin !== 'custom' && !!getOrigin(draft.origin).subclassId;
+  // An origin hero's story subclass is suggested, not locked (owner, Nov 23).
+  const suggestedSubclass =
+    draft.origin === 'custom' ? undefined : getOrigin(draft.origin).subclassId;
   const owned = new Set<Skill>([...granted, ...draft.classSkills, ...draft.bonusSkills]);
   const toggle = (list: Skill[], s: Skill, max: number) =>
     list.includes(s) ? list.filter((x) => x !== s) : list.length < max ? [...list, s] : list;
@@ -737,10 +739,12 @@ function StepTwo({
                     role="radio"
                     aria-checked={on}
                     className={`bg-card ${on ? 'on' : ''}`}
-                    disabled={fixedSubclass && !on}
                     onClick={() => update({ subclassId: o.id })}
                   >
-                    <span className="bg-name">{o.name}</span>
+                    <span className="bg-name">
+                      {o.name}
+                      {o.id === suggestedSubclass && <span className="tag">Suggested</span>}
+                    </span>
                     <span className="small">{o.summary}</span>
                   </button>
                 );
