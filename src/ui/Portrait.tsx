@@ -49,6 +49,63 @@ interface Props extends PortraitData {
   gear?: PortraitGear;
   /** How hurt they look: 0 fine, 1 scratched, 2 bloodied, 3 badly hurt (playtest feedback). */
   wounds?: 0 | 1 | 2 | 3;
+  /** A painted portrait (origin heroes, D6). Replaces the drawn face, gear and wound marks. */
+  image?: string;
+}
+
+/**
+ * A painting with wounds shown on top: a red edge that deepens as they're hurt, a blood-drop
+ * badge once bloodied, and a grey pallor when badly hurt.
+ */
+function PaintedPortrait({
+  image,
+  label,
+  wounds,
+  vignette,
+}: {
+  image: string;
+  label: string;
+  wounds: 0 | 1 | 2 | 3;
+  vignette: string;
+}) {
+  return (
+    <svg
+      viewBox="0 0 160 200"
+      width="100%"
+      height="100%"
+      preserveAspectRatio="xMidYMid slice"
+      role="img"
+      aria-label={label}
+    >
+      <rect x="0" y="0" width="160" height="200" fill="#262f3c" />
+      <image
+        href={image}
+        x="0"
+        y="0"
+        width="160"
+        height="200"
+        preserveAspectRatio="xMidYMid slice"
+      />
+      {wounds >= 1 && (
+        <g aria-hidden="true" data-wounds={wounds}>
+          <defs>
+            <radialGradient id={vignette} cx="0.5" cy="0.45" r="0.75">
+              <stop offset="0.55" stopColor="#a3271c" stopOpacity="0" />
+              <stop offset="1" stopColor="#a3271c" stopOpacity={[0, 0.35, 0.55, 0.75][wounds]} />
+            </radialGradient>
+          </defs>
+          {wounds >= 3 && <rect width="160" height="200" fill="#6a7a8a" opacity="0.3" />}
+          <rect width="160" height="200" fill={`url(#${vignette})`} />
+          {wounds >= 2 && (
+            <g transform="translate(140 20)">
+              <circle r="13" fill="#262f3c" stroke="#a3271c" strokeWidth="2" />
+              <path d="M0 -8 C4 -2 6 1 6 4 A6 6 0 0 1 -6 4 C-6 1 -4 -2 0 -8 Z" fill="#d8463a" />
+            </g>
+          )}
+        </g>
+      )}
+    </svg>
+  );
 }
 
 const STEEL = '#a9b1bc';
@@ -230,12 +287,16 @@ export function Portrait({
   gear,
   wounds = 0,
   stature = 'medium',
+  image,
 }: Props) {
   const [ids] = useState(() => ({
     rings: uid('rings'),
     scales: uid('scales'),
     shine: uid('shine'),
+    vignette: uid('vignette'),
   }));
+  if (image)
+    return <PaintedPortrait image={image} label={label} wounds={wounds} vignette={ids.vignette} />;
   const helmet = !!gear?.helmet;
   // A helmet replaces the hood (you can't wear both).
   const hooded = hairStyle === 'hood' && !helmet;

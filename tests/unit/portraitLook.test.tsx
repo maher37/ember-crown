@@ -41,3 +41,25 @@ describe('portrait species look', () => {
     expect(container.querySelector('circle[r="1.3"]')).toBeNull();
   });
 });
+
+describe('painted origin portraits (D6)', () => {
+  it('has a painting for every origin hero and none for custom heroes', async () => {
+    const { ORIGIN_ART, originArt } = await import('../../src/ui/originArt');
+    const { origins } = await import('../../src/data');
+    for (const o of origins) expect(ORIGIN_ART[o.id]).toBeTruthy();
+    expect(originArt('custom')).toBeUndefined();
+  });
+
+  it('shows the painting instead of the drawn face, with wounds on top', () => {
+    const { container, rerender } = render(
+      <Portrait {...look} {...speciesLook('human')} image="corin.webp" label="Corin" />,
+    );
+    expect(container.querySelector('image')).toHaveAttribute('href', 'corin.webp');
+    expect(container.querySelector('ellipse')).toBeNull();
+    expect(container.querySelector('[data-wounds]')).toBeNull();
+    rerender(
+      <Portrait {...look} {...speciesLook('human')} image="corin.webp" label="Corin" wounds={2} />,
+    );
+    expect(container.querySelector('[data-wounds="2"]')).not.toBeNull();
+  });
+});
