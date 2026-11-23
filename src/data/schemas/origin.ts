@@ -15,7 +15,7 @@ export const Origin = z
     title: z.string().min(1),
     speciesId: Id,
     classId: Id,
-    /** Fixed subclass when the class picks one at level 1 (cleric domain, warlock patron). */
+    /** Suggested subclass (picked to start with, but changeable) when the class picks one at level 1 (cleric domain, warlock patron). */
     subclassId: Id.optional(),
     /** The starting background; the player can still change it, as with Corin. */
     backgroundId: Id,

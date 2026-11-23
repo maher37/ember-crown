@@ -67,6 +67,13 @@ describe('origin heroes (D33)', () => {
     expect(subclassOf(h)).toBe('fiend');
   });
 
+  it("suggests but does not lock an origin hero's subclass (owner, Nov 23)", () => {
+    const harl = buildHero({ ...ready.harl(), subclassId: 'light' }, 'harl');
+    expect(subclassOf(harl)).toBe('light');
+    const nessa = buildHero({ ...ready.nessa(), subclassId: 'great-old-one' }, 'nessa');
+    expect(subclassOf(nessa)).toBe('great-old-one');
+  });
+
   it('Vorna Kalvaar: red dragonborn fighter, Soldier, resists fire', () => {
     const d = ready.vorna();
     expect(draftProblems(d)).toEqual([]);
