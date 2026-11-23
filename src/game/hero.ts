@@ -213,7 +213,7 @@ export function getOrigin(id: OriginId): Origin {
 }
 
 /**
- * A premade origin hero: name, species, class, subclass and look are fixed; abilities,
+ * A premade origin hero: name, species, class and look are fixed; the subclass is suggested; abilities,
  * background and the other level-1 choices can still be picked, as with Corin.
  */
 export function originDraft(id: OriginId): HeroDraft {
