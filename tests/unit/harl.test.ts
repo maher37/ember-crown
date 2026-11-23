@@ -192,6 +192,7 @@ describe('[Harl] in Acts II and III', () => {
     c = new Conversation('kiln', game({ harl_named_hadric: true }, { act: 3 }), hi()).start(
       'arrive.heart',
     );
+    pick(c, /Say something of your own/);
     pick(c, /Your father's name is on the mine wall/);
     expect(said(c)).toMatch(/I stood in front of it for an hour/);
   });
