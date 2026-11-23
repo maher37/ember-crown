@@ -10,7 +10,7 @@ import { canLevelUp } from '../rules';
 import './Combat.css';
 import { SoundButton } from '../audio/SoundButton';
 import { SneakPanel } from './SneakPanel';
-import { PrecastPanel } from './PrecastPanel';
+import { PrecastPanel, StillActive } from './PrecastPanel';
 import type { Precast } from '../game/precast';
 
 // DMG encounter multipliers (docs/Encounters_and_XP.md §3).
@@ -277,6 +277,7 @@ export function PrepareScreen() {
           {below && !party.some((h) => canLevelUp(h)) && (
             <p className="notice">This fight is built for level-2 heroes. It will be hard.</p>
           )}
+          <StillActive party={fighters} clock={game!.clock} />
           <PrecastPanel
             party={fighters}
             foes={foes.map((f) => ({ id: f.id, name: f.name }))}
@@ -306,7 +307,7 @@ export function PrepareScreen() {
               </p>
             </div>
           )}
-          <SneakPanel enc={enc} difficulty={difficulty} />
+          <SneakPanel enc={enc} difficulty={difficulty} precasts={precasts} />
           <p className="muted small">The game autosaves before the fight starts.</p>
           <button type="button" className="primary fight-btn" onClick={fight}>
             {scoutedHere || game!.flags[`ambush:${encounterId}`]

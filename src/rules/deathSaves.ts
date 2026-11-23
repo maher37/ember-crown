@@ -1,6 +1,6 @@
 import { abilityCheck } from './checks';
 import { isDying, type Creature } from './creature';
-import { rollD20 } from './d20';
+import { describeD20, rollD20 } from './d20';
 import { roll } from './dice';
 import { heal } from './damage';
 import { log, type LogEntry } from './log';
@@ -16,10 +16,15 @@ export type DeathSaveOutcome = 'success' | 'failure' | 'stable' | 'dead' | 'revi
 export function deathSave(
   c: Creature,
   rng: RandomSource,
+  /** A reason to roll with advantage (PHB: Beacon of Hope). */
+  advantage?: string,
 ): { creature: Creature; outcome: DeathSaveOutcome; log: LogEntry[] } {
   if (!isDying(c)) throw new Error(`${c.name} is not dying`);
-  const nat = rollD20('normal', rng).natural;
-  const head = `${c.name} death save: d20 (${nat})`;
+  const d = rollD20(advantage ? 'advantage' : 'normal', rng);
+  const nat = d.natural;
+  const head = advantage
+    ? `${c.name} death save: ${describeD20(d)} (advantage: ${advantage})`
+    : `${c.name} death save: d20 (${nat})`;
 
   if (nat === 20) {
     const healed = heal(c, 1, 'a natural 20 death save');

@@ -3,7 +3,8 @@ import { PLACE_SCENES } from '../dialogue';
 import { useSettings } from '../settings';
 import { getBounty, markHunted } from '../bounties';
 import { completeStep, partyXp } from '../journal';
-import { rollSneak, sneakDc } from '../sneak';
+import { plannedPassWithoutTrace, rollSneak, sneakDc } from '../sneak';
+import { afterCasts } from '../precast';
 import { SeededRng } from '../../rules';
 import type { GameState } from '../save';
 import { arrive, homeScreen, type GameStore, type StoreSet, type StoreGet } from './shared';
@@ -57,6 +58,12 @@ export const combatSlice = (
         : game.flags[`ambush:${encounterId}`]
           ? 'enemies'
           : undefined;
+    // A Pass without Trace that helped the scout is cast whatever happens: keep it in the list.
+    const pwt = sc && sc.encounterId === encounterId ? sc.pwt : undefined;
+    const casts =
+      pwt && !(precasts ?? []).some((p) => p.casterId === pwt.casterId && p.spellId === pwt.spellId)
+        ? [...(precasts ?? []), pwt]
+        : precasts;
     // Autosave before every fight (docs/BUILD_ROADMAP.md, M4).
     get().saveTo('autosave');
     const combat = startCombat({
@@ -66,8 +73,9 @@ export const combatSlice = (
       rngState: get().rngState,
       formation,
       mageArmor,
-      precasts,
+      precasts: casts,
       surprise,
+      clock: game.clock,
       inventory: game.inventory,
       // Kind dice (a setting, on by default): read by the spell code.
       flags: { ...game.flags, kind_dice: useSettings.getState().kindDice },
@@ -75,7 +83,7 @@ export const combatSlice = (
     set({ combat, screen: 'combat', scouted: null });
   },
 
-  scout: (heroId, difficulty) => {
+  scout: (heroId, difficulty, precasts = []) => {
     const { game, encounterId, rngState, scouted } = get();
     if (!game || !encounterId) return null;
     const enc = getEncounter(encounterId);
@@ -86,14 +94,16 @@ export const combatSlice = (
     if (!hero) return null;
     const dc = sneakDc(enc, difficulty);
     const rng = SeededRng.fromState(rngState);
-    const r = rollSneak(hero, dc, rng);
+    // D34: a Pass without Trace planned on the Prepare screen helps the scout (+10).
+    const pwt = plannedPassWithoutTrace(game.party, precasts);
+    const r = rollSneak(hero, dc, rng, !!pwt);
     const first = hero.name.split(' ')[0]!;
     const text = `${r.log.text}. ${
       r.success
         ? `${first} gets close without being seen.`
         : `${first} is spotted! The enemy is ready for you.`
     }`;
-    const result = { encounterId, heroId, success: r.success, text };
+    const result = { encounterId, heroId, success: r.success, text, ...(pwt ? { pwt } : {}) };
     set({ rngState: rng.state, scouted: result });
     return result;
   },
@@ -106,6 +116,13 @@ export const combatSlice = (
     // D35 (owner): getting past unseen is worth the same XP as the fight. Scenes read it as a
     // win (won:<id>) and can tell the two apart with sneaked:<id>.
     let next = partyXp(game, enc.xpPerPc, enc.name).game;
+    // The Pass without Trace that got the scout through still used its slot.
+    const pwt = scouted.pwt;
+    if (pwt)
+      next = {
+        ...next,
+        party: next.party.map((h) => (h.id === pwt.casterId ? afterCasts(h, [pwt]) : h)),
+      };
     next = {
       ...next,
       flags: { ...next.flags, [`won:${enc.id}`]: true, [`sneaked:${enc.id}`]: true },

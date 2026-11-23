@@ -26,7 +26,8 @@ import {
   spendResource,
   type Ctx,
 } from './core';
-import { blocksMovement, inBounds, occupant, terrainAt } from './grid';
+import { blocksMovement, distanceFeet, inBounds, occupant, terrainAt } from './grid';
+import { healDice, protectedFrom } from './wards';
 import type { ActiveEffect, CombatState, Combatant, Pos } from './types';
 
 type Duration = Extract<LeafEffect, { type: 'condition' }>['duration'];
@@ -171,8 +172,9 @@ export function applyLeaf(
       return;
     }
     case 'heal': {
-      const r = roll(e.dice, ctx.rng);
-      const up = opts.upcastDice ? roll(opts.upcastDice, ctx.rng).total : 0;
+      // PHB: Beacon of Hope. Healing gives its maximum.
+      const r = healDice(target, e.dice, ctx.rng);
+      const up = opts.upcastDice ? healDice(target, opts.upcastDice, ctx.rng).total : 0;
       const amount = Math.max(
         0,
         r.total + up + (e.addModifier ? (opts.mod ?? 0) : 0) + (opts.healBonus ?? 0),
@@ -191,6 +193,17 @@ export function applyLeaf(
         roll(e.dice, ctx.rng).total + (opts.upcastDice ? roll(opts.upcastDice, ctx.rng).total : 0);
       target.creature = grantTempHp(target.creature, amount);
       say(s, 'you', `${target.name} gains ${amount} temporary HP`);
+      // D34: these last an hour, so they can carry into the next fight (combat/carryover.ts).
+      if (opts.spellId === 'armor-of-agathys' || opts.spellId === 'false-life') {
+        target.effects = target.effects.filter((x) => x.tag !== 'spell-temp-hp');
+        addEffect(target, {
+          id: 'spell-temp-hp',
+          name: opts.spellId === 'false-life' ? 'False Life' : 'Armor of Agathys',
+          sourceId: source.id,
+          tag: 'spell-temp-hp',
+          data: { spell: opts.spellId },
+        });
+      }
       return;
     }
     case 'condition': {
@@ -274,6 +287,15 @@ export function giveCondition(
     target.effects.some((e) => e.tag === 'rage')
   ) {
     say(ctx.s, 'you', `${target.name}'s Mindless Rage shrugs off being ${id}`);
+    return;
+  }
+  // PHB: Protection from Evil and Good. Warded types can't charm or frighten the target.
+  if ((id === 'charmed' || id === 'frightened') && protectedFrom(target, source)) {
+    say(
+      ctx.s,
+      'you',
+      `Protection from Evil and Good: ${target.name} can't be ${id} by ${source.name}`,
+    );
     return;
   }
   target.creature = addCondition(target.creature, { id, source: source.id });
@@ -360,6 +382,9 @@ export const HANDLED_SPECIALS = new Set([
   'resistance-to',
   'bestow-curse',
   'dispel-darkness',
+  'prot-evil-good',
+  'beacon-of-hope',
+  'pass-without-trace',
 ]);
 
 /** Effects that come from spells, for Dispel Magic. */
@@ -371,6 +396,9 @@ const SPELL_TAGS = new Set([
   'spiritual-weapon',
   'next-hit',
   'aid',
+  'prot-evil-good',
+  'beacon',
+  'pwt',
   'hasted',
   'slowed',
   'outlined',
@@ -550,6 +578,48 @@ function applySpecial(
       say(s, 'you', `${name} ends ${target.name}'s ${ended} condition`);
       return;
     }
+    case 'prot-evil-good':
+      // PHB: Protection from Evil and Good (concentration, up to 10 minutes).
+      addEffect(target, {
+        id: 'prot-evil-good',
+        name: 'Protection from Evil and Good',
+        sourceId: source.id,
+        tag: 'prot-evil-good',
+        concentration: opts.concentration,
+      });
+      say(s, 'you', `${target.name} is warded against aberrations, fey, fiends and undead`);
+      return;
+    case 'beacon-of-hope':
+      // PHB: Beacon of Hope. Any number of creatures within 30 ft: the caster's allies here.
+      for (const a of Object.values(s.combatants).filter(
+        (x) =>
+          x.side === source.side &&
+          !x.gone &&
+          !x.creature.dead &&
+          distanceFeet(x.pos, source.pos) <= 30,
+      )) {
+        addEffect(a, {
+          id: `beacon-${source.id}`,
+          name: 'Beacon of Hope',
+          sourceId: source.id,
+          tag: 'beacon',
+          concentration: opts.concentration,
+          expires: expiryFor(s, source.id, { minutes: 1 }),
+        });
+      }
+      say(s, 'you', `Beacon of Hope: ${source.name}'s allies take heart`);
+      return;
+    case 'pass-without-trace':
+      // PHB: Pass without Trace. +10 Stealth for the caster and allies within 30 ft.
+      addEffect(source, {
+        id: 'pwt',
+        name: 'Pass without Trace',
+        sourceId: source.id,
+        tag: 'pwt',
+        concentration: opts.concentration,
+      });
+      say(s, 'you', `${source.name} wraps the party in Pass without Trace (+10 Stealth nearby)`);
+      return;
     case 'aid': {
       // PHB: Aid. +5 maximum and current HP (+5 more per slot level above 2nd).
       if (target.effects.some((e) => e.tag === 'aid')) return;

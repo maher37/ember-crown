@@ -228,3 +228,29 @@ function CasterRow({
     </fieldset>
   );
 }
+
+const BUFF_NAMES: Record<string, string> = {
+  aid: 'Aid',
+  'mage-armor': 'Mage Armor',
+  'armor-of-agathys': 'Armor of Agathys',
+  'false-life': 'False Life',
+};
+
+/** D34: long spells from earlier that will still be up in this fight (no slot needed). */
+export function StillActive({ party, clock }: { party: Hero[]; clock: number }) {
+  const live = party.flatMap((h) =>
+    (h.buffs ?? [])
+      .filter((b) => b.until > clock)
+      .map((b) => {
+        const left = b.until - clock;
+        const time = left >= 1 ? `${Math.floor(left)} h left` : 'under an hour left';
+        return `${h.name.split(' ')[0]}: ${BUFF_NAMES[b.spell]} (${time})`;
+      }),
+  );
+  if (!live.length) return null;
+  return (
+    <p className="small muted" role="status">
+      Still in effect from earlier: {live.join(' · ')}
+    </p>
+  );
+}

@@ -2,18 +2,29 @@
 // or ambush. The fight button on the Prepare screen reads the result (ambush or spotted).
 import type { DifficultyId } from '../data/schemas/difficulty';
 import type { Encounter } from '../data/schemas/encounter';
-import { sneakChance, sneakDc, sneakOdds } from '../game/sneak';
+import { plannedPassWithoutTrace, sneakChance, sneakDc, sneakOdds } from '../game/sneak';
+import type { Precast } from '../game/precast';
 import { useGame } from '../game/store';
 
 const signed = (n: number) => (n >= 0 ? `+${n}` : `${n}`);
 
-export function SneakPanel({ enc, difficulty }: { enc: Encounter; difficulty: DifficultyId }) {
+export function SneakPanel({
+  enc,
+  difficulty,
+  precasts = [],
+}: {
+  enc: Encounter;
+  difficulty: DifficultyId;
+  /** Spells planned for before the fight: a Pass without Trace helps the scout (D34). */
+  precasts?: Precast[];
+}) {
   const { game, scout, slipPast, scouted } = useGame();
   if (!enc.sneak) return null;
   const dc = sneakDc(enc, difficulty);
   const result = scouted?.encounterId === enc.id ? scouted : null;
+  const pwt = !!plannedPassWithoutTrace(game!.party, precasts);
   const odds = game!.party
-    .map(sneakOdds)
+    .map((h) => sneakOdds(h, pwt))
     .map((o) => ({ ...o, chance: sneakChance(o, dc) }))
     .sort((a, b) => b.chance - a.chance);
 
@@ -32,7 +43,10 @@ export function SneakPanel({ enc, difficulty }: { enc: Encounter; difficulty: Di
               <li key={o.heroId} className="row between baseline">
                 <span>
                   <span className="strong">{o.name.split(' ')[0]}</span>{' '}
-                  <span className="small">Stealth {signed(o.bonus)}</span>
+                  <span className="small">
+                    Stealth {signed(o.bonus)}
+                    {o.passWithoutTrace ? ' (with Pass without Trace)' : ''}
+                  </span>
                   {o.advantage.length > 0 && (
                     <span className="small sneak-adv"> · advantage ({o.advantage.join(', ')})</span>
                   )}
@@ -47,7 +61,7 @@ export function SneakPanel({ enc, difficulty }: { enc: Encounter; difficulty: Di
                 <button
                   type="button"
                   className="menu-secondary small-btn"
-                  onClick={() => scout(o.heroId, difficulty)}
+                  onClick={() => scout(o.heroId, difficulty, precasts)}
                 >
                   Send {o.name.split(' ')[0]}
                 </button>

@@ -145,6 +145,8 @@ export const eldritchBeams = (casterLevel: number) =>
 
 function baseTargeting(sp: Spell, slotLevel: number, casterLevel = 1): Targeting {
   const extra = Math.max(0, slotLevel - sp.level);
+  // PHB: Beacon of Hope. No aiming: it reaches the caster's allies within its 30-ft range.
+  if (sp.id === 'beacon-of-hope') return { kind: 'self' };
   if (sp.id === 'eldritch-blast' && eldritchBeams(casterLevel) > 1)
     return { kind: 'creatures', count: eldritchBeams(casterLevel), rangeFeet: 120, repeat: true };
   if (sp.area)

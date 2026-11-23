@@ -46,6 +46,19 @@ export interface Portrait {
 export type AbilityMethod = 'array' | 'point' | 'roll';
 
 /** A party member: a rules-engine creature plus everything the character sheet needs. */
+/** A long spell still running between fights (D34): Aid, Mage Armor, Armor of Agathys, False Life. */
+export interface Buff {
+  spell: 'aid' | 'mage-armor' | 'armor-of-agathys' | 'false-life';
+  /** The game hour it ends. */
+  until: number;
+  /** Aid: the extra maximum HP, and how much of it the hero still had. */
+  amount?: number;
+  hpAbove?: number;
+  /** Armor of Agathys and False Life: temporary HP left; Agathys's cold damage. */
+  tempHp?: number;
+  cold?: number;
+}
+
 export interface Hero extends Creature {
   origin: 'custom' | OriginId;
   speciesId: string;
@@ -73,6 +86,8 @@ export interface Hero extends Creature {
   subclassId?: string;
   /** A Hex or Hunter's Mark still running after a fight, until this game hour (PHB: 1 hour). */
   lingering?: { spell: string; until?: number };
+  /** Long spells still running after a fight, until a game hour (D34; combat/carryover.ts). */
+  buffs?: Buff[];
   /** Abjuration wizard: the Arcane Ward's hit points (undefined until made after a long rest). */
   arcaneWard?: number;
   /** Clerics, druids and paladins may re-prepare spells (set after a long rest, cleared by a fight). */
