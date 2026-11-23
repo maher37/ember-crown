@@ -198,6 +198,8 @@ export interface CombatState {
   parleyTried: string[];
   /** The party's potions and other consumables (written back after the fight). */
   inventory: Record<string, number>;
+  /** The game hour the fight happens (for spells that last between fights, D34). */
+  clock?: number;
   /** Story flags the fight can read (e.g. Brannoc's name helps with Ulric). */
   flags: Record<string, boolean | number | string>;
   xpPerPc: number;

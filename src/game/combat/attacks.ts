@@ -1,4 +1,5 @@
 import { weapons } from '../../data';
+import { protectedFrom } from './wards';
 import type { Effect, LeafEffect } from '../../data/schemas/common';
 import { getMonster } from '../creatures';
 import { getItem, magicWeaponBase } from '../items';
@@ -329,6 +330,8 @@ export function makeAttack(
   if (hasEffect(target, 'hidden')) dis.push('target hidden');
   // PHB: Blur. Attacks against a blurred creature have disadvantage.
   if (hasEffect(target, 'blurred')) dis.push('Blur');
+  // PHB: Protection from Evil and Good. Warded types attack the target with disadvantage.
+  if (protectedFrom(target, attacker)) dis.push('Protection from Evil and Good');
   if (hasEffect(attacker, 'hidden')) adv.push('unseen attacker');
   if (hasEffect(target, 'outlined')) adv.push('Faerie Fire');
   if (hasEffect(target, 'reckless')) adv.push('target attacked recklessly');

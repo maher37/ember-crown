@@ -83,7 +83,7 @@ export function hideProblem(s: CombatState, c: Combatant): string | null {
 /** PHB: Hide. Stealth against each enemy's passive Perception. */
 export function hide(ctx: Ctx, c: Combatant): void {
   const { s, rng } = ctx;
-  const bonus = stealthBonus(c);
+  const bonus = stealthBonus(c, s);
   const r = abilityCheck(c.creature, 'dex', 0, rng, {
     label: 'Stealth',
     bonuses: [{ label: 'skill', value: bonus - abilityModifier(c.creature.abilities.dex) }],
