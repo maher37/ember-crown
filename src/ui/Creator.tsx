@@ -52,6 +52,7 @@ import {
 } from './creatorCopy';
 import { Portrait } from './Portrait';
 import { portraitGear, speciesLook } from './heroLook';
+import { originArt } from './originArt';
 
 const SHORT: Record<Ability, string> = {
   str: 'STR',
@@ -262,6 +263,7 @@ export function Creator() {
                       shield: cls.startingKit.shield,
                     },
                   })}
+                  image={originArt(draft.origin)}
                   label="Portrait of your character"
                 />
               </div>

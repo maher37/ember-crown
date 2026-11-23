@@ -1,6 +1,7 @@
 // How a hero looks: the portrait plus what they're wearing.
 import type { Hero } from '../game/hero';
 import { CLASS_COPY, ELF_EARS } from './creatorCopy';
+import { originArt } from './originArt';
 import type { ArmorLook, PortraitGear, PortraitKind, Stature } from './Portrait';
 
 const ARMOR_LOOK: Record<string, ArmorLook> = {
@@ -60,6 +61,7 @@ export function heroPortrait(hero: Hero, label = `Portrait of ${hero.name}`) {
     cloth: CLASS_COPY[hero.classId]!.cloth,
     gear: portraitGear(hero),
     wounds: woundsOf(hero),
+    image: originArt(hero.origin),
     label,
   };
 }

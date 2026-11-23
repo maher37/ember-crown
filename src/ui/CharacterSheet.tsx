@@ -40,6 +40,7 @@ import { signed, SKILL_NAMES } from './creatorCopy';
 import { EquipmentPanel } from './EquipmentPanel';
 import { heroPortrait } from './heroLook';
 import { Portrait } from './Portrait';
+import { originArt } from './originArt';
 import type { OriginId } from '../data/schemas/origin';
 import './Sheet.css';
 
@@ -661,18 +662,23 @@ function EquipmentTab({ hero }: { hero: Hero }) {
         <div className="sheet-portrait">
           <Portrait {...heroPortrait(hero)} />
         </div>
-        <label className="small">
-          <input
-            type="checkbox"
-            checked={helmetOn}
-            onChange={(e) => toggleHelmet(e.target.checked)}
-          />{' '}
-          Show a helmet
-        </label>
-        <p className="small faint">
-          In 5e a helmet is part of a suit of armor, not a separate item; this only changes the
-          portrait.
-        </p>
+        {/* A painted portrait (origin heroes) can't change its helmet. */}
+        {!originArt(hero.origin) && (
+          <>
+            <label className="small">
+              <input
+                type="checkbox"
+                checked={helmetOn}
+                onChange={(e) => toggleHelmet(e.target.checked)}
+              />{' '}
+              Show a helmet
+            </label>
+            <p className="small faint">
+              In 5e a helmet is part of a suit of armor, not a separate item; this only changes the
+              portrait.
+            </p>
+          </>
+        )}
         <p className="small">
           <span className="eyebrow-inline">Wearing</span>{' '}
           {[
