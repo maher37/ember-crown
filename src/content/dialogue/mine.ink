@@ -267,9 +267,18 @@ Where the old tunnel meets the shaft, someone has carved names into the rock: th
 + [Light a candle for the thirty-one.]
     The flame stands straight up in the still air. For a moment the mine feels less hungry.
     -> back
++ {flag("fire:ulric_1") && not flag("harl_named_hadric") && not flag("hadric_named")} [Carve Hadric Varrow's name with Ulric's chisel.]
+    {roller()} works by candlelight until it's done: HADRIC VARROW, FOREMAN, in neat capitals like the rest. Thirty-one names. The candle stubs below it look less lonely.
+    ~ set_flag("hadric_named", true)
+    ~ quest_step("ulric-name", "carve")
+    ~ note("You carved Hadric Varrow's name into the miners' memorial with Ulric's chisel. Tell him at the fire.")
+    -> back
 + {has("harl")} [Carve the missing name. #as:harl]
     Harl takes a chisel from his pack and works by candlelight until it's done: HADRIC VARROW, FOREMAN, in the same neat capitals as the rest. "Ten years late," he says. "Moradin forgive me every one of them."
     ~ set_flag("harl_named_hadric", true)
+    { flag("fire:ulric_1"):
+        ~ quest_step("ulric-name", "carve")
+    }
     ~ note("Harl carved Hadric Varrow's name into the miners' memorial, in the gap the town left for him.")
     -> back
 

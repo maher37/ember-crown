@@ -87,7 +87,7 @@ export interface GameStore {
   /** The scene to pick up after the fight it started (story id and knot). */
   resume: { story: string; knot: string } | null;
   /** After this conversation, open the scene of the place the party is at. */
-  afterDialogue: 'place' | null;
+  afterDialogue: 'place' | 'camp' | null;
   /** Which hero the party screen's character sheet shows. */
   sheetHeroId: string | null;
   /** The scout's result for the fight being prepared (D35). */
@@ -198,6 +198,8 @@ export interface GameStore {
   wakeEarly: (hours: number) => void;
   /** All 8 hours slept: the long rest's benefits, letters and dreams. */
   completeLongRest: () => void;
+  /** D32: sit with a camp companion who has something to say (fire.ink), then back to camp. */
+  talkAtFire: (companionId: string) => void;
   /** Road-check lines for a night that will be interrupted (shown when it happens). */
   pendingNight: string[];
   answerLetter: (id: string, replyId?: string) => void;

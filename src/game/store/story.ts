@@ -62,6 +62,7 @@ export const storySlice = (
       get().talk(rest.join('.'), story);
     } else if (travel) get().openPrepare(travel);
     else if (afterDialogue === 'place') get().enterPlace();
+    else if (afterDialogue === 'camp') set({ screen: 'camp' });
   },
 
   answerLetter: (id, replyId) => {

@@ -13,6 +13,8 @@ import './art/camp-anim.css';
 import './World.css';
 import { InventoryDialog } from './ExploreDialogs';
 import { SoundButton } from '../audio/SoundButton';
+import { FirePanel, firesWaiting } from './FirePanel';
+import { campCompanions } from '../game/companions';
 import { placeMapFor } from '../game/placeMaps';
 import { prefersReducedMotion } from '../game/settings';
 
@@ -62,6 +64,7 @@ export function CampScreen() {
   const [joke, setJoke] = useState(-1);
   const [letterId, setLetterId] = useState<string | null>(null);
   const [showItems, setShowItems] = useState(false);
+  const [showFire, setShowFire] = useState(false);
   const place = currentPlace(g);
   const inTown = place.id === 'ashford';
   const hasWix = !!g.flags['wix_companion'];
@@ -186,6 +189,7 @@ export function CampScreen() {
           <span className="small muted">{formatDate(g.clock + rest!.hour)}</span>
         </div>
       )}
+      {showFire && <FirePanel onClose={() => setShowFire(false)} />}
       <footer className="camp-footer">
         <div className="camp-status" role="log" aria-live="polite">
           <span className="eyebrow">Camp</span>
@@ -198,6 +202,22 @@ export function CampScreen() {
         {hasWix && (
           <button type="button" className="camp-btn" onClick={() => setJoke(joke + 1)}>
             Ask Wix for a joke
+          </button>
+        )}
+        {campCompanions(g).length > 0 && (
+          <button
+            type="button"
+            className={`camp-btn ${firesWaiting(g) ? 'letter-new' : ''}`}
+            aria-expanded={showFire}
+            disabled={sleeping || resting}
+            onClick={() => setShowFire(!showFire)}
+          >
+            <span className="strong">Around the fire</span>
+            <span className="small">
+              {firesWaiting(g)
+                ? `${firesWaiting(g)} with something to say`
+                : `${campCompanions(g).length} at the fire`}
+            </span>
           </button>
         )}
         <button

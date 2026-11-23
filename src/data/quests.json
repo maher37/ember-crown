@@ -698,6 +698,54 @@
         }
       ],
       "completeWhen": ["vault"]
+    },
+    {
+      "id": "ulric-name",
+      "title": "The Gap in the Stone",
+      "kind": "side",
+      "act": 2,
+      "summary": "Brother Ulric can't face the Old Mine again. He asked you to carve Hadric Varrow's name into the gap the Hall left in the miners' memorial.",
+      "xp": 100,
+      "steps": [
+        {
+          "id": "ask",
+          "text": "Ulric asked you to carve Hadric Varrow's name into the miners' memorial."
+        },
+        {
+          "id": "carve",
+          "text": "Carve the name into the memorial in the Old Mine.",
+          "place": "old-mine"
+        },
+        {
+          "id": "tell",
+          "text": "Tell Ulric at the fire."
+        }
+      ],
+      "completeWhen": ["carve", "tell"]
+    },
+    {
+      "id": "kell-sergeant",
+      "title": "The Drowned Sergeant",
+      "kind": "side",
+      "act": 3,
+      "summary": "Captain Kell counts his dead. Sergeant Dace went into the marsh reeds with the company strongbox key and never came out.",
+      "xp": 200,
+      "steps": [
+        {
+          "id": "ask",
+          "text": "Kell asked you to find Sergeant Dace in the reeds and bring back his tag."
+        },
+        {
+          "id": "find",
+          "text": "Find Sergeant Dace in the reeds by the lizardfolk hunting grounds.",
+          "place": "lizardfolk-grounds"
+        },
+        {
+          "id": "tell",
+          "text": "Give Kell the tag at the fire."
+        }
+      ],
+      "completeWhen": ["find", "tell"]
     }
   ],
   "awards": [

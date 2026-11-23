@@ -10,6 +10,7 @@ import abbeyInk from '../content/dialogue/abbey.ink';
 import ashfordInk from '../content/dialogue/ashford.ink';
 import bridgeInk from '../content/dialogue/bridge.ink';
 import campInk from '../content/dialogue/camp.ink';
+import fireInk from '../content/dialogue/fire.ink';
 import desertersInk from '../content/dialogue/deserters.ink';
 import marshInk from '../content/dialogue/marsh.ink';
 import marrowmereInk from '../content/dialogue/marrowmere.ink';
@@ -57,6 +58,7 @@ export const STORIES: Record<string, string> = {
   sallow: sallowInk,
   deserters: desertersInk,
   camp: campInk,
+  fire: fireInk,
   pass: passInk,
   forge: forgeInk,
   caves: cavesInk,
@@ -267,6 +269,8 @@ export class Conversation {
       true,
     );
     s.BindExternalFunction('flag', (name: string) => this.game.flags[name] ?? false, true);
+    // D32: a hidden find has been opened (fire.ink: Kell's drowned sergeant).
+    s.BindExternalFunction('found', (id: string) => this.game.finds?.[id] === 'done', true);
     s.BindExternalFunction('set_flag', (name: string, value: boolean | number | string) => {
       this.game = { ...this.game, flags: { ...this.game.flags, [name]: value } };
     });

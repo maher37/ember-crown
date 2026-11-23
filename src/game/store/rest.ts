@@ -1,3 +1,4 @@
+import { fireSceneFor } from '../companions';
 import { roll, SeededRng } from '../../rules';
 import { PLACE_SCENES } from '../dialogue';
 import { formatDate } from '../calendar';
@@ -26,6 +27,7 @@ export const restSlice = (
   | 'interruptLongRest'
   | 'wakeEarly'
   | 'completeLongRest'
+  | 'talkAtFire'
 > => ({
   openMap: () => set({ screen: 'map' }),
 
@@ -232,5 +234,14 @@ export const restSlice = (
       g.party.some((h) => h.origin === 'corin' && !h.dead)
     )
       get().talk('bargain', 'camp');
+  },
+
+  talkAtFire: (companionId) => {
+    const g = get().game;
+    if (!g) return;
+    const scene = fireSceneFor(g, companionId);
+    if (!scene) return;
+    get().talk(scene.id, 'fire');
+    set({ afterDialogue: 'camp' });
   },
 });
