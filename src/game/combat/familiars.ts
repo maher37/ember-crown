@@ -1,4 +1,5 @@
 import { getMonster, monsterToCreature } from '../creatures';
+import { companionId, companionMaxHp, companionOf, companionReady } from '../companion';
 import { familiarId, familiarOf, hasChain } from '../familiar';
 import type { Hero } from '../hero';
 import { blocksMovement, inBounds, occupant, terrainAt } from './grid';
@@ -72,6 +73,55 @@ export function familiarsAfterFight(
     if (!c?.pet || c.creature.hp > 0 || !fam) return h;
     notes.push(`${c.name} is gone. It comes back after a long rest.`);
     return { ...h, familiar: { form: fam.form, lost: true } };
+  });
+  return { party: out, notes };
+}
+
+/**
+ * PHB: Beast Master, Ranger's Companion (D36). The ranger's animal starts next to them and takes
+ * its own turn, controlled by the player (owner, Nov 23: BG3 style; PHB: it acts on the ranger's
+ * command). It adds the ranger's proficiency bonus to AC, attack and damage rolls, and has at
+ * least 4 × ranger level HP. It starts every fight unhurt [inferred].
+ */
+export function placeCompanions(s: CombatState, party: Hero[], make: Make): void {
+  for (const h of party) {
+    if (!companionReady(h) || h.dead) continue;
+    const at = s.combatants[h.id]?.pos;
+    const pos = at && freeNear(s, at);
+    if (!pos) continue;
+    const m = getMonster(companionOf(h)!.form);
+    const id = companionId(h.id);
+    const name = `${h.name}'s ${m.name.toLowerCase()}`;
+    const base = monsterToCreature(m, id, name);
+    const hp = companionMaxHp(m.hp, h.level);
+    const pb = h.proficiencyBonus;
+    const c = make(
+      id,
+      name,
+      m.name[0]!.toLowerCase(),
+      'party',
+      pos,
+      { ...base, ac: base.ac + pb, maxHp: hp, hp },
+      m.speed.walk,
+    );
+    c.monsterId = m.id;
+    c.pet = { kind: 'companion', ownerId: h.id, canAttack: true, bonus: pb };
+    s.combatants[id] = c;
+  }
+}
+
+/** Heroes whose companion was killed in this fight: it's back after a long rest. */
+export function companionsAfterFight(
+  s: CombatState,
+  party: Hero[],
+): { party: Hero[]; notes: string[] } {
+  const notes: string[] = [];
+  const out = party.map((h) => {
+    const c = s.combatants[companionId(h.id)];
+    const comp = companionOf(h);
+    if (!c?.pet || c.creature.hp > 0 || !comp) return h;
+    notes.push(`${c.name} is badly hurt and limps off. It comes back after a long rest.`);
+    return { ...h, companion: { form: comp.form, lost: true } };
   });
   return { party: out, notes };
 }

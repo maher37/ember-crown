@@ -129,7 +129,7 @@
 - Fixed: the convoy fight froze on a militia ally's turn; Eldritch Blast's second beam at level 5; Hex on spell attacks.
 - Tooltips for spells and features (level-up, spell preparation); item rewards say what they do.
 - 13 more spells; kind dice for party spells (D30).
-- Seven new subclasses (D29). Next: Moon druid, Shadow monk, Beast Master ranger, Wild Magic sorcerer.
+- Seven new subclasses (D29). Beast Master ranger added later (D36); no second subclass for the Moon druid, Shadow monk or Wild Magic sorcerer (D29).
 - Open: should Medium be harder? (D31)
 
 ## M11: Animations (phase 2)

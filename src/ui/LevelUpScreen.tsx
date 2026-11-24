@@ -11,6 +11,7 @@ import {
   rollHitDie,
   spellRules,
   type LevelUpPlan,
+  activePicks,
 } from '../game/levelup';
 import { useGame } from '../game/store';
 import {
@@ -276,7 +277,7 @@ export function LevelUpScreen() {
             </div>
           )}
 
-          {opts.picks.map((g) => (
+          {activePicks(opts, plan).map((g) => (
             <div key={g.id} className="pick-group">
               <h2 className="eyebrow">
                 {g.name}: choose {g.count} ({(plan.picks[g.id] ?? []).length}/{g.count})

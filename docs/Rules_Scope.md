@@ -120,8 +120,9 @@ Warlock (pact magic; recharges on a short rest): L1: one 1st-level slot; L2: two
 | Rogue | Assassin | Assassinate: advantage against creatures that haven't acted yet; hits on surprised creatures are critical hits. |
 | Warlock | The Great Old One | Awakened Mind (story), *dissonant whispers* and *Tasha's hideous laughter* on the list; Entropic Ward at 6th. |
 | Wizard | School of Abjuration | Arcane Ward: abjuration spells raise and recharge a ward (2 × level + Int HP) that takes damage first; Projected Ward at 6th protects allies within 30 ft. |
+| Ranger | Beast Master (D36) | Ranger's Companion: a wolf, panther, boar or giant badger fights beside you on its own turn, with your proficiency bonus added to its AC, attacks and damage, and at least 4 × your ranger level in HP. |
 
-Still to come: Circle of the Moon (druid), Way of Shadow (monk), Beast Master (ranger), Wild Magic (sorcerer).
+Not planned (D29, Nov 22): Circle of the Moon (druid), Way of Shadow (monk), Wild Magic (sorcerer).
 
 **Corin Varrow (origin)** is a Draconic Bloodline sorcerer with red (fire) ancestry. The Ember bargains in Story_Bible.md §9 add homebrew boons on top of these features.
 

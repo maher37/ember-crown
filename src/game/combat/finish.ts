@@ -2,7 +2,7 @@ import { buffsAfterFight } from './carryover';
 import { encounters } from '../../data';
 import { levelUpHero, type Hero } from '../hero';
 import { awardXp, stabilize } from '../../rules';
-import { familiarsAfterFight } from './familiars';
+import { companionsAfterFight, familiarsAfterFight } from './familiars';
 import type { CombatState } from './types';
 
 export const getEncounter = (id: string) => {
@@ -101,5 +101,11 @@ export function finishCombat(state: CombatState, party: Hero[]): CombatResult {
     return h;
   });
   const fam = familiarsAfterFight(state, out);
-  return { party: fam.party, xpEach, notes: [...notes, ...fam.notes], inventory: state.inventory };
+  const comp = companionsAfterFight(state, fam.party);
+  return {
+    party: comp.party,
+    xpEach,
+    notes: [...notes, ...fam.notes, ...comp.notes],
+    inventory: state.inventory,
+  };
 }

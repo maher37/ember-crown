@@ -42,7 +42,7 @@ import { castBeforeFight } from './precast';
 import { fx } from './fx';
 import { hasBeacon, passWithoutTrace } from './wards';
 import { restoreBuffs } from './carryover';
-import { placeFamiliars } from './familiars';
+import { placeCompanions, placeFamiliars } from './familiars';
 import type { Precast } from '../precast';
 import { giveCondition } from './leaves';
 import type { CombatState, Combatant, Pos, TurnState } from './types';
@@ -186,6 +186,8 @@ export function startCombat(o: StartOptions): CombatState {
     }
     // PHB: Find Familiar. Familiars join beside their heroes.
     placeFamiliars(s, o.party, makeCombatant);
+    // PHB: Ranger's Companion (Beast Master).
+    placeCompanions(s, o.party, makeCombatant);
     // Shield of the Morninglord: resistance to fire while you hold it. Story_Bible §9: Corin's
     // ember bargain can also make him resist fire.
     for (const c of Object.values(s.combatants)) {

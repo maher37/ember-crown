@@ -40,6 +40,8 @@ export interface PickGroup {
   name: string;
   count: number;
   options: PickOption[];
+  /** Only asked for when this subclass is chosen on the same level-up (Hunter's Prey for a Hunter). */
+  onlyFor?: string;
 }
 
 export interface SpellRules {
@@ -85,6 +87,10 @@ export function levelUpOptions(hero: Hero): LevelUpOptions {
   const gained = cls.levels[newLevel - 1]!.features.filter((f) =>
     choosing ? !f.subclassId : !f.subclassId || f.subclassId === subclassOf(hero),
   );
+  // A subclass's own pick, offered while choosing that subclass (D36: Hunter vs Beast Master).
+  const subPick = choosing
+    ? cls.levels[newLevel - 1]!.features.find((f) => f.id === 'hunters-prey' && f.subclassId)
+    : undefined;
   const picks: PickGroup[] = [];
   if (choosing)
     picks.push({
@@ -118,6 +124,16 @@ export function levelUpOptions(hero: Hero): LevelUpOptions {
       picks.push({ id: 'metamagic', name: 'Metamagic', count: f.choose ?? 2, options: f.options });
     if (f.id === 'hunters-prey' && f.options)
       picks.push({ id: 'hunters-prey', name: "Hunter's Prey", count: 1, options: f.options });
+  }
+  if (subPick?.options)
+    picks.push({
+      id: 'hunters-prey',
+      name: "Hunter's Prey",
+      count: 1,
+      options: subPick.options,
+      onlyFor: subPick.subclassId,
+    });
+  for (const f of gained) {
     if (f.id.startsWith('expertise')) {
       const owned = hero.skills.filter((s) => !hero.expertise.includes(s));
       picks.push({
@@ -279,7 +295,7 @@ export function planProblems(hero: Hero, plan: LevelUpPlan): string[] {
   if (!o.asi && spent) p.push('No Ability Score Improvement at this level.');
   if (ABILITIES.some((a) => (plan.asi[a] ?? 0) > 2 || hero.abilities[a] + (plan.asi[a] ?? 0) > 20))
     p.push('Scores can rise by at most 2, and never above 20.');
-  for (const g of o.picks) {
+  for (const g of activePicks(o, plan)) {
     const chosen = plan.picks[g.id] ?? [];
     if (chosen.length !== g.count || chosen.some((c) => !g.options.some((x) => x.id === c)))
       p.push(`Choose ${g.count} for ${g.name}.`);
@@ -337,6 +353,11 @@ export function hpGain(hero: Hero, plan: LevelUpPlan): number {
   return Math.max(1, die + after) + extra + (after - before) * hero.level;
 }
 
+/** The pick groups that apply to this plan (a subclass's own pick only if it's chosen). */
+export function activePicks(o: LevelUpOptions, plan: LevelUpPlan): PickGroup[] {
+  return o.picks.filter((g) => !g.onlyFor || plan.picks['subclass']?.[0] === g.onlyFor);
+}
+
 /** Apply a finished level-up plan. */
 export function applyLevelUp(hero: Hero, plan: LevelUpPlan): Hero {
   if (!canLevelUp(hero)) throw new Error(`${hero.name} doesn't have the XP to level up`);
@@ -345,7 +366,9 @@ export function applyLevelUp(hero: Hero, plan: LevelUpPlan): Hero {
   const level = hero.level + 1;
   const abilities = newAbilities(hero, plan);
   const gain = hpGain(hero, plan);
-  const picks = plan.picks;
+  // Picks for a subclass that wasn't chosen are dropped.
+  const active = new Set(activePicks(levelUpOptions(hero), plan).map((g) => g.id));
+  const picks = Object.fromEntries(Object.entries(plan.picks).filter(([k]) => active.has(k)));
   const next: Hero = {
     ...hero,
     level,

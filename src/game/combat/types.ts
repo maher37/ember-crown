@@ -102,9 +102,16 @@ export interface Combatant {
   summon?: { casterId: string; spellId: string };
   /**
    * A creature fighting for a hero (D36): a familiar (Find Familiar, Pact of the Chain; stays with
-   * the hero between fights) or a beast from Wix's Clan Gift (gone when the fight ends).
+   * the hero between fights) a Beast Master's companion (the same), or a beast from Wix's Clan Gift (gone when the
+   * fight ends).
    */
-  pet?: { kind: 'familiar' | 'bag'; ownerId: string; canAttack: boolean };
+  pet?: {
+    kind: 'familiar' | 'bag' | 'companion';
+    ownerId: string;
+    canAttack: boolean;
+    /** Added to its attack and damage rolls (a Beast Master's proficiency bonus). */
+    bonus?: number;
+  };
 }
 
 export interface LogLine {

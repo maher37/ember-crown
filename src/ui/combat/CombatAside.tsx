@@ -65,9 +65,11 @@ export function CombatAside({
             {hero
               ? `${getSpecies(hero.creature.speciesId).name} ${getClass(hero.creature.classId).name} ${hero.creature.level}`
               : me.pet
-                ? me.pet.kind === 'bag'
-                  ? 'Beast from the bag'
-                  : 'Familiar'
+                ? {
+                    bag: 'Beast from the bag',
+                    familiar: 'Familiar',
+                    companion: 'Animal companion',
+                  }[me.pet.kind]
                 : me.side === 'party'
                   ? 'Ally'
                   : 'Enemy'}{' '}

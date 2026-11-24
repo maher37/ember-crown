@@ -72,6 +72,8 @@ export function attackOptions(c: Combatant): AttackOption[] {
   const h = heroOf(c);
   // PHB: Find Familiar. A familiar can't attack (a Pact of the Chain familiar can).
   if (c.pet && !c.pet.canAttack) return [];
+  // PHB: Ranger's Companion. The ranger's proficiency bonus is added to its attack and damage rolls.
+  if (!h && c.monsterId && c.pet?.bonus) return withBonus(monsterAttacks(c.monsterId), c.pet.bonus);
   if (!h) return c.monsterId ? monsterAttacks(c.monsterId) : [];
   const str = abilityModifier(h.abilities.str);
   const dex = abilityModifier(h.abilities.dex);
@@ -237,6 +239,24 @@ export function attackOptions(c: Combatant): AttackOption[] {
     magical: monk && h.level >= 6,
   });
   return opts;
+}
+
+/** Add `b` to each attack's to-hit and to its first damage roll ("2d4+2" → "2d4+4"). */
+function withBonus(opts: AttackOption[], b: number): AttackOption[] {
+  return opts.map((o) => ({
+    ...o,
+    toHit: o.toHit + b,
+    damage: o.damage.map((d, i) => {
+      if (i > 0) return d;
+      const e = parseDice(d.dice);
+      const bonus = e.bonus + b;
+      const sign = bonus >= 0 ? '+' : '-';
+      return {
+        ...d,
+        dice: e.count ? `${e.count}d${e.sides}${sign}${Math.abs(bonus)}` : String(bonus),
+      };
+    }),
+  }));
 }
 
 export function monsterAttacks(monsterId: string): AttackOption[] {

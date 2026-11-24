@@ -1597,7 +1597,17 @@
                   "name": "Horde Breaker",
                   "summary": "Once per turn, make another attack against a different creature within 5 ft of the first target."
                 }
-              ]
+              ],
+              "subclassId": "hunter"
+            },
+            {
+              "id": "rangers-companion",
+              "name": "Ranger's Companion",
+              "summary": "An animal companion (wolf, panther, boar or giant badger) fights beside you, taking its own turn. It adds your proficiency bonus to its AC, attacks and damage, and has at least 4 × your ranger level in HP. Pick it on the Party sheet; if it dies, it comes back after a long rest.",
+              "subclass": true,
+              "subclassId": "beast-master",
+              "verify": true,
+              "verifyNote": "Added Nov 23 (owner, D36): Baldur's Gate 3 style, the companion takes its own turn (PHB: it acts only on the ranger's command). Bonuses from memory of the PHB."
             },
             {
               "id": "primeval-awareness",
@@ -1651,7 +1661,21 @@
         "weapons": ["shortsword", "shortsword", "longbow"],
         "verify": true,
         "verifyNote": "One of the PHB starting-equipment options, from memory and simplified (no packs or gold yet)."
-      }
+      },
+      "subclasses": [
+        {
+          "id": "hunter",
+          "name": "Hunter",
+          "summary": "A monster-slayer: pick a Hunter's Prey technique (Colossus Slayer, Giant Killer or Horde Breaker)."
+        },
+        {
+          "id": "beast-master",
+          "name": "Beast Master",
+          "summary": "An animal companion (wolf, panther, boar or giant badger) fights beside you on its own turn, stronger as you level.",
+          "verify": true,
+          "verifyNote": "Added Nov 23 (owner, D36), from memory of the PHB; check the details."
+        }
+      ]
     },
     {
       "id": "rogue",
