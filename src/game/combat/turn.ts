@@ -680,7 +680,10 @@ export function usesExtraAttack(c: Combatant): number {
   if (hasEffect(c, 'slowed')) return 1;
   // PHB: Extra Attack (barbarian, fighter, monk, paladin, ranger at level 5).
   const h = heroOf(c);
-  if (!h) return 1;
+  // MM: Multiattack. A familiar, companion or bag beast with Multiattack (the giant badger's bite
+  // and claws) makes all its attacks (owner, Nov 24; PHB: a Beast Master's companion can't [2014]).
+  // Story allies (Ser Ida) still make one attack, as before.
+  if (!h) return c.pet && c.monsterId ? (getMonster(c.monsterId).multiattack?.length ?? 1) : 1;
   // PHB: Valor bard, Extra Attack (bard 6).
   if (hasSubclass(h, 'bard', 'valor', 6)) return 2;
   return ['barbarian', 'fighter', 'monk', 'paladin', 'ranger'].includes(h.classId) && h.level >= 5

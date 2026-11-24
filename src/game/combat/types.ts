@@ -65,6 +65,8 @@ export interface TurnState {
   hasteAction?: boolean;
   /** The haste action is the one being used. */
   inHasteAction?: boolean;
+  /** Attacks of a Multiattack already made this turn, by attack id (each only as listed). */
+  multiUsed?: string[];
   /** Weapon sets were switched this turn (free, once a turn). */
   swappedWeapons?: boolean;
 }
