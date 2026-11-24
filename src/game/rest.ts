@@ -148,6 +148,9 @@ export function takeLongRest(game: GameState, rng: RandomSource): RestResult {
       log.push(`${h.name}'s familiar returns.`);
       h = familiarAfterLongRest(h);
     }
+    // DMG: Bag of Tricks. Its three uses come back at dawn (after a long rest here).
+    if (h.resourcesUsed['wixs-clan-gift'])
+      h = { ...h, resourcesUsed: { ...h.resourcesUsed, 'wixs-clan-gift': 0 } };
     if (h.hp < 1) return stableWakes(h, 8, rng, log);
     const r = rulesLongRest(h);
     return recharge(r.creature as Hero, 'long-rest');

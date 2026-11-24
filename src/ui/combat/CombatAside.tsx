@@ -6,6 +6,7 @@ import {
   type Combatant,
   type CombatState,
 } from '../../game/combat';
+import { getMonster } from '../../game/creatures';
 import { getClass, getSpecies, slotsLeft, type Hero } from '../../game/hero';
 import { briefLine, hitChance } from '../combatUi';
 import type { foeInfo } from '../foeInfo';
@@ -64,7 +65,9 @@ export function CombatAside({
             {hero
               ? `${getSpecies(hero.creature.speciesId).name} ${getClass(hero.creature.classId).name} ${hero.creature.level}`
               : me.pet
-                ? 'Familiar'
+                ? me.pet.kind === 'bag'
+                  ? 'Beast from the bag'
+                  : 'Familiar'
                 : me.side === 'party'
                   ? 'Ally'
                   : 'Enemy'}{' '}
@@ -110,8 +113,8 @@ export function CombatAside({
             return (
               <div key={c.id} className={`party-hp-row ${c.id === me.id ? 'on' : ''}`}>
                 <span className="party-hp-name" title={c.name}>
-                  {/* A familiar shows by its shape ("imp"), not its owner's name. */}
-                  {c.pet ? c.name.split(' ').at(-1) : c.name.split(' ')[0]}
+                  {/* A familiar or bag beast shows by what it is ("Imp"), not its owner's name. */}
+                  {c.pet && c.monsterId ? getMonster(c.monsterId).name : c.name.split(' ')[0]}
                 </span>
                 <div className="hp-bar" aria-hidden="true">
                   <div

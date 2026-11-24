@@ -4,7 +4,7 @@
 
 Each line was entered from memory or is marked ⚠ in the design docs. Check it against your PDFs. When a line is right (or fixed), remove its `verify` and `verifyNote` from the JSON and run `npm run verify-list` again.
 
-**244 items to check.**
+**249 items to check.**
 
 ## species.json
 
@@ -147,6 +147,11 @@ Each line was entered from memory or is marked ⚠ in the design docs. Check it 
 - [ ] **monsters › Pseudodragon**: Familiar form from memory of SRD 5.1 [CONFIRM LOCALLY].
 - [ ] **monsters › Quasit**: Familiar form from memory of SRD 5.1 [CONFIRM LOCALLY].
 - [ ] **monsters › Sprite**: Familiar form from memory of SRD 5.1 [CONFIRM LOCALLY].
+- [ ] **monsters › Badger**: Bag of Tricks beast, from memory of SRD 5.1 [CONFIRM LOCALLY].
+- [ ] **monsters › Boar**: Bag of Tricks beast, from memory of SRD 5.1 [CONFIRM LOCALLY].
+- [ ] **monsters › Panther**: Bag of Tricks beast, from memory of SRD 5.1 [CONFIRM LOCALLY].
+- [ ] **monsters › Giant Badger**: Bag of Tricks beast, from memory of SRD 5.1 [CONFIRM LOCALLY].
+- [ ] **monsters › Giant Elk**: Bag of Tricks beast, from memory of SRD 5.1 [CONFIRM LOCALLY].
 
 ## foes.json
 

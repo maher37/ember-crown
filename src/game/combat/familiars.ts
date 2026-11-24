@@ -15,7 +15,7 @@ type Make = (
 ) => Combatant;
 
 /** The nearest free, walkable square to `p` (rings outward), or null if none. */
-function freeNear(s: CombatState, p: Pos): Pos | null {
+export function freeNear(s: CombatState, p: Pos): Pos | null {
   for (let r = 1; r <= 3; r++)
     for (let dy = -r; dy <= r; dy++)
       for (let dx = -r; dx <= r; dx++) {

@@ -38,7 +38,7 @@
 | **Kiln-Quenched Weapon** (+1 weapon of the player's choice) ✅ | Uncommon | +1 to attack and damage rolls | *The Cold Forge*: quench a weapon in the relit Ammarindar forge | Lets any martial character upgrade |
 | **The Honor Guard's Ring** (Ring of Protection) ✅ | Rare, attunement | +1 AC and +1 to saving throws | *Ser Ida's Unfinished Oath*: King Varrow's own ring, given by Ida | Act III level-appropriate rare; ties to the "real Varrow" truth |
 | **The Drowned Lantern** (Lantern of Revealing) ✅ | Uncommon | Its light reveals invisible creatures and objects | *Last Boats from Ashford*: Brannoc gives the inn's namesake lantern if he leaves (or wills it to you if he stays) | Maelis's last letter asks you to bring a lantern. Carrying this one into the finale unlocks a special line |
-| **Wix's Clan Gift** (Bag of Tricks, gray) ✅ | Uncommon | Pull out a random small animal that fights for you briefly | *Wix's Homecoming* | Goblin chaos; Wix insists it is "mostly badgers" |
+| **Wix's Clan Gift** (Bag of Tricks, gray) ✅ | Uncommon | Pull out a random beast that fights for you until the fight ends (an action, 3 uses per long rest; D36) | *Wix's Homecoming* | Goblin chaos; Wix insists it is "mostly badgers" |
 | **Elite reward: Vorrag's forge-blade.** **Dragon Slayer** ✅ (+1 longsword or greatsword) | Rare | +1 to attack and damage; extra 3d6 damage against dragons | Vorrag the Kiln-Smith (see Elites) | Devastating against Cindrath's ember-wraith (dragon type). It makes the finale easier, which is the reward for beating the hardest optional fight |
 
 **Deliberately absent:** fire-damage weapons such as Flame Tongue (Cindrath is immune to fire, which is a nice trap for players who bring fire spells: the game should warn via Arcana or the Truths).
