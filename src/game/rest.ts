@@ -6,6 +6,7 @@ import {
   spendHitDie,
   type RandomSource,
 } from '../rules';
+import { companionAfterLongRest } from './companion';
 import { familiarAfterLongRest } from './familiar';
 import { hasSpecial } from './items';
 import type { GameState } from './save';
@@ -147,6 +148,11 @@ export function takeLongRest(game: GameState, rng: RandomSource): RestResult {
     if (h.familiar?.lost) {
       log.push(`${h.name}'s familiar returns.`);
       h = familiarAfterLongRest(h);
+    }
+    // PHB: Ranger's Companion. A hurt companion is back; a newly chosen one has bonded.
+    if (h.companion?.lost || h.companion?.waiting) {
+      log.push(`${h.name}'s animal companion is at their side again.`);
+      h = companionAfterLongRest(h);
     }
     // DMG: Bag of Tricks. Its three uses come back at dawn (after a long rest here).
     if (h.resourcesUsed['wixs-clan-gift'])

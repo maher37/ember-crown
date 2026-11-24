@@ -105,6 +105,8 @@ export interface Hero extends Creature {
   choices: Record<string, string[]>;
   /** Find Familiar / Pact of the Chain: the familiar's shape, and whether it's lost until a long rest. */
   familiar?: import('./familiar').Familiar;
+  /** Beast Master: the animal companion's kind, and whether it's away until a long rest. */
+  companion?: import('./companion').Companion;
   /** Hit point maximum lost to Life Drain (specters, wraiths) until a long rest. */
   maxHpDrain?: number;
 }

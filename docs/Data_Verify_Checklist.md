@@ -4,7 +4,7 @@
 
 Each line was entered from memory or is marked ⚠ in the design docs. Check it against your PDFs. When a line is right (or fixed), remove its `verify` and `verifyNote` from the JSON and run `npm run verify-list` again.
 
-**249 items to check.**
+**251 items to check.**
 
 ## species.json
 
@@ -85,7 +85,9 @@ Each line was entered from memory or is marked ⚠ in the design docs. Check it 
 - [ ] **classes › Paladin**: One of the PHB starting-equipment options, from memory and simplified (no packs or gold yet).
 - [ ] **classes › Paladin › Oath of Vengeance**: Added Nov 21 (owner asked for more subclasses), from memory of the PHB; check the details.
 - [ ] **classes › Ranger**: Proficiencies and skill list from memory of the PHB. Hit die, saves and subclass level checked (✅).
+- [ ] **classes › Ranger › features › Ranger's Companion**: Added Nov 23 (owner, D36): Baldur's Gate 3 style, the companion takes its own turn (PHB: it acts only on the ranger's command). Bonuses from memory of the PHB.
 - [ ] **classes › Ranger**: One of the PHB starting-equipment options, from memory and simplified (no packs or gold yet).
+- [ ] **classes › Ranger › Beast Master**: Added Nov 23 (owner, D36), from memory of the PHB; check the details.
 - [ ] **classes › Rogue**: Proficiencies and skill list from memory of the PHB. Hit die, saves and subclass level checked (✅).
 - [ ] **classes › Rogue › features › Assassinate**: Added Nov 21 (owner asked for more subclasses), from memory of the PHB; check the details.
 - [ ] **classes › Rogue › features › Bonus Proficiencies**: Added Nov 21 (owner asked for more subclasses), from memory of the PHB; check the details.
