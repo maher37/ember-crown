@@ -293,6 +293,23 @@ describe('monsters, foes and items', () => {
         'red-dragon-wyrmling',
         'young-red-dragon',
         'ember-wraith',
+        // Familiar shapes (Find Familiar, Pact of the Chain).
+        'bat',
+        'cat',
+        'frog',
+        'hawk',
+        'lizard',
+        'octopus',
+        'owl',
+        'rat',
+        'raven',
+        'sea-horse',
+        'spider',
+        'weasel',
+        'imp',
+        'pseudodragon',
+        'quasit',
+        'sprite',
       ].sort(),
     );
   });

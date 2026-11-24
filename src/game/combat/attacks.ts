@@ -69,6 +69,8 @@ const fmt = (n: number) => (n >= 0 ? `+${n}` : `${n}`);
 export function attackOptions(c: Combatant): AttackOption[] {
   if (c.wildShape) return monsterAttacks(c.wildShape.monsterId);
   const h = heroOf(c);
+  // PHB: Find Familiar. A familiar can't attack (a Pact of the Chain familiar can).
+  if (c.pet && !c.pet.canAttack) return [];
   if (!h) return c.monsterId ? monsterAttacks(c.monsterId) : [];
   const str = abilityModifier(h.abilities.str);
   const dex = abilityModifier(h.abilities.dex);

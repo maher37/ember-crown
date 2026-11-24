@@ -108,7 +108,8 @@ export const Monster = z
     traits: z.array(MonsterTrait).default([]),
     /** e.g. ["scimitar", "scimitar", "dagger"]: action ids used by one Multiattack. */
     multiattack: z.array(Id).optional(),
-    actions: z.array(MonsterAction).min(1),
+    /** Some tiny familiars (frog, sea horse) have no attacks. */
+    actions: z.array(MonsterAction),
     spellcasting: MonsterSpellcasting.optional(),
     /** Where the docs use it (encounter ids, quests). */
     usedIn: z.array(z.string().min(1)).default([]),

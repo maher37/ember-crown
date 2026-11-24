@@ -1321,6 +1321,25 @@
       "ritual": true
     },
     {
+      "id": "find-familiar",
+      "name": "Find Familiar",
+      "level": 1,
+      "school": "conjuration",
+      "castingTime": "1-hour",
+      "range": {
+        "feet": 10
+      },
+      "concentration": false,
+      "duration": "until-dispelled",
+      "components": "V, S, M",
+      "materialCostGp": 10,
+      "classes": ["wizard"],
+      "summary": "A spirit takes the shape of a small animal and serves you. Here it joins every fight beside you and takes its own turn; it can't attack, but it can Help. If it dies it comes back after a long rest. Pick its shape on the Party sheet.",
+      "effects": [],
+      "utility": true,
+      "ritual": true
+    },
+    {
       "id": "feather-fall",
       "name": "Feather Fall",
       "level": 1,

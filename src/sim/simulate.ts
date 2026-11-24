@@ -71,7 +71,9 @@ export function simulate(
       continue;
     }
     if (!end.outcome) stuck++;
-    const heroes = Object.values(end.combatants).filter((c) => c.side === 'party' && !c.summon);
+    const heroes = Object.values(end.combatants).filter(
+      (c) => c.side === 'party' && !c.summon && !c.pet,
+    );
     const won = end.outcome === 'victory' || end.outcome === 'parley';
     if (won) {
       wins++;

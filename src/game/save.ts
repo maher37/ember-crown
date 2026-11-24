@@ -140,6 +140,8 @@ export const HeroSchema = z.object({
     )
     .optional(),
   arcaneWard: z.number().int().min(0).optional(),
+  // Find Familiar: the shape, and whether it's lost until a long rest (optional: old saves load as is).
+  familiar: z.object({ form: z.string(), lost: z.boolean().optional() }).optional(),
   equipment: z.object({
     armor: z.string().nullable(),
     shield: z.boolean(),

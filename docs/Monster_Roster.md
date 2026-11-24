@@ -95,6 +95,15 @@
 
 ---
 
+## Familiars (D36)
+
+Not enemies: the shapes a wizard's Find Familiar or a Pact of the Chain warlock's familiar can take. Numbers are in `src/data/monsters.json` (`usedIn: familiar`).
+
+| Shapes | Who can pick them | Role in a fight |
+|---|---|---|
+| Bat, cat, frog, hawk, lizard, octopus, owl, rat, raven, sea horse, spider, weasel | Any hero with a familiar | Scouts and helpers: they move and Help, but can't attack (a Chain familiar can). The sea horse and octopus are nearly stuck on land. |
+| Imp, pseudodragon, quasit, sprite | Pact of the Chain only | Small fighters with poison stings, claws or arrows. |
+
 ## What each act needs (quick lookup)
 - **Act I:** bandit, goblin, wolf, hobgoblin, cultist, thug, giant centipede, cult fanatic, skeleton. Side quests add giant rat, swarm of rats, shadow. Travel adds stirge, brown bear, griffon.
 - **Act II:** thug, scout, lizardfolk, ghoul, zombie, veteran, cult fanatic, cultist, priest, ogre. Side quests add green hag, swarm of insects, bandit captain, bandit, specter, ghast. Travel adds giant spider.
