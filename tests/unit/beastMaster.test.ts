@@ -138,3 +138,36 @@ describe('changing the companion', () => {
     expect(r.ok && r.save.game.party[0]!.companion).toEqual({ form: 'panther', waiting: true });
   });
 });
+
+describe('Multiattack for summoned animals (owner, Nov 24)', () => {
+  const ready = () => {
+    const s = arrange(
+      F(setCompanionForm(beastMaster(), 'giant-badger')),
+      { 'kael-companion': { x: 5, y: 4 } },
+      'kael-companion',
+    );
+    const foe = Object.values(s.combatants).find((c) => c.side === 'enemy')!;
+    foe.pos = { x: 6, y: 4 };
+    foe.creature = { ...foe.creature, hp: 99, maxHp: 99 };
+    return { s, foe };
+  };
+
+  it('a giant badger companion bites and claws in one turn (MM: Multiattack)', () => {
+    const { s, foe } = ready();
+    let r = act(s, { type: 'attack', targetId: foe.id, optionId: 'bite' });
+    expect(r.error).toBeUndefined();
+    r = act(r.state, { type: 'attack', targetId: foe.id, optionId: 'claws' });
+    expect(r.error).toBeUndefined();
+    expect(texts(r.state)).toMatch(/Bite[\s\S]*Claws|Claws[\s\S]*Bite/);
+    r = act(r.state, { type: 'attack', targetId: foe.id, optionId: 'bite' });
+    expect(r.error).toBeTruthy();
+  });
+
+  it('but not two bites (each attack only as listed)', () => {
+    const { s, foe } = ready();
+    const r = act(s, { type: 'attack', targetId: foe.id, optionId: 'bite' });
+    expect(act(r.state, { type: 'attack', targetId: foe.id, optionId: 'bite' }).error).toMatch(
+      /already used its bite/,
+    );
+  });
+});

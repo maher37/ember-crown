@@ -258,7 +258,15 @@ function doAttack(
     (classLevel(c, 'paladin') < 2 || (slotsLeft(heroOf(c)!)[a.smiteLevel - 1] ?? 0) < 1)
   )
     return 'No slot for Divine Smite.';
+  // MM: Multiattack names its attacks ("one with its bite and one with its claws").
+  const multi = c.pet && c.monsterId ? getMonster(c.monsterId).multiattack : undefined;
+  if (multi && c.turn.attacksLeft > 0) {
+    const allowed = multi.filter((id) => id === opt.id).length;
+    const used = (c.turn.multiUsed ?? []).filter((id) => id === opt.id).length;
+    if (used >= allowed) return `${c.name} already used its ${opt.name.toLowerCase()} this turn.`;
+  }
   if (!startAttack(c)) return 'No attacks left this turn.';
+  if (multi) c.turn.multiUsed = [...(c.turn.multiUsed ?? []), opt.id];
   c.turn.attacked = true;
   if (opt.light && opt.kind === 'melee') c.turn.lightWeaponUsed = opt.id;
   makeAttack(ctx, c, target, opt, {
