@@ -632,7 +632,10 @@ export function moveAlong(
   const { s } = ctx;
   for (let i = 0; i < path.length; i++) {
     const next = path[i]!;
-    if (!mover.turn.disengaged) {
+    // SRD: Flyby (owl). It doesn't provoke opportunity attacks when it flies out of reach.
+    const flyby =
+      !!mover.monsterId && getMonster(mover.monsterId).traits.some((t) => t.id === 'flyby');
+    if (!mover.turn.disengaged && !flyby) {
       for (const h of Object.values(s.combatants)) {
         if (
           h.side === mover.side ||

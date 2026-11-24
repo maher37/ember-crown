@@ -5,6 +5,7 @@ import { conscious } from './grid';
 import { speedNow } from './turn';
 import type { CombatState, Combatant } from './types';
 import { actionFree } from './basics';
+import { petFeatures } from './petAbilities';
 
 // Which class features a hero can use in combat right now (split from actions.ts).
 
@@ -49,7 +50,9 @@ export type FeatureId =
   | 'destructive-wrath'
   | 'eagle-dash'
   | 'vow-of-enmity'
-  | 'abjure-enemy';
+  | 'abjure-enemy'
+  | 'pet-invisibility'
+  | 'pet-scare';
 
 // ── Class features through level 2 ──
 
@@ -69,7 +72,8 @@ export const left = (c: Combatant, id: string) => resourceLeft(heroOf(c)!, id);
 /** Class features usable now. `s` (the fight) lets features look at other creatures. */
 export function featureList(c: Combatant, s?: CombatState): FeatureInfo[] {
   const h = heroOf(c);
-  if (!h) return [];
+  // D36: a familiar's own abilities (Invisibility, Scare).
+  if (!h) return petFeatures(c);
   const out: FeatureInfo[] = [];
   const t = c.turn;
   const bonus = (b?: string) => b ?? (t.bonusUsed ? 'bonus action used' : undefined);

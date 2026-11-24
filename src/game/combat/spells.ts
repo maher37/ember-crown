@@ -1,3 +1,4 @@
+import { touchCourier } from './petAbilities';
 import { spells } from '../../data';
 import type { Effect, LeafEffect } from '../../data/schemas/common';
 import type { Spell } from '../../data/schemas/spell';
@@ -297,7 +298,11 @@ export function castProblem(ctx: Ctx, caster: Combatant, req: CastRequest): stri
       if (revive && (!target.creature.dead || target.side !== caster.side))
         return 'Revivify needs a fallen ally';
       if (!revive && target.creature.dead) return 'invalid target';
-      if (distanceFeet(caster.pos, target.pos) > t.rangeFeet)
+      // PHB: Find Familiar. A touch spell can be delivered by the caster's familiar.
+      if (
+        distanceFeet(caster.pos, target.pos) > t.rangeFeet &&
+        !(sp.range === 'touch' && touchCourier(ctx.s, caster, target))
+      )
         return `${target.name} is out of range`;
       if (!hasLineOfSight(ctx.s.map, caster.pos, target.pos)) return `can't see ${target.name}`;
     }
@@ -350,6 +355,17 @@ export function castSpell(ctx: Ctx, caster: Combatant, req: CastRequest): void {
   caster.effects = caster.effects.filter((e) => e.tag !== 'hidden');
   // Casting ends Invisibility first [inferred: the spell's own attack roll gets no advantage].
   breakInvisibility(s, caster);
+  // PHB: Find Familiar. A touch spell delivered by the familiar uses its reaction.
+  if (sp.range === 'touch')
+    for (const id of req.targetIds ?? []) {
+      const target = s.combatants[id];
+      if (!target || distanceFeet(caster.pos, target.pos) <= CELL_FEET) continue;
+      const courier = touchCourier(s, caster, target);
+      if (courier) {
+        courier.reactionUsed = true;
+        say(s, 'you', `${courier.name} delivers the touch of ${sp.name}`);
+      }
+    }
   say(
     s,
     caster.side === 'party' ? 'you' : 'foe',
