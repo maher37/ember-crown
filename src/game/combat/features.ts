@@ -1,3 +1,4 @@
+import { petFeature } from './petAbilities';
 import { getMonster } from '../creatures';
 import { casterNumbers, spiritAttack } from './spells';
 import { slotsLeft, type Hero } from '../hero';
@@ -34,6 +35,8 @@ export function feature(
   targetId?: string,
 ): string | null | undefined {
   const { s, rng } = ctx;
+  if (id.startsWith('pet-'))
+    return petFeature(ctx, c, id, targetId ? s.combatants[targetId] : undefined);
   const info = featureList(c, ctx.s).find((f) => f.id === id);
   if (!info) return "You don't have that feature.";
   if (info.blocked) return `${info.name}: ${info.blocked}.`;

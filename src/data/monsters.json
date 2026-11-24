@@ -5039,6 +5039,17 @@
               ]
             }
           ]
+        },
+        {
+          "id": "invisibility",
+          "name": "Invisibility",
+          "summary": "Turns invisible until it attacks, or its concentration ends.",
+          "effects": [
+            {
+              "type": "special",
+              "id": "invisibility"
+            }
+          ]
         }
       ],
       "usedIn": ["familiar"],
@@ -5137,7 +5148,8 @@
                       }
                     }
                   ],
-                  "onSuccess": "none"
+                  "onSuccess": "none",
+                  "knockOutIfFailBy": 5
                 }
               ]
             }
@@ -5225,6 +5237,40 @@
                   "onSuccess": "none"
                 }
               ]
+            }
+          ]
+        },
+        {
+          "id": "scare",
+          "name": "Scare",
+          "summary": "Once a day: one creature within 20 ft makes a DC 10 Wisdom save or is frightened for 1 minute (it repeats the save at the end of each of its turns).",
+          "effects": [
+            {
+              "type": "save",
+              "ability": "wis",
+              "dc": 10,
+              "onFail": [
+                {
+                  "type": "condition",
+                  "condition": "frightened",
+                  "duration": {
+                    "minutes": 1
+                  },
+                  "repeatSave": "wis"
+                }
+              ],
+              "onSuccess": "none"
+            }
+          ]
+        },
+        {
+          "id": "invisibility",
+          "name": "Invisibility",
+          "summary": "Turns invisible until it attacks or uses Scare, or its concentration ends.",
+          "effects": [
+            {
+              "type": "special",
+              "id": "invisibility"
             }
           ]
         }
@@ -5319,9 +5365,21 @@
                       }
                     }
                   ],
-                  "onSuccess": "none"
+                  "onSuccess": "none",
+                  "knockOutIfFailBy": 5
                 }
               ]
+            }
+          ]
+        },
+        {
+          "id": "invisibility",
+          "name": "Invisibility",
+          "summary": "Turns invisible until it attacks or casts a spell, or its concentration ends.",
+          "effects": [
+            {
+              "type": "special",
+              "id": "invisibility"
             }
           ]
         }

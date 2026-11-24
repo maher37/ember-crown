@@ -150,8 +150,26 @@ export function applyLeaf(
         against: firstCondition(e.onFail),
         magic: !!opts.spellId,
       });
-      if (!r.success) for (const x of e.onFail) applyLeaf(ctx, source, target, x, opts);
-      else if (e.onSuccess === 'half')
+      if (!r.success) {
+        for (const x of e.onFail) applyLeaf(ctx, source, target, x, opts);
+        // SRD: Pseudodragon's sting, sprite's arrow. Failing badly also knocks the target out for
+        // as long, until it takes damage [inferred: no "shake awake" action yet].
+        if (e.knockOutIfFailBy && dc - r.total >= e.knockOutIfFailBy && !target.creature.dead) {
+          const lasting = e.onFail.find((x) => x.type === 'condition');
+          giveCondition(
+            ctx,
+            source,
+            target,
+            'unconscious',
+            lasting?.type === 'condition' ? lasting.duration : { minutes: 1 },
+          );
+          const eff = target.effects.find(
+            (x) => x.tag === 'condition' && x.data?.condition === 'unconscious',
+          );
+          if (eff) eff.data = { ...eff.data, wakeOnDamage: 1 };
+          say(s, 'dmg', `${target.name} falls unconscious from the poison`);
+        }
+      } else if (e.onSuccess === 'half')
         for (const x of e.onFail)
           if (x.type === 'damage') applyLeaf(ctx, source, target, x, { ...opts, half: true });
       return;

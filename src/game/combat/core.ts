@@ -451,6 +451,13 @@ export function combatSave(
     if (opts.against === 'frightened' && species === 'lightfoot-halfling') adv.push('Brave');
     if (opts.magic && species === 'rock-gnome' && ['int', 'wis', 'cha'].includes(ability))
       adv.push('Gnome Cunning');
+  } else if (
+    opts.magic &&
+    target.monsterId &&
+    getMonster(target.monsterId).traits.some((t) => t.id === 'magic-resistance')
+  ) {
+    // SRD: Magic Resistance (imp, pseudodragon, quasit). Advantage on saves against spells.
+    adv.push('Magic Resistance');
   } else if (target.monsterId && (opts.against === 'charmed' || opts.against === 'frightened')) {
     if (getMonster(target.monsterId).traits.some((t) => t.id === 'dark-devotion'))
       adv.push('Dark Devotion');

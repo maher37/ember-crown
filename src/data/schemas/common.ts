@@ -143,6 +143,11 @@ const Save = z
     onFail: z.array(LeafEffect).min(1),
     /** "half" = half damage on a success. */
     onSuccess: z.union([z.literal('half'), z.literal('none'), z.array(LeafEffect)]).default('none'),
+    /**
+     * Failing by this much or more also knocks the target out for the same time; it wakes when
+     * it takes damage (a pseudodragon's sting, a sprite's arrow).
+     */
+    knockOutIfFailBy: z.number().int().positive().optional(),
   })
   .strict();
 
