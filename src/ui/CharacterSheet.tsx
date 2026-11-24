@@ -38,6 +38,7 @@ import {
 } from '../rules';
 import { signed, SKILL_NAMES } from './creatorCopy';
 import { EquipmentPanel } from './EquipmentPanel';
+import { FamiliarPanel } from './FamiliarPanel';
 import { heroPortrait } from './heroLook';
 import { Portrait } from './Portrait';
 import { originArt } from './originArt';
@@ -356,6 +357,7 @@ function StatsTab({ hero }: { hero: Hero }) {
               </li>
             </ul>
           </div>
+          <FamiliarPanel hero={hero} />
           {hero.origin !== 'custom' && <OriginStory id={hero.origin} />}
           <h3 className="eyebrow">Proficiencies and languages</h3>
           <p className="small">

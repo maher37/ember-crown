@@ -6,6 +6,7 @@ import {
   spendHitDie,
   type RandomSource,
 } from '../rules';
+import { familiarAfterLongRest } from './familiar';
 import { hasSpecial } from './items';
 import type { GameState } from './save';
 
@@ -141,6 +142,11 @@ export function takeLongRest(game: GameState, rng: RandomSource): RestResult {
     if (h.maxHpDrain) {
       log.push(`${h.name}'s drained life returns (+${h.maxHpDrain} maximum HP).`);
       h = { ...h, maxHp: h.maxHp + h.maxHpDrain, maxHpDrain: 0 };
+    }
+    // PHB: Find Familiar. A familiar killed in a fight comes back (owner, Nov 23).
+    if (h.familiar?.lost) {
+      log.push(`${h.name}'s familiar returns.`);
+      h = familiarAfterLongRest(h);
     }
     if (h.hp < 1) return stableWakes(h, 8, rng, log);
     const r = rulesLongRest(h);

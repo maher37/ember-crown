@@ -103,6 +103,8 @@ export interface Hero extends Creature {
   resourcesUsed: Record<string, number>;
   /** Level-up picks by feature id (metamagic, pact-boon, hunters-prey, favored-enemy...). */
   choices: Record<string, string[]>;
+  /** Find Familiar / Pact of the Chain: the familiar's shape, and whether it's lost until a long rest. */
+  familiar?: import('./familiar').Familiar;
   /** Hit point maximum lost to Life Drain (specters, wraiths) until a long rest. */
   maxHpDrain?: number;
 }

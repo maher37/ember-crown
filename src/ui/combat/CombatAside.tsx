@@ -46,7 +46,10 @@ export function CombatAside({
             <Portrait {...heroPortrait(hero.creature)} />
           </div>
         ) : (
-          <div className="active-portrait enemy-face" aria-hidden="true">
+          <div
+            className={`active-portrait enemy-face${me.side === 'party' ? ' ally-face' : ''}`}
+            aria-hidden="true"
+          >
             {me.short}
           </div>
         )}
@@ -60,7 +63,11 @@ export function CombatAside({
           <span className="muted small">
             {hero
               ? `${getSpecies(hero.creature.speciesId).name} ${getClass(hero.creature.classId).name} ${hero.creature.level}`
-              : 'Enemy'}{' '}
+              : me.pet
+                ? 'Familiar'
+                : me.side === 'party'
+                  ? 'Ally'
+                  : 'Enemy'}{' '}
             · AC {currentAc(me)} · Speed {me.speed} ft
             {me.wildShape ? ' · Wolf form' : ''}
           </span>
@@ -102,7 +109,10 @@ export function CombatAside({
                 : '';
             return (
               <div key={c.id} className={`party-hp-row ${c.id === me.id ? 'on' : ''}`}>
-                <span className="party-hp-name">{c.name.split(' ')[0]}</span>
+                <span className="party-hp-name" title={c.name}>
+                  {/* A familiar shows by its shape ("imp"), not its owner's name. */}
+                  {c.pet ? c.name.split(' ').at(-1) : c.name.split(' ')[0]}
+                </span>
                 <div className="hp-bar" aria-hidden="true">
                   <div
                     style={{

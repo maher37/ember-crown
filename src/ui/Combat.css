@@ -330,6 +330,12 @@ button.cell {
   font-size: 22px;
   line-height: 1;
 }
+/* A creature on the party's side (a familiar, Ser Ida): ally blue, not enemy orange. */
+.enemy-face.ally-face {
+  background: #1d3550;
+  color: #e3f0fc;
+}
+
 .active-info {
   display: flex;
   flex-direction: column;
@@ -692,6 +698,12 @@ button.cell {
   grid-template-columns: 64px 1fr auto;
   align-items: center;
   gap: 8px;
+}
+/* Long familiar names (pseudodragon) end in "…" instead of spilling over the bar. */
+.party-hp-name {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 .party-hp-row.on .party-hp-name {
   color: var(--ally);

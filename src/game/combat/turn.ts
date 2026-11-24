@@ -42,6 +42,7 @@ import { castBeforeFight } from './precast';
 import { fx } from './fx';
 import { hasBeacon, passWithoutTrace } from './wards';
 import { restoreBuffs } from './carryover';
+import { placeFamiliars } from './familiars';
 import type { Precast } from '../precast';
 import { giveCondition } from './leaves';
 import type { CombatState, Combatant, Pos, TurnState } from './types';
@@ -183,6 +184,8 @@ export function startCombat(o: StartOptions): CombatState {
       c.monsterId = m.id;
       s.combatants[al.id] = c;
     }
+    // PHB: Find Familiar. Familiars join beside their heroes.
+    placeFamiliars(s, o.party, makeCombatant);
     // Shield of the Morninglord: resistance to fire while you hold it. Story_Bible §9: Corin's
     // ember bargain can also make him resist fire.
     for (const c of Object.values(s.combatants)) {
@@ -539,7 +542,12 @@ export function checkOutcome(s: CombatState): CombatState['outcome'] {
   const up = (side: string) =>
     Object.values(s.combatants).some(
       (c) =>
-        c.side === side && !isObject(c) && conscious(c) && !hasCondition(c.creature, 'unconscious'),
+        c.side === side &&
+        !isObject(c) &&
+        // A familiar alone can't carry the fight: the party loses when every hero is down.
+        !c.pet &&
+        conscious(c) &&
+        !hasCondition(c.creature, 'unconscious'),
     );
   if (!up('enemy')) return 'victory';
   if (!up('party')) return 'defeat';

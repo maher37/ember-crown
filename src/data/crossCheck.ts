@@ -14,6 +14,13 @@ export const KNOWN_QUIRKS = new Set([
   // MM and SRD 5.1 both print +5 for the brown bear, though Str 19 + proficiency gives +6.
   'monster brown-bear: bite to-hit +5, expected +6 (Str) or +2 (Dex) at proficiency +2',
   'monster brown-bear: claws to-hit +5, expected +6 (Str) or +2 (Dex) at proficiency +2',
+  // Tiny familiars (SRD 5.1 as remembered): +0 to hit for a single point of damage.
+  'monster bat: bite to-hit +0, expected +-2 (Str) or +4 (Dex) at proficiency +2',
+  'monster cat: claws to-hit +0, expected +-2 (Str) or +4 (Dex) at proficiency +2',
+  'monster lizard: bite to-hit +0, expected +-2 (Str) or +2 (Dex) at proficiency +2',
+  'monster rat: bite to-hit +0, expected +-2 (Str) or +2 (Dex) at proficiency +2',
+  'monster quasit: claws to-hit +4, expected +-1 (Str) or +5 (Dex) at proficiency +2',
+  'monster sprite: longsword to-hit +2, expected +-2 (Str) or +6 (Dex) at proficiency +2',
 ]);
 
 /**
@@ -132,7 +139,8 @@ export function crossCheck(d: GameData): { errors: string[]; warnings: string[] 
             `monster ${m.id}: ${a.id} to-hit +${e.toHit}, expected +${str} (Str) or +${dex} (Dex) at proficiency +${prof}`,
           );
         const first = e.onHit[0];
-        if (first?.type === 'damage') {
+        // A flat number ("1" for a tiny beast) isn't dice plus a modifier.
+        if (first?.type === 'damage' && /d/i.test(first.dice)) {
           const bonus = parseDice(first.dice).bonus;
           if (bonus !== 0 && bonus !== best && bonus !== abilityModifier(m.abilities.str))
             warnings.push(

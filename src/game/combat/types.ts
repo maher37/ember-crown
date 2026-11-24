@@ -100,6 +100,8 @@ export interface Combatant {
   recharge?: Record<string, boolean>;
   /** Conjured by a spell (Conjure Animals): gone when the caster's concentration ends. */
   summon?: { casterId: string; spellId: string };
+  /** A hero's familiar (Find Familiar, Pact of the Chain): stays with the hero between fights. */
+  pet?: { kind: 'familiar'; ownerId: string; canAttack: boolean };
 }
 
 export interface LogLine {

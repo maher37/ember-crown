@@ -4,7 +4,7 @@
 
 Each line was entered from memory or is marked ⚠ in the design docs. Check it against your PDFs. When a line is right (or fixed), remove its `verify` and `verifyNote` from the JSON and run `npm run verify-list` again.
 
-**228 items to check.**
+**244 items to check.**
 
 ## species.json
 
@@ -131,6 +131,22 @@ Each line was entered from memory or is marked ⚠ in the design docs. Check it 
 - [ ] **monsters › Cindrath's ember-wraith › Claw**: Homebrew placeholder [inferred].
 - [ ] **monsters › Cindrath's ember-wraith › Molten spit**: Homebrew [inferred, M9]: without a ranged attack, a circle-bound wraith can be shot from a distance in safety.
 - [ ] **monsters › Crown shard**: Homebrew for the finale [inferred]: AC 15, 20 HP; tune in M10.
+- [ ] **monsters › Bat**: Familiar form from memory of SRD 5.1 [CONFIRM LOCALLY].
+- [ ] **monsters › Cat**: Familiar form from memory of SRD 5.1 [CONFIRM LOCALLY].
+- [ ] **monsters › Frog**: Familiar form from memory of SRD 5.1 [CONFIRM LOCALLY].
+- [ ] **monsters › Hawk**: Familiar form from memory of SRD 5.1 [CONFIRM LOCALLY].
+- [ ] **monsters › Lizard**: Familiar form from memory of SRD 5.1 [CONFIRM LOCALLY].
+- [ ] **monsters › Octopus**: Familiar form from memory of SRD 5.1 [CONFIRM LOCALLY].
+- [ ] **monsters › Owl**: Familiar form from memory of SRD 5.1 [CONFIRM LOCALLY].
+- [ ] **monsters › Rat**: Familiar form from memory of SRD 5.1 [CONFIRM LOCALLY].
+- [ ] **monsters › Raven**: Familiar form from memory of SRD 5.1 [CONFIRM LOCALLY].
+- [ ] **monsters › Sea Horse**: Familiar form from memory of SRD 5.1 [CONFIRM LOCALLY].
+- [ ] **monsters › Spider**: Familiar form from memory of SRD 5.1 [CONFIRM LOCALLY].
+- [ ] **monsters › Weasel**: Familiar form from memory of SRD 5.1 [CONFIRM LOCALLY].
+- [ ] **monsters › Imp**: Familiar form from memory of SRD 5.1 [CONFIRM LOCALLY].
+- [ ] **monsters › Pseudodragon**: Familiar form from memory of SRD 5.1 [CONFIRM LOCALLY].
+- [ ] **monsters › Quasit**: Familiar form from memory of SRD 5.1 [CONFIRM LOCALLY].
+- [ ] **monsters › Sprite**: Familiar form from memory of SRD 5.1 [CONFIRM LOCALLY].
 
 ## foes.json
 

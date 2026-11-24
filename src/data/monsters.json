@@ -4275,6 +4275,1087 @@
       "art": "A glowing wedge of King Varrow's crown, hanging in the ritual circle",
       "verify": true,
       "verifyNote": "Homebrew for the finale [inferred]: AC 15, 20 HP; tune in M10."
+    },
+    {
+      "size": "Tiny",
+      "cr": "0",
+      "xp": 10,
+      "saves": {},
+      "skills": {},
+      "traits": [
+        {
+          "id": "echolocation",
+          "name": "Echolocation",
+          "summary": "Can't use its blindsight while deafened."
+        },
+        {
+          "id": "keen-hearing",
+          "name": "Keen Hearing",
+          "summary": "Advantage on Perception checks that use hearing."
+        }
+      ],
+      "actions": [
+        {
+          "id": "bite",
+          "name": "Bite",
+          "effects": [
+            {
+              "type": "attack",
+              "kind": "melee",
+              "toHit": 0,
+              "reach": 5,
+              "onHit": [
+                {
+                  "type": "damage",
+                  "dice": "1",
+                  "damageType": "piercing"
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "usedIn": ["familiar"],
+      "id": "bat",
+      "name": "Bat",
+      "type": "beast",
+      "ac": 12,
+      "hp": 1,
+      "hitDice": "1d4-1",
+      "speed": {
+        "walk": 5,
+        "fly": 30
+      },
+      "abilities": {
+        "str": 2,
+        "dex": 15,
+        "con": 8,
+        "int": 2,
+        "wis": 12,
+        "cha": 4
+      },
+      "art": "A small brown bat with ember-lit eyes",
+      "verify": true,
+      "verifyNote": "Familiar form from memory of SRD 5.1 [CONFIRM LOCALLY]."
+    },
+    {
+      "size": "Tiny",
+      "cr": "0",
+      "xp": 10,
+      "saves": {},
+      "skills": {
+        "perception": 3,
+        "stealth": 4
+      },
+      "traits": [
+        {
+          "id": "keen-smell",
+          "name": "Keen Smell",
+          "summary": "Advantage on Perception checks that use smell."
+        }
+      ],
+      "actions": [
+        {
+          "id": "claws",
+          "name": "Claws",
+          "effects": [
+            {
+              "type": "attack",
+              "kind": "melee",
+              "toHit": 0,
+              "reach": 5,
+              "onHit": [
+                {
+                  "type": "damage",
+                  "dice": "1",
+                  "damageType": "slashing"
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "usedIn": ["familiar"],
+      "id": "cat",
+      "name": "Cat",
+      "type": "beast",
+      "ac": 12,
+      "hp": 2,
+      "hitDice": "1d4",
+      "speed": {
+        "walk": 40,
+        "climb": 30
+      },
+      "abilities": {
+        "str": 3,
+        "dex": 15,
+        "con": 10,
+        "int": 3,
+        "wis": 12,
+        "cha": 7
+      },
+      "art": "A grey tabby with a torn ear",
+      "verify": true,
+      "verifyNote": "Familiar form from memory of SRD 5.1 [CONFIRM LOCALLY]."
+    },
+    {
+      "size": "Tiny",
+      "cr": "0",
+      "xp": 10,
+      "saves": {},
+      "skills": {
+        "perception": 1,
+        "stealth": 3
+      },
+      "traits": [
+        {
+          "id": "amphibious",
+          "name": "Amphibious",
+          "summary": "Breathes air and water."
+        },
+        {
+          "id": "standing-leap",
+          "name": "Standing Leap",
+          "summary": "Long jump up to 10 ft, high jump up to 5 ft."
+        }
+      ],
+      "actions": [],
+      "usedIn": ["familiar"],
+      "id": "frog",
+      "name": "Frog",
+      "type": "beast",
+      "ac": 11,
+      "hp": 1,
+      "hitDice": "1d4-1",
+      "speed": {
+        "walk": 20,
+        "swim": 20
+      },
+      "abilities": {
+        "str": 1,
+        "dex": 13,
+        "con": 8,
+        "int": 1,
+        "wis": 8,
+        "cha": 3
+      },
+      "darkvision": 30,
+      "art": "A fat green marsh frog",
+      "verify": true,
+      "verifyNote": "Familiar form from memory of SRD 5.1 [CONFIRM LOCALLY]."
+    },
+    {
+      "size": "Tiny",
+      "cr": "0",
+      "xp": 10,
+      "saves": {},
+      "skills": {
+        "perception": 4
+      },
+      "traits": [
+        {
+          "id": "keen-sight",
+          "name": "Keen Sight",
+          "summary": "Advantage on Perception checks that use sight."
+        }
+      ],
+      "actions": [
+        {
+          "id": "talons",
+          "name": "Talons",
+          "effects": [
+            {
+              "type": "attack",
+              "kind": "melee",
+              "toHit": 5,
+              "reach": 5,
+              "onHit": [
+                {
+                  "type": "damage",
+                  "dice": "1",
+                  "damageType": "slashing"
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "usedIn": ["familiar"],
+      "id": "hawk",
+      "name": "Hawk",
+      "type": "beast",
+      "ac": 13,
+      "hp": 1,
+      "hitDice": "1d4-1",
+      "speed": {
+        "walk": 10,
+        "fly": 60
+      },
+      "abilities": {
+        "str": 5,
+        "dex": 16,
+        "con": 8,
+        "int": 2,
+        "wis": 14,
+        "cha": 6
+      },
+      "art": "A red-tailed mountain hawk",
+      "verify": true,
+      "verifyNote": "Familiar form from memory of SRD 5.1 [CONFIRM LOCALLY]."
+    },
+    {
+      "size": "Tiny",
+      "cr": "0",
+      "xp": 10,
+      "saves": {},
+      "skills": {},
+      "traits": [],
+      "actions": [
+        {
+          "id": "bite",
+          "name": "Bite",
+          "effects": [
+            {
+              "type": "attack",
+              "kind": "melee",
+              "toHit": 0,
+              "reach": 5,
+              "onHit": [
+                {
+                  "type": "damage",
+                  "dice": "1",
+                  "damageType": "piercing"
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "usedIn": ["familiar"],
+      "id": "lizard",
+      "name": "Lizard",
+      "type": "beast",
+      "ac": 10,
+      "hp": 2,
+      "hitDice": "1d4",
+      "speed": {
+        "walk": 20,
+        "climb": 20
+      },
+      "abilities": {
+        "str": 2,
+        "dex": 11,
+        "con": 10,
+        "int": 1,
+        "wis": 8,
+        "cha": 3
+      },
+      "darkvision": 30,
+      "art": "A rust-coloured rock lizard",
+      "verify": true,
+      "verifyNote": "Familiar form from memory of SRD 5.1 [CONFIRM LOCALLY]."
+    },
+    {
+      "size": "Small",
+      "cr": "0",
+      "xp": 10,
+      "saves": {},
+      "skills": {
+        "perception": 2,
+        "stealth": 4
+      },
+      "traits": [
+        {
+          "id": "hold-breath",
+          "name": "Hold Breath",
+          "summary": "Out of water it can hold its breath for 30 minutes."
+        },
+        {
+          "id": "water-breathing",
+          "name": "Water Breathing",
+          "summary": "Breathes only underwater."
+        }
+      ],
+      "actions": [
+        {
+          "id": "tentacles",
+          "name": "Tentacles",
+          "effects": [
+            {
+              "type": "attack",
+              "kind": "melee",
+              "toHit": 4,
+              "reach": 5,
+              "onHit": [
+                {
+                  "type": "damage",
+                  "dice": "1",
+                  "damageType": "bludgeoning"
+                },
+                {
+                  "type": "condition",
+                  "condition": "grappled"
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "usedIn": ["familiar"],
+      "id": "octopus",
+      "name": "Octopus",
+      "type": "beast",
+      "ac": 12,
+      "hp": 3,
+      "hitDice": "1d6",
+      "speed": {
+        "walk": 5,
+        "swim": 30
+      },
+      "abilities": {
+        "str": 4,
+        "dex": 15,
+        "con": 11,
+        "int": 3,
+        "wis": 10,
+        "cha": 4
+      },
+      "darkvision": 30,
+      "art": "A small speckled octopus in a jar of water",
+      "verify": true,
+      "verifyNote": "Familiar form from memory of SRD 5.1 [CONFIRM LOCALLY]."
+    },
+    {
+      "size": "Tiny",
+      "cr": "0",
+      "xp": 10,
+      "saves": {},
+      "skills": {
+        "perception": 3,
+        "stealth": 3
+      },
+      "traits": [
+        {
+          "id": "flyby",
+          "name": "Flyby",
+          "summary": "Doesn't provoke opportunity attacks when it flies out of reach."
+        },
+        {
+          "id": "keen-hearing-sight",
+          "name": "Keen Hearing and Sight",
+          "summary": "Advantage on Perception checks that use hearing or sight."
+        }
+      ],
+      "actions": [
+        {
+          "id": "talons",
+          "name": "Talons",
+          "effects": [
+            {
+              "type": "attack",
+              "kind": "melee",
+              "toHit": 3,
+              "reach": 5,
+              "onHit": [
+                {
+                  "type": "damage",
+                  "dice": "1",
+                  "damageType": "slashing"
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "usedIn": ["familiar"],
+      "id": "owl",
+      "name": "Owl",
+      "type": "beast",
+      "ac": 11,
+      "hp": 1,
+      "hitDice": "1d4-1",
+      "speed": {
+        "walk": 5,
+        "fly": 60
+      },
+      "abilities": {
+        "str": 3,
+        "dex": 13,
+        "con": 8,
+        "int": 2,
+        "wis": 12,
+        "cha": 7
+      },
+      "darkvision": 120,
+      "art": "A tawny barn owl",
+      "verify": true,
+      "verifyNote": "Familiar form from memory of SRD 5.1 [CONFIRM LOCALLY]."
+    },
+    {
+      "size": "Tiny",
+      "cr": "0",
+      "xp": 10,
+      "saves": {},
+      "skills": {},
+      "traits": [
+        {
+          "id": "keen-smell",
+          "name": "Keen Smell",
+          "summary": "Advantage on Perception checks that use smell."
+        }
+      ],
+      "actions": [
+        {
+          "id": "bite",
+          "name": "Bite",
+          "effects": [
+            {
+              "type": "attack",
+              "kind": "melee",
+              "toHit": 0,
+              "reach": 5,
+              "onHit": [
+                {
+                  "type": "damage",
+                  "dice": "1",
+                  "damageType": "piercing"
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "usedIn": ["familiar"],
+      "id": "rat",
+      "name": "Rat",
+      "type": "beast",
+      "ac": 10,
+      "hp": 1,
+      "hitDice": "1d4-1",
+      "speed": {
+        "walk": 20
+      },
+      "abilities": {
+        "str": 2,
+        "dex": 11,
+        "con": 9,
+        "int": 2,
+        "wis": 10,
+        "cha": 4
+      },
+      "darkvision": 30,
+      "art": "A sleek black rat",
+      "verify": true,
+      "verifyNote": "Familiar form from memory of SRD 5.1 [CONFIRM LOCALLY]."
+    },
+    {
+      "size": "Tiny",
+      "cr": "0",
+      "xp": 10,
+      "saves": {},
+      "skills": {
+        "perception": 3
+      },
+      "traits": [
+        {
+          "id": "mimicry",
+          "name": "Mimicry",
+          "summary": "Imitates simple sounds, like a whisper or a baby crying."
+        }
+      ],
+      "actions": [
+        {
+          "id": "beak",
+          "name": "Beak",
+          "effects": [
+            {
+              "type": "attack",
+              "kind": "melee",
+              "toHit": 4,
+              "reach": 5,
+              "onHit": [
+                {
+                  "type": "damage",
+                  "dice": "1",
+                  "damageType": "piercing"
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "usedIn": ["familiar"],
+      "id": "raven",
+      "name": "Raven",
+      "type": "beast",
+      "ac": 12,
+      "hp": 1,
+      "hitDice": "1d4-1",
+      "speed": {
+        "walk": 10,
+        "fly": 50
+      },
+      "abilities": {
+        "str": 2,
+        "dex": 14,
+        "con": 8,
+        "int": 2,
+        "wis": 12,
+        "cha": 6
+      },
+      "art": "A glossy raven with a white feather",
+      "verify": true,
+      "verifyNote": "Familiar form from memory of SRD 5.1 [CONFIRM LOCALLY]."
+    },
+    {
+      "size": "Tiny",
+      "cr": "0",
+      "xp": 10,
+      "saves": {},
+      "skills": {
+        "perception": 2
+      },
+      "traits": [
+        {
+          "id": "water-breathing",
+          "name": "Water Breathing",
+          "summary": "Breathes only underwater: on land it stays in its jar and cannot move."
+        }
+      ],
+      "actions": [],
+      "usedIn": ["familiar"],
+      "id": "sea-horse",
+      "name": "Sea Horse",
+      "type": "beast",
+      "ac": 11,
+      "hp": 1,
+      "hitDice": "1d4-1",
+      "speed": {
+        "walk": 0,
+        "swim": 20
+      },
+      "abilities": {
+        "str": 1,
+        "dex": 12,
+        "con": 8,
+        "int": 1,
+        "wis": 10,
+        "cha": 2
+      },
+      "art": "A tiny gold sea horse in a glass jar",
+      "verify": true,
+      "verifyNote": "Familiar form from memory of SRD 5.1 [CONFIRM LOCALLY]."
+    },
+    {
+      "size": "Tiny",
+      "cr": "0",
+      "xp": 10,
+      "saves": {},
+      "skills": {
+        "stealth": 4
+      },
+      "traits": [
+        {
+          "id": "spider-climb",
+          "name": "Spider Climb",
+          "summary": "Climbs walls and ceilings."
+        },
+        {
+          "id": "web-sense",
+          "name": "Web Sense",
+          "summary": "Knows where anything touching its web is."
+        }
+      ],
+      "actions": [
+        {
+          "id": "bite",
+          "name": "Bite",
+          "effects": [
+            {
+              "type": "attack",
+              "kind": "melee",
+              "toHit": 4,
+              "reach": 5,
+              "onHit": [
+                {
+                  "type": "damage",
+                  "dice": "1",
+                  "damageType": "piercing"
+                },
+                {
+                  "type": "save",
+                  "ability": "con",
+                  "dc": 9,
+                  "onFail": [
+                    {
+                      "type": "damage",
+                      "dice": "1d4",
+                      "damageType": "poison"
+                    }
+                  ],
+                  "onSuccess": "none"
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "usedIn": ["familiar"],
+      "id": "spider",
+      "name": "Spider",
+      "type": "beast",
+      "ac": 12,
+      "hp": 1,
+      "hitDice": "1d4-1",
+      "speed": {
+        "walk": 20,
+        "climb": 20
+      },
+      "abilities": {
+        "str": 2,
+        "dex": 14,
+        "con": 8,
+        "int": 1,
+        "wis": 10,
+        "cha": 2
+      },
+      "darkvision": 30,
+      "art": "A hairy brown hunting spider",
+      "verify": true,
+      "verifyNote": "Familiar form from memory of SRD 5.1 [CONFIRM LOCALLY]."
+    },
+    {
+      "size": "Tiny",
+      "cr": "0",
+      "xp": 10,
+      "saves": {},
+      "skills": {
+        "perception": 3,
+        "stealth": 5
+      },
+      "traits": [
+        {
+          "id": "keen-hearing-smell",
+          "name": "Keen Hearing and Smell",
+          "summary": "Advantage on Perception checks that use hearing or smell."
+        }
+      ],
+      "actions": [
+        {
+          "id": "bite",
+          "name": "Bite",
+          "effects": [
+            {
+              "type": "attack",
+              "kind": "melee",
+              "toHit": 5,
+              "reach": 5,
+              "onHit": [
+                {
+                  "type": "damage",
+                  "dice": "1",
+                  "damageType": "piercing"
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "usedIn": ["familiar"],
+      "id": "weasel",
+      "name": "Weasel",
+      "type": "beast",
+      "ac": 13,
+      "hp": 1,
+      "hitDice": "1d4-1",
+      "speed": {
+        "walk": 30
+      },
+      "abilities": {
+        "str": 3,
+        "dex": 16,
+        "con": 8,
+        "int": 2,
+        "wis": 12,
+        "cha": 3
+      },
+      "art": "A white winter weasel",
+      "verify": true,
+      "verifyNote": "Familiar form from memory of SRD 5.1 [CONFIRM LOCALLY]."
+    },
+    {
+      "size": "Tiny",
+      "cr": "1",
+      "xp": 200,
+      "saves": {},
+      "skills": {
+        "deception": 4,
+        "insight": 3,
+        "persuasion": 4,
+        "stealth": 5
+      },
+      "traits": [
+        {
+          "id": "devils-sight",
+          "name": "Devil's Sight",
+          "summary": "Magical darkness does not block its sight."
+        },
+        {
+          "id": "magic-resistance",
+          "name": "Magic Resistance",
+          "summary": "Advantage on saves against spells and other magic."
+        },
+        {
+          "id": "shapechanger",
+          "name": "Shapechanger",
+          "summary": "Can turn into a rat, raven or spider (story only here)."
+        }
+      ],
+      "actions": [
+        {
+          "id": "sting",
+          "name": "Sting",
+          "effects": [
+            {
+              "type": "attack",
+              "kind": "melee",
+              "toHit": 5,
+              "reach": 5,
+              "onHit": [
+                {
+                  "type": "damage",
+                  "dice": "1d4+3",
+                  "damageType": "piercing"
+                },
+                {
+                  "type": "save",
+                  "ability": "con",
+                  "dc": 11,
+                  "onFail": [
+                    {
+                      "type": "damage",
+                      "dice": "3d6",
+                      "damageType": "poison"
+                    }
+                  ],
+                  "onSuccess": "half"
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "usedIn": ["familiar"],
+      "id": "imp",
+      "name": "Imp",
+      "type": "fiend",
+      "ac": 13,
+      "hp": 10,
+      "hitDice": "3d4+3",
+      "speed": {
+        "walk": 20,
+        "fly": 40
+      },
+      "abilities": {
+        "str": 6,
+        "dex": 17,
+        "con": 13,
+        "int": 11,
+        "wis": 12,
+        "cha": 14
+      },
+      "resistances": ["cold", "bludgeoning", "piercing", "slashing"],
+      "resistancesNonmagicalOnly": true,
+      "immunities": ["fire", "poison"],
+      "conditionImmunities": ["poisoned"],
+      "darkvision": 120,
+      "art": "A red, bat-winged imp with a barbed tail and a sly grin",
+      "verify": true,
+      "verifyNote": "Familiar form from memory of SRD 5.1 [CONFIRM LOCALLY]."
+    },
+    {
+      "size": "Tiny",
+      "cr": "1/4",
+      "xp": 50,
+      "saves": {},
+      "skills": {
+        "perception": 3,
+        "stealth": 4
+      },
+      "traits": [
+        {
+          "id": "keen-senses",
+          "name": "Keen Senses",
+          "summary": "Advantage on Perception checks that use sight, hearing or smell."
+        },
+        {
+          "id": "magic-resistance",
+          "name": "Magic Resistance",
+          "summary": "Advantage on saves against spells and other magic."
+        }
+      ],
+      "actions": [
+        {
+          "id": "bite",
+          "name": "Bite",
+          "effects": [
+            {
+              "type": "attack",
+              "kind": "melee",
+              "toHit": 4,
+              "reach": 5,
+              "onHit": [
+                {
+                  "type": "damage",
+                  "dice": "1d4+2",
+                  "damageType": "piercing"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "sting",
+          "name": "Sting",
+          "effects": [
+            {
+              "type": "attack",
+              "kind": "melee",
+              "toHit": 4,
+              "reach": 5,
+              "onHit": [
+                {
+                  "type": "damage",
+                  "dice": "1d4+2",
+                  "damageType": "piercing"
+                },
+                {
+                  "type": "save",
+                  "ability": "con",
+                  "dc": 11,
+                  "onFail": [
+                    {
+                      "type": "condition",
+                      "condition": "poisoned",
+                      "duration": {
+                        "hours": 1
+                      }
+                    }
+                  ],
+                  "onSuccess": "none"
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "usedIn": ["familiar"],
+      "id": "pseudodragon",
+      "name": "Pseudodragon",
+      "type": "dragon",
+      "ac": 13,
+      "hp": 7,
+      "hitDice": "2d4+2",
+      "speed": {
+        "walk": 15,
+        "fly": 60
+      },
+      "abilities": {
+        "str": 6,
+        "dex": 15,
+        "con": 13,
+        "int": 10,
+        "wis": 12,
+        "cha": 10
+      },
+      "darkvision": 60,
+      "art": "A cat-sized copper dragon with a curling sting-tipped tail",
+      "verify": true,
+      "verifyNote": "Familiar form from memory of SRD 5.1 [CONFIRM LOCALLY]."
+    },
+    {
+      "size": "Tiny",
+      "cr": "1",
+      "xp": 200,
+      "saves": {},
+      "skills": {
+        "stealth": 5
+      },
+      "traits": [
+        {
+          "id": "magic-resistance",
+          "name": "Magic Resistance",
+          "summary": "Advantage on saves against spells and other magic."
+        },
+        {
+          "id": "shapechanger",
+          "name": "Shapechanger",
+          "summary": "Can turn into a bat, centipede or toad (story only here)."
+        }
+      ],
+      "actions": [
+        {
+          "id": "claws",
+          "name": "Claws",
+          "effects": [
+            {
+              "type": "attack",
+              "kind": "melee",
+              "toHit": 4,
+              "reach": 5,
+              "onHit": [
+                {
+                  "type": "damage",
+                  "dice": "1d4+3",
+                  "damageType": "piercing"
+                },
+                {
+                  "type": "save",
+                  "ability": "con",
+                  "dc": 10,
+                  "onFail": [
+                    {
+                      "type": "damage",
+                      "dice": "2d4",
+                      "damageType": "poison"
+                    },
+                    {
+                      "type": "condition",
+                      "condition": "poisoned",
+                      "duration": {
+                        "minutes": 1
+                      },
+                      "repeatSave": "con"
+                    }
+                  ],
+                  "onSuccess": "none"
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "usedIn": ["familiar"],
+      "id": "quasit",
+      "name": "Quasit",
+      "type": "fiend",
+      "ac": 13,
+      "hp": 7,
+      "hitDice": "3d4",
+      "speed": {
+        "walk": 40
+      },
+      "abilities": {
+        "str": 5,
+        "dex": 17,
+        "con": 10,
+        "int": 7,
+        "wis": 10,
+        "cha": 10
+      },
+      "resistances": ["cold", "fire", "lightning", "bludgeoning", "piercing", "slashing"],
+      "resistancesNonmagicalOnly": true,
+      "immunities": ["poison"],
+      "conditionImmunities": ["poisoned"],
+      "darkvision": 120,
+      "art": "A green, warty little demon with long claws",
+      "verify": true,
+      "verifyNote": "Familiar form from memory of SRD 5.1 [CONFIRM LOCALLY]."
+    },
+    {
+      "size": "Tiny",
+      "cr": "1/4",
+      "xp": 50,
+      "saves": {},
+      "skills": {
+        "perception": 3,
+        "stealth": 8
+      },
+      "traits": [
+        {
+          "id": "heart-sight",
+          "name": "Heart Sight",
+          "summary": "Touching a creature, it learns the creature's mood (story only here)."
+        }
+      ],
+      "actions": [
+        {
+          "id": "longsword",
+          "name": "Longsword",
+          "effects": [
+            {
+              "type": "attack",
+              "kind": "melee",
+              "toHit": 2,
+              "reach": 5,
+              "onHit": [
+                {
+                  "type": "damage",
+                  "dice": "1",
+                  "damageType": "slashing"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "shortbow",
+          "name": "Shortbow",
+          "effects": [
+            {
+              "type": "attack",
+              "kind": "ranged",
+              "toHit": 6,
+              "range": [40, 160],
+              "onHit": [
+                {
+                  "type": "damage",
+                  "dice": "1",
+                  "damageType": "piercing"
+                },
+                {
+                  "type": "save",
+                  "ability": "con",
+                  "dc": 10,
+                  "onFail": [
+                    {
+                      "type": "condition",
+                      "condition": "poisoned",
+                      "duration": {
+                        "minutes": 1
+                      }
+                    }
+                  ],
+                  "onSuccess": "none"
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "usedIn": ["familiar"],
+      "id": "sprite",
+      "name": "Sprite",
+      "type": "fey",
+      "ac": 15,
+      "acNote": "leather armor",
+      "hp": 2,
+      "hitDice": "1d4",
+      "speed": {
+        "walk": 10,
+        "fly": 40
+      },
+      "abilities": {
+        "str": 3,
+        "dex": 18,
+        "con": 10,
+        "int": 14,
+        "wis": 13,
+        "cha": 11
+      },
+      "art": "A dragonfly-winged sprite with a thorn bow",
+      "verify": true,
+      "verifyNote": "Familiar form from memory of SRD 5.1 [CONFIRM LOCALLY]."
     }
   ]
 }
