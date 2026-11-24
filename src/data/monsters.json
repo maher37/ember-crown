@@ -5415,12 +5415,19 @@
         {
           "id": "charge",
           "name": "Charge",
-          "summary": "After a 20-ft straight run, its tusk hit deals extra damage and can knock the target prone (not used here yet)."
+          "summary": "After moving 20 ft straight at a target, a tusk hit deals an extra 1d6 slashing, and a creature makes a DC 11 Strength save or is knocked prone.",
+          "charge": {
+            "attack": "tusk",
+            "dice": "1d6",
+            "damageType": "slashing",
+            "dc": 11
+          }
         },
         {
           "id": "relentless",
           "name": "Relentless",
-          "summary": "Once a rest, a hit that would drop it leaves it at 1 HP instead (not used here yet)."
+          "summary": "Once a fight, a hit of 7 damage or less that would drop it leaves it at 1 HP instead.",
+          "limit": 7
         }
       ],
       "usedIn": ["wixs-clan-gift"],
@@ -5483,7 +5490,12 @@
         {
           "id": "pounce",
           "name": "Pounce",
-          "summary": "After a 20-ft run, a claw hit can knock the target prone (not used here yet)."
+          "summary": "After moving 20 ft straight at a creature, a claw hit makes it save (DC 12 Strength) or fall prone; then the panther bites it as a bonus action.",
+          "charge": {
+            "attack": "claw",
+            "dc": 12,
+            "bonusAttack": "bite"
+          }
         }
       ],
       "usedIn": ["wixs-clan-gift"],
@@ -5637,7 +5649,13 @@
         {
           "id": "charge",
           "name": "Charge",
-          "summary": "After a 20-ft straight run, its ram deals extra damage and can knock the target prone (not used here yet)."
+          "summary": "After moving 20 ft straight at a target, a ram hit deals an extra 2d6 bludgeoning, and a creature makes a DC 14 Strength save or is knocked prone.",
+          "charge": {
+            "attack": "ram",
+            "dice": "2d6",
+            "damageType": "bludgeoning",
+            "dc": 14
+          }
         }
       ],
       "usedIn": ["wixs-clan-gift"],
@@ -5673,6 +5691,27 @@
                 {
                   "type": "damage",
                   "dice": "2d6+4",
+                  "damageType": "bludgeoning"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "hooves",
+          "name": "Hooves",
+          "onlyVsProne": true,
+          "summary": "Only against a prone creature.",
+          "effects": [
+            {
+              "type": "attack",
+              "kind": "melee",
+              "toHit": 6,
+              "reach": 5,
+              "onHit": [
+                {
+                  "type": "damage",
+                  "dice": "4d8+4",
                   "damageType": "bludgeoning"
                 }
               ]

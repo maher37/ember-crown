@@ -65,6 +65,10 @@ export interface TurnState {
   hasteAction?: boolean;
   /** The haste action is the one being used. */
   inHasteAction?: boolean;
+  /** Where the creature stood when its turn began (Charge and Pounce need a 20-ft run). */
+  startPos?: Pos;
+  /** A Charge or Pounce was used this turn. */
+  chargeUsed?: boolean;
   /** Attacks of a Multiattack already made this turn, by attack id (each only as listed). */
   multiUsed?: string[];
   /** Weapon sets were switched this turn (free, once a turn). */

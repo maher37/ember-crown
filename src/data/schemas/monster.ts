@@ -47,13 +47,37 @@ export const MonsterAction = z
     recharge: Recharge.optional(),
     /** Our own words. */
     summary: z.string().min(1).optional(),
+    /** Only against a prone creature (a giant elk's Hooves). */
+    onlyVsProne: z.boolean().optional(),
     effects: z.array(Effect).min(1),
     ...Verify,
   })
   .strict();
 
 export const MonsterTrait = z
-  .object({ id: Id, name: z.string().min(1), summary: z.string().min(1), ...Verify })
+  .object({
+    id: Id,
+    name: z.string().min(1),
+    summary: z.string().min(1),
+    /**
+     * Charge / Pounce: after moving 20 ft straight at a target, a hit with `attack` deals `dice`
+     * extra and the target makes a Strength save (`dc`) or falls prone. Pounce: a prone target
+     * then takes a `bonusAttack` (a bonus action).
+     */
+    charge: z
+      .object({
+        attack: Id,
+        dice: Dice.optional(),
+        damageType: DamageTypeId.optional(),
+        dc: z.number().int().positive(),
+        bonusAttack: Id.optional(),
+      })
+      .strict()
+      .optional(),
+    /** A number the trait uses (Relentless: the most damage it shrugs off). */
+    limit: z.number().int().positive().optional(),
+    ...Verify,
+  })
   .strict();
 
 export const MonsterSpellcasting = z
