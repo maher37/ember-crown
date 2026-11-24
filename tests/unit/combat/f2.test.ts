@@ -3,22 +3,27 @@ import { finishCombat } from '../../../src/game/combat';
 import { f2, playOut, standardParty } from './helpers';
 
 describe('F2 Road ambush, played start to finish by a simple bot', () => {
-  it.each(['easy', 'medium', 'hard'] as const)('always ends on %s (100 seeds)', (difficulty) => {
-    let wins = 0;
-    for (let seed = 1; seed <= 100; seed++) {
-      const end = playOut(f2(difficulty, seed));
-      expect(
-        end.outcome,
-        `seed ${seed}: ${end.log
-          .slice(-5)
-          .map((l) => l.text)
-          .join(' | ')}`,
-      ).not.toBeNull();
-      if (end.outcome === 'victory') wins++;
-    }
-    console.log(`${difficulty}: ${wins}/100 victories`);
-    expect(wins).toBeGreaterThan(difficulty === 'hard' ? 30 : 60);
-  });
+  // 100 whole fights per difficulty take ~3 s locally and can pass 5 s on a slow CI machine.
+  it.each(['easy', 'medium', 'hard'] as const)(
+    'always ends on %s (100 seeds)',
+    { timeout: 20_000 },
+    (difficulty) => {
+      let wins = 0;
+      for (let seed = 1; seed <= 100; seed++) {
+        const end = playOut(f2(difficulty, seed));
+        expect(
+          end.outcome,
+          `seed ${seed}: ${end.log
+            .slice(-5)
+            .map((l) => l.text)
+            .join(' | ')}`,
+        ).not.toBeNull();
+        if (end.outcome === 'victory') wins++;
+      }
+      console.log(`${difficulty}: ${wins}/100 victories`);
+      expect(wins).toBeGreaterThan(difficulty === 'hard' ? 30 : 60);
+    },
+  );
 
   it('is exactly reproducible from its seed', () => {
     expect(playOut(f2('medium', 42)).log).toEqual(playOut(f2('medium', 42)).log);
