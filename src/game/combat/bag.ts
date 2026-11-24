@@ -8,10 +8,10 @@ import { makeCombatant } from './turn';
 import type { Combatant } from './types';
 
 export const BAG_ID = 'wixs-clan-gift';
-/** DMG: Bag of Tricks. Three uses, back at dawn (here: after a long rest) [CONFIRM LOCALLY]. */
+/** DMG: Bag of Tricks. Three uses, back at dawn (here: after a long rest; SRD 5.1). */
 export const BAG_USES = 3;
 
-/** DMG: Bag of Tricks (gray). d8 → the beast that comes out, from memory [CONFIRM LOCALLY]. */
+/** DMG: Bag of Tricks (gray). d8 → the beast that comes out (checked against SRD 5.1, Nov 24). */
 export const BAG_TABLE = [
   'weasel',
   'giant-rat',
@@ -19,7 +19,7 @@ export const BAG_TABLE = [
   'boar',
   'panther',
   'giant-badger',
-  'brown-bear',
+  'dire-wolf',
   'giant-elk',
 ] as const;
 

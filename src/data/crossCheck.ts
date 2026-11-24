@@ -14,7 +14,7 @@ export const KNOWN_QUIRKS = new Set([
   // MM and SRD 5.1 both print +5 for the brown bear, though Str 19 + proficiency gives +6.
   'monster brown-bear: bite to-hit +5, expected +6 (Str) or +2 (Dex) at proficiency +2',
   'monster brown-bear: claws to-hit +5, expected +6 (Str) or +2 (Dex) at proficiency +2',
-  // Tiny familiars (SRD 5.1 as remembered): +0 to hit for a single point of damage.
+  // Tiny familiars (checked against SRD 5.1): +0 to hit for a single point of damage.
   'monster bat: bite to-hit +0, expected +-2 (Str) or +4 (Dex) at proficiency +2',
   'monster cat: claws to-hit +0, expected +-2 (Str) or +4 (Dex) at proficiency +2',
   'monster lizard: bite to-hit +0, expected +-2 (Str) or +2 (Dex) at proficiency +2',

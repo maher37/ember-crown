@@ -4,7 +4,7 @@
 
 Each line was entered from memory or is marked ⚠ in the design docs. Check it against your PDFs. When a line is right (or fixed), remove its `verify` and `verifyNote` from the JSON and run `npm run verify-list` again.
 
-**251 items to check.**
+**229 items to check.**
 
 ## species.json
 
@@ -133,27 +133,6 @@ Each line was entered from memory or is marked ⚠ in the design docs. Check it 
 - [ ] **monsters › Cindrath's ember-wraith › Claw**: Homebrew placeholder [inferred].
 - [ ] **monsters › Cindrath's ember-wraith › Molten spit**: Homebrew [inferred, M9]: without a ranged attack, a circle-bound wraith can be shot from a distance in safety.
 - [ ] **monsters › Crown shard**: Homebrew for the finale [inferred]: AC 15, 20 HP; tune in M10.
-- [ ] **monsters › Bat**: Familiar form from memory of SRD 5.1 [CONFIRM LOCALLY].
-- [ ] **monsters › Cat**: Familiar form from memory of SRD 5.1 [CONFIRM LOCALLY].
-- [ ] **monsters › Frog**: Familiar form from memory of SRD 5.1 [CONFIRM LOCALLY].
-- [ ] **monsters › Hawk**: Familiar form from memory of SRD 5.1 [CONFIRM LOCALLY].
-- [ ] **monsters › Lizard**: Familiar form from memory of SRD 5.1 [CONFIRM LOCALLY].
-- [ ] **monsters › Octopus**: Familiar form from memory of SRD 5.1 [CONFIRM LOCALLY].
-- [ ] **monsters › Owl**: Familiar form from memory of SRD 5.1 [CONFIRM LOCALLY].
-- [ ] **monsters › Rat**: Familiar form from memory of SRD 5.1 [CONFIRM LOCALLY].
-- [ ] **monsters › Raven**: Familiar form from memory of SRD 5.1 [CONFIRM LOCALLY].
-- [ ] **monsters › Sea Horse**: Familiar form from memory of SRD 5.1 [CONFIRM LOCALLY].
-- [ ] **monsters › Spider**: Familiar form from memory of SRD 5.1 [CONFIRM LOCALLY].
-- [ ] **monsters › Weasel**: Familiar form from memory of SRD 5.1 [CONFIRM LOCALLY].
-- [ ] **monsters › Imp**: Familiar form from memory of SRD 5.1 [CONFIRM LOCALLY].
-- [ ] **monsters › Pseudodragon**: Familiar form from memory of SRD 5.1 [CONFIRM LOCALLY].
-- [ ] **monsters › Quasit**: Familiar form from memory of SRD 5.1 [CONFIRM LOCALLY].
-- [ ] **monsters › Sprite**: Familiar form from memory of SRD 5.1 [CONFIRM LOCALLY].
-- [ ] **monsters › Badger**: Bag of Tricks beast, from memory of SRD 5.1 [CONFIRM LOCALLY].
-- [ ] **monsters › Boar**: Bag of Tricks beast, from memory of SRD 5.1 [CONFIRM LOCALLY].
-- [ ] **monsters › Panther**: Bag of Tricks beast, from memory of SRD 5.1 [CONFIRM LOCALLY].
-- [ ] **monsters › Giant Badger**: Bag of Tricks beast, from memory of SRD 5.1 [CONFIRM LOCALLY].
-- [ ] **monsters › Giant Elk**: Bag of Tricks beast, from memory of SRD 5.1 [CONFIRM LOCALLY].
 
 ## foes.json
 
@@ -186,7 +165,6 @@ Each line was entered from memory or is marked ⚠ in the design docs. Check it 
 - [ ] **items › Staff of Healing**: Name found in the DMG tables (✅); effect summarized from memory (Items.md CONFIRM LOCALLY).
 - [ ] **items › The Honor Guard's Ring**: Name found in the DMG tables (✅); effect summarized from memory (Items.md CONFIRM LOCALLY).
 - [ ] **items › The Drowned Lantern**: Name found in the DMG tables (✅); effect summarized from memory (Items.md CONFIRM LOCALLY).
-- [ ] **items › Wix's Clan Gift**: Name found in the DMG tables (✅); effect summarized from memory (Items.md CONFIRM LOCALLY).
 - [ ] **items › Dragon Slayer**: Name found in the DMG tables (✅); effect summarized from memory (Items.md CONFIRM LOCALLY).
 - [ ] **items › Ring of Warmth**: Name from the DMG; effect summarized from memory (Items.md CONFIRM LOCALLY). A hidden find (D27). The DMG ring also keeps you comfortable in deep cold; that part is flavor here [inferred].
 - [ ] **items › Cloak of Elvenkind**: Name from the DMG; effect summarized from memory (Items.md CONFIRM LOCALLY). A hidden find (D27). The DMG cloak also gives disadvantage to Perception checks to see you; that part isn't modeled [inferred].

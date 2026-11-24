@@ -4286,7 +4286,7 @@
         {
           "id": "echolocation",
           "name": "Echolocation",
-          "summary": "Can't use its blindsight while deafened."
+          "summary": "Senses its surroundings by sound out to 60 ft (blindsight), but not while deafened."
         },
         {
           "id": "keen-hearing",
@@ -4335,8 +4335,7 @@
         "cha": 4
       },
       "art": "A small brown bat with ember-lit eyes",
-      "verify": true,
-      "verifyNote": "Familiar form from memory of SRD 5.1 [CONFIRM LOCALLY]."
+      "verifyNote": "Checked against SRD 5.1 (5e-bits database), Nov 24."
     },
     {
       "size": "Tiny",
@@ -4395,8 +4394,7 @@
         "cha": 7
       },
       "art": "A grey tabby with a torn ear",
-      "verify": true,
-      "verifyNote": "Familiar form from memory of SRD 5.1 [CONFIRM LOCALLY]."
+      "verifyNote": "Checked against SRD 5.1 (5e-bits database), Nov 24."
     },
     {
       "size": "Tiny",
@@ -4441,8 +4439,7 @@
       },
       "darkvision": 30,
       "art": "A fat green marsh frog",
-      "verify": true,
-      "verifyNote": "Familiar form from memory of SRD 5.1 [CONFIRM LOCALLY]."
+      "verifyNote": "Checked against SRD 5.1 (5e-bits database), Nov 24."
     },
     {
       "size": "Tiny",
@@ -4500,8 +4497,7 @@
         "cha": 6
       },
       "art": "A red-tailed mountain hawk",
-      "verify": true,
-      "verifyNote": "Familiar form from memory of SRD 5.1 [CONFIRM LOCALLY]."
+      "verifyNote": "Checked against SRD 5.1 (5e-bits database), Nov 24."
     },
     {
       "size": "Tiny",
@@ -4552,8 +4548,7 @@
       },
       "darkvision": 30,
       "art": "A rust-coloured rock lizard",
-      "verify": true,
-      "verifyNote": "Familiar form from memory of SRD 5.1 [CONFIRM LOCALLY]."
+      "verifyNote": "Checked against SRD 5.1 (5e-bits database), Nov 24."
     },
     {
       "size": "Small",
@@ -4569,6 +4564,11 @@
           "id": "hold-breath",
           "name": "Hold Breath",
           "summary": "Out of water it can hold its breath for 30 minutes."
+        },
+        {
+          "id": "underwater-camouflage",
+          "name": "Underwater Camouflage",
+          "summary": "Advantage on Stealth checks underwater."
         },
         {
           "id": "water-breathing",
@@ -4622,8 +4622,7 @@
       },
       "darkvision": 30,
       "art": "A small speckled octopus in a jar of water",
-      "verify": true,
-      "verifyNote": "Familiar form from memory of SRD 5.1 [CONFIRM LOCALLY]."
+      "verifyNote": "Checked against SRD 5.1 (5e-bits database), Nov 24."
     },
     {
       "size": "Tiny",
@@ -4688,8 +4687,7 @@
       },
       "darkvision": 120,
       "art": "A tawny barn owl",
-      "verify": true,
-      "verifyNote": "Familiar form from memory of SRD 5.1 [CONFIRM LOCALLY]."
+      "verifyNote": "Checked against SRD 5.1 (5e-bits database), Nov 24."
     },
     {
       "size": "Tiny",
@@ -4745,8 +4743,7 @@
       },
       "darkvision": 30,
       "art": "A sleek black rat",
-      "verify": true,
-      "verifyNote": "Familiar form from memory of SRD 5.1 [CONFIRM LOCALLY]."
+      "verifyNote": "Checked against SRD 5.1 (5e-bits database), Nov 24."
     },
     {
       "size": "Tiny",
@@ -4804,17 +4801,14 @@
         "cha": 6
       },
       "art": "A glossy raven with a white feather",
-      "verify": true,
-      "verifyNote": "Familiar form from memory of SRD 5.1 [CONFIRM LOCALLY]."
+      "verifyNote": "Checked against SRD 5.1 (5e-bits database), Nov 24."
     },
     {
       "size": "Tiny",
       "cr": "0",
       "xp": 10,
       "saves": {},
-      "skills": {
-        "perception": 2
-      },
+      "skills": {},
       "traits": [
         {
           "id": "water-breathing",
@@ -4843,8 +4837,7 @@
         "cha": 2
       },
       "art": "A tiny gold sea horse in a glass jar",
-      "verify": true,
-      "verifyNote": "Familiar form from memory of SRD 5.1 [CONFIRM LOCALLY]."
+      "verifyNote": "Checked against SRD 5.1 (5e-bits database), Nov 24."
     },
     {
       "size": "Tiny",
@@ -4864,6 +4857,11 @@
           "id": "web-sense",
           "name": "Web Sense",
           "summary": "Knows where anything touching its web is."
+        },
+        {
+          "id": "web-walker",
+          "name": "Web Walker",
+          "summary": "Ignores movement limits caused by webs."
         }
       ],
       "actions": [
@@ -4921,8 +4919,7 @@
       },
       "darkvision": 30,
       "art": "A hairy brown hunting spider",
-      "verify": true,
-      "verifyNote": "Familiar form from memory of SRD 5.1 [CONFIRM LOCALLY]."
+      "verifyNote": "Checked against SRD 5.1 (5e-bits database), Nov 24."
     },
     {
       "size": "Tiny",
@@ -4980,8 +4977,7 @@
         "cha": 3
       },
       "art": "A white winter weasel",
-      "verify": true,
-      "verifyNote": "Familiar form from memory of SRD 5.1 [CONFIRM LOCALLY]."
+      "verifyNote": "Checked against SRD 5.1 (5e-bits database), Nov 24."
     },
     {
       "size": "Tiny",
@@ -5070,8 +5066,7 @@
       "conditionImmunities": ["poisoned"],
       "darkvision": 120,
       "art": "A red, bat-winged imp with a barbed tail and a sly grin",
-      "verify": true,
-      "verifyNote": "Familiar form from memory of SRD 5.1 [CONFIRM LOCALLY]."
+      "verifyNote": "Checked against SRD 5.1 (5e-bits database), Nov 24."
     },
     {
       "size": "Tiny",
@@ -5170,8 +5165,7 @@
       },
       "darkvision": 60,
       "art": "A cat-sized copper dragon with a curling sting-tipped tail",
-      "verify": true,
-      "verifyNote": "Familiar form from memory of SRD 5.1 [CONFIRM LOCALLY]."
+      "verifyNote": "Checked against SRD 5.1 (5e-bits database), Nov 24."
     },
     {
       "size": "Tiny",
@@ -5259,8 +5253,7 @@
       "conditionImmunities": ["poisoned"],
       "darkvision": 120,
       "art": "A green, warty little demon with long claws",
-      "verify": true,
-      "verifyNote": "Familiar form from memory of SRD 5.1 [CONFIRM LOCALLY]."
+      "verifyNote": "Checked against SRD 5.1 (5e-bits database), Nov 24."
     },
     {
       "size": "Tiny",
@@ -5354,8 +5347,7 @@
         "cha": 11
       },
       "art": "A dragonfly-winged sprite with a thorn bow",
-      "verify": true,
-      "verifyNote": "Familiar form from memory of SRD 5.1 [CONFIRM LOCALLY]."
+      "verifyNote": "Checked against SRD 5.1 (5e-bits database), Nov 24."
     },
     {
       "size": "Tiny",
@@ -5412,8 +5404,7 @@
         }
       ],
       "art": "A furious little badger, mostly teeth",
-      "verify": true,
-      "verifyNote": "Bag of Tricks beast, from memory of SRD 5.1 [CONFIRM LOCALLY]."
+      "verifyNote": "Checked against SRD 5.1 (5e-bits database), Nov 24."
     },
     {
       "size": "Medium",
@@ -5473,8 +5464,7 @@
         }
       ],
       "art": "A bristly grey mountain boar",
-      "verify": true,
-      "verifyNote": "Bag of Tricks beast, from memory of SRD 5.1 [CONFIRM LOCALLY]."
+      "verifyNote": "Checked against SRD 5.1 (5e-bits database), Nov 24."
     },
     {
       "size": "Medium",
@@ -5557,8 +5547,7 @@
         }
       ],
       "art": "A black hill panther with gold eyes",
-      "verify": true,
-      "verifyNote": "Bag of Tricks beast, from memory of SRD 5.1 [CONFIRM LOCALLY]."
+      "verifyNote": "Checked against SRD 5.1 (5e-bits database), Nov 24."
     },
     {
       "size": "Medium",
@@ -5635,8 +5624,7 @@
         }
       ],
       "art": "A badger the size of a pony, very offended",
-      "verify": true,
-      "verifyNote": "Bag of Tricks beast, from memory of SRD 5.1 [CONFIRM LOCALLY]."
+      "verifyNote": "Checked against SRD 5.1 (5e-bits database), Nov 24."
     },
     {
       "size": "Huge",
@@ -5680,7 +5668,7 @@
               "type": "attack",
               "kind": "melee",
               "toHit": 6,
-              "reach": 5,
+              "reach": 10,
               "onHit": [
                 {
                   "type": "damage",
@@ -5693,8 +5681,7 @@
         }
       ],
       "art": "A towering elk with antlers like a dead oak",
-      "verify": true,
-      "verifyNote": "Bag of Tricks beast, from memory of SRD 5.1 [CONFIRM LOCALLY]."
+      "verifyNote": "Checked against SRD 5.1 (5e-bits database), Nov 24."
     }
   ]
 }
