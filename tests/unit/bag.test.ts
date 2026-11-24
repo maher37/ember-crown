@@ -44,7 +44,7 @@ describe("Wix's Clan Gift", () => {
   });
 
   it('three uses, back after a long rest (DMG: Bag of Tricks)', () => {
-    let s = pull();
+    const s = pull();
     const used = s.combatants['mira']!.creature as Hero;
     expect(bagUsesLeft(used)).toBe(2);
     s.outcome = 'victory';
