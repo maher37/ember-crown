@@ -25,6 +25,7 @@ import {
 import { conscious, distanceFeet } from './grid';
 import { hasBeacon } from './wards';
 import { fx } from './fx';
+import { relentless } from './beastMoves';
 import type { ActiveEffect, CombatState, Combatant, LogLine } from './types';
 
 /**
@@ -262,6 +263,9 @@ export function dealDamage(
       return out.damageTaken;
     }
   }
+  // SRD: Boar, Relentless.
+  if (before.hp > 0 && target.creature.hp === 0 && relentless(ctx, target, out.damageTaken))
+    return out.damageTaken;
   sayAll(s, out.log, opts.attacker);
   if (before.concentration && !target.creature.concentration)
     endConcentrationEffects(s, target.id, before.concentration);

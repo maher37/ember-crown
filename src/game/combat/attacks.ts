@@ -38,6 +38,7 @@ import { conscious, coverBetween, distanceFeet, hasLineOfSight, isAdjacent } fro
 import { applyLeaf } from './leaves';
 import type { Combatant } from './types';
 import { fx, weaponShot } from './fx';
+import { chargeAfterHit, chargeDamage } from './beastMoves';
 
 export interface AttackOption {
   id: string;
@@ -62,6 +63,8 @@ export interface AttackOption {
   unarmed: boolean;
   /** Overcomes resistance to nonmagical weapons (shadows, wights...). */
   magical?: boolean;
+  /** Only against a prone creature (a giant elk's Hooves). */
+  onlyVsProne?: boolean;
 }
 
 const fmt = (n: number) => (n >= 0 ? `+${n}` : `${n}`);
@@ -283,6 +286,7 @@ export function monsterAttacks(monsterId: string): AttackOption[] {
         ability: 'none',
         monk: false,
         unarmed: false,
+        ...(a.onlyVsProne ? { onlyVsProne: true } : {}),
       });
     }
   return out;
@@ -302,6 +306,9 @@ export function attackBlocked(
   if (opt.kind === 'ranged' && opt.range && d > opt.range[1]) return 'out of range';
   if (!hasLineOfSight(ctx.s.map, attacker.pos, target.pos)) return 'no line of sight';
   if (target.gone || target.creature.dead) return 'not a valid target';
+  // SRD: Giant Elk, Hooves. Only against a prone creature.
+  if (opt.onlyVsProne && !hasCondition(target.creature, 'prone'))
+    return 'only against a prone creature';
   return null;
 }
 
@@ -796,6 +803,9 @@ export function applyHit(
   }
   // Riposte's superiority die, already rolled.
   if (extras.extraDamage) parts.push(extras.extraDamage);
+  // SRD: Charge (boar, giant elk) and Pounce (panther): a hit after a 20-ft run.
+  const charge = chargeDamage(ctx, attacker, target, opt.id, parts[0]!.type);
+  if (charge?.part) parts.push(charge.part);
   // PHB: Battle Master, Trip Attack / Pushing Attack. A superiority die on the damage, then a
   // Strength save (Large or smaller) or the target is knocked prone / pushed 15 ft.
   let maneuver: 'trip' | 'push' | null = null;
@@ -883,6 +893,11 @@ export function applyHit(
     attacker,
   });
   wrathOfTheStorm(ctx, attacker, target);
+  if (charge)
+    chargeAfterHit(ctx, attacker, target, charge.trait, (id) => {
+      const bite = attackOptions(attacker).find((o) => o.id === id);
+      if (bite) makeAttack(ctx, attacker, target, bite);
+    });
   if (maneuver && h && conscious(target) && !target.creature.dead) {
     const size = target.monsterId ? getMonster(target.monsterId).size : 'Medium';
     if (size === 'Huge')

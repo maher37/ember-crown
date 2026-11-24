@@ -420,7 +420,7 @@ function beginTurn(ctx: Ctx): boolean {
   const c = active(s);
   c.reactionUsed = c.surprised ? true : false;
   expire(ctx, c.id, 'start');
-  c.turn = freshTurn(speedNow(c));
+  c.turn = { ...freshTurn(speedNow(c)), startPos: { ...c.pos } };
   if (c.gone || c.creature.dead) return false;
   const who = c.side === 'party' ? 'you' : 'foe';
   // DMG: Periapt of Wound Closure (Lysa's Locket). While dying, you stabilize at the start of your turn.
@@ -440,7 +440,7 @@ function beginTurn(ctx: Ctx): boolean {
     c.creature = r.creature;
     sayAll(s, r.log, c);
     if (r.outcome !== 'revived') return false;
-    c.turn = freshTurn(speedNow(c));
+    c.turn = { ...freshTurn(speedNow(c)), startPos: { ...c.pos } };
   }
   if (c.creature.hp === 0) return false;
   // MM: Recharge X–6. Roll a d6 at the start of the monster's turn; on X or higher the ability is back.
@@ -471,7 +471,7 @@ function beginTurn(ctx: Ctx): boolean {
     if (!by || !conscious(by) || distanceFeet(by.pos, c.pos) > 5)
       c.creature = removeCondition(c.creature, 'grappled', g.source);
   }
-  c.turn = freshTurn(speedNow(c));
+  c.turn = { ...freshTurn(speedNow(c)), startPos: { ...c.pos } };
   // MM: Ghast, Stench. Starting a turn next to a ghast: DC 10 Con save or poisoned until your next turn.
   for (const g of Object.values(s.combatants)) {
     if (g.side === c.side || !conscious(g) || !g.monsterId) continue;
