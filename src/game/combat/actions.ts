@@ -48,6 +48,7 @@ import {
 import { featureList, type FeatureId, type FeatureInfo } from './featureList';
 import { feature } from './features';
 import { applyItem, parley } from './items';
+import { openBag } from './bag';
 
 export type PlayerAction =
   | { type: 'move'; to: Pos }
@@ -69,6 +70,8 @@ export type PlayerAction =
   | { type: 'end-turn' }
   | { type: 'use-item'; itemId: string; targetId: string }
   | { type: 'parley' }
+  /** Pull a beast out of Wix's Clan Gift (Bag of Tricks). */
+  | { type: 'bag' }
   /** Switch weapon sets (main and off hand): free, once a turn. */
   | { type: 'swap-weapons' }
   | { type: 'react'; accept: boolean };
@@ -197,6 +200,8 @@ function perform(ctx: Ctx, c: Combatant, a: PlayerAction): string | null | undef
       return feature(ctx, c, a.id, a.targetId);
     case 'use-item':
       return applyItem(ctx, c, a.itemId, a.targetId);
+    case 'bag':
+      return openBag(ctx, c);
     case 'parley':
       return parley(ctx, c);
     case 'swap-weapons': {

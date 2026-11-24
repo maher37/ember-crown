@@ -22,7 +22,7 @@ Two ways to report what you find while playing. Use whichever is easier.
 **Feature wishes**
 - **Feature, resting in dungeons:** a long rest inside a mine or dungeon should have a small chance of being attacked by one or two of that place's roaming monsters. (Camps in the wild can already be attacked at night; dungeons and mines can't.)
 - **Feature, ambushing monsters:** if the party notices roaming monsters before they notice the party (Stealth against Perception), the party gets the jump on them and acts first. This applies only to roaming monsters, not ones already waiting in a room. (Today only monsters can surprise the party.)
-- **Feature, summons:** the warlock's Pact of the Chain familiar (Find Familiar) can't be summoned, and summoned creatures and beast companions aren't in the game yet. Expected: familiars, summons and animal companions join the fight as allies.
+- **Feature, summons:** the warlock's Pact of the Chain familiar (Find Familiar) can't be summoned, and summoned creatures and beast companions aren't in the game yet. Expected: familiars, summons and animal companions join the fight as allies. **Decided (D36), one PR each:** familiars done in PR #56; Wix's bag in the next PR; Beast Master ranger after that.
 
 ## Done
 - **Story, camp companions who talk** (Story_Review #2, D32): at camp only. **Built in the next PR:** "Around the fire" at camp, with scenes for Wix, Edric, Tamsin, Ulric, Kell and Ser Ida, and two personal quests.

@@ -398,7 +398,7 @@
       "source": "Wix's Homecoming",
       "verify": true,
       "verifyNote": "Name found in the DMG tables (✅); effect summarized from memory (Items.md CONFIRM LOCALLY).",
-      "howItWorks": "A lumpy bag from Wix's clan. It doesn't do anything in fights yet (it will summon a random small beast).",
+      "howItWorks": "A lumpy bag from Wix's clan. Carry it in a trinket slot. In a fight (More menu, an action): pull out a random beast (weasel, rat, badger, boar, panther, giant badger, bear or giant elk) that fights for you until the fight ends. Three uses, back after a long rest.",
       "slot": "trinket"
     },
     {

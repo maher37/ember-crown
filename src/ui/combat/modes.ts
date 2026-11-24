@@ -2,6 +2,7 @@
 
 import { getMonster } from '../../game/creatures';
 import { heroOf } from '../../game/combat/core';
+import { bagProblem, bagUsesLeft, holdsBag } from '../../game/combat/bag';
 import { getGear } from '../../game/gear';
 import { getItem } from '../../game/items';
 import {
@@ -203,6 +204,17 @@ export function moreActionsFor({
       onClick: () => setMode({ kind: 'item', itemId: g.id }),
       blocked: actionLeft ? undefined : 'no action left',
     })),
+    // D36: Wix's Clan Gift (Bag of Tricks), for the hero carrying it.
+    ...(hero && holdsBag(hero.creature)
+      ? [
+          {
+            label: `Wix's Clan Gift (${bagUsesLeft(hero.creature)} left)`,
+            detail: 'pull out a random beast that fights for you · action',
+            onClick: () => doAct({ type: 'bag' }),
+            blocked: bagProblem(me) ?? undefined,
+          },
+        ]
+      : []),
     {
       label: 'Help',
       detail: 'an ally gets advantage on their next attack',

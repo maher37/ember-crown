@@ -310,6 +310,12 @@ describe('monsters, foes and items', () => {
         'pseudodragon',
         'quasit',
         'sprite',
+        // Beasts from Wix's Clan Gift (Bag of Tricks).
+        'badger',
+        'boar',
+        'panther',
+        'giant-badger',
+        'giant-elk',
       ].sort(),
     );
   });
