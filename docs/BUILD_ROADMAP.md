@@ -21,7 +21,7 @@
   - `src/game/store.ts` (≈1,090)
 - Split `src/data/encounters.json` (≈4,400 lines) into one file per act.
 - No behavior change: all tests, the build and Playwright must pass unchanged.
-- ✅ **Done:** `src/data/encounters/act1–3.json`, `src/game/combat/` (actions, basics, featureList, features, items), `src/game/store/` (one slice per feature), `src/ui/combat/` (the combat screen's pieces).
+- ✅ **Done:** `src/data/encounters/act1–3.json`, `src/game/combat/` (actions, basics, featureList, features, items), `src/game/store/` (one slice per feature), `src/ui/combat/` (the combat screen's pieces). **Nov 26:** `src/game/combat/attacks.ts` (≈1,085 lines) split into `attacks.ts` (the attack roll), `attackOptions.ts` (which attacks, and reach) and `attackHit.ts` (what a hit does), with no behavior change.
 - **Prompt:** `Do refactor R1 from docs/BUILD_ROADMAP.md.`
 
 ## Finished milestones (history)
